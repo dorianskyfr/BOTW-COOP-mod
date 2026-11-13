@@ -74,6 +74,15 @@ foreach ($player in $players) {
     $modDir = Join-Path $dataDir 'mods\contents\01007ef00011e000\botw-coop\exefs'
     New-Item -ItemType Directory -Force $modDir | Out-Null
     Copy-Item (Join-Path $project 'build\deploy\subsdk9') (Join-Path $modDir 'subsdk9') -Force
+    # Fichiers generes depuis la RomFS de l'utilisateur (liste blanche, Link anime), hors git.
+    $romfsSrc = Join-Path $project 'build\deploy\romfs'
+    if (Test-Path $romfsSrc) {
+        $romfsDst = Join-Path (Split-Path $modDir -Parent) 'romfs'
+        New-Item -ItemType Directory -Force $romfsDst | Out-Null
+        Copy-Item (Join-Path $romfsSrc '*') $romfsDst -Recurse -Force
+    } else {
+        Write-Output 'Attention : pas de build\deploy\romfs (voir README, « Liste blanche ») : villageois au lieu de Link, aucun drapeau partage.'
+    }
     $out = Join-Path $runs "play_p$n.txt"
     $p = Start-Process -FilePath $ryujinx -ArgumentList ('--root-data-dir "' + $dataDir + '" "' + $game + '"') -PassThru -RedirectStandardOutput $out -RedirectStandardError (Join-Path $runs "play_p$n.err.txt")
     $ids += $p.Id
