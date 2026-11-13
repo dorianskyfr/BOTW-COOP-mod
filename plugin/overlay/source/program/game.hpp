@@ -181,6 +181,13 @@ namespace coop::game {
     const char* GetActorName(std::uintptr_t actor);
 
     /*
+     * Demarre une sequence d'animation (nom de l'ASList de l'acteur) sur le creneau 0.
+     * Le jeu ne dit pas si elle a demarre : false seulement si l'appel n'a pas pu etre fait.
+     * Fil du jeu.
+     */
+    bool PlayActorSequence(std::uintptr_t actor, const char* name);
+
+    /*
      * Diagnostic : cherche dans l'objet acteur du joueur ou se trouvent sa position
      * et son nom, et journalise les decalages trouves. Sert a verifier sur la
      * version courante les decalages tires de la decompilation 1.5.0.

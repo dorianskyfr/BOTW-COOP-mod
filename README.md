@@ -5,7 +5,7 @@ Mod de présence à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 
 État réel, limites et preuves : `PROGRESS.md`. Détails techniques : `NOTES.md`, `ARCHITECTURE.md`. Décisions : `DECISIONS.md`.
 
 ## Ce que fait la version actuelle
-- Chaque joueur voit l'autre dans son monde, sous la forme d'un personnage du jeu (pas encore le modèle de Link, pas d'animation).
+- Chaque joueur voit l'autre dans son monde sous la forme d'un Link animé (attente, marche, course, sprint, chute), sans équipement pour l'instant.
 - Heure de la session (elle ne recule jamais ; un joueur en pause ne retient pas l'autre), jours, minuteur de lune de sang, météo (à moins de 300 m).
 - Drapeaux de la liste blanche : progression (sanctuaires, tours, Créatures divines, Koroks) et objets de carte (ramassés, coffres, ennemis tués). Les étapes de quête, l'inventaire et le Compendium restent à chacun.
 - Points de vie et position des ennemis (première version).
@@ -22,7 +22,7 @@ Il faut, sur chaque PC : BOTW avec la mise à jour 1.9.0, Ryujinx, et ce dépôt
    python tools\relay.py --host <adresse LAN du PC hôte>
    ```
    Sans `--host`, le relais n'écoute que sur 127.0.0.1 (deux instances sur le même PC). Windows demandera d'autoriser Python dans le pare-feu : c'est nécessaire pour qu'un autre PC se connecte. Ne pas rediriger de port vers Internet.
-2. **Générer la liste blanche des drapeaux** (une fois, sur chaque PC ; voir « Liste blanche » plus bas). Sans elle, rien n'est partagé à part la présence, l'heure et les ennemis.
+2. **Générer les fichiers du mod tirés de votre jeu** (une fois, sur chaque PC ; voir « Liste blanche » plus bas) : liste blanche des drapeaux et Link de l'autre joueur. Sans eux, rien n'est partagé à part la présence, l'heure et les ennemis, et l'autre joueur est un villageois.
 3. **Installer le mod dans Ryujinx**, sur chaque PC :
    ```
    powershell -ExecutionPolicy Bypass -File tools\install-mod.ps1 -DataDir "<dossier de données Ryujinx>" -Relay <adresse LAN du PC hôte>:47800
@@ -63,7 +63,15 @@ Le mod ne partage que les drapeaux d'une liste générée depuis **votre** copie
    build\venv\Scripts\python.exe -I tools\gamedata_names.py build\romfs-1.9.0 build\gamedata\flags.tsv
    build\venv\Scripts\python.exe -I tools\build_sync_flags.py build\gamedata\flags.tsv build\deploy\romfs\botw-coop\sync-flags.bin
    ```
-   `install-mod.ps1` et `run-live.ps1` copient ensuite `build\deploy\romfs` dans le mod.
+4. Le Link qui représente l'autre joueur (acteur `CoopPlayer`), à partir de quelques fichiers de plus :
+   ```
+   build\tools\romfs-extract\RomfsExtract.exe "%APPDATA%\Ryujinx\system\prod.keys" "<jeu de base .nsp>" "<mise à jour 1.9.0 .nsp>" build\romfs-1.9.0 /Actor/Pack/Npc_DungeonPriest001.sbactorpack /Actor/Pack/PauseMenuPlayer.sbactorpack /Actor/ActorInfo.product.sbyml /System/Resource/ResourceSizeTable.product.srsizetable
+   build\venv\Scripts\python.exe -m pip install rstb
+   build\venv\Scripts\python.exe -I tools\build_puppet.py build\romfs-1.9.0 build\deploy\romfs
+   ```
+   Sans ces fichiers, l'autre joueur apparaît sous la forme d'un villageois.
+
+`install-mod.ps1` et `run-live.ps1` copient ensuite `build\deploy\romfs` dans le mod.
 
 Groupes (réglage `share_groups=` dans `romfs\botw-coop.txt`, par défaut `1,2`) : 1 progression (1 330 drapeaux), 2 objets de carte (31 539), 3 portes logiques des énigmes (485, inactif par défaut). Tant qu'un joueur n'a pas la paravoile, la progression reçue attend (les sanctuaires du plateau donnent les runes).
 

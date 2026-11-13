@@ -24,7 +24,9 @@ if (-not (Test-Path $DataDir)) { throw "Dossier introuvable : $DataDir" }
 $mod = Join-Path $DataDir 'mods\contents\01007ef00011e000\botw-coop'
 
 if ($Uninstall) {
-    foreach ($f in @((Join-Path $mod 'exefs\subsdk9'), (Join-Path $mod 'romfs\botw-coop.txt'), (Join-Path $mod 'romfs\botw-coop\sync-flags.bin'))) {
+    $generated = @('romfs\botw-coop.txt', 'romfs\botw-coop\sync-flags.bin', 'romfs\Actor\Pack\CoopPlayer.sbactorpack',
+                   'romfs\Actor\ActorInfo.product.sbyml', 'romfs\System\Resource\ResourceSizeTable.product.srsizetable')
+    foreach ($f in @((Join-Path $mod 'exefs\subsdk9')) + ($generated | ForEach-Object { Join-Path $mod $_ })) {
         if (Test-Path $f) { Remove-Item $f -Confirm:$false; Write-Output "retire : $f" }
     }
     exit 0
@@ -38,7 +40,8 @@ New-Item -ItemType Directory -Force (Join-Path $mod 'exefs') | Out-Null
 Copy-Item $src (Join-Path $mod 'exefs\subsdk9') -Force
 Write-Output "installe : $(Join-Path $mod 'exefs\subsdk9')"
 
-# Liste blanche des drapeaux, generee depuis la RomFS de l'utilisateur (README.md, « Liste blanche »).
+# Fichiers generes depuis la RomFS de l'utilisateur (README.md, « Liste blanche ») : liste blanche
+# des drapeaux, acteur CoopPlayer et tables du jeu qui le declarent.
 $romfsSrc = Join-Path $project 'build\deploy\romfs'
 if (Test-Path (Join-Path $romfsSrc 'botw-coop\sync-flags.bin')) {
     New-Item -ItemType Directory -Force (Join-Path $mod 'romfs') | Out-Null

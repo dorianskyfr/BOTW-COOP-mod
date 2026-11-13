@@ -569,3 +569,26 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] **Non envoyes**, alors que l'ancienne regle en aurait envoye une partie : `IsGet_Item_Mushroom_E` (sauvegarde et modifiable : l'ancienne liste noire le partageait), `IsPlayed_Demo002_0`, `IsPlayed_Demo025_0`, `WM_DaytimeFlag`, et des drapeaux non sauvegardes (`DoSnatchDisplay`, `CarryProhibition`...).
 - [V] Bokoblin tue par l'outil `drop` : `MainField_Enemy_Bokoblin_Junior_1384488657` envoye (lune de sang). Chez J2 la copie, ramenee par le partage de position, est tombee et morte aussi : le drapeau y a ete pose par le jeu lui-meme.
 - Preuve : `docs/evidence/2026-11-13_liste-blanche-drapeaux_wl1.log`.
+
+### 5.27 Le joueur distant est un Link anime : acteur CoopPlayer (2026-11-13, essais `cp1` a `cp6`) - [V] a l'ecran, deux instances
+
+**Methode** (d'apres botw-coop, `docs/reverse-engineering.md` « The Link puppet » et « Spawning and moving actors » ; reecrite dans `tools/build_puppet.py`) : un nouvel acteur `CoopPlayer` ajoute par la RomFS du mod, genere chez l'utilisateur depuis ses fichiers :
+- pack = celui du moine Sheikah `Npc_DungeonPriest001` (IA `DemoWaitNpc`, planning d'IA, `GParamUser Npc`) avec la liste de modeles de `PauseMenuPlayer` (modele `Link`), une liste de sequences a nous (`AddReses : Player_Animation`, 8 sequences d'un clip chacune, element `TypeIndex 67`, **triees par nom**), et `Physics/Attention/Chemical/Elink/Slink/XlinkUser = Dummy`, echelle 1,0 ;
+- entree `ActorInfo` copiee du moine, avec `bfres`/`mainModel`/boite englobante de `PauseMenuPlayer`, `instSize` 700 000, inseree a sa place (CRC32 du nom `de09266c`, tableau `Hashes` tenu en parallele) ;
+- table des tailles (RSTB) : 12 entrees ; le calculateur de `rstb` (PyPI 1.2.2) renvoie 0 pour les fichiers AAMP, on reprend donc la taille d'un fichier du jeu de meme structure (et 2 x le calcul pour le pack, au moins 64 Kio).
+- [V] Types AAMP : un `int` Python devient un flottant dans oead (`TypeIndex: 67.0`) ; il faut `oead.S32(67)`. Les champs de l'ActorLink sont des chaines simples, pas des `str64`. Corrige avant le premier essai.
+- [V] Noms des 8 clips (`Nml_Wait`, `Nml_Move_Walk`, `Nml_Move_Run`, `Nml_Move_Dash`, `Fall`, `Float_Float_F`, `Swim_Move_Slow_F`, `Swim_Wait`) presents dans les chaines de `Model/Player_Animation.sbfres` de la RomFS 1.9.0.
+
+**Sequences** : `game::PlayActorSequence` appelle `main+0x149f24c` (liste de sequences de l'acteur a `+0x560`) avec une `sead::SafeString` construite sur la pile (vtable = `*(main+0x1d66260) + 0x10`), arguments (-1, -1, nom, 0, 0, vrai) comme botw-coop.
+- [V] Verifie sur notre image de `main` 1.9.0 (`build/dumps`, capstone) : la fonction lit l'acteur a `+0xd8`, compare le creneau a `+0xb8` et la banque a `creneau+0x20`, appelle la recherche `main+0x149ed3c` (qui suit `acteur+0x570` -> `+0x98` puis `main+0x14ffdb4`), et charge elle-meme sa vtable de chaine depuis `main+0x1d66260` (+0x10). Entrees de cette vtable : `main+0x56cc20`, `main+0x56dcc0`, `main+0xea69cc`, `main+0x56dcc4`.
+- Choix de la sequence chez le spectateur, d'apres les deux derniers etats recus : chute si vitesse verticale < -6 m/s, sinon attente < 0,5 m/s, marche < 2,8, course < 6,5, sprint au-dela ; un changement doit tenir 3 images ; la demande est refaite 3 fois a 1 s d'intervalle (un acteur tout juste cree peut l'ignorer, d'apres botw-coop). Seuils choisis, non mesures. Vol plane, nage, escalade : sequences presentes, **pas encore choisies** (il faudra envoyer l'etat d'animation du joueur).
+- Repli : si `CoopPlayer` est refuse ou n'apparait pas en 20 s (RomFS du mod absente), le plugin reprend le PNJ `Npc_Kakariko003`.
+
+**Essais** :
+- [V] `cp1` (une instance, pantin a 3 m) : « CREE apres 5 images, nom="CoopPlayer" », jamais deplace par le jeu (0 image sur ~1000), 30 FPS ; a l'ecran, un second Link en pose d'attente. Capture `2026-11-13_pantin-link_attente.png`.
+- [V] `cp2` (sequences a tour de role toutes les 4 s) : bras ecartes (chute ou vol plane), pas de marche, accroupi (nage) vus a l'ecran. Captures `..._sequence-bras-ecartes.png`, `..._sequence-pas.png`, `..._sequence-accroupi.png`. La correspondance exacte capture <-> sequence n'est pas etablie (horloges differentes).
+- [V] `cp4` (pantin deplace en cercle de 4 m par ecriture de `mMtx`) : le modele suit, en pleine course a cote du joueur.
+- `cp3`, `cp5` (deux instances) : le pantin suit J1 dans le journal mais **n'etait pas visible** sur les captures : J1 a couru dans l'axe de la camera de J2 (cache par le corps de J2) puis, en `cp5`, a devale une pente de 7 m hors du champ. Defaut de l'essai, pas du pantin.
+- [V] `cp6` (deux instances, J1 avance de 8 m en diagonale) : chez J2, le pantin de J1 est vu a la position de J1 ; sequences « Run », « Walk », « Wait » dans le journal. Capture `2026-11-13_pantin-link_deux-instances_J2-voit-J1.png`.
+- Non verifie : longue duree, chargements, plusieurs pantins, distance d'affichage (a 27 m le pantin etait cache, pas mesure au-dela), equipement (le pantin est en sous-vetements), orientation pendant l'animation vue de pres.
+- Preuves : `docs/evidence/2026-11-13_pantin-link_essais-cp1-a-cp6.log`.

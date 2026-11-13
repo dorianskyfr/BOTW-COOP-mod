@@ -16,11 +16,15 @@ namespace coop::remote_actor {
     namespace {
 
         /*
-         * Acteur utilise pour representer le joueur distant. Nom present en clair
-         * dans l'executable 1.9.0 (liste relevee sur le dump, NOTES.md). Choix
-         * provisoire : un PNJ humanoide. Ce n'est pas le modele de Link.
+         * Acteur utilise pour representer le joueur distant :
+         * - CoopPlayer : Link sans physique, ajoute par la RomFS du mod (tools/build_puppet.py,
+         *   genere depuis les fichiers de l'utilisateur) ;
+         * - repli : Npc_Kakariko003, un PNJ du jeu (nom present dans l'executable 1.9.0), si
+         *   CoopPlayer n'est pas installe ou n'apparait pas.
          */
-        constexpr const char* ActorName = "Npc_Kakariko003";
+        constexpr const char* PuppetName = "CoopPlayer";
+        constexpr const char* FallbackName = "Npc_Kakariko003";
+        const char* ActorName = PuppetName;
 
         /*
          * Interpolation : les etats arrivent a 10 Hz. On affiche le joueur distant
@@ -62,6 +66,72 @@ namespace coop::remote_actor {
         std::uint64_t s_Interpolated = 0; /* images placees entre deux echantillons */
         std::uint64_t s_Held = 0;         /* images placees sur le dernier echantillon */
         float s_MaxStepSq = 0.0f;         /* plus grand deplacement applique en une image */
+
+        /*
+         * Sequence du pantin d'apres le mouvement du joueur distant (deux derniers etats recus).
+         * Seuils de vitesse : choix, pas des mesures du jeu. Noms : ASList de CoopPlayer
+         * (tools/build_puppet.py).
+         */
+        const char* s_Sequence = nullptr;      /* derniere sequence demandee */
+        const char* s_Candidate = nullptr;     /* sequence vue aux images precedentes */
+        int s_CandidateFrames = 0;
+        int s_SequenceRetries = 0;
+        std::uint64_t s_SequenceFrame = 0;
+        std::uint64_t s_SequenceChanges = 0;
+
+        const char* WantedSequence() {
+#ifdef COOP_TEST_SPAWN
+            /* Essai sans joueur distant : chaque sequence 4 s a tour de role. */
+            static const char* const all[] = { "Wait", "Walk", "Run", "Dash", "Fall", "Glide", "Swim", "SwimWait" };
+            return all[(s_Frames / 120) % (sizeof(all) / sizeof(all[0]))];
+#else
+            coop::session::Sample prev, last;
+            std::uint64_t updates = 0;
+            if (!coop::session::g_Remote.Snapshot(prev, last, updates) || updates < 2)
+                return "Wait";
+            const std::uint64_t now = coop::clock::NowMs();
+            if (now - last.m_TimeMs > 1000 || last.m_TimeMs <= prev.m_TimeMs || last.m_TimeMs - prev.m_TimeMs > 1000)
+                return "Wait";
+            const float dt = static_cast<float>(last.m_TimeMs - prev.m_TimeMs) / 1000.0f;
+            const float dx = last.m_Mtx[3] - prev.m_Mtx[3];
+            const float dy = last.m_Mtx[7] - prev.m_Mtx[7];
+            const float dz = last.m_Mtx[11] - prev.m_Mtx[11];
+            const float flat = std::sqrt(dx * dx + dz * dz) / dt;
+            const float vy = dy / dt;
+            if (vy < -6.0f)
+                return "Fall";
+            if (flat < 0.5f)
+                return "Wait";
+            if (flat < 2.8f)
+                return "Walk";
+            if (flat < 6.5f)
+                return "Run";
+            return "Dash";
+#endif
+        }
+
+        void UpdateSequence(std::uintptr_t actor) {
+            const char* want = WantedSequence();
+            /* Un changement doit tenir 3 images (pas de clignotement entre deux allures). */
+            if (want != s_Candidate) {
+                s_Candidate = want;
+                s_CandidateFrames = 0;
+            }
+            if (++s_CandidateFrames < 3 && s_Sequence != nullptr)
+                return;
+            /* Un acteur tout juste cree peut ignorer l'appel : on le refait 3 fois, 1 fois par seconde
+               (meme precaution que botw-coop). */
+            const bool retry = want == s_Sequence && s_SequenceRetries < 3 && s_Frames - s_SequenceFrame >= 30;
+            if (want == s_Sequence && !retry)
+                return;
+            s_SequenceRetries = want == s_Sequence ? s_SequenceRetries + 1 : 0;
+            s_SequenceFrame = s_Frames;
+            if (want != s_Sequence && s_SequenceChanges++ < 40)
+                Logging.Log("[botw-coop] acteur distant : sequence \"%s\" (avant \"%s\")", want, s_Sequence ? s_Sequence : "-");
+            s_Sequence = want;
+            if (!coop::game::PlayActorSequence(actor, want))
+                Logging.Log("[botw-coop] acteur distant : sequence \"%s\" non demarree (ASList illisible)", want);
+        }
 
         void NormalizeRow(float* row) {
             const float len = std::sqrt(row[0] * row[0] + row[1] * row[1] + row[2] * row[2]);
@@ -127,6 +197,12 @@ namespace coop::remote_actor {
             out[3] = s_TestPos[0];
             out[7] = s_TestPos[1];
             out[11] = s_TestPos[2];
+#ifdef COOP_TEST_CIRCLE
+            /* Essai de deplacement : cercle de 4 m autour du point fixe, un tour en ~19 s. */
+            const float a = static_cast<float>(s_Frames % 565) * (6.2831853f / 565.0f);
+            out[3] = s_TestPos[0] + 4.0f * std::cos(a);
+            out[11] = s_TestPos[2] + 4.0f * std::sin(a);
+#endif
             return true;
 #else
             (void)local;
@@ -223,7 +299,7 @@ namespace coop::remote_actor {
          * joueurs, charges au meme point, reculaient jusqu'a tomber de la falaise).
          * On ne le pose donc jamais a moins de MinSeparation du joueur local (a plat).
          */
-        if (hasTarget) {
+        if (hasTarget && ActorName != PuppetName) { /* CoopPlayer n'a pas de corps : rien a pousser */
             constexpr float MinSeparation = 1.2f;
             float sx = target[3] - local.m_Pos[0];
             float sz = target[11] - local.m_Pos[2];
@@ -269,6 +345,9 @@ namespace coop::remote_actor {
                     s_RequestFrame = s_Frames;
                     Logging.Log("[botw-coop] acteur distant : creation de \"%s\" demandee en (%.2f, %.2f, %.2f)",
                         ActorName, static_cast<double>(targetPos[0]), static_cast<double>(targetPos[1]), static_cast<double>(targetPos[2]));
+                } else if (ActorName != FallbackName) {
+                    Logging.Log("[botw-coop] acteur distant : le jeu a refuse la creation de \"%s\", repli sur \"%s\"", ActorName, FallbackName);
+                    ActorName = FallbackName;
                 } else {
                     s_State = State::Failed;
                     Logging.Log("[botw-coop] acteur distant : le jeu a refuse la creation de \"%s\"", ActorName);
@@ -285,16 +364,21 @@ namespace coop::remote_actor {
                     s_State = State::Alive;
                     s_HasWritten = false;
                     s_LastAttentionRc = 0;
+                    s_Sequence = nullptr;
+                    s_Candidate = nullptr;
                     float pos[3];
                     coop::game::GetActorPos(actor, pos);
                     Logging.Log("[botw-coop] acteur distant : CREE apres %lu images, acteur=%lx nom=\"%s\" pos=(%.2f, %.2f, %.2f)",
                         s_Frames - s_RequestFrame, actor, coop::game::GetActorName(actor),
                         static_cast<double>(pos[0]), static_cast<double>(pos[1]), static_cast<double>(pos[2]));
-                } else if (s_Frames - s_RequestFrame > 1800) {
-                    /* Pas apparu en 60 s : on redemandera (le jeu a pu annuler la creation). */
+                } else if (s_Frames - s_RequestFrame > (ActorName == PuppetName ? 600u : 1800u)) {
+                    /* Pas apparu : on redemandera (le jeu a pu annuler la creation). CoopPlayer
+                       absent (RomFS du mod non installee) : repli sur le PNJ. */
                     s_State = State::Idle;
-                    Logging.Log("[botw-coop] acteur distant : ECHEC de creation (introuvable apres %lu images), nouvel essai",
-                        s_Frames - s_RequestFrame);
+                    Logging.Log("[botw-coop] acteur distant : ECHEC de creation de \"%s\" (introuvable apres %lu images), %s",
+                        ActorName, s_Frames - s_RequestFrame, ActorName == PuppetName ? "repli sur le PNJ" : "nouvel essai");
+                    if (ActorName == PuppetName)
+                        ActorName = FallbackName;
                 }
                 break;
             }
@@ -338,10 +422,13 @@ namespace coop::remote_actor {
                 if (s_Writes == 120 || s_Writes == 3000)
                     coop::game::LogAttention(s_Actor);
 #endif
+                if (ActorName == PuppetName)
+                    UpdateSequence(s_Actor);
+
                 /* Le personnage du joueur distant n'est pas un PNJ a qui parler : on retire
                    ses interactions (invite « Parler », verrouillage). Refait a chaque image,
-                   au cas ou le jeu les retablirait. */
-                {
+                   au cas ou le jeu les retablirait. CoopPlayer n'en a pas (AttentionUser Dummy). */
+                if (ActorName != PuppetName) {
                     const int n = coop::game::DisableActorAttention(s_Actor);
                     if (n != 0 && n != s_LastAttentionRc) {
                         s_LastAttentionRc = n;

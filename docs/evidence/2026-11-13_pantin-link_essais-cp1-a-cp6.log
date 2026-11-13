@@ -1,0 +1,49 @@
+# Pantin CoopPlayer (Link sans physique), essais du 2026-11-13, Ryujinx 1.3.3, sauvegarde t_lv1
+# cp1 : une instance, -DCOOP_TEST_SPAWN (pantin a 3 m, sans relais) ; cp2 : idem, sequences a tour de role toutes les 4 s
+# cp4 : idem, -DCOOP_TEST_CIRCLE (cercle de 4 m) ; cp6 : deux instances, J1 avance en diagonale, J2 regarde
+
+--- cp1
+00:00:15.301 [botw-coop] config: liste blanche lue : 33350 drapeaux (progression 1330, objets de carte 31535, portes logiques 485), groupes actifs 0x6
+00:02:04.088 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1021.48, 252.64, 1799.95)
+00:02:04.257 [botw-coop] acteur distant : CREE apres 5 images, acteur=66072b51d8 nom="CoopPlayer" pos=(-1021.48, 252.64, 1799.95)
+00:02:04.292 [botw-coop] acteur distant : deplacement par le corps physique -> code -11
+00:02:06.821 [botw-coop] acteur distant : vivant etat=1 lu=(-1021.48, 252.64, 1799.95) pos=(-1021.48, 252.64, 1799.95) avant=(0.00, 1.00) | ecritures=77 interpolees=0 figees=0 pas max=0.000 m | deplace par le jeu=0
+00:02:11.823 [botw-coop] acteur distant : vivant etat=1 lu=(-1021.48, 252.64, 1799.95) pos=(-1021.48, 252.64, 1799.95) avant=(0.00, 1.00) | ecritures=227 interpolees=0 figees=0 pas max=0.000 m | deplace par le jeu=0
+--- cp2
+00:02:04.177 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607273288 nom="CoopPlayer" pos=(-1021.48, 252.64, 1799.95)
+00:02:04.208 [botw-coop] acteur distant : sequence "Walk" (avant "-")
+00:02:06.141 [botw-coop] acteur distant : sequence "Run" (avant "Walk")
+00:02:10.141 [botw-coop] acteur distant : sequence "Dash" (avant "Run")
+00:02:14.141 [botw-coop] acteur distant : sequence "Fall" (avant "Dash")
+00:02:18.141 [botw-coop] acteur distant : sequence "Glide" (avant "Fall")
+00:02:22.141 [botw-coop] acteur distant : sequence "Swim" (avant "Glide")
+00:02:26.142 [botw-coop] acteur distant : sequence "SwimWait" (avant "Swim")
+00:02:30.141 [botw-coop] acteur distant : sequence "Wait" (avant "SwimWait")
+00:02:34.142 [botw-coop] acteur distant : sequence "Walk" (avant "Wait")
+--- cp4
+00:02:04.624 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607259ee8 nom="CoopPlayer" pos=(-1024.41, 252.64, 1802.68)
+00:02:08.123 [botw-coop] acteur distant : vivant etat=1 lu=(-1025.06, 252.64, 1798.17) pos=(-1025.04, 252.64, 1798.13) avant=(0.00, 1.00) | ecritures=105 interpolees=0 figees=0 pas max=0.045 m | deplace par le jeu=0
+00:02:13.123 [botw-coop] acteur distant : vivant etat=1 lu=(-1019.36, 252.64, 1796.56) pos=(-1019.32, 252.64, 1796.58) avant=(0.00, 1.00) | ecritures=255 interpolees=0 figees=0 pas max=0.045 m | deplace par le jeu=0
+00:02:18.122 [botw-coop] acteur distant : vivant etat=1 lu=(-1018.31, 252.64, 1802.39) pos=(-1018.34, 252.64, 1802.42) avant=(0.00, 1.00) | ecritures=405 interpolees=0 figees=0 pas max=0.045 m | deplace par le jeu=0
+--- cp6 pilote
+    5.2s capture r1 : build\runs\cp6_r1.png (1280x   11.8s push -> deplacement (4.46, -0.25, 0.89), position (-1015.32, 251.94, 1808.02)
+.4s capture r2 : build\runs\cp6_r2.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1024.48, 252.63, 1799.95)
+--- cp6 J2
+00:02:06.931 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:02:07.100 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607269358 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+00:02:07.133 [botw-coop] acteur distant : sequence "Wait" (avant "-")
+00:02:07.137 [botw-coop] acteur distant : deplacement par le corps physique -> code -11
+00:02:10.098 [botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=90 interpolees=660 figees=34 pas max=0.000 m | deplace par le jeu=0
+00:02:15.101 [botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=240 interpolees=809 figees=35 pas max=0.000 m | deplace par le jeu=0
+00:02:20.098 [botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=390 interpolees=953 figees=41 pas max=0.000 m | deplace par le jeu=0
+00:02:25.099 [botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=540 interpolees=1101 figees=43 pas max=0.000 m | deplace par le jeu=0
+00:02:30.100 [botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=690 interpolees=1245 figees=49 pas max=0.000 m | deplace par le jeu=0
+00:02:33.435 [botw-coop] acteur distant : sequence "Run" (avant "Wait")
+00:02:34.965 [botw-coop] acteur distant : sequence "Walk" (avant "Run")
+00:02:35.098 [botw-coop] acteur distant : vivant etat=1 lu=(-1019.81, 252.20, 1807.08) pos=(-1019.80, 252.20, 1807.09) avant=(0.55, 0.84) | ecritures=840 interpolees=1393 figees=51 pas max=0.215 m | deplace par le jeu=0
+00:02:35.268 [botw-coop] acteur distant : sequence "Wait" (avant "Walk")
+00:02:39.499 [botw-coop] acteur distant : sequence "Walk" (avant "Wait")
+00:02:40.098 [botw-coop] acteur distant : vivant etat=1 lu=(-1018.61, 252.16, 1807.36) pos=(-1018.56, 252.16, 1807.37) avant=(0.98, 0.20) | ecritures=990 interpolees=1541 figees=53 pas max=0.069 m | deplace par le jeu=0
+00:02:42.366 [botw-coop] acteur distant : sequence "Wait" (avant "Walk")
+00:02:45.097 [botw-coop] acteur distant : vivant etat=1 lu=(-1015.29, 251.94, 1808.02) pos=(-1015.29, 251.94, 1808.02) avant=(0.98, 0.20) | ecritures=1140 interpolees=1690 figees=54 pas max=0.062 m | deplace par le jeu=0
+00:02:50.097 [botw-coop] acteur distant : vivant etat=1 lu=(-1015.29, 251.94, 1808.02) pos=(-1015.29, 251.94, 1808.02) avant=(0.98, 0.20) | ecritures=1290 interpolees=1836 figees=58 pas max=0.000 m | deplace par le jeu=0

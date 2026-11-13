@@ -9,7 +9,7 @@ Depuis le 2026-11-11, l'image du jeu est vérifiable : captures par duplication 
 
 ## Ce qui marche aujourd'hui (version jouable minimale)
 
-Deux instances du jeu, chacune avec le plugin, reliées par le relais : **chaque joueur voit l'autre** sous la forme d'un personnage (PNJ `Npc_Kakariko003`, pas le modèle de Link) qui se déplace comme le joueur distant, en monde ouvert, à 30 FPS sur les deux fenêtres. L'heure du jeu est alignée sur celle du joueur 1. Le lien se rétablit seul après une coupure du relais.
+Deux instances du jeu, chacune avec le plugin, reliées par le relais : **chaque joueur voit l'autre** sous la forme d'un Link animé (acteur `CoopPlayer`, sans équipement ; PNJ `Npc_Kakariko003` si les fichiers générés manquent) qui se déplace comme le joueur distant, en monde ouvert, à 30 FPS sur les deux fenêtres. L'heure du jeu est alignée sur celle du joueur 1. Le lien se rétablit seul après une coupure du relais.
 
 Mode d'emploi : `README.md`.
 
@@ -41,8 +41,8 @@ Mode d'emploi : `README.md`.
 | Reprise après coupure en cours de session | **vérifié** (relais arrêté 12 s puis relancé : les deux jeux se reconnectent) | `2026-11-11_duo_recreation-acteur_et_reconnexion.log` |
 | Recréation du personnage distant quand le jeu le détruit | **vérifié par les logs** (une fois, joueur 2 tombé d'une falaise) | même preuve |
 | Test entre deux PC réels | **non fait** (un seul PC) | — |
-| Animation du joueur distant (marche, course, saut) | non commencé : le personnage glisse, en pose d'attente | — |
-| Modèle de Link pour le joueur distant | non commencé | acteur provisoire `Npc_Kakariko003` |
+| Animation du joueur distant (marche, course, saut) | **vérifié à l'écran le 2026-11-13** pour attente / marche / course / sprint / chute, choisies d'après la vitesse du joueur distant (deux instances, essai cp6). Vol plané, nage, escalade : séquences prêtes, pas encore choisies | NOTES §5.27, `2026-11-13_pantin-link_*.png` |
+| Modèle de Link pour le joueur distant | **vérifié à l'écran le 2026-11-13** (niveau 4) : acteur `CoopPlayer` (Link sans physique) généré depuis la RomFS de l'utilisateur ; repli automatique sur le PNJ s'il manque. Sans équipement | NOTES §5.27, `2026-11-13_pantin-link_deux-instances_J2-voit-J1.png` |
 | Personnage distant sans invite « Parler » (A près de lui ne bloque plus) | **vérifié à l'écran**, une et deux instances | `2026-11-12_parler_avant_invite-affichee.png`, `..._apres_invite-retiree.png`, `..._deux-instances_J2-face-a-J1_sans-invite.png`, NOTES §5.7 |
 | Disparition du personnage quand le joueur distant se déconnecte | **vérifié à l'écran** (essai `c5`) | `2026-11-11_serveur_J1-parti-personnage-retire.png` |
 

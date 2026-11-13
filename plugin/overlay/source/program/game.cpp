@@ -910,6 +910,36 @@ namespace coop::game {
         return reinterpret_cast<const char*>(actor + s_ActorNameOffset);
     }
 
+    bool PlayActorSequence(std::uintptr_t actor, const char* name) {
+        /*
+         * BOTW 1.9.0 seulement (adresses citees par botw-coop, docs/reverse-engineering.md et
+         * offsets.hpp, et reverifiees sur notre image de main 1.9.0, NOTES 5.27) :
+         * - Actor+0x560 : ksys::as::ASList* (meme decalage que la decompilation 1.5.0) ;
+         * - main+0x149f24c : (ASList*, f32, f32, const sead::SafeString& nom, int creneau, int banque, bool),
+         *   qui ne fait rien si l'acteur (+0xd8) manque, si creneau >= +0xb8, si banque >= creneau+0x20,
+         *   ou si le nom n'est pas trouve (recherche par dichotomie, main+0x149ed3c -> main+0x14ffdb4) ;
+         * - sead::SafeString : { vtable, const char* } ; vtable = *(main+0x1d66260) + 0x10, chargee
+         *   ainsi par la fonction elle-meme (main+0x149f2bc).
+         * Arguments (-1, -1, ..., 0, 0, vrai) : ceux de botw-coop (PlayAS).
+         */
+        constexpr std::uintptr_t Actor_ASList = 0x560;
+        constexpr std::uintptr_t StartSequence = 0x149f24c;
+        constexpr std::uintptr_t GotSafeStringVtable = 0x1d66260;
+        if (s_Offsets == nullptr || actor == 0 || name == nullptr)
+            return false;
+        const auto list = Peek<std::uintptr_t>(actor + Actor_ASList);
+        const auto vtableSlot = Peek<std::uintptr_t>(MainBase() + GotSafeStringVtable);
+        if (!LooksLikeHeapPtr(list) || vtableSlot == 0)
+            return false;
+        struct SafeString {
+            std::uintptr_t m_Vtable;
+            const char* m_Str;
+        } str { vtableSlot + 0x10, name };
+        using StartFn = void (*)(std::uintptr_t, float, float, const SafeString*, int, int, bool);
+        reinterpret_cast<StartFn>(MainBase() + StartSequence)(list, -1.0f, -1.0f, &str, 0, 0, true);
+        return true;
+    }
+
     void LogNearbyActors(float radius, float farRadius) {
         PlayerState st;
         if (!ReadPlayer(st) || st.m_PlayerActor == 0 || s_ActorNameOffset == 0)
