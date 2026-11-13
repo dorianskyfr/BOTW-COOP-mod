@@ -99,6 +99,65 @@ namespace coop::config {
                 n, perGroup[1], perGroup[2], perGroup[3], g_ShareGroups);
         }
 
+        /* Pieces d'armure : "CGM1", u32 n, n x u32 CRC32 du nom de piece (tries), n x nom d'acteur
+           sur GearNameLen octets (tools/build_puppet.py). */
+        constexpr int MaxGear = 600;
+        constexpr int GearNameLen = 40;
+        std::uint32_t s_GearHashes[MaxGear];
+        char s_GearNames[MaxGear][GearNameLen];
+
+        void LoadGearMap() {
+            FileHandle file {};
+            std::uint32_t rc = reinterpret_cast<OpenFn>(s_Open)(&file, "content:/botw-coop/gear-map.bin", OpenMode_Read);
+            if (rc != 0) {
+                Logging.Log("[botw-coop] config: pas de botw-coop/gear-map.bin (0x%x) : l'armure du partenaire ne sera pas montree", rc);
+                return;
+            }
+            long size = 0;
+            std::uint8_t header[8] = {};
+            std::size_t got = 0, gotHashes = 0, gotNames = 0;
+            std::uint32_t n = 0;
+            rc = reinterpret_cast<GetSizeFn>(s_Size)(&size, file);
+            if (rc == 0)
+                rc = reinterpret_cast<ReadFn>(s_Read)(&got, file, 0, header, sizeof(header));
+            std::memcpy(&n, header + 4, 4);
+            const bool valid = rc == 0 && got == 8 && std::memcmp(header, "CGM1", 4) == 0 && n > 0 && n <= MaxGear
+                && size == static_cast<long>(8 + (4ull + GearNameLen) * n);
+            if (valid) {
+                rc = reinterpret_cast<ReadFn>(s_Read)(&gotHashes, file, 8, s_GearHashes, 4ull * n);
+                if (rc == 0)
+                    rc = reinterpret_cast<ReadFn>(s_Read)(&gotNames, file, static_cast<long>(8 + 4ull * n), s_GearNames, 1ull * GearNameLen * n);
+            }
+            reinterpret_cast<CloseFn>(s_Close)(file);
+            if (!valid || rc != 0 || gotHashes != 4ull * n || gotNames != 1ull * GearNameLen * n) {
+                Logging.Log("[botw-coop] config: gear-map.bin invalide (taille %ld, %u entrees, code 0x%x)", size, n, rc);
+                return;
+            }
+            for (std::uint32_t i = 0; i < n; i++) {
+                s_GearNames[i][GearNameLen - 1] = '\0';
+                if (i > 0 && s_GearHashes[i - 1] >= s_GearHashes[i]) {
+                    Logging.Log("[botw-coop] config: gear-map.bin non trie (entree %u)", i);
+                    return;
+                }
+            }
+            g_GearCount.store(static_cast<int>(n), std::memory_order_release);
+            Logging.Log("[botw-coop] config: %u pieces d'armure montrables sur le partenaire", n);
+        }
+
+    }
+
+    const char* GearActorFor(std::uint32_t pieceHash) {
+        int lo = 0, hi = g_GearCount.load(std::memory_order_acquire) - 1;
+        while (lo <= hi) {
+            const int mid = (lo + hi) / 2;
+            if (s_GearHashes[mid] == pieceHash)
+                return s_GearNames[mid];
+            if (s_GearHashes[mid] < pieceHash)
+                lo = mid + 1;
+            else
+                hi = mid - 1;
+        }
+        return nullptr;
     }
 
     int SyncFlagGroup(std::uint32_t hash) {
@@ -131,7 +190,7 @@ namespace coop::config {
         s_Read = readAddr;
         s_Close = closeAddr;
         struct AfterConfig {
-            ~AfterConfig() { LoadSyncFlags(); } /* apres la lecture des reglages (share_groups) */
+            ~AfterConfig() { LoadSyncFlags(); LoadGearMap(); } /* apres la lecture des reglages (share_groups) */
         } afterConfig;
 
         /*

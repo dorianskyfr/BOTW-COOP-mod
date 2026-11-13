@@ -1,0 +1,84 @@
+﻿# Armure du partenaire (2026-11-13). Extraits des journaux Ryujinx (build\runs, hors git) et du relais.
+# gr3 : les deux jeux se sont d'abord connectes a un ancien relais reste ouvert depuis 21:06 (Windows laissait deux relais ecouter le port 47800) ; une fois arrete, ils se sont reconnectes au bon relais a 23:04 avec des numeros intervertis (le jeu 1 devient J2 et annonce alors la tenue 005). Relais corrige : port exclusif.
+# Captures : docs/evidence/2026-11-13_armure_*.png
+# gr1 : pantin de test, joueur sans armure (seuls Armor_Default_* sur Link, ignores) ; gr2 : pantin de test habille (COOP_TEST_GEAR) ; gr3 : deux instances, tenue annoncee par joueur (COOP_TEST_WEAR).
+
+## gr1 : acteurs sur Link (drive.py actors)
+    2.2s acteurs (Armor|Weapon|Player) : 13
+    2.2s    GameROMPlayer                            (-1024.48, 252.63, 1799.95)
+    2.2s    Armor_Default_Extra_01                   (-1024.48, 252.63, 1799.95)
+    2.2s    Armor_Default_Extra_00                   (-1024.48, 252.63, 1799.95)
+    2.2s    Armor_Default_Upper                      (-1024.48, 252.63, 1799.95)
+    2.2s    Armor_Default_Lower                      (-1024.48, 252.63, 1799.95)
+    2.2s    Armor_Default_Head                       (-1024.48, 252.63, 1799.95)
+    2.2s    CoopPlayer                               (-1021.48, 252.64, 1799.95)
+
+## gr2_game.txt
+00:00:16.244 [botw-coop] config: 413 pieces d'armure montrables sur le partenaire
+00:01:21.464 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1021.48, 252.64, 1799.95)
+00:01:21.633 [botw-coop] acteur distant : CREE apres 5 images, acteur=66071f11e0 nom="CoopPlayer" pos=(-1021.48, 252.64, 1799.95)
+00:01:21.673 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Head" demandee (piece 0)
+00:01:21.698 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Upper" demandee (piece 1)
+00:01:21.732 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Lower" demandee (piece 2)
+00:01:21.835 [botw-coop] armure du partenaire : "CoopGear_Armor_001_Head" CREE apres 5 images (piece 0)
+00:01:21.867 [botw-coop] armure du partenaire : "CoopGear_Armor_001_Upper" CREE apres 5 images (piece 1)
+00:01:22.173 [botw-coop] armure du partenaire : "CoopGear_Armor_001_Lower" CREE apres 5 images (piece 2)
+
+## gr3_game.txt
+00:00:15.709 [botw-coop] config: 413 pieces d'armure montrables sur le partenaire
+00:01:15.250 [botw-coop] armure : portee Armor_001_Head (836d8e16) / Armor_001_Upper (63162bda) / Armor_001_Lower (03d38f65)
+00:01:39.598 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:01:39.754 [botw-coop] acteur distant : CREE apres 5 images, acteur=66071c71c0 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+00:03:12.518 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:03:12.684 [botw-coop] acteur distant : CREE apres 5 images, acteur=66071c71c0 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+00:03:13.254 [botw-coop] armure : portee Armor_005_Head (18fccc00) / Armor_005_Upper (97590fc9) / Armor_005_Lower (f79cab76)
+00:03:13.721 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Head" demandee (piece 0)
+00:03:13.757 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Upper" demandee (piece 1)
+00:03:13.787 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Lower" demandee (piece 2)
+00:03:13.922 [botw-coop] armure du partenaire : "CoopGear_Armor_001_Upper" CREE apres 5 images (piece 1)
+00:03:13.956 [botw-coop] armure du partenaire : "CoopGear_Armor_001_Lower" CREE apres 5 images (piece 2)
+00:03:14.053 [botw-coop] armure du partenaire : "CoopGear_Armor_001_Head" CREE apres 10 images (piece 0)
+00:07:21.155 [botw-coop] armure du partenaire : piece 0 (CoopGear_Armor_001_Head) retiree
+00:07:21.155 [botw-coop] armure du partenaire : piece 1 (CoopGear_Armor_001_Upper) retiree
+00:07:21.155 [botw-coop] armure du partenaire : piece 2 (CoopGear_Armor_001_Lower) retiree
+
+## gr3_game2.txt
+00:00:16.999 [botw-coop] config: 413 pieces d'armure montrables sur le partenaire
+00:01:30.825 [botw-coop] armure : portee Armor_005_Head (18fccc00) / Armor_005_Upper (97590fc9) / Armor_005_Lower (f79cab76)
+00:01:51.214 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:51.383 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607185580 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+00:02:59.863 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:03:00.035 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607185580 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+00:03:00.098 [botw-coop] armure : portee Armor_001_Head (836d8e16) / Armor_001_Upper (63162bda) / Armor_001_Lower (03d38f65)
+00:03:00.166 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Head" demandee (piece 0)
+00:03:00.200 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Upper" demandee (piece 1)
+00:03:00.231 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Lower" demandee (piece 2)
+00:03:00.379 [botw-coop] armure du partenaire : "CoopGear_Armor_001_Upper" CREE apres 5 images (piece 1)
+00:03:00.412 [botw-coop] armure du partenaire : "CoopGear_Armor_001_Lower" CREE apres 5 images (piece 2)
+00:03:00.582 [botw-coop] armure du partenaire : "CoopGear_Armor_001_Head" CREE apres 10 images (piece 0)
+00:03:01.683 [botw-coop] armure du partenaire : piece 0 (CoopGear_Armor_001_Head) retiree
+00:03:01.683 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_005_Head" demandee (piece 0)
+00:03:01.683 [botw-coop] armure du partenaire : piece 1 (CoopGear_Armor_001_Upper) retiree
+00:03:01.683 [botw-coop] armure du partenaire : piece 2 (CoopGear_Armor_001_Lower) retiree
+00:03:01.717 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_005_Upper" demandee (piece 1)
+00:03:01.747 [botw-coop] armure du partenaire : creation de "CoopGear_Armor_005_Lower" demandee (piece 2)
+00:03:01.849 [botw-coop] armure du partenaire : "CoopGear_Armor_005_Head" CREE apres 5 images (piece 0)
+00:03:01.881 [botw-coop] armure du partenaire : "CoopGear_Armor_005_Upper" CREE apres 5 images (piece 1)
+00:03:01.915 [botw-coop] armure du partenaire : "CoopGear_Armor_005_Lower" CREE apres 5 images (piece 2)
+
+## gr3_relay.log
+23:04:11.739 joueur 1 connecte depuis 127.0.0.1:45092 (1 en ligne)
+23:04:11.793 joueur 2 connecte depuis 127.0.0.1:45093 (2 en ligne)
+23:04:12.096 joueur 2 : armure 836d8e16 63162bda 03d38f65
+23:04:13.114 joueur 1 : armure 836d8e16 63162bda 03d38f65
+23:04:13.618 joueur 2 : armure 18fccc00 97590fc9 f79cab76
+23:05:12.248 joueur 3 connecte depuis 127.0.0.1:51072 (3 en ligne)
+23:05:23.469 joueur 3 connecte depuis 127.0.0.1:51076 (3 en ligne)
+23:05:36.715 joueur 3 connecte depuis 127.0.0.1:51091 (3 en ligne)
+23:05:54.640 joueur 3 connecte depuis 127.0.0.1:51101 (3 en ligne)
+23:06:38.031 joueur 3 connecte depuis 127.0.0.1:12758 (3 en ligne)
+23:06:58.774 joueur 3 connecte depuis 127.0.0.1:12768 (3 en ligne)
+23:07:12.942 joueur 3 connecte depuis 127.0.0.1:12773 (3 en ligne)
+23:07:24.346 joueur 3 connecte depuis 127.0.0.1:12779 (3 en ligne)
+23:07:40.403 joueur 3 connecte depuis 127.0.0.1:12786 (3 en ligne)
+23:07:58.011 joueur 3 connecte depuis 127.0.0.1:22994 (3 en ligne)

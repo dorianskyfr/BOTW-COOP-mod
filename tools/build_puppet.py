@@ -9,13 +9,16 @@ doit etre triee par nom : le jeu y cherche par dichotomie.
 Entrees (RomFS de l'utilisateur, tools/romfs-extract) :
   Actor/Pack/Npc_DungeonPriest001.sbactorpack, Actor/Pack/PauseMenuPlayer.sbactorpack,
   Actor/ActorInfo.product.sbyml, System/Resource/ResourceSizeTable.product.srsizetable
+  facultatif : Actor/Pack/Armor_*.sbactorpack (pieces d'armure portees par le partenaire)
 Sortie (dossier romfs du mod, hors git) :
-  Actor/Pack/CoopPlayer.sbactorpack, Actor/ActorInfo.product.sbyml (une entree ajoutee),
+  Actor/Pack/CoopPlayer.sbactorpack, Actor/Pack/CoopGear_<modele>.sbactorpack,
+  Actor/ActorInfo.product.sbyml (entrees ajoutees), botw-coop/gear-map.bin,
   System/Resource/ResourceSizeTable.product.srsizetable (entrees ajoutees)
 
 Usage : build\\venv\\Scripts\\python.exe -I tools\\build_puppet.py build\\romfs-1.9.0 build\\deploy\\romfs
 """
 import os
+import struct
 import sys
 import zlib
 
@@ -90,15 +93,65 @@ def as_list():
     return pio.to_binary()
 
 
-def actor_link(template):
+def actor_link(template, model_user):
     pio = oead.aamp.ParameterIO.from_binary(template)
     lt = pio.objects["LinkTarget"]
     for key in ("PhysicsUser", "AttentionUser", "ChemicalUser", "ElinkUser", "SlinkUser", "XlinkUser"):
         lt.params[key] = oead.aamp.Parameter("Dummy")  # chaine simple, type des champs de l'ActorLink du jeu
-    lt.params["ModelUser"] = oead.aamp.Parameter(NAME)
-    lt.params["ASUser"] = oead.aamp.Parameter(NAME)
+    lt.params["ModelUser"] = oead.aamp.Parameter(model_user)
+    lt.params["ASUser"] = oead.aamp.Parameter(NAME)  # les pieces d'armure jouent les sequences du pantin
     lt.params["ActorScale"] = oead.aamp.Parameter(1.0)
     return pio.to_binary()
+
+
+def write_pack(out, actor, files):
+    writer = oead.SarcWriter(oead.Endianness.Little)
+    for name in sorted(files):
+        writer.files[name] = files[name]
+    _, pack = writer.write()
+    pack = bytes(pack)
+    os.makedirs(os.path.join(out, "Actor", "Pack"), exist_ok=True)
+    with open(os.path.join(out, "Actor", "Pack", f"{actor}.sbactorpack"), "wb") as f:
+        f.write(oead.yaz0.compress(pack))
+    return pack
+
+
+# Pieces d'armure portees (d'apres botw-coop, reverse-engineering.md, « Worn armor » ; reecrit ici) :
+# chacune est un acteur Armor_<id>_Head / _Head_B / _Upper / _Lower pose sur Link, dont le pack
+# contient une seule liste de modeles. Plusieurs pieces partagent un modele (ameliorations,
+# teintures). Un acteur CoopGear_<modele> par modele : le modele de l'armure, les sequences du
+# pantin (memes os que Link). Constate sur la RomFS 1.9.0 de l'utilisateur le 2026-11-13 :
+# 413 pieces, 116 listes de modeles.
+GEAR_NAME_LEN = 40  # octets par nom dans gear-map.bin (zero compris)
+
+
+def armor_models(romfs):
+    """{piece: nom de la liste de modeles} pour chaque pack Armor_* extrait."""
+    pack_dir = os.path.join(romfs, "Actor", "Pack")
+    pieces = {}
+    for fn in sorted(os.listdir(pack_dir)):
+        if not fn.startswith("Armor_") or not fn.endswith(".sbactorpack"):
+            continue
+        piece = fn[: -len(".sbactorpack")]
+        sarc = read_sarc(os.path.join(pack_dir, fn))
+        lists = [f for f in sarc.get_files() if f.name.startswith("Actor/ModelList/")]
+        if len(lists) != 1:
+            raise SystemExit(f"{piece} : {len(lists)} listes de modeles (1 attendue)")
+        model = lists[0].name[len("Actor/ModelList/"):-len(".bmodellist")]
+        pieces[piece] = (model, bytes(lists[0].data))
+    return pieces
+
+
+def insert_actor(actors, hashes, entry):
+    """Insere une entree ActorInfo a sa place (tri par CRC32 du nom)."""
+    name = str(entry["name"])
+    if any(a["name"] == name for a in actors):
+        raise SystemExit(f"{name} est deja dans ActorInfo")
+    crc = zlib.crc32(name.encode())
+    pos = next((i for i, h in enumerate(hashes) if (int(h) & 0xFFFFFFFF) > crc), len(hashes))
+    actors.insert(pos, entry)
+    hashes.insert(pos, oead.U32(crc) if crc > 0x7FFFFFFF else oead.S32(crc))
+    return pos, crc
 
 
 def main(romfs, out):
@@ -106,36 +159,42 @@ def main(romfs, out):
     link = read_sarc(os.path.join(romfs, "Actor", "Pack", "PauseMenuPlayer.sbactorpack"))
     monk_files = {f.name: bytes(f.data) for f in monk.get_files()}
     link_files = {f.name: bytes(f.data) for f in link.get_files()}
+    monk_link = monk_files["Actor/ActorLink/Npc_DungeonPriest001.bxml"]
 
-    files = {
-        f"Actor/ActorLink/{NAME}.bxml": actor_link(monk_files["Actor/ActorLink/Npc_DungeonPriest001.bxml"]),
-        f"Actor/ModelList/{NAME}.bmodellist": link_files["Actor/ModelList/PauseMenuPlayer.bmodellist"],
-        f"Actor/ASList/{NAME}.baslist": as_list(),
-    }
+    # Fichiers communs au pantin et aux pieces d'armure : sequences, IA du moine.
+    common = {f"Actor/ASList/{NAME}.baslist": as_list()}
     for seq, clip in SEQUENCES.items():
-        files[f"Actor/AS/{NAME}_{seq}.bas"] = one_clip_as(clip)
+        common[f"Actor/AS/{NAME}_{seq}.bas"] = one_clip_as(clip)
     # IA, planning d'IA et parametres generaux du moine, sous leurs noms d'origine (references par l'ActorLink).
     for name in monk_files:
         if name.startswith(("Actor/AIProgram/", "Actor/AISchedule/", "Actor/GeneralParamList/")):
-            files[name] = monk_files[name]
+            common[name] = monk_files[name]
 
-    writer = oead.SarcWriter(oead.Endianness.Little)
-    for name in sorted(files):
-        writer.files[name] = files[name]
-    _, pack = writer.write()
-    pack = bytes(pack)
-    os.makedirs(os.path.join(out, "Actor", "Pack"), exist_ok=True)
-    with open(os.path.join(out, "Actor", "Pack", f"{NAME}.sbactorpack"), "wb") as f:
-        f.write(oead.yaz0.compress(pack))
+    files = dict(common)
+    files[f"Actor/ActorLink/{NAME}.bxml"] = actor_link(monk_link, NAME)
+    files[f"Actor/ModelList/{NAME}.bmodellist"] = link_files["Actor/ModelList/PauseMenuPlayer.bmodellist"]
+    pack = write_pack(out, NAME, files)
+
+    pieces = armor_models(romfs) if any(fn.startswith("Armor_") for fn in os.listdir(os.path.join(romfs, "Actor", "Pack"))) else {}
+    gear_packs = {}
+    for piece, (model, data) in sorted(pieces.items()):
+        gear = f"CoopGear_{model}"
+        if gear in gear_packs:
+            continue
+        if len(gear) >= GEAR_NAME_LEN:
+            raise SystemExit(f"nom trop long : {gear}")
+        gfiles = dict(common)
+        gfiles[f"Actor/ActorLink/{gear}.bxml"] = actor_link(monk_link, gear)
+        gfiles[f"Actor/ModelList/{gear}.bmodellist"] = data
+        gear_packs[gear] = (piece, model, write_pack(out, gear, gfiles))
 
     # ActorInfo : entree du moine, avec le modele de Link et un tas plus grand ; tri par CRC32 du nom.
     data = open(os.path.join(romfs, "Actor", "ActorInfo.product.sbyml"), "rb").read()
     info = oead.byml.from_binary(oead.yaz0.decompress(data) if data[:4] == b"Yaz0" else data)
     actors, hashes = list(info["Actors"]), list(info["Hashes"])
-    if any(a["name"] == NAME for a in actors):
-        raise SystemExit(f"{NAME} est deja dans ActorInfo")
-    monk_entry = next(a for a in actors if a["name"] == "Npc_DungeonPriest001")
-    link_entry = next(a for a in actors if a["name"] == "PauseMenuPlayer")
+    by_name = {str(a["name"]): a for a in actors}
+    monk_entry = by_name["Npc_DungeonPriest001"]
+    link_entry = by_name["PauseMenuPlayer"]
     entry = oead.byml.Hash({k: v for k, v in monk_entry.items()})
     for k in ("bfres", "mainModel", "aabbMin", "aabbMax", "boundingForTraverse"):
         entry[k] = link_entry[k]
@@ -144,10 +203,15 @@ def main(romfs, out):
             del entry[k]
     entry["name"] = NAME
     entry["instSize"] = oead.S32(INST_SIZE)
-    crc = zlib.crc32(NAME.encode())
-    pos = next((i for i, h in enumerate(hashes) if (int(h) & 0xFFFFFFFF) > crc), len(hashes))
-    actors.insert(pos, entry)
-    hashes.insert(pos, oead.U32(crc) if crc > 0x7FFFFFFF else oead.S32(crc))
+    pos, crc = insert_actor(actors, hashes, entry)
+    # Pieces d'armure : meme entree, avec l'archive de modeles et le modele principal de la piece.
+    for gear, (piece, model, _) in gear_packs.items():
+        gentry = oead.byml.Hash({k: v for k, v in entry.items()})
+        for k in ("bfres", "mainModel", "aabbMin", "aabbMax", "boundingForTraverse"):
+            if k in by_name[piece]:
+                gentry[k] = by_name[piece][k]
+        gentry["name"] = gear
+        insert_actor(actors, hashes, gentry)
     info["Actors"], info["Hashes"] = actors, hashes
     os.makedirs(os.path.join(out, "Actor"), exist_ok=True)
     with open(os.path.join(out, "Actor", "ActorInfo.product.sbyml"), "wb") as f:
@@ -166,6 +230,10 @@ def main(romfs, out):
     one_as = table.get_size("Actor/AS/PauseMenuPlayer_Lift.bas")
     for seq in SEQUENCES:
         sizes[f"Actor/AS/{NAME}_{seq}.bas"] = one_as
+    for gear, (piece, model, gpack) in gear_packs.items():
+        sizes[f"Actor/Pack/{gear}.bactorpack"] = max(2 * calc.calculate_file_size_with_ext(gpack, False, ".bactorpack"), 65536)
+        sizes[f"Actor/ActorLink/{gear}.bxml"] = sizes[f"Actor/ActorLink/{NAME}.bxml"]
+        sizes[f"Actor/ModelList/{gear}.bmodellist"] = table.get_size(f"Actor/ModelList/{model}.bmodellist")
     for name, size in sizes.items():
         if size <= 0:
             raise SystemExit(f"taille inconnue pour {name}")
@@ -173,8 +241,22 @@ def main(romfs, out):
     os.makedirs(os.path.join(out, "System", "Resource"), exist_ok=True)
     rstb.util.write_rstb(table, os.path.join(out, "System", "Resource", "ResourceSizeTable.product.srsizetable"), be=False)
 
-    print(f"{NAME} : pack de {len(files)} fichiers ({len(pack)} octets), entree ActorInfo n.{pos} (crc {crc:08x}), {len(sizes)} tailles")
-    for name, size in sizes.items():
+    # Correspondance piece -> acteur a montrer : "CGM1", u32 n, n x u32 CRC32 du nom de piece (tries),
+    # n x nom d'acteur sur GEAR_NAME_LEN octets. Lue par le plugin (content:/botw-coop/gear-map.bin).
+    if pieces:
+        rows = sorted((zlib.crc32(p.encode()), f"CoopGear_{m}") for p, (m, _) in pieces.items())
+        if len({c for c, _ in rows}) != len(rows):
+            raise SystemExit("collision de CRC32 entre deux pieces")
+        blob = b"CGM1" + struct.pack("<I", len(rows))
+        blob += b"".join(struct.pack("<I", c) for c, _ in rows)
+        blob += b"".join(g.encode().ljust(GEAR_NAME_LEN, b"\0") for _, g in rows)
+        os.makedirs(os.path.join(out, "botw-coop"), exist_ok=True)
+        with open(os.path.join(out, "botw-coop", "gear-map.bin"), "wb") as f:
+            f.write(blob)
+
+    print(f"{NAME} : pack de {len(files)} fichiers ({len(pack)} octets), entree ActorInfo n.{pos} (crc {crc:08x})")
+    print(f"armures : {len(pieces)} pieces, {len(gear_packs)} acteurs CoopGear_*, {len(sizes)} tailles en tout")
+    for name, size in list(sizes.items())[:len(SEQUENCES) + 7]:
         print(f"  {size:8} {name}")
     return 0
 

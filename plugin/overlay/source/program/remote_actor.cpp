@@ -3,6 +3,7 @@
 
 #include "clock.hpp"
 #include "game.hpp"
+#include "gear.hpp"
 #include "session.hpp"
 
 #include "lib.hpp"
@@ -115,7 +116,8 @@ namespace coop::remote_actor {
 #endif
         }
 
-        void UpdateSequence(std::uintptr_t actor) {
+        /* true si une sequence a ete (re)lancee a cette image. */
+        bool UpdateSequence(std::uintptr_t actor) {
             const char* want = WantedSequence();
             /* Un changement doit tenir 3 images (pas de clignotement entre deux allures). */
             if (want != s_Candidate) {
@@ -123,12 +125,12 @@ namespace coop::remote_actor {
                 s_CandidateFrames = 0;
             }
             if (++s_CandidateFrames < 3 && s_Sequence != nullptr)
-                return;
+                return false;
             /* Un acteur tout juste cree peut ignorer l'appel : on le refait 3 fois, 1 fois par seconde
                (meme precaution que botw-coop). */
             const bool retry = want == s_Sequence && s_SequenceRetries < 3 && s_Frames - s_SequenceFrame >= 30;
             if (want == s_Sequence && !retry)
-                return;
+                return false;
             s_SequenceRetries = want == s_Sequence ? s_SequenceRetries + 1 : 0;
             s_SequenceFrame = s_Frames;
             if (want != s_Sequence && s_SequenceChanges++ < 40)
@@ -136,6 +138,7 @@ namespace coop::remote_actor {
             s_Sequence = want;
             if (!coop::game::PlayActorSequence(actor, want))
                 Logging.Log("[botw-coop] acteur distant : sequence \"%s\" non demarree (ASList illisible)", want);
+            return true;
         }
 
         void NormalizeRow(float* row) {
@@ -230,6 +233,7 @@ namespace coop::remote_actor {
                 Logging.Log("[botw-coop] acteur distant : joueur local hors jeu, reinitialisation");
                 s_State = State::WaitingForPlayer;
                 s_Actor = 0;
+                coop::gear::RemoveAll(false); /* detruites avec le monde : on oublie sans y toucher */
             }
             s_InGameFrames = 0;
             return;
@@ -394,6 +398,7 @@ namespace coop::remote_actor {
                     Logging.Log("[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree");
                     s_Actor = 0;
                     s_State = State::Idle;
+                    coop::gear::RemoveAll(true);
                     break;
                 }
 
@@ -403,6 +408,7 @@ namespace coop::remote_actor {
                 if (!coop::session::g_Remote.IsActive()) {
                     const bool ok = coop::game::DeleteActor(s_Actor);
                     Logging.Log("[botw-coop] acteur distant : joueur distant parti, personnage %s", ok ? "retire" : "non retire (refus du jeu)");
+                    coop::gear::RemoveAll(true);
                     s_Actor = 0;
                     s_State = State::Idle;
                     break;
@@ -427,8 +433,7 @@ namespace coop::remote_actor {
                 if (s_Writes == 120 || s_Writes == 3000)
                     coop::game::LogAttention(s_Actor);
 #endif
-                if (ActorName == PuppetName)
-                    UpdateSequence(s_Actor);
+                const bool sequencePlayed = ActorName == PuppetName && UpdateSequence(s_Actor);
 
                 /* Le personnage du joueur distant n'est pas un PNJ a qui parler : on retire
                    ses interactions (invite « Parler », verrouillage). Refait a chaque image,
@@ -473,6 +478,12 @@ namespace coop::remote_actor {
                     s_LastWritten[2] = targetPos[2];
                     s_HasWritten = true;
                     s_Writes++;
+
+                    /* Armure du partenaire, posee sur le pantin (gear.hpp). Une piece qui apparait
+                       fait relancer la sequence du pantin : corps et armure repartent ensemble. */
+                    if (ActorName == PuppetName && coop::gear::OnFramePuppet(s_Actor, target, s_Sequence, sequencePlayed)
+                        && s_Sequence != nullptr)
+                        coop::game::PlayActorSequence(s_Actor, s_Sequence);
                 }
 
                 if (s_Frames % 150 == 0) {

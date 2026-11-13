@@ -3,6 +3,7 @@
 #include "notify.hpp"
 #include "warp.hpp"
 #include "status.hpp"
+#include "gear.hpp"
 
 #include "clock.hpp"
 #include "dynsym.hpp"
@@ -173,6 +174,7 @@ namespace coop::input_inject {
                 coop::notify::OnFrame();
                 coop::warp::OnFrame();
                 coop::status::OnFrame();
+                coop::gear::OnFrameLocal();
                 coop::remote_actor::OnFrame();
                 coop::world_sync::OnFrame();
                 coop::flags::OnFrame();

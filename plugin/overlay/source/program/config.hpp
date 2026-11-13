@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <cstdint>
 
 /*
@@ -37,6 +38,13 @@ namespace coop::config {
         const int g = SyncFlagGroup(hash);
         return g > 0 && g < 32 && (g_ShareGroups & (1u << g)) != 0;
     }
+
+    /*
+     * Pieces d'armure (content:/botw-coop/gear-map.bin, tools/build_puppet.py) : acteur CoopGear_*
+     * a poser sur le partenaire pour la piece dont le nom a ce CRC32 ; nullptr si inconnue.
+     */
+    inline std::atomic<int> g_GearCount { 0 };
+    const char* GearActorFor(std::uint32_t pieceHash);
 
     inline std::uint8_t  g_HostIp[4] = { 127, 0, 0, 1 };
     inline std::uint16_t g_HostPort  = 47800;

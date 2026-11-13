@@ -116,6 +116,9 @@ def main():
         check("... mais pas une 14e valeur", not b.take("MTX"), str(b.lines))
         a.send("HP 4 12")
         check("coeurs d'un joueur retransmis avec son identifiant", b.expect("HP") == "HP 1 4 12")
+        a.send("GEAR 1a2b3c4d 00000000 deadbeef")
+        line = b.expect("GEAR")
+        check("armure d'un joueur retransmise avec son identifiant", line == "GEAR 1 1a2b3c4d 00000000 deadbeef", line)
 
         # Drapeaux : premiere annonce retransmise, doublon ignore, valeur 0 ignoree.
         a.send("FLAG 6ca64187 1")

@@ -55,7 +55,9 @@ import sys
 #   EMTX : position d'un ennemi de carte (hachage d'objet, distance de l'emetteur, matrice
 #          3x4), retransmise telle quelle ; le plugin decide qui fait foi.
 #   HP : coeurs du joueur (vie et maximum, en quarts de coeur), retransmis tels quels.
-STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2}
+#   GEAR : armure portee (CRC32 hexadecimal des noms de pieces tete, torse, jambes ; 0 = rien),
+#          retransmise telle quelle, une fois par seconde.
+STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3}
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur.
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
 OPTIONAL_EXTRA = {"TIME": 1, "MTX": 1}
@@ -95,7 +97,12 @@ def main():
 
     sel = selectors.DefaultSelector()
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+        # Windows : SO_REUSEADDR y laisse un second relais ecouter le meme port sans erreur, et les
+        # jeux se repartissent entre les deux (constate le 2026-11-13, essai gr3). Port exclusif.
+        srv.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+    else:
+        srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     srv.bind((args.host, args.port))
     srv.listen(8)
     srv.setblocking(False)
@@ -337,6 +344,10 @@ def main():
                         client.emtx = getattr(client, "emtx", 0) + 1
                         if client.emtx == 1 or client.emtx % 200 == 0:
                             log(f"joueur {client.pid} : position d'ennemi n.{client.emtx} = {parts[1]} a {parts[2]} m de lui")
+                    elif parts[0] == "GEAR":
+                        if getattr(client, "gear", None) != payload:
+                            client.gear = payload
+                            log(f"joueur {client.pid} : armure {payload}")
                     elif parts[0] == "LIFE":
                         # Derniere vie annoncee par ennemi, pour un joueur qui arrive plus tard.
                         # Memoire vive seulement (pas sur disque) : au redemarrage du serveur,

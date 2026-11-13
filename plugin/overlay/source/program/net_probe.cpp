@@ -2,6 +2,7 @@
 #include "anim_state.hpp"
 #include "notify.hpp"
 #include "status.hpp"
+#include "gear.hpp"
 #include "config.hpp"
 #include "enemy_life.hpp"
 #include "flags.hpp"
@@ -224,6 +225,11 @@ namespace coop::net_probe {
             } else if (int hpLife = 0, hpMax = 0; std::sscanf(line, "HP %d %d %d", &id, &hpLife, &hpMax) == 3) {
                 coop::status::g_RemoteLife.store(hpLife);
                 coop::status::g_RemoteMax.store(hpMax);
+            } else if (unsigned g0 = 0, g1 = 0, g2 = 0; std::sscanf(line, "GEAR %d %x %x %x", &id, &g0, &g1, &g2) == 4) {
+                /* Armure du partenaire : CRC32 des noms de pieces, 0 = rien (gear.hpp). */
+                coop::gear::g_Remote[0].store(g0);
+                coop::gear::g_Remote[1].store(g1);
+                coop::gear::g_Remote[2].store(g2);
             } else if (std::sscanf(line, "STATEEND %d", &id) == 1) {
                 Logging.Log("[botw-coop] net: etat complet recu du serveur (%d drapeaux en memoire chez lui)", id);
             } else if (unsigned flagHash = 0, flagValue = 0; std::sscanf(line, "FLAG %d %x %u", &id, &flagHash, &flagValue) == 3
@@ -398,6 +404,15 @@ namespace coop::net_probe {
                         if (len > 0 && !SendAll(s_Fd, hp, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
+                }
+
+                /* Armure portee : une fois par seconde, meme sans changement (partenaire arrive apres coup). */
+                if (inGame && s_Fd >= 0 && tick % 10 == 7) {
+                    char gear[64];
+                    const int len = std::snprintf(gear, sizeof(gear), "GEAR %08x %08x %08x\n", coop::gear::g_Local[0].load(),
+                        coop::gear::g_Local[1].load(), coop::gear::g_Local[2].load());
+                    if (len > 0 && !SendAll(s_Fd, gear, static_cast<std::size_t>(len)))
+                        Disconnect("echec d'envoi");
                 }
 
                 /* Etat du monde : une fois par seconde (heure, jours, meteo). */

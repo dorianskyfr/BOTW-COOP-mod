@@ -39,7 +39,7 @@ Niveaux : 0 absent · 1 code · 2 compilé · 3 essai simulé · 4 deux vraies i
 | **Connexion, relais, reconnexion** (P1) | 4 (reconnexion, mémoire d'état, 37 essais auto) | 4 (+ salons à mot de passe, refus de version, relève d'hôte, lag simulé) | refus de version explicite ; simulation de latence dans `relay.py` |
 | **Personnage distant** (P1) | 4, mais PNJ `Npc_Kakariko003` sans animation | 4 : `CoopPlayer`, Link animé, actif sans physique | **chantier 1** : acteur Link construit depuis la RomFS de l'utilisateur (méthode RE § « The Link puppet ») |
 | **Animations du distant** (P1) | 0 | 4 (états de déplacement, attaques, arc, bouclier) | lecture des séquences du joueur (`ASList`, RE § « Player animation sequences ») |
-| **Armure, armes portées** (P2) | 0 | 4 (acteurs `CoopGear_*`, `CoopWeapon_*` attachés aux os) | après le chantier 1 |
+| **Armure, armes portées** (P2) | armure 4 (tenues annoncées par option d'essai ; vraie pièce portée non relevée), armes 0 | 4 (acteurs `CoopGear_*`, `CoopWeapon_*` attachés aux os) | armes : `ModelBindInfo` (NOTES §5.33 pour l'armure) |
 | **Heure, jours, météo, lune de sang** (P1) | 4 (heure, jours, minuteur) ; météo par journaux | 4 | filtre par climat ; vraie lune de sang à voir (sauvegarde hors plateau) |
 | **Progression partagée** (P1) | 4 sur un cas, **liste noire** (risqué) | 4, **liste blanche** de 1 330 drapeaux (sanctuaires, tours, Créatures, Koroks), garde paravoile, garde Créatures, récompenses | **chantier 2** : liste blanche par préfixes à partir des noms de la RomFS ; gardes ; récompenses |
 | **Objets ramassés, coffres** (P1) | 4 (objets) ; coffre retiré au lieu d'ouvert | non traité (chacun son butin) | garder notre partage d'objets, derrière une option |
