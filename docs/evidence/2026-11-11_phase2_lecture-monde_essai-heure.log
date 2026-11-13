@@ -1,0 +1,22 @@
+﻿# Phase 2 : lecture de l'etat du monde (run-duo duo6) et essai de changement d'heure (run-test time1), BOTW 1.9.0, 2026-11-11
+
+# duo6, instance p2 (extraits)
+00:00:15.205 [botw-coop] monde: indisponible gestionnaires=0 heure=0.000 pas=0.00000 jours=0 lune=0.0 meteo=-1 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:23.578 [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:32.306 [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:39.902 [botw-coop] monde: ok gestionnaires=9 heure=75.000 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:47.425 [botw-coop] monde: ok gestionnaires=9 heure=75.000 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:54.968 [botw-coop] monde: ok gestionnaires=9 heure=75.000 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J1: heure=75.000 jours=0 meteo=0 (1 maj)
+00:01:02.507 [botw-coop] monde: ok gestionnaires=9 heure=75.000 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J1: heure=78.750 jours=0 meteo=0 (6 maj)
+   ...
+00:03:41.947 [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J1: heure=78.750 jours=0 meteo=0 (111 maj)
+00:03:49.489 [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J1: heure=78.750 jours=0 meteo=0 (116 maj)
+
+# time1 : demande de 10 h 00 (150) dans la chambre de depart
+00:02:38.040 [botw-coop] essai heure : heure avant=78.750, demande de 150.000 -> ecrite
+00:02:38.074 [botw-coop] essai heure : 1 image(s) apres la demande, heure=150.000
+00:02:38.106 [botw-coop] essai heure : 2 image(s) apres la demande, heure=78.750
+00:02:38.140 [botw-coop] essai heure : 3 image(s) apres la demande, heure=78.750
+00:02:39.043 [botw-coop] essai heure : 30 image(s) apres la demande, heure=78.750
+00:02:43.147 [botw-coop] essai heure : 150 image(s) apres la demande, heure=78.750
+00:02:58.138 [botw-coop] essai heure : 600 image(s) apres la demande, heure=78.750

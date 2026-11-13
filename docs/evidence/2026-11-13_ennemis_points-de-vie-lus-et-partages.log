@@ -1,0 +1,115 @@
+Essais kw, kx, ky (2026-11-13) : sauvegarde t_lv1, deux instances Ryujinx. Extraits des journaux build\runs.
+kw : lecture des points de vie. kx : J1 puis J2 enlevent 5 points (outil de test). ky : chute provoquee chez J1 (degats reels du jeu).
+
+=== kw_game.txt
+00:02:33.140 vie : Enemy_Bokoblin_Junior        hash=438df952 etat=0 dist=150.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:33.140 vie : Enemy_Bokoblin_Junior        hash=f46a4be4 etat=0 dist=173.1 : pas d'appel (fonctions 58137c 56b240)
+00:02:33.140 vie : Enemy_Bokoblin_Junior        hash=dd515e67 etat=0 dist=168.9 : pas d'appel (fonctions 58137c 56b240)
+00:02:33.140 vie : Enemy_Bokoblin_Junior        hash=35e49424 etat=0 dist=169.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:33.140 vie : Enemy_Bokoblin_Junior        hash=c51a8ff8 dist=129.6 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:33.140 vie : Enemy_Bokoblin_Junior        hash=636d844c dist=126.3 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:33.140 vie : Enemy_Bokoblin_Junior        hash=52859ed1 dist=121.9 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:33.140 vie : Enemy_Golem_Upper_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:33.141 vie : Enemy_Golem_Lower_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:33.141 vie : Enemy_Golem_Upper_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:33.141 vie : Enemy_Golem_Lower_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:33.141 vie : Enemy_Golem_WeakPoint        hash=00000000 dist=165.6 vie=100 max=100 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:33.141 vie : 12 ennemi(s) a moins de 200 m
+
+=== kw_game2.txt
+00:02:24.613 vie : Enemy_Bokoblin_Junior        hash=438df952 etat=0 dist=150.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:24.613 vie : Enemy_Bokoblin_Junior        hash=dd515e67 etat=0 dist=168.9 : pas d'appel (fonctions 58137c 56b240)
+00:02:24.613 vie : Enemy_Bokoblin_Junior        hash=f46a4be4 etat=0 dist=173.1 : pas d'appel (fonctions 58137c 56b240)
+00:02:24.613 vie : Enemy_Bokoblin_Junior        hash=35e49424 etat=0 dist=169.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:24.613 vie : Enemy_Bokoblin_Junior        hash=c51a8ff8 dist=129.6 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:24.613 vie : Enemy_Bokoblin_Junior        hash=636d844c dist=126.3 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:24.613 vie : Enemy_Bokoblin_Junior        hash=52859ed1 dist=121.9 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:24.613 vie : Enemy_Bee_Swarm              hash=00000000 etat=2 dist=186.2 : pas d'appel (fonctions 58137c 56b240)
+00:02:24.613 vie : Enemy_Golem_Upper_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:24.613 vie : Enemy_Golem_Lower_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:24.613 vie : Enemy_Golem_Upper_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:24.613 vie : Enemy_Golem_Lower_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:24.614 vie : 12 ennemi(s) a moins de 200 m
+
+=== kw_relay.log
+
+=== kx_game.txt
+00:02:33.108 vie ennemi : OUTIL DE TEST, Enemy_Bokoblin_Junior 52859ed1 13 -> 8
+00:02:33.244 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 13 -> 8 chez nous (max 13), annonce, n.1
+00:02:38.039 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 8 -> 3 (annonce par l'autre joueur), n.1
+00:02:42.175 vie : Enemy_Bokoblin_Junior        hash=438df952 etat=0 dist=150.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:42.175 vie : Enemy_Bokoblin_Junior        hash=f46a4be4 etat=0 dist=173.1 : pas d'appel (fonctions 58137c 56b240)
+00:02:42.175 vie : Enemy_Bokoblin_Junior        hash=dd515e67 etat=0 dist=168.9 : pas d'appel (fonctions 58137c 56b240)
+00:02:42.175 vie : Enemy_Bokoblin_Junior        hash=35e49424 etat=0 dist=169.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:42.175 vie : Enemy_Bokoblin_Junior        hash=c51a8ff8 dist=129.6 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:42.175 vie : Enemy_Bokoblin_Junior        hash=636d844c dist=126.3 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:42.175 vie : Enemy_Bokoblin_Junior        hash=52859ed1 dist=121.9 vie=3 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:42.175 vie : Enemy_Bee_Swarm              hash=00000000 etat=2 dist=186.2 : pas d'appel (fonctions 58137c 56b240)
+00:02:42.175 vie : Enemy_Golem_Upper_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:42.175 vie : Enemy_Golem_Lower_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:42.175 vie : Enemy_Golem_Upper_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:42.175 vie : Enemy_Golem_Lower_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:42.175 vie : 12 ennemi(s) a moins de 200 m
+
+=== kx_game2.txt
+00:02:21.560 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 13 -> 8 (annonce par l'autre joueur), n.1
+00:02:25.561 vie ennemi : OUTIL DE TEST, Enemy_Bokoblin_Junior 52859ed1 8 -> 3
+00:02:25.765 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 8 -> 3 chez nous (max 13), annonce, n.1
+00:02:32.663 vie : Enemy_Bokoblin_Junior        hash=438df952 etat=0 dist=150.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:32.663 vie : Enemy_Bokoblin_Junior        hash=f46a4be4 etat=0 dist=173.1 : pas d'appel (fonctions 58137c 56b240)
+00:02:32.663 vie : Enemy_Bokoblin_Junior        hash=dd515e67 etat=0 dist=168.9 : pas d'appel (fonctions 58137c 56b240)
+00:02:32.663 vie : Enemy_Bokoblin_Junior        hash=35e49424 etat=0 dist=169.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:32.663 vie : Enemy_Bokoblin_Junior        hash=c51a8ff8 dist=129.6 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:32.663 vie : Enemy_Bokoblin_Junior        hash=636d844c dist=126.3 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:32.663 vie : Enemy_Bokoblin_Junior        hash=52859ed1 dist=121.9 vie=3 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:32.663 vie : Enemy_Golem_Upper_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:32.663 vie : Enemy_Golem_Lower_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:32.664 vie : Enemy_Golem_Upper_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:32.664 vie : Enemy_Golem_Lower_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:32.664 vie : Enemy_Golem_WeakPoint        hash=00000000 dist=165.6 vie=100 max=100 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:32.664 vie : 12 ennemi(s) a moins de 200 m
+
+=== kx_relay.log
+13:31:35.350 joueur 1 : vie d'ennemi n.1 = 52859ed1 8
+13:31:39.877 joueur 2 : vie d'ennemi n.1 = 52859ed1 3
+
+=== ky_game.txt
+00:02:32.978 essai chute : Enemy_Bokoblin_Junior hash=52859ed1 etat=1 deplace de (-1143.06, 256.79, 1771.91) a (-1024.48, 292.63, 1805.95), controleur de personnage rc=1
+00:02:33.640 essai chute : fin du maintien, l'acteur est en (-1024.48, 292.05, 1805.95)
+00:02:35.013 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 13 -> 0 chez nous (max 13), annonce, n.1
+00:02:37.307 drapeau change : n.1640 hachage=09ac3cb2 0 -> 1 (envoye, lune de sang)
+00:02:58.575 vie : Enemy_Bokoblin_Junior        hash=438df952 etat=0 dist=150.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:58.575 vie : Enemy_Bokoblin_Junior        hash=f46a4be4 etat=0 dist=173.1 : pas d'appel (fonctions 58137c 56b240)
+00:02:58.575 vie : Enemy_Bokoblin_Junior        hash=dd515e67 etat=0 dist=168.9 : pas d'appel (fonctions 58137c 56b240)
+00:02:58.575 vie : Enemy_Bokoblin_Junior        hash=35e49424 etat=0 dist=169.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:58.575 vie : Enemy_Bokoblin_Junior        hash=c51a8ff8 dist=129.6 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:58.575 vie : Enemy_Bokoblin_Junior        hash=636d844c dist=126.3 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:58.575 vie : Enemy_Golem_Upper_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:58.575 vie : Enemy_Golem_Lower_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:58.575 vie : Enemy_Golem_Upper_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:58.575 vie : Enemy_Golem_Lower_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:58.575 vie : Enemy_Golem_WeakPoint        hash=00000000 dist=165.6 vie=100 max=100 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:58.575 vie : Enemy_Bee_Swarm              hash=00000000 etat=2 dist=186.2 : pas d'appel (fonctions 58137c 56b240)
+00:02:58.575 vie : 12 ennemi(s) a moins de 200 m
+
+=== ky_game2.txt
+00:02:23.323 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 13 -> 1 (annonce par l'autre joueur), n.1
+00:02:25.424 drapeau recu : n.1640 hachage=09ac3cb2 mis a 1
+00:02:25.430 objet : Enemy_Bokoblin_Junior pris, ouvert ou vaincu par l'autre joueur (drapeau 09ac3cb2) -> retire ici
+00:02:49.059 vie : Enemy_Bokoblin_Junior        hash=438df952 etat=0 dist=150.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:49.059 vie : Enemy_Bokoblin_Junior        hash=f46a4be4 etat=0 dist=173.1 : pas d'appel (fonctions 58137c 56b240)
+00:02:49.059 vie : Enemy_Bokoblin_Junior        hash=dd515e67 etat=0 dist=168.9 : pas d'appel (fonctions 58137c 56b240)
+00:02:49.059 vie : Enemy_Bokoblin_Junior        hash=35e49424 etat=0 dist=169.8 : pas d'appel (fonctions 58137c 56b240)
+00:02:49.059 vie : Enemy_Bokoblin_Junior        hash=c51a8ff8 dist=129.6 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:49.059 vie : Enemy_Bokoblin_Junior        hash=636d844c dist=126.3 vie=13 max=13 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:49.059 vie : Enemy_Golem_Upper_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:49.059 vie : Enemy_Golem_Lower_Arm_L      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:49.059 vie : Enemy_Golem_Upper_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:49.059 vie : Enemy_Golem_Lower_Arm_R      hash=00000000 etat=2 dist=167.2 : pas d'appel (fonctions 1533ee4 56b240)
+00:02:49.059 vie : Enemy_Golem_WeakPoint        hash=00000000 dist=165.6 vie=100 max=100 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+00:02:49.059 vie : Enemy_Bee_Swarm              hash=00000000 etat=2 dist=186.2 : pas d'appel (fonctions 58137c 56b240)
+00:02:49.060 vie : 12 ennemi(s) a moins de 200 m
+
+=== ky_relay.log
+13:34:43.795 joueur 1 : vie d'ennemi n.1 = 52859ed1 0
+13:34:46.071 joueur 1 : drapeau de lune de sang 09ac3cb2 a 1 (1 en memoire)

@@ -1,0 +1,52 @@
+=== fin1_game.txt ===
+[botw-coop] net: nifm::Initialize -> 0x0, socket::Initialize -> 0x0
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+[botw-coop] net: le relais nous attribue l'identifiant J1
+[botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : CREE apres 20 images, acteur=6606fc59e8 nom="Npc_Kakariko003" pos=(-1024.48, 252.63, 1799.95)
+[botw-coop] controleur de personnage 660cf09140 : corps 660cf094d8 a +0x8
+[botw-coop] controleur de personnage 660cf09140 : 1 corps
+[botw-coop] acteur distant : deplacement par le corps physique -> code 101
+[botw-coop] net: J3 a quitte la session
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1005.91, 208.84, 1812.05)
+[botw-coop] acteur distant : CREE apres 5 images, acteur=660727fda0 nom="Npc_Kakariko003" pos=(-1005.91, 208.81, 1812.05)
+[botw-coop] controleur de personnage 660d4793f0 : corps 660d479788 a +0x8
+[botw-coop] controleur de personnage 660d4793f0 : 1 corps
+[botw-coop] net: J4 a quitte la session
+[botw-coop] net: J5 a quitte la session
+[botw-coop] net: Send a echoue a 0x0/0x5f (ret -1, errno 104)
+[botw-coop] net: liaison fermee (echec d'envoi), reconnexion automatique
+[botw-coop] net: relais 127.0.0.1:47800 injoignable (errno 111), essai n.1, nouvel essai toutes les 3 s
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 2 echec(s))
+[botw-coop] net: le relais nous attribue l'identifiant J1
+=== fin1_game2.txt ===
+[botw-coop] net: nifm::Initialize -> 0x0, socket::Initialize -> 0x0
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+[botw-coop] net: le relais nous attribue l'identifiant J2
+[botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : CREE apres 10 images, acteur=660705c698 nom="Npc_Kakariko003" pos=(-1024.48, 252.63, 1799.95)
+[botw-coop] controleur de personnage 660cfe9250 : corps 660cfe95e8 a +0x8
+[botw-coop] controleur de personnage 660cfe9250 : 1 corps
+[botw-coop] acteur distant : deplacement par le corps physique -> code 101
+[botw-coop] net: J3 a quitte la session
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1024.45, 252.64, 1800.10)
+[botw-coop] net: J4 a quitte la session
+[botw-coop] net: J5 a quitte la session
+[botw-coop] net: Send a echoue a 0x0/0x5f (ret -1, errno 104)
+[botw-coop] net: liaison fermee (echec d'envoi), reconnexion automatique
+[botw-coop] net: relais 127.0.0.1:47800 injoignable (errno 111), essai n.1, nouvel essai toutes les 3 s
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 2 echec(s))
+[botw-coop] net: le relais nous attribue l'identifiant J2
+[botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1032.47, 251.50, 1806.21)
+[botw-coop] acteur distant : CREE apres 5 images, acteur=6606ac36e0 nom="Npc_Kakariko003" pos=(-1032.48, 251.50, 1806.21)
+[botw-coop] controleur de personnage 660ce967c0 : corps 660ce96b58 a +0x8
+[botw-coop] controleur de personnage 660ce967c0 : 1 corps
+=== relais relance ===
+11:49:08.522 relais en ecoute sur 127.0.0.1:47800
+11:49:09.498 joueur 1 connecte depuis 127.0.0.1:56821 (1 en ligne)
+11:49:09.499 joueur 1 : etat n.1 = MTX 1.0000 0.0000 -0.0029 -1032.474 0.0000 1.0000 0.0000 251.503 0.0029 0.0000 1.0000 1806.213
+11:49:09.511 joueur 2 connecte depuis 127.0.0.1:56822 (2 en ligne)
+11:49:09.511 joueur 2 : etat n.1 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949
+11:49:10.567 joueur 2 : monde n.1 = TIME 118.099 0 0

@@ -1,0 +1,120 @@
+Passage de minuit a deux joueurs (2026-11-13).
+
+== Essai kh : build normale, heure de session portee a 352 -> le jeu bloque l'heure a 165 (11 h) ==
+joueur 1 : PID 5140, donnees t_kh_p1
+joueur 2 : PID 21880, donnees t_kh_p2
+ecran 2 absent (1 ecran(s)) : fenetres laissees en place
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   68.7s hour : session a 94.567 jour 0 -> envoye TIME 352.000 0 0
+  143.7s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+--- relais
+11:07:01.007 joueur 2 : fait avancer l'heure de la session (TIME 85.873 0 0 7.1), changement n.1
+11:07:01.007 joueur 2 : monde n.1 = TIME 85.873 0 0 7.1
+11:07:39.968 joueur 1000 : fait avancer l'heure de la session (TIME 352.000 0 0 15.8), changement n.2
+11:07:39.968 joueur 1000 : monde n.1 = TIME 352.000 0 0 15.8
+--- kh_game.txt
+00:02:32.572 monde : heure locale 94.22, heure de J0 352.00 (ecart -102.22) -> recalage n.1 demande
+00:02:25.505 monde: ok heure=92.434 jours=0 lune=13.7 meteo=0 | recu de J0: heure=92.684 jours=0 meteo=0 (22 maj)
+00:02:33.056 monde: ok heure=165.000 jours=0 lune=15.6 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+00:02:40.609 monde: ok heure=165.000 jours=0 lune=17.5 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+00:02:48.175 monde: ok heure=165.000 jours=0 lune=19.4 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+00:02:55.727 monde: ok heure=165.000 jours=0 lune=21.2 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+00:03:03.286 monde: ok heure=165.000 jours=0 lune=23.1 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+00:03:10.839 monde: ok heure=165.000 jours=0 lune=25.0 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+00:03:18.386 monde: ok heure=165.000 jours=0 lune=26.9 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+00:03:25.935 monde: ok heure=165.000 jours=0 lune=28.8 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+00:03:33.496 monde: ok heure=165.000 jours=0 lune=30.7 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+00:03:41.058 monde: ok heure=165.000 jours=0 lune=32.6 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (28 maj)
+--- kh_game2.txt
+00:02:20.608 monde : heure locale 94.62, heure de J0 352.00 (ecart -102.62) -> recalage n.1 demande
+00:02:17.461 monde: ok heure=93.817 jours=0 lune=15.1 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:02:25.017 monde: ok heure=165.000 jours=0 lune=17.0 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+00:02:32.569 monde: ok heure=165.000 jours=0 lune=18.8 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+00:02:40.124 monde: ok heure=165.000 jours=0 lune=20.7 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+00:02:47.669 monde: ok heure=165.000 jours=0 lune=22.6 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+00:02:55.231 monde: ok heure=165.000 jours=0 lune=24.5 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+00:03:02.794 monde: ok heure=165.000 jours=0 lune=26.4 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+00:03:10.346 monde: ok heure=165.000 jours=0 lune=28.3 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+00:03:17.891 monde: ok heure=165.000 jours=0 lune=30.2 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+00:03:25.447 monde: ok heure=165.000 jours=0 lune=32.1 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+00:03:33.001 monde: ok heure=165.000 jours=0 lune=34.0 meteo=0 | recu de J0: heure=352.000 jours=0 meteo=0 (1 maj)
+arrete : python 15772
+arrete : Ryujinx 5140
+arrete : Ryujinx 21880
+
+[exited with code 0]
+
+== Essai ki : meme scenario avec -DCOOP_TEST_UNFREEZE_TIME (leve le blocage de 11 h) -> minuit franchi, jours 0 -> 1 une seule fois chez chacun ==
+joueur 1 : PID 25212, donnees t_ki_p1
+joueur 2 : PID 18156, donnees t_ki_p2
+ecran 2 absent (1 ecran(s)) : fenetres laissees en place
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   68.7s hour : session a 94.263 jour 0 -> envoye TIME 352.000 0 0
+  143.7s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+--- relais
+11:12:38.113 joueur 2 : fait avancer l'heure de la session (TIME 352.033 0 0 15.9), changement n.5
+11:13:29.568 joueur 2 : monde n.60 = TIME 4.873 1 0 28.7
+11:13:30.702 joueur 1 : monde n.60 = TIME 5.190 1 0 28.7
+--- ki_game.txt
+00:02:32.656 monde : heure locale 94.30, heure de J0 352.00 (ecart -102.30) -> recalage n.1 demande
+00:02:26.472 monde: ok heure=92.742 jours=0 lune=14.0 meteo=0 | recu de J0: heure=92.747 jours=0 meteo=0 (22 maj)
+00:02:34.038 monde: ok heure=352.325 jours=0 lune=15.9 meteo=0 | recu de J0: heure=352.033 jours=0 meteo=0 (28 maj)
+00:02:41.602 monde: ok heure=354.224 jours=0 lune=17.8 meteo=0 | recu de J0: heure=353.933 jours=0 meteo=0 (33 maj)
+00:02:49.148 monde: ok heure=356.107 jours=0 lune=19.7 meteo=0 | recu de J0: heure=355.799 jours=0 meteo=0 (38 maj)
+00:02:56.769 monde: ok heure=358.015 jours=0 lune=21.6 meteo=0 | recu de J0: heure=357.699 jours=0 meteo=0 (43 maj)
+00:03:04.324 monde: ok heure=359.898 jours=0 lune=23.5 meteo=0 | recu de J0: heure=359.581 jours=0 meteo=0 (48 maj)
+00:03:11.878 monde: ok heure=1.790 jours=1 lune=25.3 meteo=0 | recu de J0: heure=1.473 jours=1 meteo=0 (53 maj)
+00:03:19.439 monde: ok heure=3.681 jours=1 lune=27.2 meteo=0 | recu de J0: heure=3.356 jours=1 meteo=0 (58 maj)
+00:03:26.993 monde: ok heure=5.565 jours=1 lune=29.1 meteo=0 | recu de J0: heure=5.248 jours=1 meteo=0 (63 maj)
+00:03:34.555 monde: ok heure=7.456 jours=1 lune=31.0 meteo=0 | recu de J0: heure=7.131 jours=1 meteo=0 (68 maj)
+00:03:42.112 monde: ok heure=9.348 jours=1 lune=32.9 meteo=0 | recu de J0: heure=9.023 jours=1 meteo=0 (73 maj)
+--- ki_game2.txt
+00:02:20.628 monde : heure locale 94.60, heure de J0 352.00 (ecart -102.60) -> recalage n.1 demande
+00:02:17.794 monde: ok heure=93.880 jours=0 lune=15.1 meteo=0 | recu de J0: heure=87.340 jours=0 meteo=0 (1 maj)
+00:02:25.381 monde: ok heure=353.175 jours=0 lune=17.0 meteo=0 | recu de J0: heure=353.083 jours=0 meteo=0 (5 maj)
+00:02:32.951 monde: ok heure=355.041 jours=0 lune=18.9 meteo=0 | recu de J0: heure=354.974 jours=0 meteo=0 (10 maj)
+00:02:40.549 monde: ok heure=356.940 jours=0 lune=20.8 meteo=0 | recu de J0: heure=356.857 jours=0 meteo=0 (15 maj)
+00:02:48.102 monde: ok heure=358.823 jours=0 lune=22.7 meteo=0 | recu de J0: heure=358.765 jours=0 meteo=0 (20 maj)
+00:02:55.651 monde: ok heure=0.715 jours=1 lune=24.6 meteo=0 | recu de J0: heure=0.656 jours=1 meteo=0 (25 maj)
+00:03:03.211 monde: ok heure=2.606 jours=1 lune=26.5 meteo=0 | recu de J0: heure=2.548 jours=1 meteo=0 (30 maj)
+00:03:10.760 monde: ok heure=4.490 jours=1 lune=28.3 meteo=0 | recu de J0: heure=4.431 jours=1 meteo=0 (35 maj)
+00:03:18.312 monde: ok heure=6.381 jours=1 lune=30.2 meteo=0 | recu de J0: heure=6.323 jours=1 meteo=0 (40 maj)
+00:03:25.862 monde: ok heure=8.265 jours=1 lune=32.1 meteo=0 | recu de J0: heure=8.215 jours=1 meteo=0 (45 maj)
+00:03:33.422 monde: ok heure=10.156 jours=1 lune=34.0 meteo=0 | recu de J0: heure=10.098 jours=1 meteo=0 (50 maj)
+arrete : python 20616
+arrete : Ryujinx 25212
+arrete : Ryujinx 18156
+
+[exited with code 0]
+
+== Essai kj : build normale, heure de session 200 puis 230 -> un recalage, puis un seul message, plus aucune demande ==
+joueur 1 : PID 27204, donnees t_kj_p1
+joueur 2 : PID 21828, donnees t_kj_p2
+ecran 2 absent (1 ecran(s)) : fenetres laissees en place
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   68.7s hour : session a 94.155 jour 0 -> envoye TIME 200.000 0 0
+   88.7s hour : session a 94.155 jour 0 -> envoye TIME 230.000 0 0
+  113.7s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+--- kj_game.txt
+00:02:32.687 monde : heure locale 94.17, heure de J0 200.00 (ecart 105.83) -> recalage n.1 demande
+00:02:52.687 monde : heure locale bloquee a 11 h par le jeu (debut de partie), l'heure de session 230.00 n'est pas appliquee
+00:02:56.348 monde: ok heure=165.000 jours=0 lune=21.3 meteo=0 | recu de J0: heure=230.000 jours=0 meteo=0 (28 maj)
+00:03:03.924 monde: ok heure=165.000 jours=0 lune=23.2 meteo=0 | recu de J0: heure=230.000 jours=0 meteo=0 (28 maj)
+00:03:11.496 monde: ok heure=165.000 jours=0 lune=25.1 meteo=0 | recu de J0: heure=230.000 jours=0 meteo=0 (28 maj)
+--- kj_game2.txt
+00:02:20.513 monde : heure locale 94.55, heure de J0 200.00 (ecart 105.45) -> recalage n.1 demande
+00:02:40.476 monde : heure locale bloquee a 11 h par le jeu (debut de partie), l'heure de session 230.00 n'est pas appliquee
+00:02:47.769 monde: ok heure=165.000 jours=0 lune=22.6 meteo=0 | recu de J0: heure=230.000 jours=0 meteo=0 (2 maj)
+00:02:55.332 monde: ok heure=165.000 jours=0 lune=24.5 meteo=0 | recu de J0: heure=230.000 jours=0 meteo=0 (2 maj)
+00:03:02.900 monde: ok heure=165.000 jours=0 lune=26.4 meteo=0 | recu de J0: heure=230.000 jours=0 meteo=0 (2 maj)
+arrete : python 28784
+arrete : Ryujinx 27204
+arrete : Ryujinx 21828
+
+[exited with code 0]

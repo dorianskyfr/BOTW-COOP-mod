@@ -1,0 +1,89 @@
+﻿00:00:00.450 |N| Application PrintSystemInfo: Ryujinx Version: 1.3.3
+00:00:15.561 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] hello world : plugin charge (phase 0, build Nov 10 2026 19:02:47)
+00:00:15.561 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] main : total 0000000008506000-000000000a39e000, rodata 0000000009aa8000 (+0x5d8000)
+00:00:15.570 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] build id main (16 octets, rodata+0x5d7320) : cd57b23fa4bbad65803d9788c01821ee
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message: 0000002e
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message: 
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000aac8e28 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000aac8f08 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000aad7d94 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x0000000009396188 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x0000000009251118 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000915c00c (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000939bb44 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000939bb5c (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000939bb5c (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000939bb5c (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000939bafc (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000962c900 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000962c690 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000939b398 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x0000000009167e0c nnMain + 0x8cc
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000ab3df34 (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message:   0x000000000850008c (unknown)
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Filename: D:/home/Cafe/U-King/trunk/Game/Lib/sead/engine/library/modules/src/basis/nin/seadRawPrintNin.cpp
+    Function: PrintStringImpl
+    Message: SDK has been aborted or failed assertion with no message.
+00:00:20.870 |I| HLE.OsThread.47 ServiceAm SetTerminateResult: Result = 0x0035f202 (ResultFsNotMounted (2002-6905)).
+   0x000000000aac8d78	nnSdk:0x9bd78	
+   0x000000000aac8e28	nnSdk:0x9be28	
+   0x000000000aac8f08	nnSdk:0x9bf08	
+   0x000000000aad7d94	nnSdk:0xaad94	
+   0x0000000009396188	U-King.nss:0xe90188	
+   0x0000000009251118	U-King.nss:0xd4b118	
+   0x000000000915c00c	U-King.nss:0xc5600c	
+   0x000000000939bb44	U-King.nss:0xe95b44	
+   0x000000000939bb5c	U-King.nss:0xe95b5c	
+   0x000000000939bb5c	U-King.nss:0xe95b5c	
+   0x000000000939bb5c	U-King.nss:0xe95b5c	
+   0x000000000939bafc	U-King.nss:0xe95afc	
+   0x000000000962c900	U-King.nss:0x1126900	
+   0x000000000962c690	U-King.nss:0x1126690	
+   0x000000000939b398	U-King.nss:0xe95398	
+   0x0000000009167e0c	U-King.nss:0xc61e0c	nnMain:0x08cc
+   0x000000000ab3df34	nnSdk:0x110f34	nn::init::Start(unsigned long, unsigned long, void (*)(), void (*)(), void (*)()):0x0054
+	X[17]:	0x000000000aacab00 (nnSdk:0x9db00)	=> nn::diag::detail::Abort(nn::Result const*)
+	X[27]:	0x000000000aac8e28 (nnSdk:0x9be28)	=> 
+	LR:	0x000000000aacab18 (nnSdk:0x9db18)	=> nn::diag::detail::Abort(nn::Result const*):0x0018
+	PC:	0x000000000aba274c (nnSdk:0x17574c)	=> 
+00:00:21.033 |E| HLE.GuestThread.46 Application : Unhandled exception caught: Ryujinx.HLE.Exceptions.GuestBrokeExecutionException: The guest program broke execution!

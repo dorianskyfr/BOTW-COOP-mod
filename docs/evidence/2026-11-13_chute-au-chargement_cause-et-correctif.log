@@ -1,0 +1,40 @@
+Chute des deux joueurs au point de chargement : cause et correctif (2026-11-13).
+
+== Essai kd (avant correctif), journal du joueur 1 ==
+00:00:20.215 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:00:28.209 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:00:35.731 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:00:43.250 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:00:50.768 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:00:58.289 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:05.811 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:13.330 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:20.853 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:28.371 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:35.906 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:43.505 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:51.307 coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:59.691 coop: moi=J1 connecte en jeu pos=(-1024.48, 252.64, 1799.95) avant=(-0.19, 0.98) envois=30 | distant=J2 actif=1 pos=(-1024.48, 252.64, 1799.95) avant=(-0.19, 0.98) recus=27
+00:02:07.508 coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=80 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=77
+00:02:15.091 coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=130 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=127
+
+== Essai ke (personnage distant jamais pose a moins de 1,2 m), joueur 1 puis joueur 2 ==
+00:02:21.971 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.1)
+00:02:35.368 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.301)
+00:02:45.373 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.601)
+00:02:46.017 acteur distant : CREE apres 15 images, acteur=6606f8d8b8 nom="Npc_Kakariko003" pos=(-1023.29, 252.68, 1799.95)
+00:02:47.601 acteur distant : vivant etat=1 lu=(-1023.28, 252.67, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=48 interpolees=638 figees=27 pas max=0.000 m | deplace par le jeu=46
+...
+00:07:36.381 coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=2069 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=2074
+00:07:37.600 acteur distant : vivant etat=1 lu=(-1023.28, 252.66, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=8748 interpolees=9123 figees=242 pas max=0.000 m | deplace par le jeu=8742
+
+00:02:10.203 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.1)
+00:02:22.654 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.301)
+00:02:32.686 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.601)
+00:02:32.967 acteur distant : CREE apres 10 images, acteur=6607082fd8 nom="Npc_Kakariko003" pos=(-1023.28, 252.63, 1799.95)
+00:02:37.287 acteur distant : vivant etat=1 lu=(-1023.28, 252.65, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=127 interpolees=695 figees=41 pas max=0.000 m | deplace par le jeu=126
+...
+00:07:22.286 acteur distant : vivant etat=1 lu=(-1023.28, 252.66, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=8677 interpolees=9024 figees=262 pas max=0.000 m | deplace par le jeu=8670
+00:07:27.286 acteur distant : vivant etat=1 lu=(-1023.28, 252.66, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=8827 interpolees=9171 figees=265 pas max=0.000 m | deplace par le jeu=8820
+
+Pilote ke : 377.2s position (-1024.48, 252.63, 1799.95) -> le joueur n'a pas bouge en 5 minutes.

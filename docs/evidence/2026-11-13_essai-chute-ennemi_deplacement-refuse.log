@@ -1,0 +1,41 @@
+=== essai k1 (k1_game.txt)
+00:03:54.430 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] essai chute : Enemy_Bokoblin_Junior hash=52859ed1 etat=1 deplace de (-1143.06, 256.79, 1771.93) a (-1024.99, 292.76, 1803.45), corps physique rc=-1
+00:04:06.392 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur : Enemy_Bokoblin_Junior                    hash=52859ed1 etat=1 pos=(-1143.06, 256.79, 1771.93) dist=120.9
+00:04:23.456 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur : Enemy_Bokoblin_Junior                    hash=52859ed1 etat=1 pos=(-1143.06, 256.79, 1771.93) dist=120.9
+=== essai k2 (k2_game.txt)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] sites position : acteur=6608864ac8 pos=(-1143.06, 256.79, 1771.93) mMainBody=0 mTgtBody=6608927810 mPhysicsMtx=0 mPhysics=6608925150
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : acteur +0x3a4 (colonne de matrice, matrice a +0x398)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : acteur +0x478 (vecteur)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x4e0) +0x64 (colonne de matrice, matrice a +0x58)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x550) +0x23c (colonne de matrice, matrice a +0x230)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0x28) +0x64 (colonne de matrice, matrice a +0x58)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0xb0) +0x2ec (colonne de matrice, matrice a +0x2e0)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0xc8) +0x27c (colonne de matrice, matrice a +0x270)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0xd8) +0x74 (vecteur)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0xf8) +0x254 (vecteur)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x668) +0x144 (colonne de matrice, matrice a +0x138)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x678) +0x204 (colonne de matrice, matrice a +0x1f8)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x6a0) +0x2bc (colonne de matrice, matrice a +0x2b0)
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] sites position : fin
+00:02:28.016 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] essai chute : Enemy_Bokoblin_Junior hash=52859ed1 etat=1 deplace de (-1143.06, 256.79, 1771.93) a (-1024.44, 292.63, 1806.14), corps physique rc=-1
+00:02:30.012 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] essai chute : fin du maintien, l'acteur est en (-1143.06, 256.79, 1771.93)
+00:02:39.983 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur : Enemy_Bokoblin_Junior                    hash=52859ed1 etat=1 pos=(-1143.06, 256.79, 1771.93) dist=122.0
+=== essai k3 (k3_game.txt)
+00:02:28.101 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] sites position : acteur=6608658250 pos=(-1143.06, 256.79, 1771.93) mMainBody=0 mTgtBody=660865bf40 mPhysicsMtx=0 mPhysics=6608659880
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : acteur +0x3a4 (colonne de matrice, matrice a +0x398)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : acteur +0x478 (vecteur)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x4e0) +0x64 (colonne de matrice, matrice a +0x58)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x550) +0x23c (colonne de matrice, matrice a +0x230)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0x28) +0x64 (colonne de matrice, matrice a +0x58)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0xb0) +0x2ec (colonne de matrice, matrice a +0x2e0)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0xc8) +0x27c (colonne de matrice, matrice a +0x270)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0xd8) +0x74 (vecteur)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(*(acteur+0x578)+0xf8) +0x254 (vecteur)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x668) +0x144 (colonne de matrice, matrice a +0x138)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x678) +0x204 (colonne de matrice, matrice a +0x1f8)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] site position : *(acteur+0x6a0) +0x2bc (colonne de matrice, matrice a +0x2b0)
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] sites position : fin
+00:02:28.102 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] essai chute : Enemy_Bokoblin_Junior hash=52859ed1 etat=1 deplace de (-1143.06, 256.79, 1771.93) a (-1024.47, 292.65, 1806.01), corps physique rc=0
+00:02:30.096 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] essai chute : fin du maintien, l'acteur est en (-1143.06, 256.79, 1771.93)
+00:02:43.135 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur : Enemy_Bokoblin_Junior                    hash=52859ed1 etat=1 pos=(-1143.06, 256.79, 1771.93) dist=121.9
+00:03:00.098 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur : Enemy_Bokoblin_Junior                    hash=52859ed1 etat=1 pos=(-1143.06, 256.79, 1771.93) dist=121.9

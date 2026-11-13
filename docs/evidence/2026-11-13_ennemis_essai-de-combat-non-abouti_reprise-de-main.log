@@ -1,0 +1,75 @@
+Essais la et lb (2026-11-13) : tentative d'amener J1 a portee des Bokoblin. Extraits.
+
+=== la_pilot.log
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   65.7s calibration haut : deplacement (-1.30, 6.55) -> (-1025.78, 252.03, 1806.50)
+   67.2s calibration droite : deplacement (-6.00, -1.08) -> (-1031.78, 251.63, 1805.42)
+   67.2s camera : avant=(-0.19, 0.98) sens droite=1
+   97.3s goto (-1132.0, 1774.0) -> delai, position (-1078.57, 251.50, 1775.91)
+   97.3s position (-1078.57, 251.50, 1775.91) avant acteur (-0.96, 0.1554)
+   97.8s epos : positions des ennemis demandees
+  101.8s epos : positions des ennemis demandees
+  105.8s epos : positions des ennemis demandees
+  109.8s epos : positions des ennemis demandees
+  110.3s position (-1078.63, 251.56, 1775.62) avant acteur (-0.9588, 0.1544)
+  110.8s life : points de vie des ennemis demandes
+
+=== lb_pilot.log
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   65.7s calibration haut : deplacement (-1.39, 7.03) -> (-1025.87, 251.98, 1806.98)
+   67.2s calibration droite : deplacement (-6.51, -0.78) -> (-1032.38, 251.52, 1806.20)
+   67.2s camera : avant=(-0.19, 0.98) sens droite=1
+   77.2s goto (-1080.0, 1776.0) -> bloque, position (-1047.80, 204.80, 1788.29)
+   79.9s goto (-1128.0, 1773.0) -> bloque, position (-1047.80, 204.80, 1788.29)
+   79.9s position (-1047.80, 204.80, 1788.29) avant acteur (0.0157, -0.4049)
+   80.4s epos : positions des ennemis demandees
+   83.4s epos : positions des ennemis demandees
+   86.4s epos : positions des ennemis demandees
+   89.4s epos : positions des ennemis demandees
+   92.4s epos : positions des ennemis demandees
+   92.9s position (-1047.80, 204.80, 1788.29) avant acteur (0.0157, -0.4049)
+   93.4s life : points de vie des ennemis demandes
+
+=== lb_game2.txt
+00:01:56.677 position ennemi : Enemy_Bokoblin_Junior c51a8ff8, on suit la copie de l'autre joueur (nous a 129.6 m, J1 a 129.6 m)
+00:01:56.677 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 121.9 m, J1 a 121.9 m)
+00:01:56.677 position ennemi : Enemy_Bokoblin_Junior 636d844c, on suit la copie de l'autre joueur (nous a 126.3 m, J1 a 126.3 m)
+00:02:31.041 position ennemi : Enemy_Bokoblin_Junior c51a8ff8, notre copie fait foi (nous a 129.6 m, J1 a 115.9 m)
+00:02:31.041 position ennemi : Enemy_Bokoblin_Junior 52859ed1, notre copie fait foi (nous a 121.9 m, J1 a 109.8 m)
+00:02:31.041 position ennemi : Enemy_Bokoblin_Junior 636d844c, notre copie fait foi (nous a 126.3 m, J1 a 113.6 m)
+00:02:32.275 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.94)
+00:02:32.275 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1143.06, 256.79, 1771.93)
+00:02:32.275 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.52, 256.58, 1771.67)
+00:02:32.275 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:32.275 position ennemi : 9 envois, 0 corrections au total
+00:02:35.275 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.94)
+00:02:35.275 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1143.06, 256.79, 1771.93)
+00:02:35.275 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.52, 256.58, 1771.67)
+00:02:35.275 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:35.275 position ennemi : 18 envois, 0 corrections au total
+00:02:38.308 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.94)
+00:02:38.308 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1143.06, 256.79, 1771.93)
+00:02:38.308 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.52, 256.58, 1771.67)
+00:02:38.308 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:38.308 position ennemi : 27 envois, 0 corrections au total
+00:02:41.174 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.94)
+00:02:41.174 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1143.06, 256.79, 1771.93)
+00:02:41.174 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.52, 256.58, 1771.67)
+00:02:41.174 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:41.174 position ennemi : 36 envois, 0 corrections au total
+00:02:44.207 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.94)
+00:02:44.207 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1143.06, 256.79, 1771.93)
+00:02:44.207 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.52, 256.58, 1771.67)
+00:02:44.207 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:44.207 position ennemi : 45 envois, 0 corrections au total
+
+=== lb_game.txt
+00:02:44.279 position ennemi : 103 envois, 0 corrections au total
+00:02:47.312 position ennemi : 103 envois, 0 corrections au total
+00:02:50.311 position ennemi : 103 envois, 0 corrections au total
+00:02:53.345 position ennemi : 103 envois, 0 corrections au total
+00:02:56.345 position ennemi : 103 envois, 0 corrections au total

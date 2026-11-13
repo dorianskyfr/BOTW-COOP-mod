@@ -1,0 +1,155 @@
+Essais kp, kq, kr, ks (2026-11-13) : sauvegarde t_adv1, deux instances Ryujinx. Extraits des journaux build\runs.
+
+=== kp (diagnostic -DCOOP_MOON_DIAG) : le drapeau (tampon 0) revient a sa valeur a l'image suivante ; l'objet de l'autre tampon (tampon 1 n.14) pointe vers le drapeau (+0x8) et garde une copie de la valeur (+0x10) en avance d'une image
+00:02:37.725 lune diag avant : tampon 0 n.14 @65faec5740 : 0a227bb0 00000000 00000702 00000000 00000000 477fff00 440ba911 4234e199 00000000 00000000 0a227bb0 00000000 (+0x14=65535.00 +0x18=558.64)
+00:02:37.737 lune diag avant : tampon 1 n.13 @65686345f0 : 0a227420 00000000 faec5510 00000065 00000000 00000000 0a227420 00000000 faec5740 00000065 440ba99a 00000000 (valeur proche)
+00:02:37.738 lune diag avant : tampon 1 n.13 +0x20 -> @65faec5740 : 0a227bb0 00000000 00000702 00000000 00000000 477fff00 440ba911 4234e199 00000000 00000000 0a227bb0 00000000 (valeur proche)
+00:02:37.740 lune diag avant : tampon 1 n.14 @6568634608 : 0a227420 00000000 faec5740 00000065 440ba99a 00000000 0a227420 00000000 faec5768 00000065 00000000 00000000 (valeur proche)
+00:02:37.742 lune diag avant : tampon 1 n.14 +0x8 -> @65faec5740 : 0a227bb0 00000000 00000702 00000000 00000000 477fff00 440ba911 4234e199 00000000 00000000 0a227bb0 00000000 (valeur proche)
+00:02:37.743 lune diag avant : tampon 1 n.14 +0x20 -> @65faec5768 : 0a227bb0 00000000 00000702 00000000 c0490ff9 40490ff9 00000000 47d9e569 00000000 00000000 0a227bb0 00000000
+00:02:37.753 lune diag apres ecriture : tampon 0 n.14 @65faec5740 : 0a227bb0 00000000 00000702 00000000 00000000 477fff00 45228000 4234e199 00000000 00000000 0a227bb0 00000000 (+0x14=65535.00 +0x18=2600.00)
+00:02:37.753 lune diag apres ecriture : tampon 1 n.13 @65686345f0 : 0a227420 00000000 faec5510 00000065 00000000 00000000 0a227420 00000000 faec5740 00000065 440ba99a 00000000 (valeur proche)
+00:02:37.753 lune diag apres ecriture : tampon 1 n.14 @6568634608 : 0a227420 00000000 faec5740 00000065 440ba99a 00000000 0a227420 00000000 faec5768 00000065 00000000 00000000 (valeur proche)
+00:02:37.754 lune diag apres ecriture : tampon 1 n.14 +0x8 -> @65faec5740 : 0a227bb0 00000000 00000702 00000000 00000000 477fff00 45228000 4234e199 00000000 00000000 0a227bb0 00000000
+00:02:37.754 lune diag apres ecriture : tampon 1 n.14 +0x20 -> @65faec5768 : 0a227bb0 00000000 00000702 00000000 c0490ff9 40490ff9 00000000 47d9e569 00000000 00000000 0a227bb0 00000000
+00:02:37.766 lune diag : 1 image(s) apres, champ=558.66
+00:02:37.766 lune diag image suivante : tampon 0 n.14 @65faec5740 : 0a227bb0 00000000 00000702 00000000 00000000 477fff00 440ba99a 4234e199 00000000 00000000 0a227bb0 00000000 (+0x14=65535.00 +0x18=558.65)
+00:02:37.766 lune diag image suivante : tampon 1 n.13 @65686345f0 : 0a227420 00000000 faec5510 00000065 00000000 00000000 0a227420 00000000 faec5740 00000065 440baa23 00000000 (valeur proche)
+00:02:37.766 lune diag image suivante : tampon 1 n.13 +0x20 -> @65faec5740 : 0a227bb0 00000000 00000702 00000000 00000000 477fff00 440ba99a 4234e199 00000000 00000000 0a227bb0 00000000 (valeur proche)
+00:02:37.766 lune diag image suivante : tampon 1 n.14 @6568634608 : 0a227420 00000000 faec5740 00000065 440baa23 00000000 0a227420 00000000 faec5768 00000065 00000000 00000000 (valeur proche)
+00:02:37.766 lune diag image suivante : tampon 1 n.14 +0x8 -> @65faec5740 : 0a227bb0 00000000 00000702 00000000 00000000 477fff00 440ba99a 4234e199 00000000 00000000 0a227bb0 00000000 (valeur proche)
+00:02:37.766 lune diag image suivante : tampon 1 n.14 +0x20 -> @65faec5768 : 0a227bb0 00000000 00000702 00000000 c0490ff9 40490ff9 00000000 47d9e569 00000000 00000000 0a227bb0 00000000
+
+=== kq_game.txt
+00:01:46.437 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:54.131 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:02:02.666 monde: ok heure=305.482 jours=1 lune=550.6 meteo=0 | recu de J0: heure=305.228 jours=1 meteo=0 (4 maj)
+00:02:10.591 monde: ok heure=306.902 jours=1 lune=552.0 meteo=0 | recu de J0: heure=306.619 jours=1 meteo=0 (8 maj)
+00:02:18.144 monde: ok heure=308.785 jours=1 lune=553.9 meteo=0 | recu de J0: heure=308.510 jours=1 meteo=0 (13 maj)
+00:02:25.729 monde: ok heure=310.651 jours=1 lune=555.7 meteo=0 | recu de J0: heure=310.368 jours=1 meteo=0 (18 maj)
+00:02:33.290 monde: ok heure=312.543 jours=1 lune=557.6 meteo=0 | recu de J0: heure=312.259 jours=1 meteo=0 (23 maj)
+00:02:37.804 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:37.805 lune de sang : copie du drapeau dans l'autre tampon trouvee (6568634608)
+00:02:37.806 monde : minuteur de lune de sang 558.8 -> 2600.0 (celui de la session), ajustement n.1
+00:02:40.849 monde: ok heure=314.434 jours=1 lune=2600.7 meteo=0 | recu de J0: heure=314.151 jours=1 meteo=0 (28 maj)
+00:02:48.416 monde: ok heure=316.325 jours=1 lune=2602.6 meteo=0 | recu de J0: heure=316.042 jours=1 meteo=0 (33 maj)
+00:02:55.977 monde: ok heure=318.208 jours=1 lune=2604.5 meteo=0 | recu de J0: heure=317.933 jours=1 meteo=0 (38 maj)
+00:03:03.544 monde: ok heure=320.099 jours=1 lune=2606.4 meteo=0 | recu de J0: heure=319.824 jours=1 meteo=0 (43 maj)
+00:03:11.106 monde: ok heure=321.990 jours=1 lune=2608.3 meteo=0 | recu de J0: heure=321.715 jours=1 meteo=0 (48 maj)
+
+=== kq_game2.txt
+00:01:39.828 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:48.307 monde: ok heure=304.853 jours=1 lune=549.9 meteo=0 | recu de J0: heure=304.724 jours=1 meteo=0 (3 maj)
+00:01:56.323 monde: ok heure=306.236 jours=1 lune=551.3 meteo=0 | recu de J0: heure=306.144 jours=1 meteo=0 (9 maj)
+00:02:03.881 monde: ok heure=308.127 jours=1 lune=553.2 meteo=0 | recu de J0: heure=308.035 jours=1 meteo=0 (14 maj)
+00:02:11.468 monde: ok heure=309.993 jours=1 lune=555.1 meteo=0 | recu de J0: heure=309.893 jours=1 meteo=0 (19 maj)
+00:02:19.028 monde: ok heure=311.884 jours=1 lune=557.0 meteo=0 | recu de J0: heure=311.784 jours=1 meteo=0 (24 maj)
+00:02:25.677 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:25.679 lune de sang : copie du drapeau dans l'autre tampon trouvee (6568634608)
+00:02:25.680 monde : minuteur de lune de sang 558.7 -> 2600.0 (celui de la session), ajustement n.1
+00:02:26.599 monde: ok heure=313.776 jours=1 lune=2600.2 meteo=0 | recu de J0: heure=313.892 jours=1 meteo=0 (29 maj)
+00:02:34.159 monde: ok heure=315.667 jours=1 lune=2602.1 meteo=0 | recu de J0: heure=315.567 jours=1 meteo=0 (34 maj)
+00:02:41.722 monde: ok heure=317.558 jours=1 lune=2604.0 meteo=0 | recu de J0: heure=317.458 jours=1 meteo=0 (39 maj)
+00:02:49.293 monde: ok heure=319.449 jours=1 lune=2605.9 meteo=0 | recu de J0: heure=319.349 jours=1 meteo=0 (44 maj)
+00:02:56.856 monde: ok heure=321.340 jours=1 lune=2607.8 meteo=0 | recu de J0: heure=321.232 jours=1 meteo=0 (49 maj)
+00:03:04.413 monde: ok heure=323.223 jours=1 lune=2609.6 meteo=0 | recu de J0: heure=323.123 jours=1 meteo=0 (54 maj)
+
+=== kr_game.txt
+00:01:46.451 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:54.150 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:02:02.698 monde: ok heure=305.498 jours=1 lune=550.6 meteo=0 | recu de J0: heure=305.286 jours=1 meteo=0 (4 maj)
+00:02:10.566 monde: ok heure=306.852 jours=1 lune=551.9 meteo=0 | recu de J0: heure=306.686 jours=1 meteo=0 (8 maj)
+00:02:18.137 monde: ok heure=308.744 jours=1 lune=553.8 meteo=0 | recu de J0: heure=308.577 jours=1 meteo=0 (13 maj)
+00:02:25.746 monde: ok heure=310.618 jours=1 lune=555.7 meteo=0 | recu de J0: heure=310.451 jours=1 meteo=0 (18 maj)
+00:02:33.313 monde: ok heure=312.509 jours=1 lune=557.6 meteo=0 | recu de J0: heure=312.342 jours=1 meteo=0 (23 maj)
+00:02:37.531 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:37.532 lune de sang : copie du drapeau dans l'autre tampon trouvee (6568634608)
+00:02:37.534 monde : minuteur de lune de sang 558.7 -> 2600.0 (celui de la session), ajustement n.1
+00:02:40.887 monde: ok heure=314.400 jours=1 lune=2600.8 meteo=0 | recu de J0: heure=314.234 jours=1 meteo=0 (28 maj)
+00:02:48.452 monde: ok heure=316.292 jours=1 lune=2602.7 meteo=0 | recu de J0: heure=316.125 jours=1 meteo=0 (33 maj)
+00:02:49.489 monde : heure locale 316.57, heure de J0 352.00 (ecart 35.43) -> recalage n.1 demande
+00:02:56.010 monde: ok heure=353.616 jours=1 lune=2604.6 meteo=0 | recu de J0: heure=353.358 jours=1 meteo=0 (39 maj)
+00:03:03.578 monde: ok heure=355.507 jours=1 lune=2606.5 meteo=0 | recu de J0: heure=355.249 jours=1 meteo=0 (44 maj)
+00:03:11.167 monde: ok heure=357.399 jours=1 lune=2608.4 meteo=0 | recu de J0: heure=357.140 jours=1 meteo=0 (49 maj)
+00:03:18.732 monde: ok heure=359.290 jours=1 lune=2610.2 meteo=0 | recu de J0: heure=359.032 jours=1 meteo=0 (54 maj)
+00:03:26.297 monde: ok heure=1.181 jours=2 lune=2612.1 meteo=1 | recu de J0: heure=0.923 jours=2 meteo=1 (59 maj)
+00:03:33.864 monde: ok heure=3.073 jours=2 lune=2614.0 meteo=1 | recu de J0: heure=2.815 jours=2 meteo=1 (64 maj)
+00:03:39.422 monde : heure locale 4.48, heure de J0 352.00 (ecart -12.48) -> recalage n.2 demande
+00:03:41.436 monde: ok heure=352.483 jours=2 lune=2615.9 meteo=0 | recu de J0: heure=352.217 jours=2 meteo=0 (70 maj)
+00:03:49.007 monde: ok heure=354.383 jours=2 lune=2617.8 meteo=0 | recu de J0: heure=354.108 jours=2 meteo=0 (75 maj)
+00:03:56.571 monde: ok heure=356.266 jours=2 lune=2619.7 meteo=0 | recu de J0: heure=355.999 jours=2 meteo=0 (80 maj)
+00:04:04.141 monde: ok heure=358.165 jours=2 lune=2621.6 meteo=0 | recu de J0: heure=357.890 jours=2 meteo=0 (85 maj)
+00:04:11.720 monde: ok heure=0.056 jours=3 lune=2623.4 meteo=1 | recu de J0: heure=359.781 jours=2 meteo=0 (90 maj)
+00:04:19.363 monde: ok heure=1.965 jours=3 lune=2625.3 meteo=1 | recu de J0: heure=1.673 jours=3 meteo=1 (95 maj)
+00:04:26.942 monde: ok heure=3.865 jours=3 lune=2627.2 meteo=1 | recu de J0: heure=3.573 jours=3 meteo=1 (100 maj)
+00:04:34.513 monde: ok heure=5.756 jours=3 lune=2629.1 meteo=0 | recu de J0: heure=5.465 jours=3 meteo=0 (105 maj)
+00:04:42.091 monde: ok heure=7.648 jours=3 lune=2631.0 meteo=0 | recu de J0: heure=7.348 jours=3 meteo=0 (110 maj)
+00:04:49.658 monde: ok heure=9.540 jours=3 lune=2632.9 meteo=0 | recu de J0: heure=9.240 jours=3 meteo=0 (115 maj)
+00:04:57.227 monde: ok heure=11.431 jours=3 lune=2634.8 meteo=0 | recu de J0: heure=11.131 jours=3 meteo=0 (120 maj)
+00:05:04.793 monde: ok heure=13.323 jours=3 lune=2636.7 meteo=0 | recu de J0: heure=13.031 jours=3 meteo=0 (125 maj)
+00:05:12.359 monde: ok heure=15.215 jours=3 lune=2638.5 meteo=0 | recu de J0: heure=14.915 jours=3 meteo=0 (130 maj)
+00:05:19.936 monde: ok heure=17.115 jours=3 lune=2640.4 meteo=0 | recu de J0: heure=16.806 jours=3 meteo=0 (135 maj)
+00:05:27.503 monde: ok heure=19.006 jours=3 lune=2642.3 meteo=0 | recu de J0: heure=18.698 jours=3 meteo=0 (140 maj)
+
+=== kr_game2.txt
+00:01:39.683 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:48.338 monde: ok heure=304.911 jours=1 lune=550.0 meteo=0 | recu de J0: heure=304.749 jours=1 meteo=0 (3 maj)
+00:01:56.180 monde: ok heure=306.311 jours=1 lune=551.4 meteo=0 | recu de J0: heure=306.094 jours=1 meteo=0 (8 maj)
+00:02:03.748 monde: ok heure=308.202 jours=1 lune=553.3 meteo=0 | recu de J0: heure=307.994 jours=1 meteo=0 (13 maj)
+00:02:11.330 monde: ok heure=310.068 jours=1 lune=555.2 meteo=0 | recu de J0: heure=309.860 jours=1 meteo=0 (18 maj)
+00:02:18.903 monde: ok heure=311.959 jours=1 lune=557.1 meteo=0 | recu de J0: heure=311.751 jours=1 meteo=0 (23 maj)
+00:02:25.701 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:25.703 lune de sang : copie du drapeau dans l'autre tampon trouvee (6568634608)
+00:02:25.704 monde : minuteur de lune de sang 558.8 -> 2600.0 (celui de la session), ajustement n.1
+00:02:26.466 monde: ok heure=313.850 jours=1 lune=2600.2 meteo=0 | recu de J0: heure=313.976 jours=1 meteo=0 (28 maj)
+00:02:34.034 monde: ok heure=315.742 jours=1 lune=2602.1 meteo=0 | recu de J0: heure=315.534 jours=1 meteo=0 (33 maj)
+00:02:37.627 monde : heure locale 316.66, heure de J0 352.00 (ecart 35.34) -> recalage n.1 demande
+00:02:41.609 monde: ok heure=352.983 jours=1 lune=2604.0 meteo=0 | recu de J0: heure=352.858 jours=1 meteo=0 (39 maj)
+00:02:49.170 monde: ok heure=354.866 jours=1 lune=2605.8 meteo=0 | recu de J0: heure=354.749 jours=1 meteo=0 (44 maj)
+00:02:56.729 monde: ok heure=356.757 jours=1 lune=2607.7 meteo=0 | recu de J0: heure=356.641 jours=1 meteo=0 (49 maj)
+00:03:04.303 monde: ok heure=358.648 jours=1 lune=2609.6 meteo=0 | recu de J0: heure=358.540 jours=1 meteo=0 (54 maj)
+00:03:11.875 monde: ok heure=0.540 jours=2 lune=2611.5 meteo=1 | recu de J0: heure=0.431 jours=2 meteo=1 (59 maj)
+00:03:19.438 monde: ok heure=2.431 jours=2 lune=2613.4 meteo=1 | recu de J0: heure=2.323 jours=2 meteo=1 (64 maj)
+00:03:27.006 monde: ok heure=4.323 jours=2 lune=2615.2 meteo=1 | recu de J0: heure=4.215 jours=2 meteo=1 (69 maj)
+00:03:27.593 monde : heure locale 4.49, heure de J0 352.00 (ecart -12.49) -> recalage n.2 demande
+00:03:34.566 monde: ok heure=353.725 jours=2 lune=2617.1 meteo=0 | recu de J0: heure=353.625 jours=2 meteo=0 (75 maj)
+00:03:42.136 monde: ok heure=355.616 jours=2 lune=2619.0 meteo=0 | recu de J0: heure=355.516 jours=2 meteo=0 (80 maj)
+00:03:49.711 monde: ok heure=357.515 jours=2 lune=2620.9 meteo=0 | recu de J0: heure=357.407 jours=2 meteo=0 (85 maj)
+00:03:57.278 monde: ok heure=359.407 jours=2 lune=2622.8 meteo=0 | recu de J0: heure=359.298 jours=2 meteo=0 (90 maj)
+00:04:04.855 monde: ok heure=1.298 jours=3 lune=2624.7 meteo=1 | recu de J0: heure=1.190 jours=3 meteo=1 (95 maj)
+00:04:12.431 monde: ok heure=3.190 jours=3 lune=2626.6 meteo=1 | recu de J0: heure=3.106 jours=3 meteo=1 (100 maj)
+00:04:19.995 monde: ok heure=5.081 jours=3 lune=2628.4 meteo=0 | recu de J0: heure=4.998 jours=3 meteo=0 (105 maj)
+00:04:27.554 monde: ok heure=6.973 jours=3 lune=2630.3 meteo=0 | recu de J0: heure=6.890 jours=3 meteo=0 (110 maj)
+00:04:35.127 monde: ok heure=8.865 jours=3 lune=2632.2 meteo=0 | recu de J0: heure=8.781 jours=3 meteo=0 (115 maj)
+00:04:42.694 monde: ok heure=10.756 jours=3 lune=2634.1 meteo=0 | recu de J0: heure=10.673 jours=3 meteo=0 (120 maj)
+00:04:50.258 monde: ok heure=12.648 jours=3 lune=2636.0 meteo=0 | recu de J0: heure=12.565 jours=3 meteo=0 (125 maj)
+00:04:57.827 monde: ok heure=14.540 jours=3 lune=2637.9 meteo=0 | recu de J0: heure=14.456 jours=3 meteo=0 (130 maj)
+00:05:05.384 monde: ok heure=16.431 jours=3 lune=2639.8 meteo=0 | recu de J0: heure=16.356 jours=3 meteo=0 (135 maj)
+00:05:12.950 monde: ok heure=18.323 jours=3 lune=2641.6 meteo=0 | recu de J0: heure=18.248 jours=3 meteo=0 (140 maj)
+
+=== ks_game.txt
+00:01:46.825 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:54.475 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:02:02.880 monde: ok heure=305.544 jours=1 lune=550.6 meteo=0 | recu de J0: heure=304.132 jours=1 meteo=0 (1 maj)
+00:02:10.830 monde: ok heure=306.956 jours=1 lune=552.0 meteo=0 | recu de J0: heure=306.865 jours=1 meteo=0 (6 maj)
+00:02:18.408 monde: ok heure=308.856 jours=1 lune=553.9 meteo=0 | recu de J0: heure=308.756 jours=1 meteo=0 (11 maj)
+00:02:25.995 monde: ok heure=310.697 jours=1 lune=555.8 meteo=0 | recu de J0: heure=310.622 jours=1 meteo=0 (16 maj)
+00:02:33.576 monde: ok heure=312.597 jours=1 lune=557.7 meteo=0 | recu de J0: heure=312.513 jours=1 meteo=0 (21 maj)
+00:02:37.793 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:37.794 lune de sang : copie du drapeau dans l'autre tampon trouvee (6568634608)
+00:02:37.799 monde : drapeau FirstTouchdown (plateau quitte) = 0 ; a 0, le jeu ne declenche aucune lune de sang
+00:02:37.799 monde : minuteur de lune de sang 558.8 -> 2600.0 (celui de la session), ajustement n.1
+00:02:41.158 monde: ok heure=314.488 jours=1 lune=2600.8 meteo=0 | recu de J0: heure=314.413 jours=1 meteo=0 (26 maj)
+
+=== ks_game2.txt
+00:01:40.762 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:48.990 monde: ok heure=305.107 jours=1 lune=550.2 meteo=0 | recu de J0: heure=305.178 jours=1 meteo=0 (4 maj)
+00:01:56.844 monde: ok heure=306.490 jours=1 lune=551.6 meteo=0 | recu de J0: heure=306.198 jours=1 meteo=0 (9 maj)
+00:02:04.419 monde: ok heure=308.381 jours=1 lune=553.5 meteo=0 | recu de J0: heure=308.098 jours=1 meteo=0 (14 maj)
+00:02:12.021 monde: ok heure=310.239 jours=1 lune=555.3 meteo=0 | recu de J0: heure=309.939 jours=1 meteo=0 (19 maj)
+00:02:19.606 monde: ok heure=312.138 jours=1 lune=557.2 meteo=0 | recu de J0: heure=311.839 jours=1 meteo=0 (24 maj)
+00:02:25.359 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:25.360 lune de sang : copie du drapeau dans l'autre tampon trouvee (6568634608)
+00:02:25.362 monde : drapeau FirstTouchdown (plateau quitte) = 0 ; a 0, le jeu ne declenche aucune lune de sang
+00:02:25.362 monde : minuteur de lune de sang 558.7 -> 2600.0 (celui de la session), ajustement n.1
+00:02:27.192 monde: ok heure=314.030 jours=1 lune=2600.4 meteo=0 | recu de J0: heure=313.855 jours=1 meteo=0 (29 maj)

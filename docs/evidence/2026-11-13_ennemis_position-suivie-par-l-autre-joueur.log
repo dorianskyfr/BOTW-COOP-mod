@@ -1,0 +1,74 @@
+Essai kz (2026-11-13) : sauvegarde t_lv1, deux instances Ryujinx. J1 decale de 4 m le Bokoblin 52859ed1 (outil nudge), puis J2 decale le sien. Extraits des journaux build\runs.
+
+=== kz_game.txt
+00:02:33.211 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.95)
+00:02:33.211 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.53, 256.58, 1771.65)
+00:02:33.211 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1143.06, 256.79, 1771.91)
+00:02:33.211 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:33.211 position ennemi : 75 envois, 0 corrections au total
+00:02:38.177 position ennemi : OUTIL DE TEST, Enemy_Bokoblin_Junior 52859ed1 deplace de (-1143.06, 256.79, 1771.91) a (-1139.06, 257.29, 1771.91), rc=1
+00:02:44.709 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.95)
+00:02:44.709 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.53, 256.58, 1771.65)
+00:02:44.709 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1139.06, 257.29, 1771.91)
+00:02:44.709 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:44.709 position ennemi : 111 envois, 0 corrections au total
+00:02:50.014 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 118.1 m, J2 a 114.3 m)
+00:02:50.014 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 3.92 m (rc=1), n.1
+00:02:50.042 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 2.74 m (rc=1), n.2
+00:02:50.075 position ennemi : Enemy_Bokoblin_Junior 52859ed1, notre copie fait foi (nous a 116.1 m, J2 a 114.3 m)
+00:02:56.210 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.95)
+00:02:56.210 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.53, 256.58, 1771.65)
+00:02:56.210 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1137.08, 257.54, 1771.91)
+00:02:56.210 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:56.210 position ennemi : 145 envois, 2 corrections au total
+
+=== kz_game2.txt
+00:01:56.694 position ennemi : Enemy_Bokoblin_Junior c51a8ff8, on suit la copie de l'autre joueur (nous a 129.6 m, J1 a 129.6 m)
+00:01:56.694 position ennemi : Enemy_Bokoblin_Junior 636d844c, on suit la copie de l'autre joueur (nous a 126.3 m, J1 a 126.3 m)
+00:01:56.694 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 121.9 m, J1 a 121.9 m)
+00:02:23.625 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.95) (on suit l'autre joueur)
+00:02:23.625 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.53, 256.58, 1771.65) (on suit l'autre joueur)
+00:02:23.625 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1143.06, 256.79, 1771.91) (on suit l'autre joueur)
+00:02:23.625 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:23.625 position ennemi : 0 envois, 0 corrections au total
+00:02:26.325 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 4.03 m (rc=1), n.1
+00:02:26.361 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 2.82 m (rc=1), n.2
+00:02:26.390 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 1.98 m (rc=1), n.3
+00:02:26.423 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 1.38 m (rc=1), n.4
+00:02:26.457 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.97 m (rc=1), n.5
+00:02:26.490 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.68 m (rc=1), n.6
+00:02:26.523 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.47 m (rc=1), n.7
+00:02:26.556 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.33 m (rc=1), n.8
+00:02:26.589 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.23 m (rc=1), n.9
+00:02:26.623 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.16 m (rc=1), n.10
+00:02:35.123 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.95) (on suit l'autre joueur)
+00:02:35.123 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.53, 256.58, 1771.65) (on suit l'autre joueur)
+00:02:35.123 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1139.17, 257.27, 1771.91) (on suit l'autre joueur)
+00:02:35.123 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:35.123 position ennemi : 0 envois, 10 corrections au total
+00:02:37.691 position ennemi : OUTIL DE TEST, Enemy_Bokoblin_Junior 52859ed1 deplace de (-1139.17, 257.27, 1771.91) a (-1135.17, 257.77, 1771.91), rc=1
+00:02:37.723 position ennemi : Enemy_Bokoblin_Junior 52859ed1, notre copie fait foi (nous a 114.3 m, J1 a 118.1 m)
+00:02:38.160 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 114.3 m, J1 a 116.1 m)
+00:02:46.623 position ennemi : releve Enemy_Bokoblin_Junior c51a8ff8 en (-1150.00, 255.52, 1767.95) (on suit l'autre joueur)
+00:02:46.624 position ennemi : releve Enemy_Bokoblin_Junior 636d844c en (-1147.53, 256.58, 1771.65) (on suit l'autre joueur)
+00:02:46.624 position ennemi : releve Enemy_Bokoblin_Junior 52859ed1 en (-1136.97, 257.55, 1771.91) (on suit l'autre joueur)
+00:02:46.624 position ennemi : releve Enemy_Golem_Junior d72f6746 en (-1087.75, 179.17, 1663.18)
+00:02:46.624 position ennemi : 1 envois, 18 corrections au total
+
+=== kz_relay.log
+13:46:07.463 joueur 1 : position d'ennemi n.1 = c51a8ff8 a 129.56 m de lui
+13:46:48.949 joueur 2 : position d'ennemi n.1 = 52859ed1 a 114.30 m de lui
+
+=== kz_pilot.log
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   69.2s epos : positions des ennemis demandees
+   71.7s epos : positions des ennemis demandees
+   74.2s nudge : ennemi le plus proche decale de 4 m
+   80.7s epos : positions des ennemis demandees
+   83.2s epos : positions des ennemis demandees
+   85.7s nudge : ennemi le plus proche decale de 4 m
+   92.2s epos : positions des ennemis demandees
+   94.7s epos : positions des ennemis demandees
+   97.7s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)

@@ -1,0 +1,72 @@
+Essai kd (2026-11-13), deux instances, build -DCOOP_REMOTE_PAD, relais avec minuteur de session = maximum.
+J2 sort de sa pause a 215 s ; J1 reste en pause jusqu'a la fin (l'appui B a 277 s ne l'a pas sorti).
+Resultat : J1 suit le minuteur de J2 par ajustements successifs (ecart toujours <= 3,4, le seuil est 3).
+Le cas 'le joueur en retard mene l'heure' ne s'est PAS produit : correctif du relais non verifie en jeu.
+Les deux personnages sont encore tombes de la falaise (position finale -1043, 204.8, 1781).
+
+joueur 1 : PID 2268, donnees t_kd_p1
+joueur 2 : PID 29976, donnees t_kd_p2
+ecran 2 absent (1 ecran(s)) : fenetres laissees en place
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+  215.4s appui B x1 -> (-1044.77, 204.53, 1786.30)
+  277.1s appui B x1 -> (-1043.19, 204.76, 1781.27)
+  377.1s position (-1043.19, 204.76, 1781.27) avant acteur (-0.2861, 0.4081)
+--- J1
+00:05:31.327 monde: ok heure=122.877 lune=41.9 | recu de J0: heure=123.260 (84 maj)
+00:05:33.262 monde : minuteur de lune de sang 41.9 -> 45.3 (celui de la session), ajustement n.9
+00:05:38.868 monde: ok heure=125.151 lune=45.3 | recu de J0: heure=125.151 (89 maj)
+00:05:46.406 monde: ok heure=125.151 lune=45.3 | recu de J0: heure=127.034 (94 maj)
+00:05:46.829 monde : minuteur de lune de sang 45.3 -> 48.7 (celui de la session), ajustement n.10
+00:05:53.950 monde: ok heure=127.409 lune=48.7 | recu de J0: heure=128.925 (99 maj)
+00:06:00.395 monde : minuteur de lune de sang 48.7 -> 52.1 (celui de la session), ajustement n.11
+00:06:01.492 monde: ok heure=129.675 lune=52.1 | recu de J0: heure=130.808 (104 maj)
+00:06:09.036 monde: ok heure=131.941 lune=52.1 | recu de J0: heure=132.699 (109 maj)
+00:06:13.962 monde : minuteur de lune de sang 52.1 -> 55.5 (celui de la session), ajustement n.12
+00:06:16.576 monde: ok heure=134.207 lune=55.5 | recu de J0: heure=134.591 (114 maj)
+00:06:24.118 monde: ok heure=136.473 lune=55.5 | recu de J0: heure=136.473 (119 maj)
+00:06:27.562 monde : minuteur de lune de sang 55.5 -> 58.9 (celui de la session), ajustement n.13
+00:06:31.659 monde: ok heure=136.473 lune=58.9 | recu de J0: heure=138.365 (124 maj)
+00:06:39.203 monde: ok heure=138.740 lune=58.9 | recu de J0: heure=140.256 (129 maj)
+00:06:41.129 monde : minuteur de lune de sang 58.9 -> 62.3 (celui de la session), ajustement n.14
+00:06:46.741 monde: ok heure=141.006 lune=62.3 | recu de J0: heure=142.139 (134 maj)
+00:06:54.282 monde: ok heure=143.272 lune=62.3 | recu de J0: heure=144.030 (139 maj)
+00:06:54.862 monde : minuteur de lune de sang 62.3 -> 65.7 (celui de la session), ajustement n.15
+00:07:01.822 monde: ok heure=145.538 lune=65.7 | recu de J0: heure=145.921 (144 maj)
+00:07:08.429 monde : minuteur de lune de sang 65.7 -> 69.1 (celui de la session), ajustement n.16
+00:07:09.361 monde: ok heure=147.804 lune=69.1 | recu de J0: heure=147.804 (149 maj)
+00:07:16.903 monde: ok heure=147.804 lune=69.1 | recu de J0: heure=149.695 (154 maj)
+00:07:21.995 monde : minuteur de lune de sang 69.1 -> 72.5 (celui de la session), ajustement n.17
+00:07:24.445 monde: ok heure=150.070 lune=72.5 | recu de J0: heure=151.578 (159 maj)
+00:07:31.989 monde: ok heure=152.336 lune=72.5 | recu de J0: heure=153.469 (164 maj)
+00:07:35.562 monde : minuteur de lune de sang 72.5 -> 75.9 (celui de la session), ajustement n.18
+00:07:39.528 monde: ok heure=154.602 lune=75.9 | recu de J0: heure=155.360 (169 maj)
+--- J2
+00:04:47.121 monde: ok heure=115.703 lune=37.0 | recu de J0: heure=93.900 (23 maj)
+00:04:54.685 monde: ok heure=117.595 lune=38.9 | recu de J0: heure=93.900 (23 maj)
+00:05:02.233 monde: ok heure=119.486 lune=40.7 | recu de J0: heure=93.900 (23 maj)
+00:05:09.786 monde: ok heure=121.369 lune=42.6 | recu de J0: heure=93.900 (23 maj)
+00:05:17.339 monde: ok heure=123.260 lune=44.5 | recu de J0: heure=93.900 (23 maj)
+00:05:24.898 monde: ok heure=125.151 lune=46.4 | recu de J0: heure=93.900 (23 maj)
+00:05:32.450 monde: ok heure=127.034 lune=48.3 | recu de J0: heure=93.900 (23 maj)
+00:05:40.004 monde: ok heure=128.925 lune=50.2 | recu de J0: heure=93.900 (23 maj)
+00:05:47.557 monde: ok heure=130.808 lune=52.1 | recu de J0: heure=93.900 (23 maj)
+00:05:55.117 monde: ok heure=132.699 lune=54.0 | recu de J0: heure=93.900 (23 maj)
+00:06:02.670 monde: ok heure=134.591 lune=55.9 | recu de J0: heure=93.900 (23 maj)
+00:06:10.224 monde: ok heure=136.473 lune=57.7 | recu de J0: heure=93.900 (23 maj)
+00:06:17.781 monde: ok heure=138.365 lune=59.6 | recu de J0: heure=93.900 (23 maj)
+00:06:25.334 monde: ok heure=140.256 lune=61.5 | recu de J0: heure=93.900 (23 maj)
+00:06:32.886 monde: ok heure=142.139 lune=63.4 | recu de J0: heure=93.900 (23 maj)
+00:06:40.451 monde: ok heure=144.030 lune=65.3 | recu de J0: heure=93.900 (23 maj)
+00:06:48.002 monde: ok heure=145.921 lune=67.2 | recu de J0: heure=93.900 (23 maj)
+00:06:55.552 monde: ok heure=147.804 lune=69.1 | recu de J0: heure=93.900 (23 maj)
+00:07:03.103 monde: ok heure=149.695 lune=71.0 | recu de J0: heure=93.900 (23 maj)
+00:07:10.653 monde: ok heure=151.578 lune=72.9 | recu de J0: heure=93.900 (23 maj)
+00:07:18.205 monde: ok heure=153.469 lune=74.7 | recu de J0: heure=93.900 (23 maj)
+00:07:25.766 monde: ok heure=155.360 lune=76.6 | recu de J0: heure=93.900 (23 maj)
+arrete : python 30428
+arrete : Ryujinx 2268
+arrete : Ryujinx 29976
+
+[exited with code 0]

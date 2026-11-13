@@ -1,0 +1,89 @@
+Essai c6 du 2026-11-11 : ramassage en direct (les deux joueurs en jeu) d'une arme puis d'une ressource, et heure distribuee par le serveur.
+Deux instances Ryujinx 1.3.3, BOTW 1.9.0, sauvegarde t_lv1 copiee par joueur. PC charge par un autre jeu.
+
+--- Serveur (c6_relay.log) ---
+21:55:17.304 joueur 1 : devient la reference de l'heure
+21:55:17.304 joueur 1 : monde n.1 = TIME 85.873 0 0
+21:55:26.964 joueur 1 : etat complet demande, 0 drapeaux a envoyer
+21:57:00.057 joueur 1 : monde n.60 = TIME 98.645 0 0
+21:58:40.506 joueur 1 : monde n.120 = TIME 112.067 0 0
+21:59:15.645 joueur 2 : etat complet demande, 30 drapeaux a envoyer
+22:00:24.100 joueur 1 : monde n.180 = TIME 115.591 0 0
+22:02:04.633 joueur 1 : monde n.240 = TIME 120.040 0 0
+
+--- Joueur 1 (c6_game.txt) ---
+00:03:06.891 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet demande au serveur
+00:03:07.051 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet recu du serveur (0 drapeaux en memoire chez lui)
+00:05:29.759 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] drapeau change : n.23040 hachage=8c013684 0 -> 1 (envoye)
+00:08:42.930 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] drapeau change : n.25268 hachage=99168bf1 0 -> 1 (envoye)
+00:09:20.277 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau change : n.9283 hachage=3803a6a7 0 -> 1 (envoye)
+00:09:20.280 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau change : n.18017 hachage=6ca64187 0 -> 1 (envoye)
+00:09:47.337 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau change : n.8779 hachage=352278dc 0 -> 1 (envoye)
+00:09:56.234 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau change : n.40837 hachage=f86167a4 0 -> 1 (envoye)
+
+--- Joueur 2 (c6_game2.txt) ---
+00:06:13.249 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 85.87, heure de J0 115.38 (ecart 29.51) -> recalage n.1 demande
+00:06:24.390 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet demande au serveur
+00:06:24.393 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet recu du serveur (30 drapeaux en memoire chez lui)
+00:06:50.742 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 117.60, heure de J0 115.59 (ecart -2.01) -> recalage n.2 demande
+00:07:09.224 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 117.67, heure de J0 115.59 (ecart -2.07) -> recalage n.3 demande
+00:07:27.783 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 117.82, heure de J0 115.59 (ecart -2.22) -> recalage n.4 demande
+00:07:44.851 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 117.77, heure de J0 115.59 (ecart -2.18) -> recalage n.5 demande
+00:07:55.939 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 117.68, heure de J0 115.59 (ecart -2.09) -> recalage n.6 demande
+00:08:05.520 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 117.79, heure de J0 115.59 (ecart -2.20) -> recalage n.7 demande
+00:08:12.324 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] objets : 1 drapeau(x) recu(s) a verifier, 665 acteurs parcourus dont 466 avec identifiant de carte
+00:08:18.710 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 117.77, heure de J0 115.75 (ecart -2.02) -> recalage n.8 demande
+00:08:35.324 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 118.24, heure de J0 116.23 (ecart -2.01) -> recalage n.9 demande
+00:08:50.499 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] objets : 3 drapeau(x) recu(s) a verifier, 670 acteurs parcourus dont 466 avec identifiant de carte
+00:08:50.501 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] objet : Weapon_Sword_044 ramasse par l'autre joueur (drapeau 6ca64187) -> retire ici
+00:08:50.502 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] objets : 1 retires au total, 9 parcours, 0 drapeaux non traites (file pleine)
+00:09:16.446 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] objets : 3 drapeau(x) recu(s) a verifier, 677 acteurs parcourus dont 465 avec identifiant de carte
+00:09:18.489 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 122.58, heure de J0 120.49 (ecart -2.09) -> recalage n.10 demande
+00:09:25.657 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] objets : 4 drapeau(x) recu(s) a verifier, 677 acteurs parcourus dont 465 avec identifiant de carte
+00:09:25.657 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] objet : Item_Mushroom_E ramasse par l'autre joueur (drapeau f86167a4) -> retire ici
+00:09:25.658 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] objets : 2 retires au total, 19 parcours, 0 drapeaux non traites (file pleine)
+
+--- Pilote (c6_pilot.log) ---
+   16.2s appui A x1 -> (?)
+   17.9s appui A x1 -> (?)
+   29.6s appui A x1 -> (?)
+   31.3s appui A x1 -> (?)
+   43.0s appui A x1 -> (?)
+   44.7s appui A x1 -> (?)
+    9.1s appui A x1 -> (?)
+   20.3s appui A x1 -> (?)
+   31.5s appui A x1 -> (?)
+    2.7s acteurs (Weapon_|Item_Mushroom) : 14
+    2.7s    Weapon_Sword_044                         (-980.01, 199.19, 1800.62)
+    2.7s    Weapon_Sword_044                         (-992.28, 200.80, 1766.03)
+    2.7s    Weapon_Sword_044                         (-1059.15, 249.33, 1805.13)
+    2.7s    Weapon_Sword_044                         (-1024.63, 251.40, 1812.55)
+    2.7s    Weapon_Sword_044                         (-1034.19, 249.09, 1847.06)
+    2.7s    Weapon_Sword_044                         (-1053.44, 249.45, 1802.61)
+    2.7s    Item_Mushroom_E                          (-1068.09, 249.40, 1806.31)
+    2.7s    Item_Mushroom_E                          (-1070.51, 249.44, 1807.39)
+    2.7s    Item_Mushroom_E                          (-1028.88, 249.63, 1841.00)
+    2.7s    Item_Mushroom_E                          (-1070.25, 249.55, 1805.05)
+    2.7s    Item_Mushroom_E                          (-1035.88, 253.24, 1836.00)
+    2.7s    Item_Mushroom_E                          (-1035.61, 253.51, 1838.68)
+    2.7s    Item_Mushroom_E                          (-982.22, 199.53, 1781.56)
+    2.7s    Item_Mushroom_E                          (-977.46, 198.97, 1793.63)
+    5.1s appui A x1 -> (-1024.60, 252.67, 1799.36)
+   16.0s goto (-1024.9, 1812.0) -> arrive, position (-1024.90, 251.44, 1811.52)
+   17.2s appui A x1 -> (-1024.70, 251.41, 1811.76)
+   35.2s goto (-1026.5, 1826.0) -> arrive, position (-1026.49, 249.44, 1825.44)
+   41.9s goto (-1028.9, 1840.3) -> arrive, position (-1029.04, 249.50, 1839.74)
+   45.6s appui A x1 -> (-1029.09, 249.54, 1840.02)
+   59.7s acteurs (Weapon_|Item_Mushroom) : 12
+   59.7s    Weapon_Sword_044                         (-980.01, 199.19, 1800.62)
+   59.7s    Weapon_Sword_044                         (-992.28, 200.80, 1766.03)
+   59.7s    Weapon_Sword_044                         (-1059.15, 249.33, 1805.13)
+   59.7s    Weapon_Sword_044                         (-1034.19, 249.09, 1847.06)
+   59.7s    Weapon_Sword_044                         (-1053.44, 249.45, 1802.61)
+   59.7s    Item_Mushroom_E                          (-1068.09, 249.40, 1806.31)
+   59.7s    Item_Mushroom_E                          (-1070.51, 249.44, 1807.39)
+   59.7s    Item_Mushroom_E                          (-1070.25, 249.55, 1805.05)
+   59.7s    Item_Mushroom_E                          (-1035.88, 253.24, 1836.00)
+   59.7s    Item_Mushroom_E                          (-1035.61, 253.51, 1838.68)
+   59.7s    Item_Mushroom_E                          (-982.22, 199.53, 1781.56)
+   59.7s    Item_Mushroom_E                          (-977.46, 198.97, 1793.63)

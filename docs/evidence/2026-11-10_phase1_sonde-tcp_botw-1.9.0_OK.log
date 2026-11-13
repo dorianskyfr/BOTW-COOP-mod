@@ -1,0 +1,35 @@
+﻿# Sortie console Ryujinx (extraits)
+00:00:00.352 |N| Application PrintSystemInfo: Ryujinx Version: 1.3.3
+00:00:01.622 |I| Loader Start: Application Loaded: E????J?`?????<G?]GWB??JA?b?07!K?&1???v???J???6???????u????m?8???U??:GN?&?C9p?????;U??}?-??7??-?O{??[|?v?s??B??i????	?M????"
+00:00:06.052 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] hello world : plugin charge (phase 0, build Nov 10 2026 19:22:36)
+00:00:06.056 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] main : total 0000000008506000-000000000a39e000, rodata 0000000009aa8000 (+0x5d8000)
+00:00:06.073 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] build id main (16 octets, rodata+0x5d7320) : cd57b23fa4bbad65803d9788c01821ee
+00:00:06.120 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] net: CreateThread -> 0x0
+00:00:07.278 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: thread demarre, attente 8 s
+00:00:15.306 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: fin de l'attente
+00:00:15.327 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: nifm::Initialize -> 0x0
+00:00:15.327 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: socket deja initialise par le jeu : 0
+00:00:15.473 |S| HLE.OsThread.1 ServiceBsd RegisterClient: Stubbed. 
+00:00:15.473 |S| HLE.OsThread.1 ServiceBsd StartMonitoring: Stubbed. {unknown0: 0}
+00:00:15.474 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: socket::Initialize -> 0x0
+00:00:15.476 |S| HLE.OsThread.47 ServiceNifm CreateRequest: Stubbed. {version: 2}
+00:00:15.478 |S| HLE.OsThread.47 ServiceNifm Submit: Stubbed. 
+00:00:15.479 |S| HLE.OsThread.47 ServiceNifm GetRequestState: Stubbed. 
+00:00:15.479 |S| HLE.OsThread.47 ServiceNifm GetResult: Stubbed. 
+00:00:15.480 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: reseau disponible : 0
+00:00:15.485 |I| HLE.OsThread.1 ServiceBsd : Creating socket with domain=InterNetwork, type=Stream, protocol=IP
+00:00:15.485 |I| HLE.OsThread.1 ServiceBsd : Opening socket using host networking stack
+00:00:15.494 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: Socket -> 0 (errno 0)
+00:00:15.502 |I| HLE.OsThread.1 ServiceBsd : Connecting to: Tcp/***:47800
+00:00:15.549 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: Connect 127.0.0.1:47800 -> 0 (errno 0)
+00:00:15.586 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: Send -> 30 (errno 0)
+00:00:15.588 |W| HLE.OsThread.1 ServiceBsd : Blocking socket operations are not yet working properly. Expect network errors.
+00:00:15.590 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: Recv -> 7 : pong 1 op hello depuis le jeu
+00:00:15.591 |I| HLE.OsThread.1 ServiceBsd Dispose: Socket closed
+00:00:15.606 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: sonde terminee
+
+# Journal du serveur de test (tools/echo_server.py)
+19:22:24.920 ecoute sur 127.0.0.1:47800
+19:23:00.467 connexion de 127.0.0.1:41838
+19:23:00.514 recu 30 octets : b'botw-coop hello depuis le jeu\n'
+19:23:00.514 repondu pong 1

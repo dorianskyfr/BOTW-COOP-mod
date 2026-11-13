@@ -1,0 +1,46 @@
+# Essai e3 (2026-11-12, une instance + faux joueur) : le faux joueur envoie "FLAGR d9009fe1 1"
+# d9009fe1 = CRC32("MainField_Enemy_Bokoblin_Junior_1133377874"), ennemi en (-880.00, 209.79, 1805.00)
+# Avant : 10 Enemy_Bokoblin_Junior dans la liste ; apres : 9, celui-la absent (voir le journal du pilote ci-dessous)
+monde : pret (acteur du joueur actif)
+net: etat complet demande au serveur
+net: etat complet recu du serveur (0 drapeaux en memoire chez lui)
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1133377874 -> d9009fe1 existe, valeur 0, proprietes 0x27
+drapeau recu : n.35635 hachage=d9009fe1 mis a 1
+objets : 1 drapeau(x) recu(s) a verifier, 673 acteurs parcourus dont 466 avec identifiant de carte
+objet : Enemy_Bokoblin_Junior ramasse par l'autre joueur (drapeau d9009fe1) -> retire ici
+objets : 1 retires au total, 1 parcours, 0 drapeaux non traites (file pleine)
+
+# Serveur
+20:18:19.454 joueur 1 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+20:19:05.446 joueur 2 : drapeau de lune de sang d9009fe1 a 1 (1 en memoire)
+
+# Pilote
+    9.9s appui B x2 -> (?)
+   14.1s appui A x1 -> (?)
+   19.3s appui A x1 -> (?)
+   24.5s appui A x1 -> (?)
+   31.7s appui A x1 -> (?)
+    0.6s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+    2.6s acteurs (Enemy_Bokoblin) : 12
+    2.6s    Enemy_Bokoblin_Junior                    (-880.00, 209.79, 1805.00)
+    2.6s    Enemy_Bokoblin_Junior                    (-951.47, 238.15, 1956.17)
+    2.6s    Enemy_Bokoblin_Junior                    (-948.91, 237.87, 1950.25)
+    2.6s    Enemy_Bokoblin_Junior                    (-957.69, 237.71, 1955.30)
+    2.6s    Enemy_Bokoblin_Junior                    (-1150.00, 255.52, 1767.94)
+    2.6s    Enemy_Bokoblin_Junior                    (-1147.52, 256.58, 1771.67)
+    2.6s    Enemy_Bokoblin_Junior                    (-1143.06, 256.79, 1771.93)
+    2.6s    Enemy_Bokoblin_Guard_Junior              (-1211.25, 195.33, 1609.21)
+    2.6s    Enemy_Bokoblin_Guard_Junior              (-1224.78, 192.99, 1669.90)
+    2.6s    Enemy_Bokoblin_Junior                    (-1211.17, 188.10, 1636.38)
+    2.6s    Enemy_Bokoblin_Junior                    (-1215.08, 188.13, 1641.30)
+    2.6s    Enemy_Bokoblin_Junior                    (-1211.27, 187.97, 1646.51)
+    2.7s acteurs (Enemy_Bokoblin_Junior) : 9
+    2.7s    Enemy_Bokoblin_Junior                    (-951.47, 238.15, 1956.17)
+    2.7s    Enemy_Bokoblin_Junior                    (-948.91, 237.87, 1950.25)
+    2.7s    Enemy_Bokoblin_Junior                    (-957.69, 237.71, 1955.30)
+    2.7s    Enemy_Bokoblin_Junior                    (-1150.00, 255.52, 1767.94)
+    2.7s    Enemy_Bokoblin_Junior                    (-1147.52, 256.58, 1771.67)
+    2.7s    Enemy_Bokoblin_Junior                    (-1143.06, 256.79, 1771.93)
+    2.7s    Enemy_Bokoblin_Junior                    (-1211.17, 188.10, 1636.38)
+    2.7s    Enemy_Bokoblin_Junior                    (-1215.08, 188.13, 1641.30)
+    2.7s    Enemy_Bokoblin_Junior                    (-1211.27, 187.97, 1646.51)

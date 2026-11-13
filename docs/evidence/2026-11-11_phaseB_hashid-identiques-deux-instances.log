@@ -1,0 +1,4 @@
+=== essai fl1 : identifiants d objets de carte (Actor +0x640) compares entre les deux instances ===
+acteurs J1 78 J2 98 communs (nom+position) 54 meme hash 54 dont hash non nul 40
+hash differents: 0 []
+exemples: [('Obj_TreeConiferous_A_02', 'e08ddf09'), ('EventTag', '43495c3e'), ('AirWallHorse', '9f594bf9'), ('Animal_Insect_G', 'f59248fd'), ('Obj_TreeConiferous_A_02', '264e554d'), ('Area', '267a6f28')]

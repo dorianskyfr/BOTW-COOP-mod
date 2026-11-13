@@ -1,0 +1,65 @@
+﻿# Test a deux instances (run-duo duo5), Ryujinx 1.3.3, BOTW 1.9.0, 2026-11-11
+# Etat transmis : matrice 3x4 de l'acteur du joueur (rotation + translation). Interpolation avec 150 ms de retard.
+
+# Instance p1
+00:01:18.214 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1132.70, 235.19, 1917.40) avant=(0.00, 1.00) envois=32 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:25.791 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1132.98, 236.75, 1917.61) avant=(-0.76, -0.66) envois=82 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:33.324 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1132.98, 236.76, 1917.66) avant=(-0.76, -0.66) envois=132 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:35.301 [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1130.00, 237.40, 1914.50)
+00:01:35.579 [botw-coop] acteur distant : CREE apres 8 images, acteur=660b404fb0 nom="Npc_Kakariko003" pos=(-1130.00, 237.40, 1914.50)
+00:01:36.201 [botw-coop] acteur distant : vivant pos=(-1130.00, 237.40, 1914.50) avant=(0.67, -0.74) | ecritures=19 interpolees=60 figees=10 pas max=0.000 m | deplace par le jeu=0
+   ...
+00:03:52.115 [botw-coop] acteur distant : vivant pos=(-1138.97, 237.27, 1912.78) avant=(-0.89, 0.46) | ecritures=4069 interpolees=4022 figees=98 pas max=0.215 m | deplace par le jeu=0
+00:03:57.105 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) envois=1082 | distant=J2 actif=1 pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) recus=943
+00:03:57.116 [botw-coop] acteur distant : vivant pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) | ecritures=4219 interpolees=4170 figees=100 pas max=0.140 m | deplace par le jeu=0
+00:04:02.116 [botw-coop] acteur distant : vivant pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) | ecritures=4369 interpolees=4319 figees=101 pas max=0.000 m | deplace par le jeu=0
+00:04:04.651 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) envois=1132 | distant=J2 actif=1 pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) recus=993
+00:04:07.116 [botw-coop] acteur distant : vivant pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) | ecritures=4519 interpolees=4468 figees=102 pas max=0.000 m | deplace par le jeu=0
+00:04:12.115 [botw-coop] acteur distant : vivant pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) | ecritures=4669 interpolees=4615 figees=105 pas max=0.000 m | deplace par le jeu=0
+00:04:12.190 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) envois=1182 | distant=J2 actif=1 pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) recus=1043
+
+# Instance p2
+00:01:18.019 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1132.70, 235.18, 1917.40) avant=(0.00, 1.00) envois=26 | distant=J1 actif=1 pos=(-1132.98, 236.76, 1917.66) avant=(-0.76, -0.66) recus=164
+00:01:25.620 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1132.98, 236.75, 1917.61) avant=(-0.76, -0.66) envois=76 | distant=J1 actif=1 pos=(-1132.97, 236.73, 1917.61) avant=(-0.76, -0.66) recus=214
+00:01:33.169 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1132.98, 236.76, 1917.66) avant=(-0.76, -0.66) envois=126 | distant=J1 actif=1 pos=(-1132.97, 236.73, 1917.61) avant=(-0.76, -0.66) recus=264
+00:01:36.133 [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1132.97, 236.73, 1917.61)
+00:01:36.399 [botw-coop] acteur distant : CREE apres 8 images, acteur=660b3ff3d8 nom="Npc_Kakariko003" pos=(-1132.97, 236.73, 1917.61)
+00:01:36.832 [botw-coop] acteur distant : vivant pos=(-1132.66, 236.79, 1917.34) avant=(-0.76, -0.66) | ecritures=13 interpolees=606 figees=17 pas max=0.000 m | deplace par le jeu=0
+   ...
+00:03:34.190 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1140.68, 237.27, 1915.34) avant=(-0.81, 0.59) envois=926 | distant=J1 actif=1 pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) recus=1064
+00:03:37.733 [botw-coop] acteur distant : vivant pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) | ecritures=3613 interpolees=4139 figees=84 pas max=0.000 m | deplace par le jeu=0
+00:03:41.740 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) envois=976 | distant=J1 actif=1 pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) recus=1114
+00:03:42.731 [botw-coop] acteur distant : vivant pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) | ecritures=3763 interpolees=4288 figees=85 pas max=0.000 m | deplace par le jeu=0
+00:03:47.732 [botw-coop] acteur distant : vivant pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) | ecritures=3913 interpolees=4435 figees=88 pas max=0.000 m | deplace par le jeu=0
+00:03:49.287 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) envois=1026 | distant=J1 actif=1 pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) recus=1164
+00:03:52.732 [botw-coop] acteur distant : vivant pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) | ecritures=4063 interpolees=4581 figees=92 pas max=0.000 m | deplace par le jeu=0
+00:03:56.838 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1140.43, 237.27, 1916.10) avant=(-0.79, 0.61) envois=1076 | distant=J1 actif=1 pos=(-1139.61, 237.28, 1913.58) avant=(-0.84, -0.54) recus=1214
+
+# Relais
+00:25:05.744 relais en ecoute sur 127.0.0.1:47800
+00:25:26.899 joueur 1 connecte depuis 127.0.0.1:10615 (1 en ligne)
+00:25:47.064 joueur 2 connecte depuis 127.0.0.1:10626 (2 en ligne)
+00:26:24.624 joueur 1 : etat n.1 = MTX -0.7431 0.0000 0.6691 -1130.000 -0.0000 1.0000 0.0000 237.400 -0.6691 -0.0000 -0.7431 1914.500
+00:26:40.159 joueur 1 : etat n.100 = MTX -0.6552 0.0000 -0.7555 -1132.982 0.0000 1.0000 0.0000 236.752 0.7555 0.0000 -0.6552 1917.609
+00:26:45.565 joueur 2 : etat n.1 = MTX -0.7431 0.0000 0.6691 -1130.000 -0.0000 1.0000 0.0000 237.400 -0.6691 -0.0000 -0.7431 1914.500
+00:26:55.279 joueur 1 : etat n.200 = MTX -0.6552 0.0000 -0.7555 -1132.970 0.0000 1.0000 0.0000 236.731 0.7555 0.0000 -0.6552 1917.608
+00:27:01.129 joueur 2 : etat n.100 = MTX -0.6552 0.0000 -0.7555 -1132.982 0.0000 1.0000 0.0000 236.752 0.7555 0.0000 -0.6552 1917.609
+00:27:10.397 joueur 1 : etat n.300 = MTX -0.6552 0.0000 -0.7555 -1132.662 0.0000 1.0000 0.0000 236.790 0.7555 0.0000 -0.6552 1917.338
+00:27:16.215 joueur 2 : etat n.200 = MTX -0.6552 0.0000 -0.7555 -1132.970 0.0000 1.0000 0.0000 236.731 0.7555 0.0000 -0.6552 1917.608
+00:27:25.512 joueur 1 : etat n.400 = MTX -0.6552 0.0000 -0.7555 -1132.662 0.0000 1.0000 0.0000 237.404 0.7555 0.0000 -0.6552 1917.338
+00:27:31.324 joueur 2 : etat n.300 = MTX -0.6552 0.0000 -0.7555 -1132.662 0.0000 1.0000 0.0000 236.790 0.7555 0.0000 -0.6552 1917.338
+00:27:40.694 joueur 1 : etat n.500 = MTX -0.7651 0.0000 0.6439 -1130.210 0.0000 1.0000 0.0000 237.382 -0.6439 0.0000 -0.7651 1914.271
+00:27:46.417 joueur 2 : etat n.400 = MTX -0.6552 0.0000 -0.7555 -1132.662 0.0000 1.0000 0.0000 237.408 0.7555 0.0000 -0.6552 1917.338
+00:27:55.896 joueur 1 : etat n.600 = MTX -0.6484 0.0000 0.7613 -1117.220 0.0000 1.0000 0.0000 237.330 -0.7613 0.0000 -0.6484 1903.778
+00:28:01.600 joueur 2 : etat n.500 = MTX -0.7778 0.0000 0.6285 -1130.222 0.0000 1.0000 0.0000 237.399 -0.6285 0.0000 -0.7778 1914.287
+00:28:11.028 joueur 1 : etat n.700 = MTX -0.6484 0.0000 0.7613 -1117.220 0.0000 1.0000 0.0000 237.330 -0.7613 0.0000 -0.6484 1903.778
+00:28:16.823 joueur 2 : etat n.600 = MTX -0.6484 0.0000 0.7613 -1117.227 0.0000 1.0000 0.0000 237.330 -0.7613 0.0000 -0.6484 1903.772
+00:28:26.143 joueur 1 : etat n.800 = MTX 0.8463 0.0000 0.5327 -1115.536 0.0000 1.0000 0.0000 237.273 -0.5327 0.0000 0.8463 1906.907
+00:28:31.926 joueur 2 : etat n.700 = MTX -0.6484 0.0000 0.7613 -1117.227 0.0000 1.0000 0.0000 237.330 -0.7613 0.0000 -0.6484 1903.772
+00:28:41.249 joueur 1 : etat n.900 = MTX 0.0873 0.0000 -0.9962 -1129.007 0.0000 1.0000 0.0000 237.428 0.9962 0.0000 0.0873 1911.507
+00:28:47.052 joueur 2 : etat n.800 = MTX -0.7919 0.0000 0.6107 -1122.586 0.0000 1.0000 0.0000 237.270 -0.6107 0.0000 -0.7919 1912.463
+00:28:56.373 joueur 1 : etat n.1000 = MTX -0.5355 0.0000 -0.8445 -1139.612 0.0000 1.0000 0.0000 237.277 0.8445 0.0000 -0.5355 1913.578
+00:29:02.153 joueur 2 : etat n.900 = MTX 0.3425 0.0000 -0.9395 -1137.826 0.0000 1.0000 0.0000 237.273 0.9395 0.0000 0.3425 1911.382
+00:29:11.477 joueur 1 : etat n.1100 = MTX -0.5355 0.0000 -0.8445 -1139.612 0.0000 1.0000 0.0000 237.277 0.8445 0.0000 -0.5355 1913.578
+00:29:17.254 joueur 2 : etat n.1000 = MTX 0.6082 0.0000 -0.7938 -1140.433 0.0000 1.0000 0.0000 237.270 0.7938 0.0000 0.6082 1916.101
+00:29:26.561 joueur 1 : etat n.1200 = MTX -0.5355 0.0000 -0.8445 -1139.612 0.0000 1.0000 0.0000 237.277 0.8445 0.0000 -0.5355 1913.578

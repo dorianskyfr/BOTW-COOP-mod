@@ -1,0 +1,34 @@
+=== essai fl5 : drapeaux GameData lus et changements detectes ===
+[botw-coop] drapeaux : Manager=65fa2474f0, tampon candidat a +0xbf8 = 65684d5b58, 42031 booleens
+[botw-coop] drapeaux : Manager=65fa2474f0, tampon candidat a +0xc00 = 65fa410528, 42031 booleens
+[botw-coop] drapeaux : 64 drapeaux examines, hachage a +0xc (64 concordances)
+[botw-coop] drapeaux : instantane de 42031 booleens pris (288 a 1, 1523 ni 0 ni 1) ; drapeau 0 : 000000000a227a20 0002fc0400840700 0000000000000000
+[botw-coop] drapeau change : n.173 hachage=010eeeba 1 -> 0
+[botw-coop] drapeau change : n.3002 hachage=11d23895 0 -> 1
+[botw-coop] drapeau change : n.3577 hachage=1508673e 0 -> 1
+[botw-coop] drapeau change : n.3636 hachage=158220d7 0 -> 1
+[botw-coop] drapeau change : n.5655 hachage=22195da4 0 -> 1
+[botw-coop] drapeau change : n.9233 hachage=37c4c99b 0 -> 1
+[botw-coop] drapeau change : n.10104 hachage=3cb623d9 0 -> 1
+[botw-coop] drapeau change : n.10218 hachage=3d7449ee 0 -> 1
+[botw-coop] drapeau change : n.12471 hachage=4acb5004 0 -> 1
+[botw-coop] drapeau change : n.15476 hachage=5cbf1540 0 -> 1
+[botw-coop] drapeau change : n.19548 hachage=7609de2c 1 -> 0
+[botw-coop] drapeau change : n.25637 hachage=9b6c1cfb 0 -> 1
+[botw-coop] drapeau change : n.27465 hachage=a7006307 0 -> 1
+[botw-coop] drapeau change : n.29000 hachage=b0720217 0 -> 1
+[botw-coop] drapeau change : n.29186 hachage=b1b06820 0 -> 1
+[botw-coop] drapeau change : n.30907 hachage=bc13cc9b 0 -> 1
+[botw-coop] drapeau change : n.31296 hachage=be5950c0 0 -> 1
+[botw-coop] drapeau change : n.32023 hachage=c2aa7d7e 0 -> 1
+[botw-coop] drapeau change : n.39309 hachage=ef008f96 1 -> 0
+[botw-coop] drapeau change : n.40027 hachage=f3562cd2 0 -> 1
+[botw-coop] drapeau change : n.40228 hachage=f47ac3c5 0 -> 1
+[botw-coop] drapeau change : n.173 hachage=010eeeba 0 -> 1
+[botw-coop] drapeau change : n.19548 hachage=7609de2c 0 -> 1
+[botw-coop] drapeau change : n.39309 hachage=ef008f96 0 -> 1
+[botw-coop] drapeau change : n.18258 hachage=6e263cbb 0 -> 1
+[botw-coop] drapeau change : n.5897 hachage=23969f9e 0 -> 1
+[botw-coop] drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+--- noms retrouves par CRC32 parmi les chaines de main :
+24 hachages, 30492 chaines candidates, noms retrouves : ['DoSnatchDisplay', 'FirstTips', 'HasAoCVer1', 'HasAoCVer2', 'HasAoCVer3', 'IsGet_Obj_DRStone_Get', 'IsGet_PortableUnit', 'IsPlayed_Demo102_0', 'IsPlayed_Demo103_0', 'IsSaveByAuto', 'Open_StartPoint', 'PortableUnit_PowerOn', 'WM_DaytimeFlag', 'WM_IsMorningA', 'climateFirst']

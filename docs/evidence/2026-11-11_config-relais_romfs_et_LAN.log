@@ -1,0 +1,15 @@
+cfg2_game.txt: 00:00:01.229 |I| ModLoader ApplyRomFsMods: Applying RomFS mods for Application 01007EF00011E000
+cfg2_game.txt: 00:00:01.252 |I| ModLoader ApplyRomFsMods: Replaced 1 file(s) over 1 mod(s). Processing base storage...
+cfg2_game.txt: 00:00:01.851 |I| ModLoader ApplyRomFsMods: Building new RomFS...
+cfg2_game.txt: 00:00:01.877 |I| ModLoader ApplyRomFsMods: Using modded RomFS
+cfg2_game.txt: [botw-coop] config: fichier lu (23 octets), relais = 127.0.0.1:47999
+cfg2_game.txt: [botw-coop] net: nifm::Initialize -> 0x0, socket::Initialize -> 0x0
+cfg2_game.txt: [botw-coop] net: relais 127.0.0.1:47999 injoignable (errno 111), essai n.1, nouvel essai toutes les 3 s
+cfg3_game.txt: 00:00:01.368 |I| ModLoader ApplyRomFsMods: Applying RomFS mods for Application 01007EF00011E000
+cfg3_game.txt: 00:00:01.392 |I| ModLoader ApplyRomFsMods: Replaced 1 file(s) over 1 mod(s). Processing base storage...
+cfg3_game.txt: 00:00:02.038 |I| ModLoader ApplyRomFsMods: Building new RomFS...
+cfg3_game.txt: 00:00:02.062 |I| ModLoader ApplyRomFsMods: Using modded RomFS
+cfg3_game.txt: [botw-coop] config: fichier lu (27 octets), relais = <adresse LAN>:47800
+cfg3_game.txt: [botw-coop] net: nifm::Initialize -> 0x0, socket::Initialize -> 0x0
+cfg3_game.txt: [botw-coop] net: connecte au relais <adresse LAN>:47800 (apres 0 echec(s))
+cfg3_game.txt: [botw-coop] net: le relais nous attribue l'identifiant J1

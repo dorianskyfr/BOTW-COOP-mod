@@ -1,0 +1,77 @@
+# Essai a2 (une instance, -DCOOP_TEST_SPAWN -DCOOP_ATT_DUMP -DCOOP_ATT_MODE=1) : mesure de Actor::mAttention puis coupure
+acteur distant : CREE apres 10 images, acteur=66070d77c0 nom="Npc_Kakariko003" pos=(-1021.51, 252.66, 1799.99)
+attention : acteur=66070d77c0 mAttention=660d131fb0 (main=8506000)
+attention : objet +0x000 : 0000006588836f40 00000066070d77c0 0000000000000004 000000660d132018
+attention : objet +0x020 : 000000000a215ad0 000000000a0c92c8 000000658883744c 000000660d0740a8
+attention : objet +0x040 : 000000660d131228 000000660d132a00 0000000000310000 0000000041d13366
+attention : objet +0x060 : 0000000000000004 00000066070d77c0 0000006588837508 0000000000000002
+attention : objet +0x080 : 3f26666600000000 0000000042718a4d 0000000000000000 000000660d141e60
+attention : objet +0x0a0 : 0000000000000004 000000660d1321b8 3f8000003f800000 000000003f800000
+attention : objet +0x0c0 : 0000000000000000 0000000000010001 00000066070d77c0 00000065888375b0
+attention : objet +0x0e0 : 0000000000000002 400000003f800000 00000000426e58e6 0000000000000000
+attention : objet +0x100 : 000000660d141e60 0000000000000004 000000660d132278 3f8000003f800000
+attention : objet +0x120 : 000000003f800000 0000000000000000 0000000000010001 00000066070d77c0
+attention : objet +0x140 : 0000006588837658 0000000000000002 3f26666600000000 00000000427089ff
+attention : objet +0x160 : 0000000000000000 0000000000000000 0000000000000003 000000660d132338
+attention : objet +0x180 : 3f8000003f800000 000000003f800000 0000000000000000 0000000000000000
+attention : objet +0x1a0 : 00000066070d77c0 0000006588837700 0000000000000002 400000003f800000
+attention : objet +0x1c0 : 0000000042730be6 0000000000000000 0000000000000000 0000000000000002
+attention : objet +0x1e0 : 000000660d1323c8 3f8000003f800000 000000003f800000 0000000000000000
+attention : entree 0 a 660d132018 : client=6588837508 ressource=6588956b90 type=0 code=0x1800001 priorite=0 | +0x10=2 +0x60=00010001
+attention : entree 1 a 660d132080 : client=65888375b0 ressource=65889578c0 type=1 code=0x1800001 priorite=0 | +0x10=2 +0x60=00010001
+attention : entree 2 a 660d1320e8 : client=6588837658 ressource=65829726a8 type=0 code=0x1800003 priorite=0 | +0x10=2 +0x60=00000000
+attention : entree 3 a 660d132150 : client=6588837700 ressource=6588958620 type=1 code=0x1800003 priorite=0 | +0x10=2 +0x60=00000000
+attention : fin
+attention : essai mode 1 -> 4
+attention : acteur=66070d77c0 mAttention=660d131fb0 (main=8506000)
+attention : objet +0x000 : 0000006588836f40 00000066070d77c0 0000000000000000 000000660d132018
+attention : objet +0x020 : 000000000a215ad0 000000000a0c92c8 000000658883744c 000000660d0740a8
+attention : objet +0x040 : 000000660d131228 000000660d132a00 0000000000310000 0000000041d13366
+attention : objet +0x060 : 0000000000000004 00000066070d77c0 0000006588837508 3eb575b500000002
+attention : objet +0x080 : 3f26666600000000 0000000042718a4d 0000000000000000 000000660d141e60
+attention : objet +0x0a0 : 0000000000000004 000000660d1321b8 3f8000003f800000 000000003f800000
+attention : objet +0x0c0 : 0000000000000000 0000000000010001 00000066070d77c0 00000065888375b0
+attention : objet +0x0e0 : 3fc5cad000000002 400000003f800000 00000000426e58e6 0000000000000000
+attention : objet +0x100 : 000000660d141e60 0000000000000004 000000660d132278 3f8000003f800000
+attention : objet +0x120 : 000000003f800000 0000000000000000 0000000000010001 00000066070d77c0
+attention : objet +0x140 : 0000006588837658 0000000000000002 3f26666600000000 00000000427089ff
+attention : objet +0x160 : 0000000000000000 0000000000000000 0000000000000003 000000660d132338
+attention : objet +0x180 : 3f8000003f800000 000000003f800000 0000000000000000 0000000000000000
+attention : objet +0x1a0 : 00000066070d77c0 0000006588837700 0000000000000002 400000003f800000
+attention : objet +0x1c0 : 0000000042730be6 0000000000000000 0000000000000000 0000000000000002
+attention : objet +0x1e0 : 000000660d1323c8 3f8000003f800000 000000003f800000 0000000000000000
+attention : fin
+acteur distant : l'acteur n'est plus valide, il sera recree
+acteur distant : CREE apres 5 images, acteur=66070d77c0 nom="Npc_Kakariko003" pos=(-1021.48, 252.64, 1799.95)
+acteur distant : l'acteur n'est plus valide, il sera recree
+acteur distant : CREE apres 5 images, acteur=6606966840 nom="Npc_Kakariko003" pos=(-1021.51, 252.66, 1799.99)
+
+# Essai a3 (deux instances, build normale -DCOOP_REMOTE_PAD) : joueur 2
+acteur distant : CREE apres 15 images, acteur=6607052ef0 nom="Npc_Kakariko003" pos=(-1024.60, 252.67, 1799.36)
+acteur distant : 4 interaction(s) retiree(s) (plus d'invite ?? Parler ??)
+acteur distant : l'acteur n'est plus valide, il sera recree
+acteur distant : CREE apres 5 images, acteur=6607052ef0 nom="Npc_Kakariko003" pos=(-1014.56, 209.77, 1785.76)
+acteur distant : l'acteur n'est plus valide, il sera recree
+acteur distant : CREE apres 5 images, acteur=6607052ef0 nom="Npc_Kakariko003" pos=(-1014.60, 209.77, 1785.77)
+acteur distant : 4 interaction(s) retiree(s) (plus d'invite ?? Parler ??)
+acteur distant : l'acteur n'est plus valide, il sera recree
+acteur distant : CREE apres 5 images, acteur=6606593940 nom="Npc_Kakariko003" pos=(-1024.63, 252.68, 1799.23)
+acteur distant : 4 interaction(s) retiree(s) (plus d'invite ?? Parler ??)
+acteur distant : l'acteur n'est plus valide, il sera recree
+acteur distant : CREE apres 5 images, acteur=6606bd3160 nom="Npc_Kakariko003" pos=(-1024.63, 252.67, 1799.23)
+acteur distant : 4 interaction(s) retiree(s) (plus d'invite ?? Parler ??)
+acteur distant : joueur distant parti, personnage retire
+
+# Pilote a3
+    1.3s push -> deplacement (-0.60, -0.23, 3.01), position (-1025.08, 252.40, 1802.96)
+    2.3s position (-1025.15, 252.36, 1803.33) avant acteur (-0.1943, 0.9809)
+    3.9s capture j2etat : C:\Users\<utilisateur>\Documents\Co ops zelda\build\runs\a3_j2etat.png (960x630), pixels non noirs au centre : 100.0 % | position (-1025.15, 252.36, 1803.33)
+    1.3s push -> deplacement (0.15, 0.18, -2.09), position (-1025.00, 252.54, 1801.24)
+    2.8s position (-1024.96, 252.57, 1800.67) avant acteur (0.0711, -0.9975)
+    4.4s capture j2pres : C:\Users\<utilisateur>\Documents\Co ops zelda\build\runs\a3_j2pres.png (960x630), pixels non noirs au centre : 100.0 % | position (-1024.96, 252.57, 1800.67)
+    7.8s appui A x2 -> (-1024.96, 252.57, 1800.67)
+   11.4s capture j2apresA : C:\Users\<utilisateur>\Documents\Co ops zelda\build\runs\a3_j2apresA.png (960x630), pixels non noirs au centre : 100.0 % | position (-1024.96, 252.57, 1800.67)
+   12.1s push -> deplacement (-0.27, -0.10, 1.33), position (-1025.23, 252.48, 1802.01)
+   12.1s position (-1025.23, 252.48, 1802.01) avant acteur (-0.1993, 0.9799)
+    1.3s push -> deplacement (-0.59, -0.30, 3.00), position (-1025.94, 252.12, 1805.56)
+    1.3s position (-1025.94, 252.12, 1805.56) avant acteur (-0.1944, 0.9809)

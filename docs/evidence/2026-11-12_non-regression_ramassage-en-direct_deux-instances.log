@@ -1,0 +1,44 @@
+# Essai r1 (2026-11-12, deux instances, build finale du jour) : non-regression du ramassage en direct
+# J2
+monde : pret (acteur du joueur actif)
+net: etat complet demande au serveur
+net: etat complet recu du serveur (29 drapeaux en memoire chez lui)
+drapeau recu : n.9283 hachage=3803a6a7 mis a 1
+drapeau recu : n.18017 hachage=6ca64187 mis a 1
+objets : 2 drapeau(x) recu(s) a verifier, 645 acteurs parcourus dont 467 avec identifiant de carte
+objet : Weapon_Sword_044 pris, ouvert ou vaincu par l'autre joueur (drapeau 6ca64187) -> retire ici
+objets : 1 retires au total, 1 parcours, 0 drapeaux non traites (file pleine)
+acteur distant : 4 interaction(s) retiree(s) (plus d'invite Parler)
+
+# Pilote
+   10.0s appui B x2 -> (?)
+   14.2s appui A x1 -> (?)
+   19.4s appui A x1 -> (?)
+   24.6s appui A x1 -> (?)
+   31.8s appui A x1 -> (?)
+   36.8s appui B x2 -> (?)
+   41.0s appui A x1 -> (?)
+   46.2s appui A x1 -> (?)
+   51.4s appui A x1 -> (?)
+   58.6s appui A x1 -> (?)
+    2.7s acteurs (Weapon_Sword_044) : 6
+    2.7s    Weapon_Sword_044                         (-980.01, 199.19, 1800.62)
+    2.7s    Weapon_Sword_044                         (-992.28, 200.80, 1766.03)
+    2.7s    Weapon_Sword_044                         (-1059.15, 249.33, 1805.13)
+    2.7s    Weapon_Sword_044                         (-1053.44, 249.45, 1802.61)
+    2.7s    Weapon_Sword_044                         (-1024.63, 251.40, 1812.55)
+    2.7s    Weapon_Sword_044                         (-1034.19, 249.09, 1847.06)
+    4.8s calibration haut : deplacement (-0.15, 0.74) -> (-1024.63, 252.58, 1800.70)
+    6.4s calibration droite : deplacement (-1.12, 0.07) -> (-1025.75, 252.53, 1800.76)
+    6.4s camera : avant=(-0.19, 0.98) sens droite=1
+   17.6s goto (-1024.9, 1811.9) -> arrive, position (-1024.90, 251.42, 1811.76)
+   17.6s face (-1024.6, 1812.5) : oriente, position (-1024.90, 251.42, 1811.76), avant acteur (0.0875, 0.9962)
+   26.7s capture branche : C:\Users\<utilisateur>\Documents\Co ops zelda\build\runs\r1_branche.png (960x630), pixels non noirs au centre : 100.0 % | position (-1024.84, 251.28, 1812.50)
+   28.0s appui A x1 -> (-1024.84, 251.28, 1812.50)
+   33.4s appui B x2 -> (-1024.84, 251.28, 1812.50)
+   38.9s acteurs (Weapon_Sword_044) : 5
+   38.9s    Weapon_Sword_044                         (-980.01, 199.19, 1800.62)
+   38.9s    Weapon_Sword_044                         (-992.28, 200.80, 1766.03)
+   38.9s    Weapon_Sword_044                         (-1059.15, 249.33, 1805.13)
+   38.9s    Weapon_Sword_044                         (-1053.44, 249.45, 1802.61)
+   38.9s    Weapon_Sword_044                         (-1034.19, 249.09, 1847.06)

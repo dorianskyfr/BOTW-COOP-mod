@@ -1,0 +1,57 @@
+﻿00:00:00.365 |N| Application PrintSystemInfo: Ryujinx Version: 1.3.3
+00:00:00.525 |N| Application LoadGuestApplication: Using Firmware Version: 22.5.0
+00:00:00.525 |N| Application LoadGuestApplication: Loading content archive from 'F:\Jeux-Console\Jeux Switch\The Legend of Zelda Breath of the Wild\The Legend of Zelda Breath of the Wild [01007EF00011E000][v0].nsp'.
+00:00:00.569 |I| ModLoader QueryContentsDir: Searching mods for Application 01007EF00011E000 in "C:\Users\[redacted]\AppData\Roaming\Ryujinx\mods\contents"
+00:00:00.571 |I| ModLoader AddModsFromDirectory: Found enabled mod 'botw-coop' [E]
+00:00:00.571 |I| ModLoader QueryContentsDir: Searching mods for DLC 01007EF00011F001 in "C:\Users\[redacted]\AppData\Roaming\Ryujinx\mods\contents"
+00:00:00.571 |I| ModLoader QueryContentsDir: Searching mods for DLC 01007EF00011F002 in "C:\Users\[redacted]\AppData\Roaming\Ryujinx\mods\contents"
+00:00:00.573 |I| ModLoader QueryContentsDir: Searching mods for Application 01007EF00011E000 in "C:\Users\[redacted]\AppData\Roaming\Ryujinx\sdcard\atmosphere\contents"
+00:00:00.573 |I| ModLoader QueryContentsDir: Searching mods for DLC 01007EF00011F001 in "C:\Users\[redacted]\AppData\Roaming\Ryujinx\sdcard\atmosphere\contents"
+00:00:00.573 |I| ModLoader QueryContentsDir: Searching mods for DLC 01007EF00011F002 in "C:\Users\[redacted]\AppData\Roaming\Ryujinx\sdcard\atmosphere\contents"
+00:00:00.575 |I| Loader Load: Loading rtld...
+00:00:00.587 |I| Loader PrintRoSectionInfo: rtld:
+    Module: 
+00:00:00.587 |I| Loader Load: Loading main...
+00:00:00.962 |I| Loader PrintRoSectionInfo: main:
+    Module: D:\home\Cafe\U-King\trunk\Game\App\Rom\NX64\Product_CSPGO_Optimize\code\U-King.nss
+00:00:00.962 |I| Loader Load: Loading subsdk0...
+00:00:01.037 |I| Loader PrintRoSectionInfo: subsdk0:
+    Module: 
+00:00:01.037 |I| Loader Load: Loading sdk...
+00:00:01.190 |I| Loader PrintRoSectionInfo: sdk:
+    Module: 
+00:00:01.195 |I| Loader PrintRoSectionInfo: subsdk9:
+    Module: botwcoop-build
+00:00:01.195 |I| ModLoader ApplyExefsMods: NSO 'subsdk9' replaced
+00:00:01.440 |I| Loader LoadNsos: Loading image 0 at 0x0000000008500000...
+00:00:01.441 |I| Loader LoadNsos: Loading image 1 at 0x0000000008506000...
+00:00:01.460 |I| Loader LoadNsos: Loading image 2 at 0x000000000a39e000...
+00:00:01.466 |I| Loader LoadNsos: Loading image 3 at 0x000000000aa0a000...
+00:00:01.466 |I| Loader LoadNsos: Loading image 4 at 0x000000000aa2d000...
+00:00:01.475 |I| ModLoader LoadCheats: Build ids found for application 01007EF00011E000:
+    263C3426D28AF8D8CCE29A9D2DA8FF0FF9A76456000000000000000000000000
+    CD57B23FA4BBAD65803D9788C01821EE00000000000000000000000000000000
+    F39F4C431234C72EB520CFDD1001BBCF02B3E885000000000000000000000000
+    540DAEC6C8E5D99AF0E8442FC5BC9490185573A7000000000000000000000000
+    574284B40C06CF1821A44857939083BEE5716820000000000000000000000000
+00:00:01.655 |I| Loader Start: Application Loaded: E????J?`?????<G?]GWB??JA?b?07!K?&1???v???J???6???????u????m?8???U??:GN?&?C9p?????;U??}?-??7??-?O{??[|?v?s??B??i????	?M????"
+00:00:03.451 |I| HLE.GuestThread.46 Cpu PrintGuestStackTrace: Guest stack trace:
+Thread ID: 46
+   0x00000000085005f8	nnrtld:0x05f8	
+   0x0000000008500058	nnrtld:0x0058	
+00:00:03.453 |I| HLE.GuestThread.46 Cpu PrintGuestRegisterPrintout: Guest CPU registers:
+	X[00]:	0x00000049edd08ec8 (SP:-0x0008)
+	X[01]:	0x00000000dfa3c01f
+	X[02]:	0x000000000000000c
+	X[03]:	0x0000000000000000
+	X[04]:	0x0000000000000000
+	X[05]:	0x0000000000000000
+	X[06]:	0x0000000000000000
+	X[07]:	0x0000000000000000
+	X[08]:	0x0000000014000008
+	X[09]:	0x0000000014000002
+	X[10]:	0x0000000008505000
+	X[11]:	0x000000000a8f0c48
+	X[12]:	0x0000000000000001
+	X[13]:	0x0000000000000000
+	X[14]:	0x00000000

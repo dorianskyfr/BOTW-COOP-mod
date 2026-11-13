@@ -1,0 +1,17 @@
+=== essai k4, joueur 1 (k4_game.txt)
+00:02:28.002 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] essai chute : Enemy_Bokoblin_Junior hash=52859ed1 etat=1 deplace de (-1143.06, 256.79, 1771.93) a (-1024.42, 292.64, 1806.09), controleur de personnage rc=1
+00:02:28.666 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] essai chute : fin du maintien, l'acteur est en (-1024.42, 292.06, 1806.09)
+00:02:32.833 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] drapeau change : n.1640 hachage=09ac3cb2 0 -> 1 (envoye, lune de sang)
+00:02:43.040 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur : Enemy_Bokoblin_Junior                    hash=52859ed1 etat=0 pos=(-1143.06, 256.96, 1771.94) dist=122.0
+00:02:43.043 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1384488657 -> 09ac3cb2 existe, valeur 1, proprietes 0x27
+00:03:00.001 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur : Enemy_Bokoblin_Junior                    hash=52859ed1 etat=0 pos=(-1143.06, 256.96, 1771.94) dist=122.0
+00:03:00.001 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1384488657 -> 09ac3cb2 existe, valeur 1, proprietes 0x27
+=== joueur 2 (k4_game2.txt)
+00:02:20.953 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] drapeau recu : n.1640 hachage=09ac3cb2 mis a 1
+00:02:20.961 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] objet : Enemy_Bokoblin_Junior pris, ouvert ou vaincu par l'autre joueur (drapeau 09ac3cb2) -> retire ici
+00:03:03.298 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur : Enemy_Bokoblin_Junior                    hash=52859ed1 etat=0 pos=(-1143.06, 256.96, 1771.94) dist=121.7
+00:03:03.300 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1384488657 -> 09ac3cb2 existe, valeur 1, proprietes 0x27
+=== relais (k4_relay.log)
+00:19:10.977 joueur 1 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+00:19:10.991 joueur 2 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+00:19:39.862 joueur 1 : drapeau de lune de sang 09ac3cb2 a 1 (1 en memoire)

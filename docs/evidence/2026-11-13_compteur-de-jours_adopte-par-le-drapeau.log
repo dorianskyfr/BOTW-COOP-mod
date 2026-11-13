@@ -1,0 +1,41 @@
+Essai kg (2026-11-13), deux instances. Le pilote annonce a la session un compteur de jours a 1 (commande 'days 1' de tools/drive.py).
+Les deux jeux ecrivent le drapeau WM_NumberOfDays une seule fois ; TimeMgr relit ensuite jours=1 pendant plus de 20 s.
+
+joueur 1 : PID 21796, donnees t_kg_p1
+joueur 2 : PID 14612, donnees t_kg_p2
+ecran 2 absent (1 ecran(s)) : fenetres laissees en place
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   68.7s days : session a 94.538 jour 0 -> envoye TIME 95.038 1 0
+   98.7s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+--- relais
+11:03:09.376 joueur 2 : monde n.1 = TIME 85.873 0 0 7.1
+11:03:14.374 joueur 1 : fait avancer l'heure de la session (TIME 86.377 0 0 7.6), changement n.2
+11:03:14.516 joueur 2 : fait avancer l'heure de la session (TIME 86.744 0 0 8.0), changement n.3
+11:03:15.885 joueur 1 : fait avancer l'heure de la session (TIME 86.752 0 0 8.0), changement n.4
+11:03:16.031 joueur 2 : fait avancer l'heure de la session (TIME 87.094 0 0 8.3), changement n.5
+11:03:48.210 joueur 1000 : monde n.1 = TIME 95.038 1 0 15.8
+--- kg_game.txt
+00:02:32.730 jours : drapeau WM_NumberOfDays (7b4be851) trouve parmi 2801 drapeaux entiers : 0a227ae8 00000000 199d0701 00000000 00000000 7fffffff 00000000 7b4be851 (compteur local 0)
+00:02:32.730 monde : compteur de jours 0 -> 1 (celui de la session), ajustement n.1
+00:02:18.818 monde: ok heure=90.747 jours=0 lune=12.0 meteo=0 | recu de J0: heure=90.772 jours=0 meteo=0 (17 maj)
+00:02:26.395 monde: ok heure=92.622 jours=0 lune=13.9 meteo=0 | recu de J0: heure=92.647 jours=0 meteo=0 (22 maj)
+00:02:33.976 monde: ok heure=94.521 jours=1 lune=15.8 meteo=0 | recu de J0: heure=95.038 jours=1 meteo=0 (28 maj)
+00:02:41.564 monde: ok heure=96.412 jours=1 lune=17.7 meteo=0 | recu de J0: heure=96.429 jours=1 meteo=0 (32 maj)
+00:02:49.126 monde: ok heure=98.304 jours=1 lune=19.6 meteo=0 | recu de J0: heure=98.329 jours=1 meteo=0 (37 maj)
+00:02:56.698 monde: ok heure=100.195 jours=1 lune=21.4 meteo=0 | recu de J0: heure=100.220 jours=1 meteo=0 (42 maj)
+--- kg_game2.txt
+00:02:20.498 jours : drapeau WM_NumberOfDays (7b4be851) trouve parmi 2801 drapeaux entiers : 0a227ae8 00000000 199d0701 00000000 00000000 7fffffff 00000000 7b4be851 (compteur local 0)
+00:02:20.498 monde : compteur de jours 0 -> 1 (celui de la session), ajustement n.1
+00:02:09.766 monde: ok heure=91.888 jours=0 lune=13.1 meteo=0 | recu de J0: heure=87.327 jours=0 meteo=0 (4 maj)
+00:02:17.333 monde: ok heure=93.780 jours=0 lune=15.0 meteo=0 | recu de J0: heure=87.327 jours=0 meteo=0 (4 maj)
+00:02:24.903 monde: ok heure=95.671 jours=1 lune=16.9 meteo=0 | recu de J0: heure=95.038 jours=1 meteo=0 (5 maj)
+00:02:32.478 monde: ok heure=97.570 jours=1 lune=18.8 meteo=0 | recu de J0: heure=95.038 jours=1 meteo=0 (5 maj)
+00:02:40.052 monde: ok heure=99.462 jours=1 lune=20.7 meteo=0 | recu de J0: heure=95.038 jours=1 meteo=0 (5 maj)
+00:02:47.627 monde: ok heure=101.353 jours=1 lune=22.6 meteo=0 | recu de J0: heure=95.038 jours=1 meteo=0 (5 maj)
+arrete : python 22788
+arrete : Ryujinx 21796
+arrete : Ryujinx 14612
+
+[exited with code 0]

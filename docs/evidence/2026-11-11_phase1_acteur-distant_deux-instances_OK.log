@@ -1,0 +1,55 @@
+﻿# Test a deux instances (tools/run-duo.ps1 duo4), Ryujinx 1.3.3, BOTW 1.9.0, 2026-11-11
+# Chaque instance cree un acteur representant l'autre joueur et le deplace selon les positions recues du relais.
+# Charge a t=210 s : p1 CPU 19,7 % RAM 7794 Mo ; p2 CPU 19,4 % RAM 7758 Mo ; GPU 39 %
+
+# Instance p1
+00:00:06.528 [botw-coop] plugin charge (build Nov 11 2026 00:09:23)
+00:00:06.543 [botw-coop] build id main : cd57b23fa4bbad65803d9788c01821ee (16 octets) -> 1.9.0
+00:00:06.608 [botw-coop] input: 6/6 hooks manette poses ; SCRIPT DE TEST ACTIF (frequence tick 19200000 Hz)
+00:00:15.440 [botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+00:00:15.457 [botw-coop] net: le relais nous attribue l'identifiant J1
+00:01:29.244 [botw-coop] acteur joueur : nom "GameROMPlayer" trouve a +0x1c
+00:01:29.244 [botw-coop] acteur joueur : matrice avec la position du joueur a +0x398 (= decalage attendu de mMtx)
+00:01:29.244 [botw-coop] acteur joueur : matrice avec la position du joueur a +0x460
+00:01:39.271 [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1130.00, 237.40, 1914.50)
+00:01:39.538 [botw-coop] acteur distant : CREE apres 8 images, acteur=660b3d3750 nom="Npc_Kakariko003" pos=(-1130.00, 237.40, 1914.50)
+00:01:44.046 [botw-coop] acteur distant : vivant, pos lue=(-1132.98, 236.75, 1917.61) cible=(-1132.98, 236.75, 1917.61)
+00:01:49.042 [botw-coop] acteur distant : vivant, pos lue=(-1132.98, 236.75, 1917.61) cible=(-1132.98, 236.75, 1917.61)
+   ...
+00:03:49.808 [botw-coop] acteur distant : vivant, pos lue=(-1127.82, 237.44, 1909.76) cible=(-1127.82, 237.44, 1909.76)
+00:03:54.808 [botw-coop] acteur distant : vivant, pos lue=(-1125.54, 237.27, 1898.42) cible=(-1125.54, 237.27, 1898.42)
+00:03:59.809 [botw-coop] acteur distant : vivant, pos lue=(-1125.54, 237.27, 1898.42) cible=(-1125.54, 237.27, 1898.42)
+00:04:04.808 [botw-coop] acteur distant : vivant, pos lue=(-1125.54, 237.27, 1898.42) cible=(-1125.54, 237.27, 1898.42)
+00:04:09.809 [botw-coop] acteur distant : vivant, pos lue=(-1125.54, 237.27, 1898.42) cible=(-1125.54, 237.27, 1898.42)
+00:04:14.808 [botw-coop] acteur distant : vivant, pos lue=(-1125.54, 237.27, 1898.42) cible=(-1125.54, 237.27, 1898.42)
+
+# Instance p2
+00:00:07.349 [botw-coop] plugin charge (build Nov 11 2026 00:09:23)
+00:00:07.362 [botw-coop] build id main : cd57b23fa4bbad65803d9788c01821ee (16 octets) -> 1.9.0
+00:00:07.407 [botw-coop] input: 6/6 hooks manette poses ; SCRIPT DE TEST ACTIF (frequence tick 19200000 Hz)
+00:00:16.380 [botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+00:00:16.399 [botw-coop] net: le relais nous attribue l'identifiant J2
+00:01:28.891 [botw-coop] acteur joueur : nom "GameROMPlayer" trouve a +0x1c
+00:01:28.891 [botw-coop] acteur joueur : matrice avec la position du joueur a +0x398 (= decalage attendu de mMtx)
+00:01:28.891 [botw-coop] acteur joueur : matrice avec la position du joueur a +0x460
+00:01:38.924 [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1132.97, 236.73, 1917.61)
+00:01:39.224 [botw-coop] acteur distant : CREE apres 9 images, acteur=660b4065d8 nom="Npc_Kakariko003" pos=(-1132.97, 236.73, 1917.61)
+00:01:39.356 [botw-coop] acteur distant : vivant, pos lue=(-1132.97, 236.73, 1917.61) cible=(-1132.97, 236.73, 1917.61)
+00:01:44.357 [botw-coop] acteur distant : vivant, pos lue=(-1132.66, 236.79, 1917.34) cible=(-1132.66, 236.79, 1917.34)
+   ...
+00:03:29.924 [botw-coop] acteur distant : vivant, pos lue=(-1128.56, 237.27, 1925.07) cible=(-1128.56, 237.27, 1925.07)
+00:03:35.190 [botw-coop] acteur distant : vivant, pos lue=(-1128.61, 237.27, 1925.02) cible=(-1128.61, 237.27, 1925.02)
+00:03:40.190 [botw-coop] acteur distant : vivant, pos lue=(-1128.57, 237.27, 1925.06) cible=(-1128.57, 237.27, 1925.06)
+00:03:45.190 [botw-coop] acteur distant : vivant, pos lue=(-1128.57, 237.27, 1925.06) cible=(-1128.57, 237.27, 1925.06)
+00:03:50.191 [botw-coop] acteur distant : vivant, pos lue=(-1128.57, 237.27, 1925.06) cible=(-1128.57, 237.27, 1925.06)
+00:03:55.190 [botw-coop] acteur distant : vivant, pos lue=(-1128.57, 237.27, 1925.06) cible=(-1128.57, 237.27, 1925.06)
+
+# Mesure complementaire (run-test spawn2, une instance, acteur de test a 3 m du joueur) : le jeu deplace-t-il l'acteur entre nos ecritures ?
+00:01:24.663 [botw-coop] acteur joueur : nom "GameROMPlayer" trouve a +0x1c
+00:01:24.663 [botw-coop] acteur joueur : matrice avec la position du joueur a +0x398 (= decalage attendu de mMtx)
+00:01:24.663 [botw-coop] acteur joueur : matrice avec la position du joueur a +0x460
+00:01:34.696 [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1129.98, 236.76, 1917.66)
+00:01:34.930 [botw-coop] acteur distant : CREE apres 7 images, acteur=660b3fefb0 nom="Npc_Kakariko003" pos=(-1129.98, 236.76, 1917.66)
+   ...
+00:03:11.080 [botw-coop] acteur distant : vivant, pos avant ecriture=(-1112.61, 237.27, 1906.39) cible=(-1112.61, 237.27, 1906.39) | ecritures=2872, images ou le jeu l'a deplace=0 (ecart max^2=0.0000)
+00:03:16.081 [botw-coop] acteur distant : vivant, pos avant ecriture=(-1112.61, 237.27, 1906.39) cible=(-1112.61, 237.27, 1906.39) | ecritures=3022, images ou le jeu l'a deplace=0 (ecart max^2=0.0000)

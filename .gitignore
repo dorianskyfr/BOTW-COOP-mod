@@ -1,0 +1,11 @@
+﻿third_party/
+build/
+*.nso
+*.nsp
+*.xci
+*.nca
+*.keys
+*.elf
+
+backups/
+__pycache__/

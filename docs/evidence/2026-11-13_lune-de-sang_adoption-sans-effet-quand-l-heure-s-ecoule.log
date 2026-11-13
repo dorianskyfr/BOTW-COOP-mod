@@ -1,0 +1,317 @@
+Minuteur de lune de sang : l'adoption ne tient pas quand l'heure s'ecoule (2026-11-13).
+
+== Essai kl : sauvegarde avancee (copie t_adv1) chargee dans deux instances ==
+joueur 1 : PID 15772, donnees t_kl_p1
+joueur 2 : PID 15876, donnees t_kl_p2
+ecran 2 absent (1 ecran(s)) : fenetres laissees en place
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-569.07, 246.93, 1702.42)
+   83.7s position (-569.07, 246.93, 1702.42) avant acteur (-0.5301, 0.8479)
+  113.7s position (-569.07, 246.93, 1702.42) avant acteur (-0.5301, 0.8479)
+--- kl_game.txt
+00:03:05.908 coop: moi=J1 connecte en jeu pos=(-569.06, 246.92, 1702.42) avant=(-0.53, 0.85) envois=461 | distant=J2 actif=1 pos=(-569.07, 246.93, 170
+00:03:13.468 coop: moi=J1 connecte en jeu pos=(-569.06, 246.92, 1702.42) avant=(-0.53, 0.85) envois=511 | distant=J2 actif=1 pos=(-569.07, 246.93, 170
+00:01:55.022 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.1)
+00:02:08.978 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.301)
+00:02:19.090 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.601)
+00:02:19.631 acteur distant : CREE apres 10 images, acteur=6606c165d0 nom="Npc_Kakariko003" pos=(-567.86, 246.73, 1702.42)
+00:02:20.690 acteur distant : vivant etat=1 lu=(-567.86, 246.67, 1702.42) pos=(-567.86, 246.93, 1702.42) avant=(-0.53, 0.85) | ecritures=33 interpolees=606 figees=39 pas 
+00:02:25.692 acteur distant : vivant etat=1 lu=(-567.86, 246.79, 1702.42) pos=(-567.86, 246.93, 1702.42) avant=(-0.53, 0.85) | ecritures=183 interpolees=753 figees=42 pas
+00:02:43.226 monde: ok heure=314.971 jours=1 lune=560.1 meteo=0 | recu de J0: heure=315.200 jours=1 meteo=0 (32 maj)
+00:02:50.778 monde: ok heure=316.862 jours=1 lune=562.0 meteo=0 | recu de J0: heure=317.091 jours=1 meteo=0 (37 maj)
+00:02:58.344 monde: ok heure=318.754 jours=1 lune=563.9 meteo=0 | recu de J0: heure=318.983 jours=1 meteo=0 (42 maj)
+00:03:05.908 monde: ok heure=320.645 jours=1 lune=565.8 meteo=0 | recu de J0: heure=320.874 jours=1 meteo=0 (47 maj)
+00:03:13.467 monde: ok heure=322.528 jours=1 lune=567.7 meteo=0 | recu de J0: heure=322.765 jours=1 meteo=0 (52 maj)
+--- kl_game2.txt
+00:02:50.665 coop: moi=J2 connecte en jeu pos=(-569.06, 246.92, 1702.42) avant=(-0.53, 0.85) envois=447 | distant=J1 actif=1 pos=(-569.07, 246.93, 170
+00:02:58.230 coop: moi=J2 connecte en jeu pos=(-569.06, 246.92, 1702.42) avant=(-0.53, 0.85) envois=497 | distant=J1 actif=1 pos=(-569.07, 246.93, 170
+00:01:43.086 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.1)
+00:01:55.863 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.301)
+00:02:05.863 acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.601)
+00:02:05.993 acteur distant : CREE apres 5 images, acteur=6606cd5e68 nom="Npc_Kakariko003" pos=(-567.86, 246.93, 1702.42)
+00:02:10.460 acteur distant : vivant etat=1 lu=(-567.86, 246.79, 1702.42) pos=(-567.86, 246.93, 1702.42) avant=(-0.53, 0.85) | ecritures=131 interpolees=687 figees=48 pas
+00:02:15.460 acteur distant : vivant etat=1 lu=(-567.86, 246.93, 1702.42) pos=(-567.86, 246.93, 1702.42) avant=(-0.53, 0.85) | ecritures=281 interpolees=835 figees=50 pas
+00:02:27.980 monde: ok heure=314.450 jours=1 lune=559.6 meteo=0 | recu de J0: heure=305.903 jours=1 meteo=0 (5 maj)
+00:02:35.544 monde: ok heure=316.342 jours=1 lune=561.5 meteo=0 | recu de J0: heure=305.903 jours=1 meteo=0 (5 maj)
+00:02:43.099 monde: ok heure=318.225 jours=1 lune=563.3 meteo=0 | recu de J0: heure=305.903 jours=1 meteo=0 (5 maj)
+00:02:50.665 monde: ok heure=320.116 jours=1 lune=565.2 meteo=0 | recu de J0: heure=305.903 jours=1 meteo=0 (5 maj)
+00:02:58.230 monde: ok heure=322.007 jours=1 lune=567.1 meteo=0 | recu de J0: heure=305.903 jours=1 meteo=0 (5 maj)
+--- relais
+11:34:21.974 joueur 2 : etat n.300 = MTX 0.8479 0.0000 -0.5301 -569.065 0.0000 1.0000 0.0000 246.925 0.5301 0.0000 0.8479 1702.424
+11:34:22.924 joueur 1 : etat n.300 = MTX 0.8479 0.0000 -0.5301 -569.065 0.0000 1.0000 0.0000 246.925 0.5301 0.0000 0.8479 1702.424
+11:34:37.095 joueur 2 : etat n.400 = MTX 0.8479 0.0000 -0.5301 -569.065 0.0000 1.0000 0.0000 246.925 0.5301 0.0000 0.8479 1702.424
+11:34:38.036 joueur 1 : etat n.400 = MTX 0.8479 0.0000 -0.5301 -569.065 0.0000 1.0000 0.0000 246.925 0.5301 0.0000 0.8479 1702.424
+11:34:52.225 joueur 2 : etat n.500 = MTX 0.8479 0.0000 -0.5301 -569.065 0.0000 1.0000 0.0000 246.925 0.5301 0.0000 0.8479 1702.424
+11:34:53.170 joueur 1 : etat n.500 = MTX 0.8479 0.0000 -0.5301 -569.065 0.0000 1.0000 0.0000 246.925 0.5301 0.0000 0.8479 1702.424
+arrete : python 21324
+arrete : Ryujinx 15772
+arrete : Ryujinx 15876
+
+[exited with code 0]
+
+== Essai kk : sauvegarde de debut + outil de test, minuteur 2600 annonce en meme temps qu'un changement d'heure ==
+joueur 1 : PID 25656, donnees t_kk_p1
+joueur 2 : PID 10304, donnees t_kk_p2
+ecran 2 absent (1 ecran(s)) : fenetres laissees en place
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   68.7s hour : session a 94.084 jour 0 -> envoye TIME 350.000 0 0 2600.0
+  123.7s hour : session a 3.431 jour 1 -> envoye TIME 350.000 1 0
+  183.7s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+  188.1s appui A x2 -> (-1024.48, 252.63, 1799.95)
+  203.1s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+--- relais
+11:27:29.824 joueur 2 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+11:27:31.971 joueur 1 : etat complet demande, 29 drapeaux + 0 de lune de sang a envoyer
+--- kk_game.txt
+00:02:05.142 drapeau change : n.18258 hachage=6e263cbb 0 -> 1
+00:02:06.402 drapeau change : n.5897 hachage=23969f9e 0 -> 1
+00:02:16.971 drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+00:02:32.038 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:32.038 monde : minuteur de lune de sang 15.0 -> 2600.0 (celui de la session), ajustement n.1
+00:02:32.566 drapeau change : n.3577 hachage=1508673e 1 -> 0
+00:02:32.566 drapeau change : n.4707 hachage=1c328e7a 0 -> 1 (envoye)
+00:02:32.569 drapeau change : n.26437 hachage=a089b5c2 1 -> 0
+00:02:32.570 drapeau change : n.41016 hachage=f97f7a67 0 -> 1 (envoye)
+00:02:32.799 monde : minuteur de lune de sang remis a zero ici (2600.0 -> 15.2), pas d'adoption pendant 3 min
+00:03:12.567 drapeau change : n.4707 hachage=1c328e7a 1 -> 0
+00:03:12.569 drapeau change : n.21960 hachage=853bdfc0 0 -> 1 (envoye)
+00:03:27.072 drapeau change : n.4707 hachage=1c328e7a 0 -> 1
+00:03:27.074 drapeau change : n.21960 hachage=853bdfc0 1 -> 0
+00:02:05.469 monde: ok heure=87.310 jours=0 lune=8.6 | recu de J0: heure=87.685 jours=0 (7 maj)
+00:02:13.118 monde: ok heure=89.047 jours=0 lune=10.3 | recu de J0: heure=89.577 jours=0 (12 maj)
+00:02:20.714 monde: ok heure=90.914 jours=0 lune=12.2 | recu de J0: heure=91.434 jours=0 (17 maj)
+00:02:28.286 monde: ok heure=92.805 jours=0 lune=14.1 | recu de J0: heure=93.326 jours=0 (22 maj)
+00:02:35.858 monde: ok heure=350.941 jours=0 lune=15.9 | recu de J0: heure=350.941 jours=0 (31 maj)
+00:02:43.424 monde: ok heure=352.833 jours=0 lune=17.8 | recu de J0: heure=352.833 jours=0 (41 maj)
+00:02:51.003 monde: ok heure=354.724 jours=0 lune=19.7 | recu de J0: heure=354.657 jours=0 (50 maj)
+00:02:58.572 monde: ok heure=356.615 jours=0 lune=21.6 | recu de J0: heure=356.615 jours=0 (61 maj)
+00:03:06.146 monde: ok heure=358.515 jours=0 lune=23.5 | recu de J0: heure=358.515 jours=0 (71 maj)
+00:03:13.708 monde: ok heure=0.398 jours=1 lune=25.4 | recu de J0: heure=0.398 jours=1 (81 maj)
+00:03:21.293 monde: ok heure=2.298 jours=1 lune=27.3 | recu de J0: heure=2.298 jours=1 (91 maj)
+00:03:28.856 monde: ok heure=350.450 jours=1 lune=29.2 | recu de J0: heure=350.408 jours=1 (101 maj)
+00:03:36.426 monde: ok heure=352.341 jours=1 lune=31.1 | recu de J0: heure=352.299 jours=1 (111 maj)
+00:03:44.002 monde: ok heure=354.224 jours=1 lune=33.0 | recu de J0: heure=354.191 jours=1 (121 maj)
+00:03:51.575 monde: ok heure=356.115 jours=1 lune=34.9 | recu de J0: heure=356.115 jours=1 (132 maj)
+00:03:59.146 monde: ok heure=358.006 jours=1 lune=36.8 | recu de J0: heure=358.006 jours=1 (141 maj)
+00:04:06.714 monde: ok heure=358.115 jours=1 lune=36.9 | recu de J0: heure=358.115 jours=1 (142 maj)
+00:04:14.279 monde: ok heure=358.115 jours=1 lune=36.9 | recu de J0: heure=358.115 jours=1 (142 maj)
+00:04:21.840 monde: ok heure=358.115 jours=1 lune=36.9 | recu de J0: heure=358.115 jours=1 (142 maj)
+00:04:29.467 monde: ok heure=358.456 jours=1 lune=37.2 | recu de J0: heure=358.115 jours=1 (142 maj)
+00:04:37.046 monde: ok heure=0.356 jours=2 lune=39.1 | recu de J0: heure=0.356 jours=2 (148 maj)
+00:04:44.623 monde: ok heure=2.248 jours=2 lune=41.0 | recu de J0: heure=2.248 jours=2 (153 maj)
+--- kk_game2.txt
+00:01:50.139 drapeau change : n.18258 hachage=6e263cbb 0 -> 1
+00:01:52.448 drapeau change : n.5897 hachage=23969f9e 0 -> 1
+00:02:02.951 drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+00:02:20.117 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:20.117 monde : minuteur de lune de sang 15.6 -> 2600.0 (celui de la session), ajustement n.1
+00:02:20.682 drapeau change : n.3577 hachage=1508673e 1 -> 0
+00:02:20.682 drapeau change : n.4707 hachage=1c328e7a 0 -> 1 (envoye)
+00:02:20.685 drapeau change : n.26437 hachage=a089b5c2 1 -> 0
+00:02:20.686 drapeau change : n.41016 hachage=f97f7a67 0 -> 1 (envoye)
+00:02:20.714 monde : minuteur de lune de sang remis a zero ici (2600.0 -> 15.7), pas d'adoption pendant 3 min
+00:03:00.681 drapeau change : n.4707 hachage=1c328e7a 1 -> 0
+00:03:00.683 drapeau change : n.21960 hachage=853bdfc0 0 -> 1 (envoye)
+00:03:15.181 drapeau change : n.4707 hachage=1c328e7a 0 -> 1
+00:03:15.183 drapeau change : n.21960 hachage=853bdfc0 1 -> 0
+00:01:48.633 monde: ok heure=87.044 jours=0 lune=8.3 | recu de J0: heure=0.000 jours=0 (0 maj)
+00:01:56.502 monde: ok heure=88.443 jours=0 lune=9.7 | recu de J0: heure=0.000 jours=0 (0 maj)
+00:02:04.064 monde: ok heure=90.335 jours=0 lune=11.6 | recu de J0: heure=0.000 jours=0 (0 maj)
+00:02:11.637 monde: ok heure=92.193 jours=0 lune=13.4 | recu de J0: heure=0.000 jours=0 (0 maj)
+00:02:19.222 monde: ok heure=94.084 jours=0 lune=15.3 | recu de J0: heure=0.000 jours=0 (0 maj)
+00:02:26.789 monde: ok heure=351.625 jours=0 lune=17.2 | recu de J0: heure=351.625 jours=0 (10 maj)
+00:02:34.367 monde: ok heure=353.524 jours=0 lune=19.1 | recu de J0: heure=353.524 jours=0 (20 maj)
+00:02:41.933 monde: ok heure=355.415 jours=0 lune=21.0 | recu de J0: heure=355.107 jours=0 (29 maj)
+00:02:49.499 monde: ok heure=357.307 jours=0 lune=22.9 | recu de J0: heure=356.998 jours=0 (39 maj)
+00:02:57.065 monde: ok heure=359.198 jours=0 lune=24.8 | recu de J0: heure=359.198 jours=0 (50 maj)
+00:03:04.646 monde: ok heure=1.089 jours=1 lune=26.7 | recu de J0: heure=1.089 jours=1 (60 maj)
+00:03:12.218 monde: ok heure=2.981 jours=1 lune=28.6 | recu de J0: heure=2.981 jours=1 (70 maj)
+00:03:19.790 monde: ok heure=351.158 jours=1 lune=30.5 | recu de J0: heure=351.158 jours=1 (81 maj)
+00:03:27.355 monde: ok heure=353.049 jours=1 lune=32.3 | recu de J0: heure=353.049 jours=1 (91 maj)
+00:03:34.923 monde: ok heure=354.940 jours=1 lune=34.2 | recu de J0: heure=354.940 jours=1 (101 maj)
+00:03:42.489 monde: ok heure=356.832 jours=1 lune=36.1 | recu de J0: heure=356.832 jours=1 (111 maj)
+00:03:50.057 monde: ok heure=357.573 jours=1 lune=36.9 | recu de J0: heure=358.115 jours=1 (118 maj)
+00:03:57.619 monde: ok heure=357.573 jours=1 lune=36.9 | recu de J0: heure=358.115 jours=1 (118 maj)
+00:04:05.188 monde: ok heure=357.573 jours=1 lune=36.9 | recu de J0: heure=358.115 jours=1 (118 maj)
+00:04:12.750 monde: ok heure=357.573 jours=1 lune=36.9 | recu de J0: heure=358.115 jours=1 (118 maj)
+00:04:20.318 monde: ok heure=358.623 jours=1 lune=37.9 | recu de J0: heure=358.840 jours=1 (120 maj)
+00:04:27.885 monde: ok heure=0.514 jours=2 lune=39.8 | recu de J0: heure=0.731 jours=2 (125 maj)
+arrete : python 31072
+arrete : Ryujinx 25656
+arrete : Ryujinx 10304
+
+[exited with code 0]
+
+== Essai km : sauvegarde avancee, ecriture du drapeau seul, heure qui s'ecoule : 10 ecritures, aucune retenue ==
+joueur 1 : PID 11224, donnees t_km_p1
+joueur 2 : PID 16508, donnees t_km_p2
+ecran 2 absent (1 ecran(s)) : fenetres laissees en place
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-569.07, 246.93, 1702.42)
+   73.7s hour : session a 313.422 jour 1 -> envoye TIME 313.922 1 0 2600.0
+   85.7s hour : session a 316.454 jour 1 -> envoye TIME 352.000 1 0
+  135.7s position (-569.07, 246.93, 1702.42) avant acteur (-0.5301, 0.8479)
+  135.7s hour : session a 4.290 jour 2 -> envoye TIME 352.000 2 1
+  185.7s position (-569.07, 246.93, 1702.42) avant acteur (-0.5301, 0.8479)
+  190.1s appui A x2 -> (-569.07, 246.93, 1702.42)
+  200.1s position (-569.07, 246.93, 1702.42) avant acteur (-0.5301, 0.8479)
+--- relais
+11:37:24.801 joueur 2 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+11:37:24.953 joueur 2 : drapeau de lune de sang 1613c8f7 a 1 (1 en memoire)
+11:37:24.954 joueur 2 : drapeau de lune de sang 1fa2ac36 a 1 (2 en memoire)
+11:37:24.954 joueur 2 : drapeau de lune de sang 20150405 a 1 (3 en memoire)
+11:37:24.955 joueur 2 : drapeau de lune de sang 34983ad3 a 1 (4 en memoire)
+11:37:24.956 joueur 2 : drapeau de lune de sang 467f4784 a 1 (5 en memoire)
+11:37:24.956 joueur 2 : drapeau de lune de sang 6426167f a 1 (6 en memoire)
+11:37:24.956 joueur 2 : drapeau de lune de sang 64f4b5a0 a 1 (7 en memoire)
+--- km_game.txt
+00:02:37.574 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:37.575 monde : minuteur de lune de sang 558.6 -> 2600.0 (celui de la session), ajustement n.1
+00:02:39.538 monde : minuteur de lune de sang 559.1 -> 2600.0 (celui de la session), ajustement n.2
+00:02:39.705 monde : minuteur de lune de sang 559.2 -> 2600.0 (celui de la session), ajustement n.3
+00:02:41.038 monde : minuteur de lune de sang 559.5 -> 2600.0 (celui de la session), ajustement n.4
+00:02:41.205 monde : minuteur de lune de sang 559.5 -> 2600.0 (celui de la session), ajustement n.5
+00:02:42.572 monde : minuteur de lune de sang 559.9 -> 2600.0 (celui de la session), ajustement n.6
+00:02:42.707 monde : minuteur de lune de sang 559.9 -> 2600.0 (celui de la session), ajustement n.7
+00:02:44.072 monde : minuteur de lune de sang 560.2 -> 2600.0 (celui de la session), ajustement n.8
+00:02:44.238 monde : minuteur de lune de sang 560.3 -> 2600.0 (celui de la session), ajustement n.9
+00:02:45.738 monde : minuteur de lune de sang 560.7 -> 2600.0 (celui de la session), ajustement n.10
+00:02:47.104 monde : minuteur de lune de sang 561.0 -> 2600.0 (celui de la session), ajustement n.11
+drapeaux changes : 2
+00:02:33.511 monde: ok heure=312.480 jours=1 lune=557.6 | recu de J0: heure=312.288 jours=1 (23 maj)
+00:02:41.082 monde: ok heure=314.371 jours=1 lune=559.5 | recu de J0: heure=314.371 jours=1 (30 maj)
+00:02:48.657 monde: ok heure=316.271 jours=1 lune=561.4 | recu de J0: heure=316.079 jours=1 (39 maj)
+00:02:56.226 monde: ok heure=353.658 jours=1 lune=563.3 | recu de J0: heure=353.658 jours=1 (51 maj)
+00:03:03.799 monde: ok heure=355.549 jours=1 lune=565.2 | recu de J0: heure=355.549 jours=1 (61 maj)
+00:03:11.370 monde: ok heure=357.440 jours=1 lune=567.1 | recu de J0: heure=357.440 jours=1 (71 maj)
+00:03:18.938 monde: ok heure=359.332 jours=1 lune=569.0 | recu de J0: heure=359.332 jours=1 (81 maj)
+00:03:26.502 monde: ok heure=1.223 jours=2 lune=570.9 | recu de J0: heure=0.881 jours=2 (90 maj)
+00:03:34.079 monde: ok heure=3.115 jours=2 lune=572.8 | recu de J0: heure=3.115 jours=2 (101 maj)
+00:03:41.653 monde: ok heure=352.492 jours=2 lune=574.7 | recu de J0: heure=352.492 jours=2 (112 maj)
+00:03:49.303 monde: ok heure=354.374 jours=2 lune=576.6 | recu de J0: heure=354.033 jours=2 (121 maj)
+00:03:56.873 monde: ok heure=356.266 jours=2 lune=578.5 | recu de J0: heure=356.266 jours=2 (132 maj)
+00:04:04.441 monde: ok heure=358.157 jours=2 lune=580.4 | recu de J0: heure=357.824 jours=2 (141 maj)
+00:04:12.012 monde: ok heure=0.048 jours=3 lune=582.3 | recu de J0: heure=0.048 jours=3 (152 maj)
+00:04:19.617 monde: ok heure=1.948 jours=3 lune=584.2 | recu de J0: heure=1.948 jours=3 (162 maj)
+00:04:27.178 monde: ok heure=3.790 jours=3 lune=586.0 | recu de J0: heure=3.790 jours=3 (172 maj)
+00:04:34.760 monde: ok heure=5.690 jours=3 lune=587.9 | recu de J0: heure=5.690 jours=3 (182 maj)
+00:04:42.326 monde: ok heure=7.581 jours=3 lune=589.8 | recu de J0: heure=7.281 jours=3 (191 maj)
+--- km_game2.txt
+00:02:25.579 lune de sang : drapeau WM_BloodyMoonTimer (4234e199) trouve parmi 46 drapeaux numeriques (valeur a +0x18, hachage a +0x1c)
+00:02:25.579 monde : minuteur de lune de sang 558.8 -> 2600.0 (celui de la session), ajustement n.1
+00:02:27.675 monde : minuteur de lune de sang 559.3 -> 2600.0 (celui de la session), ajustement n.2
+00:02:29.208 monde : minuteur de lune de sang 559.7 -> 2600.0 (celui de la session), ajustement n.3
+00:02:29.342 monde : minuteur de lune de sang 559.7 -> 2600.0 (celui de la session), ajustement n.4
+00:02:30.712 monde : minuteur de lune de sang 560.1 -> 2600.0 (celui de la session), ajustement n.5
+00:02:32.240 monde : minuteur de lune de sang 560.4 -> 2600.0 (celui de la session), ajustement n.6
+00:02:33.740 monde : minuteur de lune de sang 560.8 -> 2600.0 (celui de la session), ajustement n.7
+00:02:35.242 monde : minuteur de lune de sang 561.2 -> 2600.0 (celui de la session), ajustement n.8
+00:02:36.776 monde : minuteur de lune de sang 561.6 -> 2600.0 (celui de la session), ajustement n.9
+00:02:37.543 monde : heure locale 316.65, heure de J0 352.00 (ecart 35.35) -> recalage n.1 demande
+00:02:38.275 monde : minuteur de lune de sang 562.0 -> 2600.0 (celui de la session), ajustement n.10
+drapeaux changes : 8
+00:02:18.623 monde: ok heure=311.914 jours=1 lune=557.0 | recu de J0: heure=311.722 jours=1 (23 maj)
+00:02:26.209 monde: ok heure=313.805 jours=1 lune=558.9 | recu de J0: heure=313.922 jours=1 (28 maj)
+00:02:33.779 monde: ok heure=315.696 jours=1 lune=560.8 | recu de J0: heure=315.696 jours=1 (38 maj)
+00:02:41.343 monde: ok heure=352.933 jours=1 lune=562.7 | recu de J0: heure=352.900 jours=1 (48 maj)
+00:02:48.922 monde: ok heure=354.824 jours=1 lune=564.6 | recu de J0: heure=354.824 jours=1 (59 maj)
+00:02:56.493 monde: ok heure=356.724 jours=1 lune=566.5 | recu de J0: heure=356.724 jours=1 (69 maj)
+00:03:04.056 monde: ok heure=358.615 jours=1 lune=568.4 | recu de J0: heure=358.615 jours=1 (79 maj)
+00:03:11.618 monde: ok heure=0.498 jours=2 lune=570.3 | recu de J0: heure=0.498 jours=2 (89 maj)
+00:03:19.181 monde: ok heure=2.390 jours=2 lune=572.2 | recu de J0: heure=2.390 jours=2 (99 maj)
+00:03:26.760 monde: ok heure=4.290 jours=2 lune=574.1 | recu de J0: heure=4.290 jours=2 (109 maj)
+00:03:34.330 monde: ok heure=353.658 jours=2 lune=576.0 | recu de J0: heure=353.658 jours=2 (120 maj)
+00:03:41.911 monde: ok heure=355.549 jours=2 lune=577.9 | recu de J0: heure=355.507 jours=2 (129 maj)
+00:03:49.484 monde: ok heure=357.440 jours=2 lune=579.8 | recu de J0: heure=357.399 jours=2 (139 maj)
+00:03:57.044 monde: ok heure=359.332 jours=2 lune=581.7 | recu de J0: heure=359.298 jours=2 (149 maj)
+00:04:04.606 monde: ok heure=1.223 jours=3 lune=583.6 | recu de J0: heure=1.223 jours=3 (160 maj)
+00:04:12.416 monde: ok heure=3.115 jours=3 lune=585.5 | recu de J0: heure=3.115 jours=3 (170 maj)
+00:04:19.985 monde: ok heure=5.006 jours=3 lune=587.4 | recu de J0: heure=5.006 jours=3 (180 maj)
+00:04:27.543 monde: ok heure=6.898 jours=3 lune=589.3 | recu de J0: heure=6.898 jours=3 (190 maj)
+arrete : python 30224
+arrete : Ryujinx 11224
+arrete : Ryujinx 16508
+
+[exited with code 0]
+
+== Essai kn : drapeau + champ TimeMgr +0xc8 ecrits ensemble : 8 ecritures, aucune retenue ==
+joueur 1 : PID 1624, donnees t_kn_p1
+joueur 2 : PID 13188, donnees t_kn_p2
+ecran 2 absent (1 ecran(s)) : fenetres laissees en place
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-569.07, 246.93, 1702.42)
+   73.7s hour : session a 313.409 jour 1 -> envoye TIME 313.909 1 0 2600.0
+   85.7s hour : session a 316.433 jour 1 -> envoye TIME 352.000 1 0
+  135.7s position (-569.07, 246.93, 1702.42) avant acteur (-0.5301, 0.8479)
+  135.7s hour : session a 4.290 jour 2 -> envoye TIME 352.000 2 1
+  185.7s position (-569.07, 246.93, 1702.42) avant acteur (-0.5301, 0.8479)
+  190.1s appui A x2 -> (-569.07, 246.93, 1702.42)
+  200.1s position (-569.07, 246.93, 1702.42) avant acteur (-0.5301, 0.8479)
+--- relais
+0
+--- kn_game.txt
+00:02:37.709 monde : minuteur de lune de sang 558.6 -> 2600.0 (celui de la session), ajustement n.1
+00:02:39.671 monde : minuteur de lune de sang 559.1 -> 2600.0 (celui de la session), ajustement n.2
+00:02:39.806 monde : minuteur de lune de sang 559.1 -> 2600.0 (celui de la session), ajustement n.3
+00:02:41.337 monde : minuteur de lune de sang 559.5 -> 2600.0 (celui de la session), ajustement n.4
+00:02:42.711 monde : minuteur de lune de sang 559.8 -> 2600.0 (celui de la session), ajustement n.5
+00:02:42.837 monde : minuteur de lune de sang 559.9 -> 2600.0 (celui de la session), ajustement n.6
+00:02:44.339 monde : minuteur de lune de sang 560.3 -> 2600.0 (celui de la session), ajustement n.7
+00:02:45.705 monde : minuteur de lune de sang 560.6 -> 2600.0 (celui de la session), ajustement n.8
+drapeaux changes : 2
+00:02:33.641 monde: ok heure=312.455 jours=1 lune=557.6 | recu de J0: heure=312.268 jours=1 (25 maj)
+00:02:41.211 monde: ok heure=314.346 jours=1 lune=559.5 | recu de J0: heure=314.159 jours=1 (31 maj)
+00:02:48.776 monde: ok heure=316.238 jours=1 lune=561.4 | recu de J0: heure=316.050 jours=1 (41 maj)
+00:02:56.347 monde: ok heure=353.658 jours=1 lune=563.2 | recu de J0: heure=353.658 jours=1 (53 maj)
+00:03:03.919 monde: ok heure=355.549 jours=1 lune=565.1 | recu de J0: heure=355.549 jours=1 (63 maj)
+00:03:11.477 monde: ok heure=357.440 jours=1 lune=567.0 | recu de J0: heure=357.099 jours=1 (72 maj)
+00:03:19.046 monde: ok heure=359.332 jours=1 lune=568.9 | recu de J0: heure=359.332 jours=1 (83 maj)
+00:03:26.614 monde: ok heure=1.223 jours=2 lune=570.8 | recu de J0: heure=1.223 jours=2 (93 maj)
+00:03:34.186 monde: ok heure=3.115 jours=2 lune=572.7 | recu de J0: heure=3.115 jours=2 (103 maj)
+00:03:41.757 monde: ok heure=352.525 jours=2 lune=574.6 | recu de J0: heure=352.525 jours=2 (114 maj)
+00:03:49.324 monde: ok heure=354.416 jours=2 lune=576.5 | recu de J0: heure=354.416 jours=2 (124 maj)
+00:03:56.891 monde: ok heure=356.307 jours=2 lune=578.4 | recu de J0: heure=356.307 jours=2 (134 maj)
+00:04:04.462 monde: ok heure=358.198 jours=2 lune=580.3 | recu de J0: heure=358.198 jours=2 (144 maj)
+00:04:12.022 monde: ok heure=0.090 jours=3 lune=582.2 | recu de J0: heure=359.748 jours=2 (153 maj)
+00:04:19.619 monde: ok heure=1.973 jours=3 lune=584.1 | recu de J0: heure=1.640 jours=3 (163 maj)
+00:04:27.190 monde: ok heure=3.881 jours=3 lune=586.0 | recu de J0: heure=3.531 jours=3 (173 maj)
+00:04:34.759 monde: ok heure=5.773 jours=3 lune=587.9 | recu de J0: heure=5.423 jours=3 (183 maj)
+00:04:42.323 monde: ok heure=7.665 jours=3 lune=589.8 | recu de J0: heure=7.665 jours=3 (194 maj)
+--- kn_game2.txt
+00:02:25.646 monde : minuteur de lune de sang 558.7 -> 2600.0 (celui de la session), ajustement n.1
+00:02:27.742 monde : minuteur de lune de sang 559.3 -> 2600.0 (celui de la session), ajustement n.2
+00:02:29.276 monde : minuteur de lune de sang 559.7 -> 2600.0 (celui de la session), ajustement n.3
+00:02:29.408 monde : minuteur de lune de sang 559.7 -> 2600.0 (celui de la session), ajustement n.4
+00:02:30.773 monde : minuteur de lune de sang 560.0 -> 2600.0 (celui de la session), ajustement n.5
+00:02:32.273 monde : minuteur de lune de sang 560.4 -> 2600.0 (celui de la session), ajustement n.6
+00:02:33.806 monde : minuteur de lune de sang 560.8 -> 2600.0 (celui de la session), ajustement n.7
+00:02:33.940 monde : minuteur de lune de sang 560.8 -> 2600.0 (celui de la session), ajustement n.8
+drapeaux changes : 8
+00:02:18.704 monde: ok heure=311.893 jours=1 lune=557.0 | recu de J0: heure=311.697 jours=1 (23 maj)
+00:02:26.274 monde: ok heure=313.784 jours=1 lune=558.9 | recu de J0: heure=313.909 jours=1 (28 maj)
+00:02:33.834 monde: ok heure=315.675 jours=1 lune=560.8 | recu de J0: heure=315.479 jours=1 (37 maj)
+00:02:41.414 monde: ok heure=352.933 jours=1 lune=562.7 | recu de J0: heure=352.933 jours=1 (49 maj)
+00:02:48.992 monde: ok heure=354.833 jours=1 lune=564.6 | recu de J0: heure=354.833 jours=1 (59 maj)
+00:02:56.557 monde: ok heure=356.724 jours=1 lune=566.5 | recu de J0: heure=356.724 jours=1 (69 maj)
+00:03:04.127 monde: ok heure=358.615 jours=1 lune=568.4 | recu de J0: heure=358.615 jours=1 (79 maj)
+00:03:11.695 monde: ok heure=0.506 jours=2 lune=570.3 | recu de J0: heure=0.473 jours=2 (88 maj)
+00:03:19.263 monde: ok heure=2.398 jours=2 lune=572.2 | recu de J0: heure=2.365 jours=2 (98 maj)
+00:03:26.835 monde: ok heure=4.290 jours=2 lune=574.1 | recu de J0: heure=4.290 jours=2 (109 maj)
+00:03:34.404 monde: ok heure=353.691 jours=2 lune=576.0 | recu de J0: heure=353.658 jours=2 (119 maj)
+00:03:41.967 monde: ok heure=355.582 jours=2 lune=577.9 | recu de J0: heure=355.582 jours=2 (130 maj)
+00:03:49.537 monde: ok heure=357.474 jours=2 lune=579.8 | recu de J0: heure=357.474 jours=2 (140 maj)
+00:03:57.117 monde: ok heure=359.365 jours=2 lune=581.7 | recu de J0: heure=359.365 jours=2 (150 maj)
+00:04:04.688 monde: ok heure=1.256 jours=3 lune=583.6 | recu de J0: heure=1.256 jours=3 (160 maj)
+00:04:12.262 monde: ok heure=3.156 jours=3 lune=585.5 | recu de J0: heure=3.156 jours=3 (170 maj)
+00:04:19.841 monde: ok heure=5.048 jours=3 lune=587.4 | recu de J0: heure=5.048 jours=3 (180 maj)
+00:04:27.409 monde: ok heure=6.940 jours=3 lune=589.3 | recu de J0: heure=6.940 jours=3 (190 maj)
+arrete : python 5324
+arrete : Ryujinx 1624
+arrete : Ryujinx 13188
+
+[exited with code 0]

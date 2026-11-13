@@ -1,0 +1,28 @@
+﻿# Phase 2 : synchronisation de l'heure entre deux instances (run-duo duo7), BOTW 1.9.0, Ryujinx 1.3.3, 2026-11-11
+# Build de test : -DCOOP_TEST_UNFREEZE_TIME (l'heure s'ecoule dans la zone de depart). J2 demarre 20 s apres J1.
+
+# Instance p1
+00:00:18.211 [botw-coop] monde : OUTIL DE TEST, ecoulement de l'heure force
+   ...
+00:03:21.536 [botw-coop] monde: ok gestionnaires=9 heure=86.189 pas=0.00833 jours=0 lune=11.2 meteo=0 | recu de J2: heure=84.735 jours=0 meteo=0 (67 maj)
+00:03:29.103 [botw-coop] monde: ok gestionnaires=9 heure=88.080 pas=0.00833 jours=0 lune=13.1 meteo=0 | recu de J2: heure=86.618 jours=0 meteo=0 (72 maj)
+00:03:36.671 [botw-coop] monde: ok gestionnaires=9 heure=89.880 pas=0.00833 jours=0 lune=14.9 meteo=0 | recu de J2: heure=88.509 jours=0 meteo=0 (77 maj)
+00:03:44.222 [botw-coop] monde: ok gestionnaires=9 heure=91.771 pas=0.00833 jours=0 lune=16.8 meteo=0 | recu de J2: heure=90.400 jours=0 meteo=0 (82 maj)
+00:03:51.780 [botw-coop] monde: ok gestionnaires=9 heure=93.662 pas=0.00833 jours=0 lune=18.7 meteo=0 | recu de J2: heure=92.283 jours=0 meteo=0 (87 maj)
+00:03:59.344 [botw-coop] monde: ok gestionnaires=9 heure=95.545 pas=0.00833 jours=0 lune=20.5 meteo=0 | recu de J2: heure=94.116 jours=0 meteo=0 (92 maj)
+00:04:06.900 [botw-coop] monde: ok gestionnaires=9 heure=97.436 pas=0.00833 jours=0 lune=22.4 meteo=0 | recu de J2: heure=96.007 jours=0 meteo=0 (97 maj)
+00:04:14.458 [botw-coop] monde: ok gestionnaires=9 heure=99.327 pas=0.00833 jours=0 lune=24.3 meteo=0 | recu de J2: heure=97.890 jours=0 meteo=0 (102 maj)
+
+# Instance p2
+00:00:20.375 [botw-coop] monde : OUTIL DE TEST, ecoulement de l'heure force
+00:02:24.815 [botw-coop] monde : heure locale 75.06, heure de J1 77.12 (ecart 2.06) -> recalage n.1 demande
+00:02:33.850 [botw-coop] monde : heure locale 77.12, heure de J1 79.38 (ecart 2.27) -> recalage n.2 demande
+   ...
+00:03:00.248 [botw-coop] monde: ok gestionnaires=9 heure=84.735 pas=0.00833 jours=0 lune=5.4 meteo=0 | recu de J1: heure=85.814 jours=0 meteo=0 (81 maj)
+00:03:07.798 [botw-coop] monde: ok gestionnaires=9 heure=86.618 pas=0.00833 jours=0 lune=7.3 meteo=0 | recu de J1: heure=87.705 jours=0 meteo=0 (86 maj)
+00:03:15.369 [botw-coop] monde: ok gestionnaires=9 heure=88.509 pas=0.00833 jours=0 lune=9.2 meteo=0 | recu de J1: heure=89.505 jours=0 meteo=0 (91 maj)
+00:03:22.921 [botw-coop] monde: ok gestionnaires=9 heure=90.400 pas=0.00833 jours=0 lune=11.1 meteo=0 | recu de J1: heure=91.396 jours=0 meteo=0 (96 maj)
+00:03:30.470 [botw-coop] monde: ok gestionnaires=9 heure=92.283 pas=0.00833 jours=0 lune=13.0 meteo=0 | recu de J1: heure=93.279 jours=0 meteo=0 (101 maj)
+00:03:38.021 [botw-coop] monde: ok gestionnaires=9 heure=94.116 pas=0.00833 jours=0 lune=14.8 meteo=0 | recu de J1: heure=95.170 jours=0 meteo=0 (106 maj)
+00:03:45.582 [botw-coop] monde: ok gestionnaires=9 heure=96.007 pas=0.00833 jours=0 lune=16.7 meteo=0 | recu de J1: heure=97.061 jours=0 meteo=0 (111 maj)
+00:03:53.132 [botw-coop] monde: ok gestionnaires=9 heure=97.890 pas=0.00833 jours=0 lune=18.6 meteo=0 | recu de J1: heure=98.952 jours=0 meteo=0 (116 maj)

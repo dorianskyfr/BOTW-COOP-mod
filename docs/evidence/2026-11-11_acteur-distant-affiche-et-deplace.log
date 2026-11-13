@@ -1,0 +1,9 @@
+00:01:36.116 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1129.98, 236.76, 1917.66)
+00:01:36.524 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] acteur distant : CREE apres 10 images, acteur=660b438fb0 nom="Npc_Kakariko003" pos=(-1129.98, 236.77, 1917.66)
+00:01:36.540 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] controleur de personnage 660b43ca40 : corps 660b43cdd8 a +0x8
+00:01:36.540 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] controleur de personnage 660b43ca40 : 1 corps
+00:01:36.540 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : deplacement par le corps physique -> code 101
+00:03:02.583 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : vivant etat=1 lu=(-1121.34, 237.30, 1904.15) pos=(-1121.34, 237.27, 1904.15) avant=(0.00, 1.00) | ecritures=2566 interpolees=0 figees=0 pas max=0.210 m | deplace par le jeu=1906
+00:03:07.585 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : vivant etat=1 lu=(-1121.34, 237.27, 1904.15) pos=(-1121.34, 237.27, 1904.15) avant=(0.00, 1.00) | ecritures=2716 interpolees=0 figees=0 pas max=0.000 m | deplace par le jeu=2036
+00:03:12.583 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : vivant etat=1 lu=(-1121.34, 237.29, 1904.15) pos=(-1121.34, 237.27, 1904.15) avant=(0.00, 1.00) | ecritures=2866 interpolees=0 figees=0 pas max=0.000 m | deplace par le jeu=2163
+00:03:17.587 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : vivant etat=1 lu=(-1121.34, 237.31, 1904.15) pos=(-1121.34, 237.27, 1904.15) avant=(0.00, 1.00) | ecritures=3016 interpolees=0 figees=0 pas max=0.000 m | deplace par le jeu=2292

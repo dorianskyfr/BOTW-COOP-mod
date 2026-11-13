@@ -1,0 +1,20 @@
+# Essai e1 (2026-11-12) : pour chaque ennemi et coffre charge, existence du drapeau MainField_<acteur>_<HashId> dans la table des booleens
+# proprietes : 0x1 lisible, 0x2 modifiable, 0x4 sauvegarde, 0x10 lie a un evenement, bits 5-7 = ResetType (1 = remis a zero a la lune de sang) (gdtFlag.h)
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1133377874 -> d9009fe1 existe, valeur 0, proprietes 0x27
+drapeau d'acteur : MainField_TBox_Field_Stone_1122331722 -> 985be8e9 existe, valeur 0, proprietes 0x07
+drapeau d'acteur : MainField_TBox_Field_Stone_1335244483 -> 7eac67bd existe, valeur 0, proprietes 0x07
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_4100606948 -> f94616c2 existe, valeur 0, proprietes 0x27
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_3713097319 -> f1d0c93e existe, valeur 0, proprietes 0x27
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_904172580 -> 790c67c7 existe, valeur 0, proprietes 0x27
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_3306852344 -> 2f15a0ad existe, valeur 0, proprietes 0x27
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1668121676 -> b3559537 existe, valeur 0, proprietes 0x27
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1384488657 -> 09ac3cb2 existe, valeur 0, proprietes 0x27
+drapeau d'acteur : MainField_Enemy_Bokoblin_Guard_Junior_3743194910 -> 129fa99c existe, valeur 0, proprietes 0x37
+drapeau d'acteur : MainField_Enemy_Bokoblin_Guard_Junior_2412842669 -> ed72584c existe, valeur 0, proprietes 0x37
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_3914440242 -> e904d5c6 existe, valeur 0, proprietes 0x37
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_31741041 -> e05efbea existe, valeur 0, proprietes 0x37
+drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_685720050 -> d4f2a057 existe, valeur 0, proprietes 0x37
+drapeau d'acteur : MainField_TBox_Field_Enemy_3587085179 -> 62807c2b existe, valeur 0, proprietes 0x17
+drapeau d'acteur : MainField_TBox_Field_Stone_4125758579 -> 3b2d1cbc existe, valeur 0, proprietes 0x07
+drapeau d'acteur : MainField_Enemy_Golem_Junior_3610208070 -> 5a034937 existe, valeur 0, proprietes 0x27
+drapeau d'acteur : 17 acteur(s) examines (ennemis et coffres)

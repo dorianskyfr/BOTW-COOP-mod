@@ -1,0 +1,35 @@
+=== essai soak4 : 5 min, deux instances, monde ouvert, deplacements aleatoires ===
+   35.8s joueur 1 en jeu : (-1024.48, 252.64, 1799.95)
+  378.6s fin de l'endurance : joueur 1 en (-1030.67, 251.19, 1811.78), 42 deplacements, 2279 etats recus
+   35.8s joueur 2 en jeu : (-1024.48, 252.64, 1799.95)
+  378.6s fin de l'endurance : joueur 2 en (-1037.64, 251.30, 1801.64), 42 deplacements, 2283 etats recus
+--- soak4_game.txt
+[botw-coop] perf: 900 images, intervalle moyen 43555 us (22.9 img/s), max 9627719 us | plugin moyen 3 us, max 17 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 40733 us (24.5 img/s), max 2499013 us | plugin moyen 3 us, max 115 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 35997 us (27.7 img/s), max 352654 us | plugin moyen 102 us, max 5392 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33335 us (29.9 img/s), max 53140 us | plugin moyen 237 us, max 5296 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33368 us (29.9 img/s), max 109135 us | plugin moyen 244 us, max 7266 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), max 65073 us | plugin moyen 205 us, max 680 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), max 53676 us | plugin moyen 189 us, max 657 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), max 42561 us | plugin moyen 191 us, max 681 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), max 38719 us | plugin moyen 186 us, max 585 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), max 61113 us | plugin moyen 192 us, max 3924 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33335 us (29.9 img/s), max 38190 us | plugin moyen 195 us, max 4382 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33331 us (30.0 img/s), max 38627 us | plugin moyen 197 us, max 4285 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), max 48189 us | plugin moyen 192 us, max 4374 us | lectures refusees 0
+plantages : 0
+--- soak4_game2.txt
+[botw-coop] perf: 900 images, intervalle moyen 37129 us (26.9 img/s), max 4338465 us | plugin moyen 3 us, max 19 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 42142 us (23.7 img/s), max 2533621 us | plugin moyen 4 us, max 67 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33626 us (29.7 img/s), max 188493 us | plugin moyen 189 us, max 5263 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), max 70804 us | plugin moyen 256 us, max 4239 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), max 104248 us | plugin moyen 252 us, max 649 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), max 47840 us | plugin moyen 251 us, max 4807 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), max 58779 us | plugin moyen 261 us, max 4339 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), max 40359 us | plugin moyen 256 us, max 4140 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), max 38402 us | plugin moyen 254 us, max 714 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), max 39961 us | plugin moyen 263 us, max 4132 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), max 38722 us | plugin moyen 260 us, max 653 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), max 37700 us | plugin moyen 267 us, max 4182 us | lectures refusees 0
+[botw-coop] perf: 900 images, intervalle moyen 33334 us (29.9 img/s), max 38740 us | plugin moyen 267 us, max 4300 us | lectures refusees 0
+plantages : 0

@@ -1,0 +1,25 @@
+OK     identifiants 1 puis 2
+OK     position de J1 retransmise a J2 avec son identifiant
+OK     J1 ne recoit pas sa propre position
+OK     drapeau nouveau retransmis
+OK     doublon et valeur 0 non retransmis
+OK     heure de la reference redistribuee sous l'identifiant 0
+OK     heure d'un autre joueur non redistribuee
+OK     le pilote ne prend pas d'identifiant de joueur (J3 = 3)
+OK     commande de manette du pilote remise a sa cible seulement
+OK     ... et pas aux autres
+OK     depart du pilote non annonce
+OK     etat complet : drapeau, heure, fin
+OK     depart de J1 annonce
+OK     releve de l'horloge : J2 devient la reference
+OK     ... et J3 n'est pas ecoute
+OK     drapeau de lune de sang retransmis
+OK     ... et present dans l'etat complet
+OK     sa remise a zero n'est pas imposee aux autres
+OK     ... mais le serveur l'oublie
+OK     identifiant libere repris (1)
+OK     memoire ecrite sur disque
+OK     memoire relue apres redemarrage
+OK     pas d'heure donnee sans joueur de reference
+
+23 / 23 essais passes

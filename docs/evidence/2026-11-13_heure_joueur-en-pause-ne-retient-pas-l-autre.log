@@ -1,0 +1,52 @@
+Essai kv (2026-11-13) : sauvegarde t_adv1, deux instances. J2 ouvre le menu (PLUS) pendant ~45 s puis le ferme. Extraits des journaux build\runs.
+
+=== kv_game.txt
+00:01:49.181 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:57.165 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:02:05.620 monde: ok heure=305.603 jours=1 lune=550.7 meteo=0 | recu de J0: heure=305.602 jours=1 meteo=-1 (6 maj)
+00:02:13.394 monde: ok heure=307.094 jours=1 lune=552.2 meteo=0 | recu de J0: heure=307.248 jours=1 meteo=-1 (11 maj)
+00:02:20.967 monde: ok heure=308.985 jours=1 lune=554.1 meteo=0 | recu de J0: heure=309.114 jours=1 meteo=-1 (16 maj)
+00:02:28.540 monde: ok heure=310.851 jours=1 lune=555.9 meteo=0 | recu de J0: heure=311.005 jours=1 meteo=-1 (21 maj)
+00:02:36.117 monde: ok heure=312.743 jours=1 lune=557.8 meteo=0 | recu de J0: heure=312.039 jours=1 meteo=-1 (24 maj)
+00:02:43.680 monde: ok heure=314.634 jours=1 lune=559.7 meteo=0 | recu de J0: heure=312.039 jours=1 meteo=-1 (24 maj)
+00:02:51.242 monde: ok heure=316.525 jours=1 lune=561.6 meteo=0 | recu de J0: heure=312.039 jours=1 meteo=-1 (24 maj)
+00:02:58.798 monde: ok heure=318.408 jours=1 lune=563.5 meteo=0 | recu de J0: heure=312.039 jours=1 meteo=-1 (24 maj)
+00:03:06.352 monde: ok heure=320.299 jours=1 lune=565.4 meteo=0 | recu de J0: heure=312.039 jours=1 meteo=-1 (24 maj)
+00:03:13.914 monde: ok heure=322.190 jours=1 lune=567.3 meteo=0 | recu de J0: heure=312.039 jours=1 meteo=-1 (24 maj)
+00:03:21.474 monde: ok heure=324.081 jours=1 lune=569.2 meteo=0 | recu de J0: heure=323.965 jours=1 meteo=-1 (26 maj)
+00:03:29.028 monde: ok heure=325.964 jours=1 lune=571.1 meteo=0 | recu de J0: heure=325.856 jours=1 meteo=-1 (31 maj)
+00:03:36.584 monde: ok heure=327.856 jours=1 lune=573.0 meteo=0 | recu de J0: heure=327.739 jours=1 meteo=-1 (36 maj)
+00:03:44.147 monde: ok heure=329.747 jours=1 lune=574.9 meteo=0 | recu de J0: heure=329.630 jours=1 meteo=-1 (41 maj)
+
+=== kv_game2.txt
+00:01:42.039 monde: ok heure=304.132 jours=1 lune=549.2 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:50.305 monde: ok heure=305.069 jours=1 lune=550.1 meteo=0 | recu de J0: heure=304.961 jours=1 meteo=0 (4 maj)
+00:01:58.206 monde: ok heure=306.490 jours=1 lune=551.6 meteo=0 | recu de J0: heure=306.107 jours=1 meteo=0 (8 maj)
+00:02:05.768 monde: ok heure=308.381 jours=1 lune=553.5 meteo=0 | recu de J0: heure=307.998 jours=1 meteo=0 (13 maj)
+00:02:13.342 monde: ok heure=310.247 jours=1 lune=555.3 meteo=0 | recu de J0: heure=309.872 jours=1 meteo=0 (18 maj)
+00:02:20.989 monde: ok heure=312.039 jours=1 lune=557.1 meteo=0 | recu de J0: heure=311.984 jours=1 meteo=0 (24 maj)
+00:02:28.536 monde: ok heure=312.039 jours=1 lune=557.1 meteo=0 | recu de J0: heure=313.876 jours=1 meteo=0 (29 maj)
+00:02:30.010 monde : heure locale 312.04, heure de J0 314.26 (ecart 2.22) -> recalage n.1 demande
+00:02:36.085 monde: ok heure=312.039 jours=1 lune=557.1 meteo=0 | recu de J0: heure=315.384 jours=1 meteo=0 (33 maj)
+00:02:36.210 monde : heure locale 312.04, heure de J0 315.77 (ecart 3.73) -> recalage n.2 demande
+00:02:42.242 monde : heure locale 312.04, heure de J0 317.27 (ecart 5.24) -> recalage n.3 demande
+00:02:43.634 monde: ok heure=312.039 jours=1 lune=557.1 meteo=0 | recu de J0: heure=317.275 jours=1 meteo=0 (38 maj)
+00:02:48.276 monde : heure locale 312.04, heure de J0 318.79 (ecart 6.75) -> recalage n.4 demande
+00:02:51.180 monde: ok heure=312.039 jours=1 lune=557.1 meteo=0 | recu de J0: heure=319.166 jours=1 meteo=0 (43 maj)
+00:02:54.309 monde : heure locale 312.04, heure de J0 320.30 (ecart 8.26) -> recalage n.5 demande
+00:02:58.730 monde: ok heure=312.039 jours=1 lune=557.1 meteo=0 | recu de J0: heure=321.057 jours=1 meteo=0 (48 maj)
+00:03:00.342 monde : heure locale 312.04, heure de J0 321.81 (ecart 9.77) -> recalage n.6 demande
+00:03:06.272 monde: ok heure=312.039 jours=1 lune=557.1 meteo=0 | recu de J0: heure=322.948 jours=1 meteo=0 (53 maj)
+00:03:06.375 monde : heure locale 312.04, heure de J0 323.32 (ecart 11.28) -> recalage n.7 demande
+00:03:07.925 monde : minuteur de lune de sang 557.4 -> 568.8 (celui de la session), ajustement n.1
+00:03:13.837 monde: ok heure=325.098 jours=1 lune=570.3 meteo=0 | recu de J0: heure=324.831 jours=1 meteo=0 (59 maj)
+00:03:21.406 monde: ok heure=326.989 jours=1 lune=572.2 meteo=0 | recu de J0: heure=326.722 jours=1 meteo=0 (64 maj)
+00:03:28.971 monde: ok heure=328.880 jours=1 lune=574.1 meteo=0 | recu de J0: heure=328.614 jours=1 meteo=0 (69 maj)
+
+=== kv_pilot.log
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-569.07, 246.93, 1702.42)
+   70.4s appui PLUS x1 -> (-569.07, 246.93, 1702.42)
+  117.8s appui B x2 -> (-569.07, 246.93, 1702.42)
+  142.8s position (-569.07, 246.93, 1702.42) avant acteur (-0.5301, 0.8479)

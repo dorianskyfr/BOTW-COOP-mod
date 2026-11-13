@@ -1,0 +1,36 @@
+﻿# Test d'endurance a deux instances (run-duo soak1), Ryujinx 1.3.3, BOTW 1.9.0, 2026-11-11, 31 minutes
+# Charge a t=1830 s : p1 CPU 19,6 % RAM 7897 Mo ; p2 CPU 17,4 % RAM 7690 Mo ; GPU 39 % ; RAM libre 9,1 Go
+
+# Instance p1 : 1337 lignes ; erreurs du jeu/exceptions : 0 ; creations d'acteur : 1 ; acteur invalide : 0 ; liaisons fermees : 0
+00:00:05.678 [botw-coop] plugin charge (build Nov 11 2026 00:30:13)
+00:00:14.805 [botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+00:00:14.852 [botw-coop] net: le relais nous attribue l'identifiant J1
+00:01:18.165 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1132.70, 235.19, 1917.40) avant=(0.00, 1.00) envois=30 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+00:01:25.770 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1132.98, 236.75, 1917.61) avant=(-0.76, -0.66) envois=80 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+   ...
+00:31:09.888 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1129.31, 237.47, 1918.56) avant=(0.18, 0.98) envois=11880 | distant=J2 actif=1 pos=(-1125.42, 237.27, 1919.74) avant=(-0.58, 0.81) recus=11734
+00:31:12.812 [botw-coop] acteur distant : vivant pos=(-1130.60, 237.27, 1924.99) avant=(-0.58, 0.81) | ecritures=53243 interpolees=52147 figees=1107 pas max=0.230 m | deplace par le jeu=0
+00:31:17.465 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1128.28, 237.28, 1924.79) avant=(0.59, 0.81) envois=11930 | distant=J2 actif=1 pos=(-1131.74, 237.27, 1924.71) avant=(-0.58, 0.81) recus=11784
+00:31:17.813 [botw-coop] acteur distant : vivant pos=(-1131.74, 237.27, 1924.71) avant=(-0.58, 0.81) | ecritures=53393 interpolees=52293 figees=1111 pas max=0.029 m | deplace par le jeu=0
+
+# Instance p2 : 1327 lignes ; erreurs du jeu/exceptions : 0 ; creations d'acteur : 1 ; acteur invalide : 0 ; liaisons fermees : 0
+00:00:06.337 [botw-coop] plugin charge (build Nov 11 2026 00:30:13)
+00:00:15.639 [botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+00:00:15.659 [botw-coop] net: le relais nous attribue l'identifiant J2
+00:01:19.375 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1130.00, 237.40, 1914.50) avant=(0.67, -0.74) envois=19 | distant=J1 actif=1 pos=(-1132.98, 236.76, 1917.66) avant=(-0.76, -0.66) recus=171
+00:01:27.016 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1132.98, 236.75, 1917.61) avant=(-0.76, -0.66) envois=69 | distant=J1 actif=1 pos=(-1132.97, 236.73, 1917.61) avant=(-0.76, -0.66) recus=221
+   ...
+00:30:47.321 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1117.99, 237.27, 1909.34) avant=(-0.58, 0.81) envois=11719 | distant=J1 actif=1 pos=(-1127.27, 237.27, 1905.46) avant=(-0.44, 0.90) recus=11864
+00:30:50.617 [botw-coop] acteur distant : vivant pos=(-1128.06, 237.27, 1922.52) avant=(0.41, 0.91) | ecritures=52514 interpolees=52089 figees=1037 pas max=0.235 m | deplace par le jeu=0
+00:30:54.886 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1131.74, 237.27, 1924.71) avant=(-0.58, 0.81) envois=11769 | distant=J1 actif=1 pos=(-1128.29, 237.28, 1924.79) avant=(0.59, 0.81) recus=11914
+00:30:55.615 [botw-coop] acteur distant : vivant pos=(-1128.29, 237.28, 1924.79) avant=(0.59, 0.81) | ecritures=52664 interpolees=52237 figees=1039 pas max=0.241 m | deplace par le jeu=0
+
+# Relais
+00:30:18.598 relais en ecoute sur 127.0.0.1:47800
+00:30:39.733 joueur 1 connecte depuis 127.0.0.1:53052 (1 en ligne)
+00:31:00.802 joueur 2 connecte depuis 127.0.0.1:53063 (2 en ligne)
+00:31:38.128 joueur 1 : etat n.1 = MTX -0.7431 0.0000 0.6691 -1130.000 -0.0000 1.0000 0.0000 237.400 -0.6691 -0.0000 -0.7431 1914.500
+   ...
+01:01:22.700 joueur 1 : etat n.11800 = MTX -0.7843 0.0000 0.6204 -1122.505 0.0000 1.0000 0.0000 237.309 -0.6204 0.0000 -0.7843 1899.357
+01:01:29.564 joueur 2 : etat n.11700 = MTX -0.7998 0.0000 0.6003 -1115.723 0.0000 1.0000 0.0000 237.270 -0.6003 0.0000 -0.7998 1906.205
+01:01:37.847 joueur 1 : etat n.11900 = MTX 0.8167 0.0000 0.5771 -1128.122 0.0000 1.0000 0.0000 237.277 -0.5771 0.0000 0.8167 1924.593

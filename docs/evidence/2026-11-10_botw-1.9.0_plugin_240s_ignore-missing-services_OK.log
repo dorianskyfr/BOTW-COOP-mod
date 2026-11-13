@@ -1,0 +1,18 @@
+﻿00:00:00.344 |I| Configuration LogValueChange: IgnoreMissingServices set to: True
+00:00:00.353 |N| Application PrintSystemInfo: Ryujinx Version: 1.3.3
+00:00:00.548 |N| Application LoadGuestApplication: Using Firmware Version: 22.5.0
+00:00:00.596 |I| ModLoader AddModsFromDirectory: Found enabled mod 'botw-coop' [E]
+00:00:01.190 |I| ModLoader ApplyExefsMods: NSO 'subsdk9' replaced
+00:00:01.935 |I| Loader Start: Application Loaded: E????J?`?????<G?]GWB??JA?b?07!K?&1???v???J???6???????u????m?8???U??:GN?&?C9p?????;U??}?-??7??-?O{??[|?v?s??B??i????	?M????"
+00:00:11.847 |I| Ptc.DiskWriter Ptc Save: Saved Translation Cache (size: 50603431 bytes, translated functions: 46673).
+00:00:12.487 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] hello world : plugin charge (phase 0, build Nov 10 2026 19:02:47)
+00:00:12.487 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] main : total 0000000008506000-000000000a39e000, rodata 0000000009aa8000 (+0x5d8000)
+00:00:12.495 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] build id main (16 octets, rodata+0x5d7320) : cd57b23fa4bbad65803d9788c01821ee
+00:00:41.313 |I| Ptc.DiskWriter Ptc Save: Saved Profiling Info (size: 193953 bytes, profiled functions: 43498).
+00:01:41.307 |I| Ptc.DiskWriter Ptc Save: Saved Profiling Info (size: 194211 bytes, profiled functions: 43552).
+00:02:11.306 |I| Ptc.DiskWriter Ptc Save: Saved Profiling Info (size: 194267 bytes, profiled functions: 43564).
+00:02:20.193 |I| HLE.OsThread.22 ServicePrepo ProcessPlayReport: 
+00:02:20.194 |W| HLE.OsThread.22 Service ProcessMessageImpl: Missing service PrepoService (command ID: 10107) ignored
+00:02:41.307 |I| Ptc.DiskWriter Ptc Save: Saved Profiling Info (size: 205635 bytes, profiled functions: 46060).
+00:03:11.306 |I| Ptc.DiskWriter Ptc Save: Saved Profiling Info (size: 205850 bytes, profiled functions: 46089).
+00:03:41.306 |I| Ptc.DiskWriter Ptc Save: Saved Profiling Info (size: 205977 bytes, profiled functions: 46112).

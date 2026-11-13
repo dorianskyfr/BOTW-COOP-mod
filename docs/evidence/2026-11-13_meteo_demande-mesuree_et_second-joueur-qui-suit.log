@@ -1,0 +1,100 @@
+Essais kt et ku (2026-11-13) : sauvegarde t_adv1, deux instances Ryujinx, build -DCOOP_TEST_WEATHER=2. Extraits des journaux build\runs.
+kt : chaque instance demande la meteo 2 (Rain) pendant les images 1201 a 2400. ku : seul J1 la demande ; J2 la recoit par le relais.
+
+=== kt_game.txt
+00:00:14.036 net: le relais nous attribue l'identifiant J1
+00:01:58.672 meteo essai : image 1, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:04.999 meteo essai : image 151, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:10.459 meteo essai : image 301, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:15.458 meteo essai : image 451, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:20.670 meteo essai : image 601, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:25.732 meteo essai : image 751, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:30.733 meteo essai : image 901, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:35.732 meteo essai : image 1051, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:40.735 meteo essai : image 1201, meteo du jeu=0, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:40.770 meteo essai : image 1202, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:45.832 meteo essai : image 1351, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:50.832 meteo essai : image 1501, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:55.831 meteo essai : image 1651, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:00.835 meteo essai : image 1801, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:05.831 meteo essai : image 1951, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:10.833 meteo essai : image 2101, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:15.834 meteo essai : image 2251, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:20.836 meteo essai : image 2401, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:03:21.131 meteo essai : image 2410, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:25.831 meteo essai : image 2551, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:30.832 meteo essai : image 2701, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:35.831 meteo essai : image 2851, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:40.832 meteo essai : image 3001, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:45.831 meteo essai : image 3151, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+
+=== ku_game.txt
+00:00:14.227 net: le relais nous attribue l'identifiant J1
+00:01:58.588 meteo essai : image 1, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:04.906 meteo essai : image 151, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:10.307 meteo essai : image 301, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:15.305 meteo essai : image 451, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:20.441 meteo essai : image 601, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:25.441 meteo essai : image 751, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:30.440 meteo essai : image 901, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:35.440 meteo essai : image 1051, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:40.440 meteo essai : image 1201, meteo du jeu=0, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:40.480 meteo essai : image 1202, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:45.439 meteo essai : image 1351, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:50.439 meteo essai : image 1501, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:55.439 meteo essai : image 1651, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:00.439 meteo essai : image 1801, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:05.440 meteo essai : image 1951, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:10.439 meteo essai : image 2101, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:15.439 meteo essai : image 2251, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:03:20.440 meteo essai : image 2401, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:03:20.739 meteo essai : image 2410, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:25.440 meteo essai : image 2551, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:30.440 meteo essai : image 2701, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:35.439 meteo essai : image 2851, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:40.439 meteo essai : image 3001, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:45.439 meteo essai : image 3151, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:50.440 meteo essai : image 3301, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:03:55.438 meteo essai : image 3451, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+
+=== ku_game2.txt
+00:00:15.041 net: le relais nous attribue l'identifiant J2
+00:01:46.461 meteo essai : image 1, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:01:52.521 meteo essai : image 151, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:01:57.896 meteo essai : image 301, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:02.895 meteo essai : image 451, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:07.999 meteo essai : image 601, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:12.995 meteo essai : image 751, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:17.995 meteo essai : image 901, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:22.995 meteo essai : image 1051, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:27.996 meteo essai : image 1201, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:28.030 meteo essai : image 1202, meteo du jeu=0, demande type=255 minuteur=0 demo=0
+00:02:29.662 meteo : on suit la meteo 2 de la session
+00:02:32.996 meteo essai : image 1351, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:02:37.994 meteo essai : image 1501, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:02:42.995 meteo essai : image 1651, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:02:47.994 meteo essai : image 1801, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:02:52.995 meteo essai : image 1951, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:02:57.994 meteo essai : image 2101, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:03:02.994 meteo essai : image 2251, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:03:07.999 meteo essai : image 2401, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:03:08.293 meteo essai : image 2410, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:03:09.064 meteo : on suit la meteo 0 de la session
+00:03:12.995 meteo essai : image 2551, meteo du jeu=0, demande type=0 minuteur=3 demo=0
+00:03:17.994 meteo essai : image 2701, meteo du jeu=0, demande type=0 minuteur=3 demo=0
+00:03:22.994 meteo essai : image 2851, meteo du jeu=0, demande type=0 minuteur=3 demo=0
+00:03:27.995 meteo essai : image 3001, meteo du jeu=0, demande type=0 minuteur=3 demo=0
+00:03:32.994 meteo essai : image 3151, meteo du jeu=0, demande type=0 minuteur=3 demo=0
+00:03:37.993 meteo essai : image 3301, meteo du jeu=0, demande type=0 minuteur=3 demo=0
+00:03:42.994 meteo essai : image 3451, meteo du jeu=0, demande type=0 minuteur=3 demo=0
+
+=== ku_relay.log (lignes TIME)
+13:13:59.558 joueur 1 : fait avancer l'heure de la session (TIME 304.144 1 0 549.2), changement n.1
+13:13:59.558 joueur 1 : monde n.1 = TIME 304.144 1 0 549.2
+13:14:00.121 joueur 2 : fait avancer l'heure de la session (TIME 304.157 1 0 549.2), changement n.2
+13:14:00.122 joueur 2 : monde n.1 = TIME 304.157 1 0 549.2
+13:14:01.306 joueur 1 : fait avancer l'heure de la session (TIME 304.390 1 0 549.5), changement n.3
+13:14:01.657 joueur 2 : fait avancer l'heure de la session (TIME 304.490 1 0 549.6), changement n.4
+13:14:02.818 joueur 1 : fait avancer l'heure de la session (TIME 304.774 1 0 549.8), changement n.5
+13:15:29.874 joueur 1 : monde n.60 = TIME 325.860 1 0 571.0
+13:15:29.896 joueur 2 : monde n.60 = TIME 325.952 1 0 571.1

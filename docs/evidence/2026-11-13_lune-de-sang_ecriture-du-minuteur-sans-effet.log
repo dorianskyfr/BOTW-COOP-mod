@@ -1,0 +1,145 @@
+=== k8_game.txt
+00:00:23.768 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:31.369 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:38.895 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:46.422 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:53.943 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:01.470 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:08.995 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:16.521 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:24.046 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:31.580 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:39.112 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:48.695 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=85.873 pas=0.00833 jours=0 lune=7.1 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:56.289 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=85.873 pas=0.00833 jours=0 lune=7.1 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:02:05.006 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=87.085 pas=0.00833 jours=0 lune=8.3 meteo=0 | recu de J0: heure=86.998 jours=0 meteo=0 (4 maj)
+00:02:13.091 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=88.348 pas=0.00833 jours=0 lune=9.6 meteo=0 | recu de J0: heure=88.323 jours=0 meteo=0 (9 maj)
+00:02:20.735 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=90.239 pas=0.00833 jours=0 lune=11.5 meteo=0 | recu de J0: heure=90.222 jours=0 meteo=0 (14 maj)
+00:02:28.418 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=92.122 pas=0.00833 jours=0 lune=13.4 meteo=0 | recu de J0: heure=92.072 jours=0 meteo=0 (19 maj)
+00:02:36.039 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=94.030 pas=0.00833 jours=0 lune=15.3 meteo=0 | recu de J0: heure=93.971 jours=0 meteo=0 (24 maj)
+00:02:43.650 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=95.929 pas=0.00833 jours=0 lune=17.2 meteo=0 | recu de J0: heure=95.871 jours=0 meteo=0 (29 maj)
+00:02:51.261 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=97.837 pas=0.00833 jours=0 lune=19.1 meteo=0 | recu de J0: heure=97.762 jours=0 meteo=0 (34 maj)
+00:02:58.874 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=99.737 pas=0.00833 jours=0 lune=21.0 meteo=0 | recu de J0: heure=99.662 jours=0 meteo=0 (39 maj)
+00:03:06.462 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=101.636 pas=0.00833 jours=0 lune=22.9 meteo=0 | recu de J0: heure=101.553 jours=0 meteo=0 (44 maj)
+00:03:14.095 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=103.531 pas=0.00833 jours=0 lune=24.8 meteo=0 | recu de J0: heure=103.452 jours=0 meteo=0 (49 maj)
+00:03:21.699 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=105.431 pas=0.00833 jours=0 lune=26.7 meteo=0 | recu de J0: heure=105.344 jours=0 meteo=0 (54 maj)
+00:03:29.279 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=107.331 pas=0.00833 jours=0 lune=28.6 meteo=0 | recu de J0: heure=107.235 jours=0 meteo=0 (59 maj)
+00:03:36.881 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=109.230 pas=0.00833 jours=0 lune=30.5 meteo=0 | recu de J0: heure=109.134 jours=0 meteo=0 (64 maj)
+00:03:44.471 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=111.130 pas=0.00833 jours=0 lune=32.4 meteo=0 | recu de J0: heure=111.025 jours=0 meteo=0 (69 maj)
+00:03:52.062 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=113.021 pas=0.00833 jours=0 lune=34.3 meteo=0 | recu de J0: heure=112.917 jours=0 meteo=0 (74 maj)
+00:03:59.650 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=114.920 pas=0.00833 jours=0 lune=36.2 meteo=0 | recu de J0: heure=114.808 jours=0 meteo=0 (79 maj)
+00:04:07.231 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.604 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.566 jours=0 meteo=0 (81 maj)
+00:04:14.821 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.604 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.566 jours=0 meteo=0 (81 maj)
+00:04:22.394 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.604 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.566 jours=0 meteo=0 (81 maj)
+00:04:29.969 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.604 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.566 jours=0 meteo=0 (81 maj)
+00:04:37.522 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.604 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.566 jours=0 meteo=0 (81 maj)
+00:04:45.081 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.604 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.566 jours=0 meteo=0 (81 maj)
+00:04:52.643 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.604 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.566 jours=0 meteo=0 (81 maj)
+00:05:00.203 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.604 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.566 jours=0 meteo=0 (81 maj)
+00:05:07.760 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.604 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=117.482 jours=0 meteo=0 (86 maj)
+00:05:08.022 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 115.60, heure de J0 117.86 (ecart 2.25) -> recalage n.1 demande
+00:05:11.056 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 39.9 (celui de la session), ajustement n.1
+00:05:12.555 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 40.3 (celui de la session), ajustement n.2
+00:05:14.088 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 40.6 (celui de la session), ajustement n.3
+00:05:15.323 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=117.857 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=119.373 jours=0 meteo=0 (91 maj)
+00:05:15.587 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 41.0 (celui de la session), ajustement n.4
+00:05:17.089 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 41.4 (celui de la session), ajustement n.5
+00:05:17.089 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 117.86, heure de J0 120.13 (ecart 2.28) -> recalage n.2 demande
+00:05:18.622 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 41.8 (celui de la session), ajustement n.6
+00:05:20.122 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 42.1 (celui de la session), ajustement n.7
+00:05:21.654 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 42.5 (celui de la session), ajustement n.8
+00:05:22.881 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=120.132 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=121.265 jours=0 meteo=0 (96 maj)
+00:05:23.155 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 42.9 (celui de la session), ajustement n.9
+00:05:24.655 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 43.3 (celui de la session), ajustement n.10
+00:05:26.188 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 43.7 (celui de la session), ajustement n.11
+00:05:26.188 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 120.13, heure de J0 122.40 (ecart 2.27) -> recalage n.3 demande
+00:05:27.689 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 44.0 (celui de la session), ajustement n.12
+00:05:29.188 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 44.4 (celui de la session), ajustement n.13
+00:05:30.432 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=122.398 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=123.156 jours=0 meteo=0 (101 maj)
+00:05:30.689 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 44.8 (celui de la session), ajustement n.14
+00:05:32.221 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 45.2 (celui de la session), ajustement n.15
+00:05:33.721 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 45.6 (celui de la session), ajustement n.16
+00:05:35.223 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 45.9 (celui de la session), ajustement n.17
+00:05:35.223 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 122.40, heure de J0 124.66 (ecart 2.27) -> recalage n.4 demande
+00:05:36.755 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 46.3 (celui de la session), ajustement n.18
+00:05:37.997 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=124.664 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=125.047 jours=0 meteo=0 (106 maj)
+00:05:38.255 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 46.7 (celui de la session), ajustement n.19
+00:05:39.788 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 36.9 -> 47.1 (celui de la session), ajustement n.20
+00:05:44.321 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 124.66, heure de J0 126.94 (ecart 2.27) -> recalage n.5 demande
+00:05:45.556 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=126.938 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=126.938 jours=0 meteo=0 (111 maj)
+00:05:53.118 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=126.938 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=128.829 jours=0 meteo=0 (116 maj)
+00:05:53.388 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] monde : heure locale 126.94, heure de J0 129.20 (ecart 2.27) -> recalage n.6 demande
+00:06:00.675 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=129.204 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=130.721 jours=0 meteo=0 (121 maj)
+00:06:08.263 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=131.087 pas=0.00833 jours=0 lune=38.7 meteo=0 | recu de J0: heure=132.604 jours=0 meteo=0 (126 maj)
+00:06:15.824 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=132.978 pas=0.00833 jours=0 lune=40.6 meteo=0 | recu de J0: heure=134.495 jours=0 meteo=0 (131 maj)
+00:06:23.387 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=134.869 pas=0.00833 jours=0 lune=42.5 meteo=0 | recu de J0: heure=136.386 jours=0 meteo=0 (136 maj)
+00:06:25.188 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] monde : minuteur de lune de sang 43.0 -> 58.4 (celui de la session), ajustement n.50
+00:06:30.959 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=136.760 pas=0.00833 jours=0 lune=44.4 meteo=0 | recu de J0: heure=138.277 jours=0 meteo=0 (141 maj)
+00:06:38.523 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=138.652 pas=0.00833 jours=0 lune=46.3 meteo=0 | recu de J0: heure=140.168 jours=0 meteo=0 (146 maj)
+00:06:46.128 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=140.535 pas=0.00833 jours=0 lune=48.2 meteo=0 | recu de J0: heure=142.060 jours=0 meteo=0 (151 maj)
+00:06:53.719 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=142.447 pas=0.00833 jours=0 lune=50.1 meteo=0 | recu de J0: heure=143.951 jours=0 meteo=0 (156 maj)
+00:07:01.329 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=144.354 pas=0.00833 jours=0 lune=52.0 meteo=0 | recu de J0: heure=145.842 jours=0 meteo=0 (161 maj)
+=== k8_game2.txt
+00:00:24.517 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:32.116 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:39.639 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:47.163 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:00:54.687 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:02.214 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:09.739 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:17.268 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:24.818 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:34.479 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=78.750 pas=0.00833 jours=0 lune=0.0 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:42.213 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=85.873 pas=0.00833 jours=0 lune=7.1 meteo=0 | recu de J0: heure=0.000 jours=0 meteo=-1 (0 maj)
+00:01:50.827 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=86.615 pas=0.00833 jours=0 lune=7.9 meteo=0 | recu de J0: heure=86.319 jours=0 meteo=0 (3 maj)
+00:01:58.706 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=87.948 pas=0.00833 jours=0 lune=9.2 meteo=0 | recu de J0: heure=87.581 jours=0 meteo=0 (9 maj)
+00:02:06.284 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=89.839 pas=0.00833 jours=0 lune=11.1 meteo=0 | recu de J0: heure=89.472 jours=0 meteo=0 (14 maj)
+00:02:13.885 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=91.697 pas=0.00833 jours=0 lune=12.9 meteo=0 | recu de J0: heure=91.355 jours=0 meteo=0 (19 maj)
+00:02:21.491 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=93.596 pas=0.00833 jours=0 lune=14.8 meteo=0 | recu de J0: heure=93.271 jours=0 meteo=0 (24 maj)
+00:02:29.081 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=95.496 pas=0.00833 jours=0 lune=16.7 meteo=0 | recu de J0: heure=95.171 jours=0 meteo=0 (29 maj)
+00:02:36.656 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=97.387 pas=0.00833 jours=0 lune=18.6 meteo=0 | recu de J0: heure=97.071 jours=0 meteo=0 (34 maj)
+00:02:44.239 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=99.278 pas=0.00833 jours=0 lune=20.5 meteo=0 | recu de J0: heure=98.970 jours=0 meteo=0 (39 maj)
+00:02:51.824 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=101.178 pas=0.00833 jours=0 lune=22.4 meteo=0 | recu de J0: heure=100.878 jours=0 meteo=0 (44 maj)
+00:02:59.397 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=103.069 pas=0.00833 jours=0 lune=24.3 meteo=0 | recu de J0: heure=102.773 jours=0 meteo=0 (49 maj)
+00:03:06.975 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=104.960 pas=0.00833 jours=0 lune=26.2 meteo=0 | recu de J0: heure=104.673 jours=0 meteo=0 (54 maj)
+00:03:14.541 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=106.851 pas=0.00833 jours=0 lune=28.1 meteo=0 | recu de J0: heure=106.572 jours=0 meteo=0 (59 maj)
+00:03:22.134 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=108.751 pas=0.00833 jours=0 lune=30.0 meteo=0 | recu de J0: heure=108.464 jours=0 meteo=0 (64 maj)
+00:03:29.709 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=110.642 pas=0.00833 jours=0 lune=31.9 meteo=0 | recu de J0: heure=110.363 jours=0 meteo=0 (69 maj)
+00:03:37.277 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=112.533 pas=0.00833 jours=0 lune=33.8 meteo=0 | recu de J0: heure=112.263 jours=0 meteo=0 (74 maj)
+00:03:44.852 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=114.433 pas=0.00833 jours=0 lune=35.7 meteo=0 | recu de J0: heure=114.162 jours=0 meteo=0 (79 maj)
+00:03:52.436 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.599 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:04:00.002 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.599 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:04:07.582 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.599 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:04:15.137 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.599 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:04:22.689 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.599 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:04:30.245 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.599 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:04:37.794 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.599 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:04:45.351 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=115.599 pas=0.00833 jours=0 lune=36.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:04:52.918 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=117.107 pas=0.00833 jours=0 lune=38.4 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:05:00.484 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=118.999 pas=0.00833 jours=0 lune=40.3 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:05:08.049 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=120.881 pas=0.00833 jours=0 lune=42.1 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:05:15.613 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=122.781 pas=0.00833 jours=0 lune=44.0 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:05:23.176 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=124.664 pas=0.00833 jours=0 lune=45.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:05:30.741 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=126.555 pas=0.00833 jours=0 lune=47.8 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:05:38.306 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=128.446 pas=0.00833 jours=0 lune=49.7 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:05:45.869 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=130.337 pas=0.00833 jours=0 lune=51.6 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:05:53.434 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=132.229 pas=0.00833 jours=0 lune=53.5 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:06:00.995 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=134.120 pas=0.00833 jours=0 lune=55.4 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:06:08.552 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=136.011 pas=0.00833 jours=0 lune=57.3 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:06:16.109 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=137.894 pas=0.00833 jours=0 lune=59.2 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:06:23.673 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=139.785 pas=0.00833 jours=0 lune=61.1 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:06:31.242 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=141.676 pas=0.00833 jours=0 lune=62.9 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:06:38.818 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=143.576 pas=0.00833 jours=0 lune=64.8 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+00:06:46.393 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] monde: ok gestionnaires=9 heure=145.467 pas=0.00833 jours=0 lune=66.7 meteo=0 | recu de J0: heure=115.604 jours=0 meteo=0 (83 maj)
+=== relais
+00:42:21.142 joueur 1 : fait avancer l'heure de la session (TIME 85.873 0 0 7.1), changement n.1
+00:42:21.142 joueur 1 : monde n.1 = TIME 85.873 0 0 7.1
+00:42:22.836 joueur 2 : fait avancer l'heure de la session (TIME 85.898 0 0 7.1), changement n.2
+00:42:22.837 joueur 2 : monde n.1 = TIME 85.898 0 0 7.1
+00:42:23.409 joueur 1 : fait avancer l'heure de la session (TIME 85.948 0 0 7.2), changement n.3
+00:42:24.383 joueur 2 : fait avancer l'heure de la session (TIME 86.298 0 0 7.5), changement n.4
+00:42:24.949 joueur 1 : fait avancer l'heure de la session (TIME 86.319 0 0 7.6), changement n.5
+00:43:52.281 joueur 1 : monde n.60 = TIME 107.331 0 0 28.6
+00:43:52.647 joueur 2 : monde n.60 = TIME 107.610 0 0 28.9
+00:45:23.454 joueur 2 : monde n.120 = TIME 115.958 0 0 37.2
+00:46:54.209 joueur 2 : monde n.180 = TIME 138.652 0 0 59.9

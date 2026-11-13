@@ -1,0 +1,51 @@
+﻿# Sortie console Ryujinx 1.3.3, BOTW 1.9.0, dossier de donnees de test (extraits)
+00:00:00.359 |N| Application PrintSystemInfo: Ryujinx Version: 1.3.3
+00:00:04.582 [botw-coop] plugin charge (build Nov 10 2026 19:35:37)
+00:00:04.600 [botw-coop] build id main : cd57b23fa4bbad65803d9788c01821ee (16 octets) -> 1.9.0
+00:00:04.668 [botw-coop] input: SCRIPT DE TEST ACTIF, 6/6 hooks poses (frequence tick 19200000 Hz)
+00:00:14.033 [botw-coop] net: Connect 127.0.0.1:47800 -> 0 (errno 0)
+00:00:14.038 [botw-coop] etat t=0 s: info=66017d3e38 acteur=0 pos=(0.000, 0.000, 0.000)
+00:00:22.121 [botw-coop] etat t=8 s: info=66017d3e38 acteur=66030e8578 pos=(0.000, 0.000, 0.000)
+00:00:34.632 [botw-coop] input: etape 0 active a t=30026 ms (boutons 0x1, stick 0,0), 549 lectures
+00:01:12.420 [botw-coop] etat t=58 s: info=66017d3e38 acteur=66030e8578 pos=(-1130.000, 237.400, 1914.500)
+00:01:14.421 [botw-coop] etat t=60 s: info=66017d3e38 acteur=66030e8578 pos=(-1130.000, 237.400, 1914.500)
+00:01:16.421 [botw-coop] etat t=62 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.700, 235.182, 1917.399)
+00:01:18.422 [botw-coop] etat t=64 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.982, 236.752, 1917.609)
+00:01:32.425 [botw-coop] etat t=78 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.985, 236.759, 1917.658)
+00:01:42.426 [botw-coop] etat t=88 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.970, 236.731, 1917.608)
+00:01:56.429 [botw-coop] etat t=102 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.662, 236.790, 1917.338)
+00:02:06.430 [botw-coop] etat t=112 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.662, 236.891, 1917.338)
+00:02:08.430 [botw-coop] etat t=114 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.662, 236.969, 1917.338)
+00:02:10.431 [botw-coop] etat t=116 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.662, 237.413, 1917.338)
+00:02:12.431 [botw-coop] etat t=118 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.662, 237.412, 1917.338)
+00:02:14.432 [botw-coop] etat t=120 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.662, 237.393, 1917.338)
+00:02:16.432 [botw-coop] etat t=122 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.330, 237.384, 1916.732)
+00:02:22.433 [botw-coop] etat t=128 s: info=66017d3e38 acteur=66030e8578 pos=(-1132.330, 237.381, 1916.732)
+00:02:24.433 [botw-coop] etat t=130 s: info=66017d3e38 acteur=66030e8578 pos=(-1130.163, 237.382, 1914.215)
+00:02:34.606 [botw-coop] input: etape 3 active a t=150001 ms (boutons 0x1, stick 0,0), 4027 lectures
+00:02:55.605 [botw-coop] input: etape 4 active a t=171000 ms (boutons 0x0, stick 0,32767), 4657 lectures
+00:02:56.442 [botw-coop] etat t=162 s: info=66017d3e38 acteur=66030e8578 pos=(-1126.839, 237.409, 1911.376)
+00:02:58.444 [botw-coop] etat t=164 s: info=66017d3e38 acteur=66030e8578 pos=(-1118.821, 237.485, 1904.554)
+00:03:00.444 [botw-coop] etat t=166 s: info=66017d3e38 acteur=66030e8578 pos=(-1117.587, 237.324, 1903.534)
+00:03:14.446 [botw-coop] etat t=180 s: info=66017d3e38 acteur=66030e8578 pos=(-1117.587, 237.324, 1903.534)
+00:03:25.606 [botw-coop] input: etape 5 active a t=201001 ms (boutons 0x0, stick 32767,0), 5543 lectures
+00:03:26.448 [botw-coop] etat t=192 s: info=66017d3e38 acteur=66030e8578 pos=(-1115.602, 237.270, 1906.448)
+00:03:28.449 [botw-coop] etat t=194 s: info=66017d3e38 acteur=66030e8578 pos=(-1116.060, 237.273, 1909.640)
+00:03:30.449 [botw-coop] etat t=196 s: info=66017d3e38 acteur=66030e8578 pos=(-1120.016, 237.273, 1914.495)
+00:03:32.449 [botw-coop] etat t=198 s: info=66017d3e38 acteur=66030e8578 pos=(-1129.962, 237.427, 1915.424)
+00:03:34.450 [botw-coop] etat t=200 s: info=66017d3e38 acteur=66030e8578 pos=(-1128.509, 237.270, 1906.306)
+00:03:36.450 [botw-coop] etat t=202 s: info=66017d3e38 acteur=66030e8578 pos=(-1122.045, 237.270, 1912.397)
+00:03:38.450 [botw-coop] etat t=204 s: info=66017d3e38 acteur=66030e8578 pos=(-1130.594, 237.433, 1912.552)
+00:03:40.451 [botw-coop] etat t=206 s: info=66017d3e38 acteur=66030e8578 pos=(-1128.463, 237.270, 1906.669)
+
+# Ecouteur PC (tools/state_listener.py) : 109 lignes recues, extraits
+19:35:25.187 ecoute sur 127.0.0.1:47800
+19:35:59.171 connexion de 127.0.0.1:23729
+19:35:59.192 STATE t=0 info=66017d3e38 actor=0 pos=0.000,0.000,0.000
+19:36:01.271 STATE t=2 info=66017d3e38 actor=0 pos=0.000,0.000,0.000
+19:36:57.573 STATE t=58 info=66017d3e38 actor=66030e8578 pos=-1130.000,237.400,1914.500
+19:37:01.574 STATE t=62 info=66017d3e38 actor=66030e8578 pos=-1132.700,235.182,1917.399
+19:38:43.597 STATE t=164 info=66017d3e38 actor=66030e8578 pos=-1118.821,237.485,1904.554
+19:39:17.602 STATE t=198 info=66017d3e38 actor=66030e8578 pos=-1129.962,237.427,1915.424
+19:39:29.604 STATE t=210 info=66017d3e38 actor=66030e8578 pos=-1128.463,237.270,1906.669
+19:39:31.604 STATE t=212 info=66017d3e38 actor=66030e8578 pos=-1128.463,237.270,1906.669

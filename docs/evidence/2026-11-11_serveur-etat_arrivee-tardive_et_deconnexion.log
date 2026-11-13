@@ -1,0 +1,86 @@
+Serveur d'etat : joueur arrive en retard, et retrait du personnage a la deconnexion.
+Essai c5 du 2026-11-11, deux instances Ryujinx 1.3.3, BOTW 1.9.0, sauvegarde t_lv1 copiee par joueur. PC charge par un autre jeu (1,5 a 18 images/s).
+Deroule : J1 en jeu ramasse la branche pendant que J2 est a l'ecran-titre ; J2 charge ensuite sa partie ; puis le processus de J1 est arrete.
+
+--- Serveur (c5_relay.log) ---
+21:38:37.878 joueur 1 : drapeau nouveau n.9 = 6373c6f0 1 (9 en memoire, 0 deja connus)
+21:38:37.878 joueur 1 : drapeau nouveau n.10 = 6e5780e5 1 (10 en memoire, 0 deja connus)
+21:38:37.879 joueur 1 : drapeau nouveau n.11 = 7c1c656c 1 (11 en memoire, 0 deja connus)
+21:38:37.882 joueur 1 : drapeau nouveau n.12 = 805a014f 1 (12 en memoire, 0 deja connus)
+21:38:37.887 joueur 1 : drapeau nouveau n.13 = 89e3df2b 1 (13 en memoire, 0 deja connus)
+21:38:37.894 joueur 1 : drapeau nouveau n.14 = 8f45157e 1 (14 en memoire, 0 deja connus)
+21:38:37.895 joueur 1 : drapeau nouveau n.15 = a1aae6a7 1 (15 en memoire, 0 deja connus)
+21:38:37.903 joueur 1 : drapeau nouveau n.16 = a80fecf1 1 (16 en memoire, 0 deja connus)
+21:38:37.907 joueur 1 : drapeau nouveau n.17 = b1b06820 1 (17 en memoire, 0 deja connus)
+21:38:37.907 joueur 1 : drapeau nouveau n.18 = b35ceef8 1 (18 en memoire, 0 deja connus)
+21:38:37.908 joueur 1 : drapeau nouveau n.19 = bc13cc9b 1 (19 en memoire, 0 deja connus)
+21:38:37.911 joueur 1 : drapeau nouveau n.20 = be5950c0 1 (20 en memoire, 0 deja connus)
+21:38:46.288 joueur 4 connecte depuis 127.0.0.1:20824 (3 en ligne)
+21:38:50.033 joueur 4 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 0 positions recues, derniere None
+21:38:59.683 joueur 5 connecte depuis 127.0.0.1:20851 (3 en ligne)
+21:39:09.959 joueur 5 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 0 positions recues, derniere None
+21:40:23.676 joueur 6 connecte depuis 127.0.0.1:20906 (3 en ligne)
+21:40:30.168 joueur 6 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 0 positions recues, derniere None
+21:40:40.315 joueur 7 connecte depuis 127.0.0.1:20930 (3 en ligne)
+21:41:30.697 joueur 7 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 0 positions recues, derniere None
+21:41:41.466 joueur 8 connecte depuis 127.0.0.1:20978 (3 en ligne)
+21:43:32.980 joueur 2 : etat complet demande, 32 drapeaux a envoyer
+21:43:52.271 joueur 8 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 0 positions recues, derniere None
+21:44:21.800 joueur 9 connecte depuis 127.0.0.1:61985 (3 en ligne)
+21:44:27.495 joueur 9 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 0 positions recues, derniere None
+21:44:41.611 joueur 10 connecte depuis 127.0.0.1:62023 (3 en ligne)
+21:44:47.839 joueur 10 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 0 positions recues, derniere None
+21:44:48.904 joueur 1 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 2268 positions recues, derniere -0.4434 0.0000 0.8963 -1021.884 0.0000 1.0000 0.0000 252.421 -0.8963 0.0000 -0.4434 1803.886
+21:44:54.272 joueur 11 connecte depuis 127.0.0.1:62035 (2 en ligne)
+21:44:59.475 joueur 11 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 0 positions recues, derniere None
+
+--- Joueur 1 (c5_game.txt) ---
+00:03:21.845 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet demande au serveur
+00:03:22.024 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet recu du serveur (0 drapeaux en memoire chez lui)
+00:05:35.069 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau change : n.18017 hachage=6ca64187 0 -> 1 (envoye)
+
+--- Joueur 2 (c5_game2.txt) ---
+00:02:40.224 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J3 a quitte la session
+00:03:05.073 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J4 a quitte la session
+00:03:24.936 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J5 a quitte la session
+00:04:45.164 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J6 a quitte la session
+00:05:45.698 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J7 a quitte la session
+00:07:46.436 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] objets : 1 drapeau(x) recu(s) a verifier, 0 acteurs parcourus dont 0 avec identifiant de carte
+00:07:47.982 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet demande au serveur
+00:07:48.012 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet recu du serveur (32 drapeaux en memoire chez lui)
+00:07:49.290 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] drapeau recu : n.18017 hachage=6ca64187 mis a 1
+00:07:49.291 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] drapeaux : resynchronisation envoyee (total envoyes 32, recus appliques 3, perdus 0)
+00:07:49.303 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] objets : 3 drapeau(x) recu(s) a verifier, 0 acteurs parcourus dont 0 avec identifiant de carte
+00:08:07.250 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J8 a quitte la session
+00:08:16.883 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] objet : Weapon_Sword_044 ramasse par l'autre joueur (drapeau 6ca64187) -> retire ici
+00:08:16.883 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] objets : 1 retires au total, 7 parcours, 0 drapeaux non traites (file pleine)
+00:08:37.290 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : CREE apres 15 images, acteur=66074b3238 nom="Npc_Kakariko003" pos=(-1021.88, 252.42, 1803.89)
+00:08:42.606 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J9 a quitte la session
+00:09:02.912 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J10 a quitte la session
+00:09:03.885 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J1 a quitte la session
+00:09:04.003 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : joueur distant parti, personnage retire
+00:09:14.521 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: J11 a quitte la session
+
+--- Pilote (c5_pilot.log) ---
+    2.7s acteurs (Weapon_) : 5
+    2.7s    Weapon_Sword_044                         (-992.28, 200.80, 1766.03)
+    2.7s    Weapon_Sword_044                         (-980.01, 199.19, 1800.62)
+    2.7s    Weapon_Sword_044                         (-1059.15, 249.33, 1805.13)
+    2.7s    Weapon_Sword_044                         (-1053.44, 249.45, 1802.61)
+    2.7s    Weapon_Sword_044                         (-1034.19, 249.09, 1847.06)
+    5.7s capture j2 : C:\Users\<utilisateur>\Documents\Co ops zelda\build\runs\c5_j2.png (960x630), pixels non noirs au centre : 100.0 % | position (-1024.48, 252.63, 1799.95)
+    2.7s acteurs (Npc_Kakariko) : 1
+    2.7s    Npc_Kakariko003                          (-1021.88, 252.42, 1803.89)
+    6.2s capture j2_avec_j1 : C:\Users\<utilisateur>\Documents\Co ops zelda\build\runs\c5_j2_avec_j1.png (960x630), pixels non noirs au centre : 100.0 % | position (-1024.48, 252.63, 1799.95)
+    2.6s acteurs (Npc_Kakariko) : 0
+    5.2s capture j2_sans_j1 : C:\Users\<utilisateur>\Documents\Co ops zelda\build\runs\c5_j2_sans_j1.png (960x630), pixels non noirs au centre : 100.0 % | position (-1024.48, 252.63, 1799.95)
+
+--- Essai c3 : le defaut corrige (drapeau recu a l'ecran-titre, perdu au chargement) ---
+00:04:15.784 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau recu : n.18017 hachage=6ca64187 mis a 1
+00:05:04.203 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] drapeau change : n.18017 hachage=6ca64187 1 -> 0
+00:06:30.085 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet demande au serveur
+00:06:30.312 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] net: etat complet recu du serveur (32 drapeaux en memoire chez lui)
+
+--- Relecture de la memoire par un serveur relance ---
+21:45:27.245 relais en ecoute sur 127.0.0.1:47811
+21:45:27.247 memoire relue : 32 drapeaux (build\runs\c5_state.json)

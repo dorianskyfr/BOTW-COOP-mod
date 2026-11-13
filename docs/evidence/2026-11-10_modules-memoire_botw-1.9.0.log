@@ -1,0 +1,14 @@
+﻿[botw-coop] mem 000000000aa2f000 +0x664000 type=3 perm=5
+[botw-coop] mem 000000000b093000 +0x4cc000 type=3 perm=1
+[botw-coop] mem 000000000b55f000 +0x4d000 type=4 perm=1
+[botw-coop] mem 000000000b5ac000 +0x14000 type=4 perm=3
+[botw-coop] mem 000000000b5c0000 +0x1000 type=4 perm=0
+[botw-coop] mem 000000000b5c1000 +0xc3000 type=4 perm=3
+[botw-coop] mem 000000000b684000 +0x2db6aa3000 type=0 perm=0
+[botw-coop] balayage : 1 module(s) hors liste exlaunch
+[botw-coop] dynsym module 0 : base 0000000008500000, 3 symboles
+[botw-coop] dynsym module 1 : base 0000000008506000, 510 symboles
+[botw-coop] dynsym module 2 : base 000000000a39e000, 10111 symboles
+[botw-coop] dynsym module 12 : base 000000000aa0a000, 28 symboles
+[botw-coop] dynsym module 100 : base 000000000aa2f000, 23066 symboles
+[botw-coop] dynsym : fin du listage

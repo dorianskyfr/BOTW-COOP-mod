@@ -1,0 +1,16 @@
+# Essai e2 (2026-11-12, une instance) : signal « monde pret », Game Over (chute) puis Continue
+drapeaux : instantane de 42031 booleens pris (288 a 1, 1523 ni 0 ni 1) ; drapeau 0 : 000000000a227a20 0002fc0400840700 0000000000000000
+monde : pret (acteur du joueur actif)
+net: etat complet demande au serveur
+net: etat complet recu du serveur (0 drapeaux en memoire chez lui)
+drapeaux : resynchronisation envoyee (total envoyes 29, recus appliques 0, perdus 0)
+drapeau change : n.18258 hachage=6e263cbb 0 -> 1
+drapeau change : n.5897 hachage=23969f9e 0 -> 1
+drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+monde : plus pret (chargement ou ecran-titre)
+monde : pret (acteur du joueur actif)
+drapeau change : n.18258 hachage=6e263cbb 0 -> 1
+net: etat complet demande au serveur
+net: etat complet recu du serveur (29 drapeaux en memoire chez lui)
+drapeaux : resynchronisation envoyee (total envoyes 58, recus appliques 0, perdus 0)
+drapeau change : n.5897 hachage=23969f9e 0 -> 1
