@@ -119,6 +119,10 @@ def main():
         a.send("GEAR 1a2b3c4d 00000000 deadbeef")
         line = b.expect("GEAR")
         check("armure d'un joueur retransmise avec son identifiant", line == "GEAR 1 1a2b3c4d 00000000 deadbeef", line)
+        wpn = "WPN 2 0badf00d " + " ".join(["0.100"] * 12)
+        a.send(wpn)
+        line = b.expect("WPN")
+        check("objet porte retransmis avec l'identifiant", line == "WPN 1 " + wpn[4:], line)
 
         # Drapeaux : premiere annonce retransmise, doublon ignore, valeur 0 ignoree.
         a.send("FLAG 6ca64187 1")

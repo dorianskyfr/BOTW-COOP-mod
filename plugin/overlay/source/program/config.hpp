@@ -45,6 +45,9 @@ namespace coop::config {
      */
     inline std::atomic<int> g_GearCount { 0 };
     const char* GearActorFor(std::uint32_t pieceHash);
+    /* Armes, boucliers, arcs, carquois, fourreaux : acteur CoopWeapon_* (content:/botw-coop/weapon-map.bin). */
+    inline std::atomic<int> g_WeaponCount { 0 };
+    const char* WeaponActorFor(std::uint32_t weaponHash);
 
     inline std::uint8_t  g_HostIp[4] = { 127, 0, 0, 1 };
     inline std::uint16_t g_HostPort  = 47800;

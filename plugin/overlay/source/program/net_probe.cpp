@@ -3,6 +3,7 @@
 #include "notify.hpp"
 #include "status.hpp"
 #include "gear.hpp"
+#include "weapons.hpp"
 #include "config.hpp"
 #include "enemy_life.hpp"
 #include "flags.hpp"
@@ -230,6 +231,18 @@ namespace coop::net_probe {
                 coop::gear::g_Remote[0].store(g0);
                 coop::gear::g_Remote[1].store(g1);
                 coop::gear::g_Remote[2].store(g2);
+            } else if (std::strncmp(line, "WPN ", 4) == 0) {
+                /* Objet porte par le partenaire : emplacement, CRC32 du nom, matrice 3x4 dans son repere (weapons.hpp). */
+                int slot = -1;
+                unsigned crc = 0;
+                coop::weapons::Pose p;
+                float* o = p.m_Rel;
+                if (std::sscanf(line, "WPN %d %d %x %f %f %f %f %f %f %f %f %f %f %f %f", &id, &slot, &crc,
+                        &o[0], &o[1], &o[2], &o[3], &o[4], &o[5], &o[6], &o[7], &o[8], &o[9], &o[10], &o[11]) == 15
+                    && slot >= 0 && slot < coop::weapons::Slots) {
+                    p.m_Crc = crc;
+                    coop::weapons::g_Remote[slot].Write(p);
+                }
             } else if (std::sscanf(line, "STATEEND %d", &id) == 1) {
                 Logging.Log("[botw-coop] net: etat complet recu du serveur (%d drapeaux en memoire chez lui)", id);
             } else if (unsigned flagHash = 0, flagValue = 0; std::sscanf(line, "FLAG %d %x %u", &id, &flagHash, &flagValue) == 3
@@ -413,6 +426,25 @@ namespace coop::net_probe {
                         coop::gear::g_Local[1].load(), coop::gear::g_Local[2].load());
                     if (len > 0 && !SendAll(s_Fd, gear, static_cast<std::size_t>(len)))
                         Disconnect("echec d'envoi");
+                }
+
+                /* Armes, bouclier, arc portes (weapons.hpp) : les emplacements occupes a chaque envoi
+                   (10 par seconde, ils bougent avec Link), les vides une fois par seconde. */
+                if (inGame && s_Fd >= 0) {
+                    for (int k = 0; k < coop::weapons::Slots && s_Fd >= 0; k++) {
+                        const coop::weapons::Pose p = coop::weapons::g_Local[k].Read();
+                        if (p.m_Crc == 0 && tick % 10 != 3)
+                            continue;
+                        const float* o = p.m_Rel;
+                        char wpn[256];
+                        const int len = std::snprintf(wpn, sizeof(wpn),
+                            "WPN %d %08x %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n", k, p.m_Crc,
+                            static_cast<double>(o[0]), static_cast<double>(o[1]), static_cast<double>(o[2]), static_cast<double>(o[3]),
+                            static_cast<double>(o[4]), static_cast<double>(o[5]), static_cast<double>(o[6]), static_cast<double>(o[7]),
+                            static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]));
+                        if (len > 0 && len < static_cast<int>(sizeof(wpn)) && !SendAll(s_Fd, wpn, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
                 }
 
                 /* Etat du monde : une fois par seconde (heure, jours, meteo). */

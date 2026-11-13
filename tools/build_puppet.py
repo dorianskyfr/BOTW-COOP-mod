@@ -122,24 +122,37 @@ def write_pack(out, actor, files):
 # teintures). Un acteur CoopGear_<modele> par modele : le modele de l'armure, les sequences du
 # pantin (memes os que Link). Constate sur la RomFS 1.9.0 de l'utilisateur le 2026-11-13 :
 # 413 pieces, 116 listes de modeles.
-GEAR_NAME_LEN = 40  # octets par nom dans gear-map.bin (zero compris)
+GEAR_NAME_LEN = 48  # octets par nom dans gear-map.bin / weapon-map.bin (zero compris)
+
+# Armes, boucliers, arcs, carquois, fourreaux portes (d'apres botw-coop, reverse-engineering.md,
+# « Weapons: binding an actor to a bone » ; reecrit ici) : acteurs Weapon_* poses sur un os de Link,
+# un pack = une liste de modeles. Un acteur CoopWeapon_<modele> par modele, que le plugin attache a
+# un os du pantin. Les packs a plusieurs listes de modeles sont ecartes (comptes a l'affichage).
+KINDS = {
+    # prefixe des packs -> (prefixe des acteurs generes, fichier de correspondance, signature)
+    "Armor_": ("CoopGear_", "gear-map.bin", b"CGM1"),
+    "Weapon_": ("CoopWeapon_", "weapon-map.bin", b"CWM1"),
+}
 
 
-def armor_models(romfs):
-    """{piece: nom de la liste de modeles} pour chaque pack Armor_* extrait."""
+def model_lists(romfs, prefix):
+    """{acteur du jeu: (nom de la liste de modeles, contenu)} pour les packs extraits ; et les ecartes."""
     pack_dir = os.path.join(romfs, "Actor", "Pack")
-    pieces = {}
+    pieces, skipped = {}, []
     for fn in sorted(os.listdir(pack_dir)):
-        if not fn.startswith("Armor_") or not fn.endswith(".sbactorpack"):
+        if not fn.startswith(prefix) or not fn.endswith(".sbactorpack"):
             continue
         piece = fn[: -len(".sbactorpack")]
         sarc = read_sarc(os.path.join(pack_dir, fn))
         lists = [f for f in sarc.get_files() if f.name.startswith("Actor/ModelList/")]
         if len(lists) != 1:
-            raise SystemExit(f"{piece} : {len(lists)} listes de modeles (1 attendue)")
+            if prefix == "Armor_":
+                raise SystemExit(f"{piece} : {len(lists)} listes de modeles (1 attendue)")
+            skipped.append((piece, len(lists)))
+            continue
         model = lists[0].name[len("Actor/ModelList/"):-len(".bmodellist")]
         pieces[piece] = (model, bytes(lists[0].data))
-    return pieces
+    return pieces, skipped
 
 
 def insert_actor(actors, hashes, entry):
@@ -175,18 +188,22 @@ def main(romfs, out):
     files[f"Actor/ModelList/{NAME}.bmodellist"] = link_files["Actor/ModelList/PauseMenuPlayer.bmodellist"]
     pack = write_pack(out, NAME, files)
 
-    pieces = armor_models(romfs) if any(fn.startswith("Armor_") for fn in os.listdir(os.path.join(romfs, "Actor", "Pack"))) else {}
+    # Pieces d'armure et armes : meme recette, un acteur par liste de modeles.
+    pieces_by_kind, skipped_by_kind = {}, {}
     gear_packs = {}
-    for piece, (model, data) in sorted(pieces.items()):
-        gear = f"CoopGear_{model}"
-        if gear in gear_packs:
-            continue
-        if len(gear) >= GEAR_NAME_LEN:
-            raise SystemExit(f"nom trop long : {gear}")
-        gfiles = dict(common)
-        gfiles[f"Actor/ActorLink/{gear}.bxml"] = actor_link(monk_link, gear)
-        gfiles[f"Actor/ModelList/{gear}.bmodellist"] = data
-        gear_packs[gear] = (piece, model, write_pack(out, gear, gfiles))
+    for prefix, (actor_prefix, _, _) in KINDS.items():
+        pieces, skipped = model_lists(romfs, prefix)
+        pieces_by_kind[prefix], skipped_by_kind[prefix] = pieces, skipped
+        for piece, (model, data) in sorted(pieces.items()):
+            gear = f"{actor_prefix}{model}"
+            if gear in gear_packs:
+                continue
+            if len(gear) >= GEAR_NAME_LEN:
+                raise SystemExit(f"nom trop long : {gear}")
+            gfiles = dict(common)
+            gfiles[f"Actor/ActorLink/{gear}.bxml"] = actor_link(monk_link, gear)
+            gfiles[f"Actor/ModelList/{gear}.bmodellist"] = data
+            gear_packs[gear] = (piece, model, write_pack(out, gear, gfiles))
 
     # ActorInfo : entree du moine, avec le modele de Link et un tas plus grand ; tri par CRC32 du nom.
     data = open(os.path.join(romfs, "Actor", "ActorInfo.product.sbyml"), "rb").read()
@@ -204,7 +221,7 @@ def main(romfs, out):
     entry["name"] = NAME
     entry["instSize"] = oead.S32(INST_SIZE)
     pos, crc = insert_actor(actors, hashes, entry)
-    # Pieces d'armure : meme entree, avec l'archive de modeles et le modele principal de la piece.
+    # Pieces d'armure et armes : meme entree, avec l'archive de modeles et le modele principal de la piece.
     for gear, (piece, model, _) in gear_packs.items():
         gentry = oead.byml.Hash({k: v for k, v in entry.items()})
         for k in ("bfres", "mainModel", "aabbMin", "aabbMax", "boundingForTraverse"):
@@ -241,21 +258,28 @@ def main(romfs, out):
     os.makedirs(os.path.join(out, "System", "Resource"), exist_ok=True)
     rstb.util.write_rstb(table, os.path.join(out, "System", "Resource", "ResourceSizeTable.product.srsizetable"), be=False)
 
-    # Correspondance piece -> acteur a montrer : "CGM1", u32 n, n x u32 CRC32 du nom de piece (tries),
-    # n x nom d'acteur sur GEAR_NAME_LEN octets. Lue par le plugin (content:/botw-coop/gear-map.bin).
-    if pieces:
-        rows = sorted((zlib.crc32(p.encode()), f"CoopGear_{m}") for p, (m, _) in pieces.items())
+    # Correspondance piece -> acteur a montrer : signature, u32 n, n x u32 CRC32 du nom de piece (tries),
+    # n x nom d'acteur sur GEAR_NAME_LEN octets. Lue par le plugin (content:/botw-coop/<fichier>).
+    for prefix, (actor_prefix, map_name, magic) in KINDS.items():
+        pieces = pieces_by_kind[prefix]
+        if not pieces:
+            continue
+        rows = sorted((zlib.crc32(p.encode()), f"{actor_prefix}{m}") for p, (m, _) in pieces.items())
         if len({c for c, _ in rows}) != len(rows):
-            raise SystemExit("collision de CRC32 entre deux pieces")
-        blob = b"CGM1" + struct.pack("<I", len(rows))
+            raise SystemExit(f"collision de CRC32 entre deux pieces ({prefix})")
+        blob = magic + struct.pack("<I", len(rows))
         blob += b"".join(struct.pack("<I", c) for c, _ in rows)
         blob += b"".join(g.encode().ljust(GEAR_NAME_LEN, b"\0") for _, g in rows)
         os.makedirs(os.path.join(out, "botw-coop"), exist_ok=True)
-        with open(os.path.join(out, "botw-coop", "gear-map.bin"), "wb") as f:
+        with open(os.path.join(out, "botw-coop", map_name), "wb") as f:
             f.write(blob)
 
     print(f"{NAME} : pack de {len(files)} fichiers ({len(pack)} octets), entree ActorInfo n.{pos} (crc {crc:08x})")
-    print(f"armures : {len(pieces)} pieces, {len(gear_packs)} acteurs CoopGear_*, {len(sizes)} tailles en tout")
+    for prefix, (actor_prefix, map_name, _) in KINDS.items():
+        n_actors = sum(1 for g in gear_packs if g.startswith(actor_prefix))
+        print(f"{prefix}* : {len(pieces_by_kind[prefix])} acteurs du jeu, {n_actors} acteurs {actor_prefix}*, "
+              f"ecartes {skipped_by_kind[prefix]}")
+    print(f"{len(sizes)} tailles en tout")
     for name, size in list(sizes.items())[:len(SEQUENCES) + 7]:
         print(f"  {size:8} {name}")
     return 0

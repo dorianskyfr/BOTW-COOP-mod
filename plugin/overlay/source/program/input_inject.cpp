@@ -4,6 +4,7 @@
 #include "warp.hpp"
 #include "status.hpp"
 #include "gear.hpp"
+#include "weapons.hpp"
 
 #include "clock.hpp"
 #include "dynsym.hpp"
@@ -175,6 +176,7 @@ namespace coop::input_inject {
                 coop::warp::OnFrame();
                 coop::status::OnFrame();
                 coop::gear::OnFrameLocal();
+                coop::weapons::OnFrameLocal();
                 coop::remote_actor::OnFrame();
                 coop::world_sync::OnFrame();
                 coop::flags::OnFrame();

@@ -4,6 +4,7 @@
 #include "clock.hpp"
 #include "game.hpp"
 #include "gear.hpp"
+#include "weapons.hpp"
 #include "session.hpp"
 
 #include "lib.hpp"
@@ -234,6 +235,7 @@ namespace coop::remote_actor {
                 s_State = State::WaitingForPlayer;
                 s_Actor = 0;
                 coop::gear::RemoveAll(false); /* detruites avec le monde : on oublie sans y toucher */
+                coop::weapons::RemoveAll(false);
             }
             s_InGameFrames = 0;
             return;
@@ -399,6 +401,7 @@ namespace coop::remote_actor {
                     s_Actor = 0;
                     s_State = State::Idle;
                     coop::gear::RemoveAll(true);
+                    coop::weapons::RemoveAll(true);
                     break;
                 }
 
@@ -409,6 +412,7 @@ namespace coop::remote_actor {
                     const bool ok = coop::game::DeleteActor(s_Actor);
                     Logging.Log("[botw-coop] acteur distant : joueur distant parti, personnage %s", ok ? "retire" : "non retire (refus du jeu)");
                     coop::gear::RemoveAll(true);
+                    coop::weapons::RemoveAll(true);
                     s_Actor = 0;
                     s_State = State::Idle;
                     break;
@@ -484,6 +488,9 @@ namespace coop::remote_actor {
                     if (ActorName == PuppetName && coop::gear::OnFramePuppet(s_Actor, target, s_Sequence, sequencePlayed)
                         && s_Sequence != nullptr)
                         coop::game::PlayActorSequence(s_Actor, s_Sequence);
+                    /* Armes, bouclier, arc : poses dans le repere du pantin (weapons.hpp). */
+                    if (ActorName == PuppetName)
+                        coop::weapons::OnFramePuppet(target);
                 }
 
                 if (s_Frames % 150 == 0) {

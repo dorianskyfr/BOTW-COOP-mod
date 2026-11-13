@@ -57,7 +57,10 @@ import sys
 #   HP : coeurs du joueur (vie et maximum, en quarts de coeur), retransmis tels quels.
 #   GEAR : armure portee (CRC32 hexadecimal des noms de pieces tete, torse, jambes ; 0 = rien),
 #          retransmise telle quelle, une fois par seconde.
-STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3}
+#   WPN : objet porte (emplacement, CRC32 du nom, matrice 3x4 dans le repere du joueur),
+#         retransmis tel quel ; 10 par seconde par objet porte.
+STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
+                "WPN": 14}
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur.
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
 OPTIONAL_EXTRA = {"TIME": 1, "MTX": 1}
@@ -348,6 +351,12 @@ def main():
                         if getattr(client, "gear", None) != payload:
                             client.gear = payload
                             log(f"joueur {client.pid} : armure {payload}")
+                    elif parts[0] == "WPN":
+                        wpn = getattr(client, "wpn", {})
+                        client.wpn = wpn
+                        if wpn.get(parts[1]) != parts[2]:
+                            wpn[parts[1]] = parts[2]
+                            log(f"joueur {client.pid} : objet porte {parts[1]} = {parts[2]} (position {parts[6]} {parts[10]} {parts[14]})")
                     elif parts[0] == "LIFE":
                         # Derniere vie annoncee par ennemi, pour un joueur qui arrive plus tard.
                         # Memoire vive seulement (pas sur disque) : au redemarrage du serveur,

@@ -1,0 +1,90 @@
+﻿# Armes portees par le partenaire (2026-11-13). Extraits des journaux (build\runs, hors git). Objets mis dans l'inventaire de test par COOP_TEST_GIVE, equipes par le menu (pilotage a l'aveugle : arc et carquois equipes).
+# wp2/wp3 : essai de liaison aux os (ModelBindInfo), abandonne : recherche de l'os par nom en echec en jeu normal.
+# wp4 : une instance, pantin de test ; wd1 : deux instances.
+
+## wp2_game.txt
+00:00:16.390 [botw-coop] config: 266 armes montrables sur le partenaire
+00:00:54.329 [botw-coop] armes : aucun os de Link lisible (1 releves sans os)
+00:01:06.697 [botw-coop] armes : aucun os de Link lisible (41 releves sans os)
+00:01:15.998 [botw-coop] essai inventaire : Armor_001_Head x1 -> objets 1 -> 2
+00:01:15.998 [botw-coop] essai inventaire : Armor_001_Upper x1 -> objets 2 -> 3
+00:01:15.998 [botw-coop] essai inventaire : Armor_001_Lower x1 -> objets 3 -> 4
+00:01:16.001 [botw-coop] essai inventaire : Weapon_Sword_001 x2000 -> objets 4 -> 5
+00:01:16.007 [botw-coop] essai inventaire : Weapon_Shield_001 x2000 -> objets 5 -> 6
+00:01:16.009 [botw-coop] essai inventaire : Weapon_Bow_001 x2000 -> objets 6 -> 7
+00:01:17.361 [botw-coop] armes : aucun os de Link lisible (81 releves sans os)
+00:01:28.022 [botw-coop] armes : aucun os de Link lisible (121 releves sans os)
+00:01:37.617 [botw-coop] armes (diag) : 7/7 os lus ; Link (-1024.48, 252.63, 1799.95) ; Pod_A ok (-1024.55, 253.92, 1799.86) ; Weapon_R ok (-1024.79, 253.36, 1799.99) ; 0 objet(s) a moins de 2,5 m
+00:01:47.749 [botw-coop] armes (diag) : 7/7 os lus ; Link (-1024.48, 252.63, 1799.95) ; Pod_A ok (-1024.55, 253.92, 1799.86) ; Weapon_R ok (-1024.79, 253.36, 1799.99) ; 0 objet(s) a moins de 2,5 m
+00:02:04.523 [botw-coop] armes : aucun os de Link lisible (161 releves sans os)
+
+## wp3_game.txt
+00:00:15.055 [botw-coop] config: 266 armes montrables sur le partenaire
+00:00:52.879 [botw-coop] armes : aucun os de Link lisible (1 releves sans os) ; Link etat=1 +0x685=17 +0x4e0=660361eda0
+00:01:04.761 [botw-coop] armes : aucun os de Link lisible (41 releves sans os) ; Link etat=1 +0x685=17 +0x4e0=660361eda0
+00:01:13.872 [botw-coop] essai inventaire : Armor_001_Head x1 -> objets 1 -> 2
+00:01:13.872 [botw-coop] essai inventaire : Armor_001_Upper x1 -> objets 2 -> 3
+00:01:13.873 [botw-coop] essai inventaire : Armor_001_Lower x1 -> objets 3 -> 4
+00:01:13.876 [botw-coop] essai inventaire : Weapon_Sword_001 x2000 -> objets 4 -> 5
+00:01:13.877 [botw-coop] essai inventaire : Weapon_Shield_001 x2000 -> objets 5 -> 6
+00:01:13.879 [botw-coop] essai inventaire : Weapon_Bow_001 x2000 -> objets 6 -> 7
+00:01:15.428 [botw-coop] armes : aucun os de Link lisible (81 releves sans os) ; Link etat=1 +0x685=17 +0x4e0=660361eda0
+00:01:26.095 [botw-coop] armes : aucun os de Link lisible (121 releves sans os) ; Link etat=1 +0x685=17 +0x4e0=660361eda0
+00:01:36.762 [botw-coop] armes : aucun os de Link lisible (161 releves sans os) ; Link etat=1 +0x685=17 +0x4e0=660361eda0
+00:01:47.429 [botw-coop] armes : aucun os de Link lisible (201 releves sans os) ; Link etat=1 +0x685=17 +0x4e0=660361eda0
+00:01:58.095 [botw-coop] armes : aucun os de Link lisible (241 releves sans os) ; Link etat=1 +0x685=17 +0x4e0=660361eda0
+
+## wp4_game.txt
+00:00:15.571 [botw-coop] config: 266 armes montrables sur le partenaire
+00:01:13.815 [botw-coop] essai inventaire : Armor_001_Head x1 -> objets 1 -> 2
+00:01:13.816 [botw-coop] essai inventaire : Armor_001_Upper x1 -> objets 2 -> 3
+00:01:13.816 [botw-coop] essai inventaire : Armor_001_Lower x1 -> objets 3 -> 4
+00:01:13.823 [botw-coop] essai inventaire : Weapon_Sword_001 x2000 -> objets 4 -> 5
+00:01:13.824 [botw-coop] essai inventaire : Weapon_Shield_001 x2000 -> objets 5 -> 6
+00:01:13.825 [botw-coop] essai inventaire : Weapon_Bow_001 x2000 -> objets 6 -> 7
+00:01:58.617 [botw-coop] armes : emplacement 0 = Weapon_Bow_001 (ad66ce4f), position dans le repere de Link (-0.05, 1.18, -0.10)
+00:01:58.617 [botw-coop] armes : emplacement 1 = Weapon_Quiver_001 (bc3641b9), position dans le repere de Link (-0.12, 0.89, -0.05)
+00:01:58.863 [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Bow_001" CREE apres 5 images (objet 0)
+00:01:58.885 [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Quiver_001" CREE apres 5 images (objet 1)
+
+## wd1_game.txt
+00:00:14.831 [botw-coop] config: 266 armes montrables sur le partenaire
+00:01:38.972 [botw-coop] essai inventaire : Armor_001_Head x1 -> objets 1 -> 2
+00:01:38.973 [botw-coop] essai inventaire : Armor_001_Upper x1 -> objets 2 -> 3
+00:01:38.973 [botw-coop] essai inventaire : Armor_001_Lower x1 -> objets 3 -> 4
+00:01:38.976 [botw-coop] essai inventaire : Weapon_Sword_001 x2000 -> objets 4 -> 5
+00:01:38.977 [botw-coop] essai inventaire : Weapon_Shield_001 x2000 -> objets 5 -> 6
+00:01:38.979 [botw-coop] essai inventaire : Weapon_Bow_001 x2000 -> objets 6 -> 7
+00:02:39.559 [botw-coop] armes : emplacement 0 = Weapon_Bow_001 (ad66ce4f), position dans le repere de Link (-0.05, 1.18, -0.10)
+00:02:39.559 [botw-coop] armes : emplacement 1 = Weapon_Quiver_001 (bc3641b9), position dans le repere de Link (-0.12, 0.89, -0.05)
+
+## wd1_game2.txt
+00:00:16.486 [botw-coop] config: 266 armes montrables sur le partenaire
+00:01:52.592 [botw-coop] essai inventaire : Armor_001_Head x1 -> objets 1 -> 2
+00:01:52.593 [botw-coop] essai inventaire : Armor_001_Upper x1 -> objets 2 -> 3
+00:01:52.593 [botw-coop] essai inventaire : Armor_001_Lower x1 -> objets 3 -> 4
+00:01:52.602 [botw-coop] essai inventaire : Weapon_Sword_001 x2000 -> objets 4 -> 5
+00:01:52.605 [botw-coop] essai inventaire : Weapon_Shield_001 x2000 -> objets 5 -> 6
+00:01:52.606 [botw-coop] essai inventaire : Weapon_Bow_001 x2000 -> objets 6 -> 7
+00:02:27.538 [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Bow_001" CREE apres 5 images (objet 0)
+00:02:27.566 [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Quiver_001" CREE apres 5 images (objet 1)
+
+## wd1_relay.log
+23:43:05.547 joueur 1 : objet porte 0 = ad66ce4f (position -0.053 1.185 -0.099)
+23:43:05.548 joueur 1 : objet porte 1 = bc3641b9 (position -0.124 0.895 -0.050)
+
+## wd1_pilot.log (positions : objets reels chez J1, copies chez J2)
+   76.2s push -> deplacement (-2.97, -0.13, -0.58), position (-1027.45, 252.50, 1799.37)
+    2.6s    CoopPlayer                               (-1024.48, 252.63, 1799.95)
+    2.6s    CoopWeapon_Weapon_Bow_001                (-1024.51, 253.82, 1799.85)
+    2.6s    CoopWeapon_Weapon_Quiver_001             (-1024.59, 253.53, 1799.88)
+    5.1s    Weapon_Bow_001                           (-1024.52, 253.82, 1799.84)
+    5.1s    Weapon_Quiver_001                        (-1024.59, 253.53, 1799.88)
+    2.2s push -> deplacement (-1.38, -0.65, 6.98), position (-1025.86, 251.99, 1806.93)
+    5.2s acteurs (Weapon_(Bow|Quiver)|GameROMPlayer) : 3
+    5.2s    GameROMPlayer                            (-1025.94, 251.95, 1807.31)
+    5.2s    Weapon_Bow_001                           (-1025.97, 253.12, 1807.20)
+    5.2s    Weapon_Quiver_001                        (-1026.05, 252.83, 1807.23)
+    7.7s    CoopPlayer                               (-1025.94, 251.95, 1807.31)
+    7.7s    CoopWeapon_Weapon_Bow_001                (-1025.97, 253.12, 1807.20)
+    7.7s    CoopWeapon_Weapon_Quiver_001             (-1026.05, 252.83, 1807.24)

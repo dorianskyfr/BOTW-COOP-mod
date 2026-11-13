@@ -9,7 +9,7 @@ Depuis le 2026-11-11, l'image du jeu est vérifiable : captures par duplication 
 
 ## Ce qui marche aujourd'hui (version jouable minimale)
 
-Deux instances du jeu, chacune avec le plugin, reliées par le relais : **chaque joueur voit l'autre** sous la forme d'un Link animé (acteur `CoopPlayer`, avec son armure mais sans armes ; PNJ `Npc_Kakariko003` si les fichiers générés manquent) qui se déplace comme le joueur distant, en monde ouvert, à 30 FPS sur les deux fenêtres. L'heure du jeu est alignée sur celle du joueur 1. Le lien se rétablit seul après une coupure du relais.
+Deux instances du jeu, chacune avec le plugin, reliées par le relais : **chaque joueur voit l'autre** sous la forme d'un Link animé (acteur `CoopPlayer`, avec son armure et ses armes ; PNJ `Npc_Kakariko003` si les fichiers générés manquent) qui se déplace comme le joueur distant, en monde ouvert, à 30 FPS sur les deux fenêtres. L'heure du jeu est alignée sur celle du joueur 1. Le lien se rétablit seul après une coupure du relais.
 
 Mode d'emploi : `README.md`.
 
@@ -45,6 +45,7 @@ Mode d'emploi : `README.md`.
 | Modèle de Link pour le joueur distant | **vérifié à l'écran le 2026-11-13** (niveau 4) : acteur `CoopPlayer` (Link sans physique) généré depuis la RomFS de l'utilisateur ; repli automatique sur le PNJ s'il manque. Sans équipement | NOTES §5.27, `2026-11-13_pantin-link_deux-instances_J2-voit-J1.png` |
 | Personnage distant sans invite « Parler » (A près de lui ne bloque plus) | **vérifié à l'écran**, une et deux instances | `2026-11-12_parler_avant_invite-affichee.png`, `..._apres_invite-retiree.png`, `..._deux-instances_J2-face-a-J1_sans-invite.png`, NOTES §5.7 |
 | Armure du partenaire sur son Link (tête, torse, jambes ; 413 pièces, 116 modèles générés depuis la RomFS de l'utilisateur) | **vérifié à l'image le 2026-11-13** : une instance (pantin de test habillé, suit nage / escalade / marche) et deux instances (chacun voit la tenue annoncée par l'autre, changement de tenue en direct). Tenues annoncées par une option d'essai : relevé d'une vraie pièce portée **non vérifié** (pas d'armure dans les sauvegardes de test). Teintures non transmises ; armes et bouclier : pas faits | NOTES §5.33, `2026-11-13_armure_*.png` |
+| Armes, bouclier, arc, carquois du partenaire sur son Link (265 modèles générés depuis la RomFS) | **vérifié par les journaux et les positions, deux instances, le 2026-11-13** (arc et carquois réellement équipés chez J1, copies au même endroit chez J2 à 1 cm près, y compris en marchant). **Pas vu à l'image** (écran en veille). Épée en main, attaques, changement d'arme : non essayés | NOTES §5.34 |
 | Cœurs partagés et alerte « Joueur N en danger » | **vérifié à l'image, deux instances, le 2026-11-13** (J2 à 1 cœur, bandeau d'alerte chez J1) | NOTES §5.32, `2026-11-13_coeurs_*.png` |
 | Téléportation vers l'autre joueur (maintien du clic du stick gauche, ≤ 250 m) | **vérifié à deux instances le 2026-11-13** sur 16 m (arrivée à 12 cm du partenaire, cœurs intacts) ; le clic court reste l'accroupissement du jeu. Grandes distances et terrains difficiles non essayés | NOTES §5.31 |
 | Sauvegardes coop séparées (`save:/coop/`, copie des sauvegardes normales au premier lancement) | **vérifié le 2026-11-13 à une instance** : copie faite, partie chargée depuis la copie, écriture du jeu dans la copie, originaux identiques (SHA-256) ; **sauvegarde manuelle depuis le menu** écrite dans `coop/2/` (essai sv2) et **rechargée** à la session suivante (sv3). Sauvegarde automatique non essayée | NOTES §5.30, `2026-11-13_sauvegardes-coop-separees_sv1.log` |
@@ -91,7 +92,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 
 ## Limites connues de la version actuelle
 - Le joueur distant est un PNJ : il a une collision (on ne le traverse pas). L'invite « Parler » est retirée depuis le 2026-11-12.
-- Le Link du partenaire porte son armure, pas encore ses armes. Chacun joue dans son monde ; sont partagés : la présence, l'heure, les jours, la météo (à moins de 300 m), les drapeaux de progression, les objets ramassés, la mort et les points de vie des ennemis. La position des ennemis l'est dans une première version non essayée en combat ; leur comportement (cible, attaques, animations) ne l'est pas.
+- Le Link du partenaire porte son armure et ses armes ; il ne joue pas les attaques (seuls les objets bougent comme chez le partenaire). Chacun joue dans son monde ; sont partagés : la présence, l'heure, les jours, la météo (à moins de 300 m), les drapeaux de progression, les objets ramassés, la mort et les points de vie des ennemis. La position des ennemis l'est dans une première version non essayée en combat ; leur comportement (cible, attaques, animations) ne l'est pas.
 - Au-delà de 120 m du joueur local, le personnage distant n'est pas créé (valeur prudente, non mesurée).
 - Un seul joueur distant est géré.
 - Testé seulement sur ce PC, sous Ryujinx 1.3.3, avec BOTW 1.9.0. Toute autre version du jeu désactive les fonctions du plugin (contrôle du build ID).
@@ -99,7 +100,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 
 ## Point de reprise
 **2026-11-13 (soir)** — fait dans la journée : liste blanche des drapeaux, Link animé (escalade comprise), messages à l'écran, sauvegardes coop séparées, téléportation courte, cœurs partagés, armure du partenaire (23 h, NOTES §5.33). Ordre proposé ensuite (voir `docs/AUDIT_REFERENCE_BOTW_COOP.md`) :
-1. Armes, bouclier et arc sur le pantin (`ModelBindInfo`, os `Pod_A` / `Weapon_R`…, d'après botw-coop § « Weapons: binding an actor to a bone », à revérifier) ; relevé d'une vraie armure portée (il faut une sauvegarde de test avec une armure). Pour les essais à l'image, l'affichage de Windows doit être réveillé, pas seulement l'écran allumé.
+1. **À l'image, écran réveillé** : armes sur le Link partenaire (fait le 2026-11-13 au soir, vérifié par positions seulement) ; vraie armure portée (`-DCOOP_TEST_GIVE` met l'armure hylienne dans l'inventaire de test, il reste à l'équiper en voyant le menu). Puis attaques du partenaire (séquences `CutS1`… d'après botw-coop). Pour les essais à l'image, l'affichage de Windows doit être réveillé, pas seulement l'écran allumé.
 2. Mort et réanimation par le partenaire.
 3. Attaques des ennemis partagées (même mécanisme de séquences).
 4. Partenaire sur la carte, repas partagés, dons d'objets.
@@ -124,7 +125,7 @@ Sauvegarde de test en monde ouvert (plateau du Prélude, sortie du sanctuaire) :
 - `tools/run-test.ps1`, `tools/run-duo.ps1` : anciens tests automatiques (script d'entrées).
 - `tools/capture_dd.py` : capture d'une fenêtre (écran allumé obligatoire).
 - `tools/analysis/` : recherche d'adresses dans l'image mémoire de `main`.
-- Options de build de test : `-DCOOP_REMOTE_PAD`, `-DCOOP_TEST_SPAWN` (avec `-DCOOP_TEST_CIRCLE` : pantin en cercle ; avec `-DCOOP_TEST_GEAR` : pantin en tenue hylienne), `-DCOOP_TEST_WEAR` (tenue annoncée selon le numéro du joueur), `-DCOOP_TEST_SPAWN_SET`, `-DCOOP_POS_SITES`, `-DCOOP_ACTOR_DUMP`, `-DCOOP_ATT_DUMP`, `-DCOOP_INPUT_SCRIPT`, `-DCOOP_TEST_TIME`, `-DCOOP_TEST_UNFREEZE_TIME`, `-DCOOP_DUMP_MAIN`, `-DCOOP_SYMDUMP`, `-DCOOP_SYMDUMP_HID`. Aucune dans la build à jouer.
+- Options de build de test : `-DCOOP_REMOTE_PAD`, `-DCOOP_TEST_SPAWN` (avec `-DCOOP_TEST_CIRCLE` : pantin en cercle ; avec `-DCOOP_TEST_GEAR` : pantin en tenue hylienne), `-DCOOP_TEST_WEAR` (tenue annoncée selon le numéro du joueur), `-DCOOP_TEST_GIVE` (armure hylienne, épée, bouclier, arc ajoutés à l'inventaire de test), `-DCOOP_TEST_SPAWN_SET`, `-DCOOP_POS_SITES`, `-DCOOP_ACTOR_DUMP`, `-DCOOP_ATT_DUMP`, `-DCOOP_INPUT_SCRIPT`, `-DCOOP_TEST_TIME`, `-DCOOP_TEST_UNFREEZE_TIME`, `-DCOOP_DUMP_MAIN`, `-DCOOP_SYMDUMP`, `-DCOOP_SYMDUMP_HID`. Aucune dans la build à jouer.
 
 ## Installé sur le PC (2026-11-10)
 - Git (MinGit 2.56.0), Python 3.12.10, MSYS2 : via winget.
