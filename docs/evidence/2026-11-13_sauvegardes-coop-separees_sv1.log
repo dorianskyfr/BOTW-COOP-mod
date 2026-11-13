@@ -84,3 +84,13 @@ C5FA309232D5E75529A88F8237188B0FB84CCD37D9126FA7B3F72F58F4B024B5  \coop\2\captio
 E9A362C3B9CF129BBE09A741F6A976718327FD54D3709E84E24C7B1863DEC026  \coop\2\game_data.sav
 78235BF727ECBED8E9DD321C7722967DBA5FA0D9D3832D7A19F18980DDD17504  \coop\tracker\trackblock00.sav
 6562E3A17BFF500A17459F823260A304948B02AAF059BD23128FBEA70C88C0F8  \tracker\trackblock00.sav
+
+# Essai sv3 (meme jour) : nouvelle session sur le meme dossier (t_sv2_p1), « Continue »
+00:00:15.197 [botw-coop] sauvegardes : 8 crochets poses, copie coop a la premiere ouverture d'une sauvegarde
+00:00:19.904 [botw-coop] sauvegardes : copie coop deja faite, redirection vers save:/coop/
+00:00:19.957 [botw-coop] sauvegardes : save:/2/caption.sav -> save:/coop/2/caption.sav
+00:01:19.582 [botw-coop] sauvegardes : save:/2/caption.jpg -> save:/coop/2/caption.jpg
+00:01:19.584 [botw-coop] sauvegardes : save:/2/caption.jpg -> save:/coop/2/caption.jpg
+00:01:27.919 [botw-coop] sauvegardes : save:/2/game_data.sav -> save:/coop/2/game_data.sav
+00:01:27.938 [botw-coop] sauvegardes : save:/2/caption.sav -> save:/coop/2/caption.sav
+   51.7s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
