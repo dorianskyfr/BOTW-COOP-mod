@@ -631,13 +631,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Desactivation : build avec `-DCOOP_NO_SEPARATE_SAVE` (le fichier de reglages est lu apres l'ouverture des sauvegardes par le jeu).
 - Preuve : `docs/evidence/2026-11-13_sauvegardes-coop-separees_sv1.log`.
 
-### 5.31 Teleportation vers l'autre joueur, courte distance (2026-11-13, essai `wp1`) - [V] a 16 m, deux instances
+### 5.31 Teleportation vers l'autre joueur, courte distance (2026-11-13, essais `wp1` a `wp4`) - [V] a 16 m, deux instances
 
 - Commande : maintenir le clic du stick gauche 1,5 s (bit 0x10 des boutons, comme « LS » dans `tools/drive.py`). Distance limitee a 250 m ; au-dela, message « partenaire trop loin ». Arrivee sur la position du partenaire, 0,5 m au-dessus.
-- Ecritures (adresses citees par botw-coop, « Moving Link (warp) ») : position du corps Havok de Link `[[[main+0x1dbfdf0]+0xf0]+0xd28]+0x5e0`, matrice de l'acteur `+0x398`, copie de position de `PlayerInfo` `+0x88`, hauteurs de depart de chute `Player+0x860` et `+0x20d0`, puis les memes ecritures pendant 10 images.
-- Garde-fous a nous : avant la premiere ecriture, la position lue au bout de la chaine Havok doit etre celle de Link a 1 m pres, sinon rien n'est ecrit ; une hauteur de chute n'est ecrite que si sa valeur est a moins de 300 m de la hauteur de Link. Vitesse Havok non touchee (decalage non confirme).
-- [V] La chaine Havok de 1.9.0 tient chez nous : le controle a reussi (sinon le journal dirait « differente de Link »).
-- [V] Essai `wp1` : J1 en (-1024.48, 252.63, 1799.95), J2 a 16,3 m en (-1015.59, 250.95, 1813.54) ; apres 2 s de maintien, J1 en (-1015.63, 250.93, 1813.65), soit 11 cm de J2, pose au sol ; cœurs inchanges ; bandeau « Téléporté vers le joueur 2 (16 m) » emis.
-- Effet de bord : le clic du stick fait aussi s'accroupir Link (le jeu affiche son astuce « Crouching increases your stealth »). botw-coop retient ce bouton pendant le maintien ; pas nous, pour l'instant.
-- Non verifie : grandes distances (jusqu'a 250 m), pente, eau, falaise, partenaire en vol plane ou en escalade, interieur, Eden.
-- Preuves : `docs/evidence/2026-11-13_teleportation_wp1.log`, capture `2026-11-13_teleportation_J1-arrive-chez-J2.png`.
+- Le clic est retenu du jeu pendant qu'il est maintenu ; relache en moins de 350 ms, il est rendu comme un appui de 120 ms (Link s'accroupit normalement). La decision se prend sur l'etat le plus recent d'une manette connectee (bit 0 de `m_Attributes`) et s'applique a tous les etats rendus.
+- Ecritures (d'apres botw-coop, « Moving Link (warp) », `player.cpp`, `offsets.hpp`) : corps Havok de Link (hkpRigidBody), position `+0x1c0` et vitesse lineaire `+0x270` (mise a zero) ; matrice de l'acteur `+0x398` ; copie de position de `PlayerInfo` `+0x88` ; hauteurs de depart de chute `Player+0x860` et `+0x20d0` ; puis les memes ecritures pendant 10 images.
+- Corps Havok : chaine depuis l'acteur `[[[Acteur+0x578]+0x80]+0x410]` d'abord, puis chaine globale `[[[main+0x1dbfdf0]+0xf0]+0xd28] + 0x5e0 - 0x1c0`. Garde-fous a nous : un corps n'est retenu que si la position qu'il porte est celle de Link a 1 m pres ; la vitesse n'est ecrite que si sa vtable est `main+0x1b87b20` ; une hauteur de chute n'est ecrite que si sa valeur est a moins de 300 m de celle de Link.
+- [V] **La chaine globale change d'un lancement a l'autre chez nous** : juste dans `wp1`, elle menait ailleurs dans `wp2` et `wp3` (position lue (-0.30, 1.36, -0.00)) ; le garde-fou a annule la teleportation sans rien ecrire. Dans `wp3`, la chaine depuis l'acteur lue a `+0x5e0` (mauvais decalage, corrige en `+0x1c0`) donnait (0, 0, 0). Dans `wp4`, chaine depuis l'acteur, vtable attendue, position de Link : retenue.
+- [V] Essai `wp4` : J1 de (-1024.48, 252.63, 1799.95) vers J2 a 16,0 m en (-1015.75, 250.96, 1813.27) ; arrivee en (-1015.80, 250.94, 1813.38), soit 12 cm de J2, au sol, cœurs inchanges ; pas d'accroupissement (capture `2026-11-13_teleportation_J1-arrive-chez-J2.png`). Appui court de 201 ms ensuite : rendu au jeu, Link accroupi a cote du pantin de J2 (`..._appui-court-accroupi.png`).
+- Non verifie : grandes distances (jusqu'a 250 m), pente, eau, falaise, partenaire en vol plane ou en escalade, interieur, vraie manette (seulement le pilote), Eden.
+- Preuves : `docs/evidence/2026-11-13_teleportation_essais-wp1-a-wp4.log`.

@@ -266,9 +266,17 @@ namespace coop::input_inject {
                 }
             }
 #endif
-            /* Teleportation : maintien du clic du stick gauche (boutons tels que le jeu les voit). */
-            if (states != nullptr && count > 0)
-                coop::warp::OnPad(states[count - 1].m_Buttons);
+            /* Teleportation : maintien du clic du stick gauche, retenu du jeu pendant le maintien. */
+            /* Decision prise une fois, sur l'etat le plus recent (indice 0 de GetNpadStates),
+               puis appliquee au bit du stick gauche de tous les etats rendus. */
+            /* Seulement pour un style de manette connecte (bit 0 de m_Attributes, HidNpadAttribute
+               IsConnected de libnx) : les styles inutilises ont le bouton relache et casseraient le maintien. */
+            if (states != nullptr && count > 0 && (states[0].m_Attributes & 1) != 0) {
+                constexpr std::uint64_t StickL = 0x10;
+                const std::uint64_t ls = coop::warp::FilterPad(states[0].m_Buttons) & StickL;
+                for (int j = 0; j < count; j++)
+                    states[j].m_Buttons = (states[j].m_Buttons & ~StickL) | ls;
+            }
             (void)states;
             (void)count;
         }

@@ -1,0 +1,55 @@
+# Essai wp1 (2026-11-13) : teleportation de J1 vers J2, deux instances Ryujinx 1.3.3, t_lv1
+# J2 s'eloigne (push), puis J1 maintient le clic du stick gauche 2 s.
+
+--- pilote
+   67.5s push -> deplacement (8.69, -1.66, 13.26), position (-1015.79, 250.98, 1813.21)
+   69.5s position (-1015.59, 250.95, 1813.54) avant acteur (0.5483, 0.8363)
+   70.0s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+   72.0s maintien LS 2.0 s -> (-1015.59, 251.45, 1813.54)
+   75.0s position (-1015.63, 250.93, 1813.65) avant acteur (-0.1943, 0.9809)
+   76.8s capture apres : build\runs\wp1_apres.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1015.63, 250.93, 1813.65)
+   77.3s position (-1015.59, 250.95, 1813.54) avant acteur (0.5483, 0.8363)
+--- J1
+00:02:35.129 [botw-coop] teleportation : de (-1024.48, 252.63, 1799.95) vers J2 (-1015.59, 251.45, 1813.54), 16.3 m
+00:02:35.130 [botw-coop] messages : "T??l??port?? vers le joueur 2 (16 m)"
+00:02:35.471 [botw-coop] teleportation : arrivee, position (-1015.59, 251.16, 1813.54)
+--- wp2 J1
+00:02:35.326 [botw-coop] teleportation : de (-1024.48, 252.63, 1799.95) vers J2 (-1015.46, 251.43, 1813.72), 16.5 m
+00:02:35.331 [botw-coop] teleportation : position Havok (-0.30, 1.36, -0.00) differente de Link (-1024.48, 252.63, 1799.95), annulee
+00:02:45.662 [botw-coop] teleportation : appui court (202 ms) rendu au jeu
+--- wp2 pilote
+   67.5s push -> deplacement (8.71, -1.68, 13.29), position (-1015.77, 250.96, 1813.24)
+   69.5s position (-1015.46, 250.93, 1813.72) avant acteur (0.5483, 0.8363)
+   72.0s maintien LS 2.0 s -> (-1024.48, 252.63, 1799.95)
+   74.0s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+   75.7s capture apres : build\runs\wp2_apres.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1024.48, 252.63, 1799.95)
+   82.9s appui LS x1 -> (-1024.48, 252.63, 1799.95)
+   86.2s capture tap : build\runs\wp2_tap.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1024.48, 252.63, 1799.95)
+--- wp3 J1
+00:02:35.271 [botw-coop] teleportation : de (-1024.48, 252.63, 1799.95) vers J2 (-1015.25, 251.40, 1814.03), 16.9 m
+00:02:35.275 [botw-coop] teleportation : chaine acteur -> 655f97cc90, position (0.00, 0.00, 0.00) : pas celle de Link
+00:02:35.275 [botw-coop] teleportation : chaine globale -> 655f98f9b0, position (-0.30, 1.36, -0.00) : pas celle de Link
+00:02:35.275 [botw-coop] teleportation : corps Havok de Link introuvable, annulee (rien n'est ecrit)
+00:02:45.607 [botw-coop] teleportation : appui court (201 ms) rendu au jeu
+--- wp3 pilote
+   67.5s push -> deplacement (8.92, -1.69, 13.60), position (-1015.56, 250.95, 1813.55)
+   69.5s position (-1015.25, 250.90, 1814.03) avant acteur (0.5483, 0.8363)
+   72.0s maintien LS 2.0 s -> (-1024.48, 252.63, 1799.95)
+   74.0s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+   75.7s capture apres : build\runs\wp3_apres.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1024.48, 252.63, 1799.95)
+   82.9s appui LS x1 -> (-1024.48, 252.63, 1799.95)
+   86.1s capture tap : build\runs\wp3_tap.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1024.48, 252.63, 1799.95)
+--- wp4 J1
+00:02:35.257 [botw-coop] teleportation : de (-1024.48, 252.63, 1799.95) vers J2 (-1015.75, 251.46, 1813.27), 16.0 m
+00:02:35.262 [botw-coop] teleportation : chaine acteur -> 655f981d50, vtable attendue, position (-1024.48, 252.63, 1799.95)
+00:02:35.262 [botw-coop] teleportation : corps Havok trouve par la chaine acteur
+00:02:35.670 [botw-coop] teleportation : arrivee, position (-1015.75, 251.17, 1813.27)
+00:02:45.643 [botw-coop] teleportation : appui court (201 ms) rendu au jeu
+--- wp4 pilote
+   67.5s push -> deplacement (8.68, -1.66, 13.25), position (-1015.80, 250.97, 1813.19)
+   69.5s position (-1015.75, 250.96, 1813.27) avant acteur (0.5483, 0.8363)
+   72.0s maintien LS 2.0 s -> (-1015.75, 251.46, 1813.27)
+   74.0s position (-1015.80, 250.94, 1813.38) avant acteur (-0.1943, 0.9809)
+   75.7s capture apres : build\runs\wp4_apres.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1015.80, 250.94, 1813.38)
+   82.9s appui LS x1 -> (-1015.80, 250.94, 1813.38)
+   86.1s capture tap : build\runs\wp4_tap.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1015.80, 250.94, 1813.38)

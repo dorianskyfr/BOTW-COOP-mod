@@ -10,8 +10,12 @@
  */
 namespace coop::warp {
 
-    /* Fil du jeu, a chaque lecture de manette : boutons tels que le jeu va les voir. */
-    void OnPad(std::uint64_t buttons);
+    /*
+     * Fil du jeu, a chaque lecture de manette : recoit les boutons et renvoie ceux que le jeu
+     * doit voir. Le clic du stick gauche est retenu tant qu'il est maintenu ; relache en moins
+     * de 350 ms, il est rendu au jeu comme un appui court (Link s'accroupit comme d'habitude).
+     */
+    std::uint64_t FilterPad(std::uint64_t buttons);
 
     /* Fil du jeu, a chaque image. */
     void OnFrame();
