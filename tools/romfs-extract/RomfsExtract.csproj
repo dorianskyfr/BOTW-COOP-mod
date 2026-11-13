@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Lit la RomFS de BOTW (jeu de base + mise a jour 1.9.0) depuis les NSP de l'utilisateur.
+       Bibliotheque : Ryujinx.LibHac, celle qu'utilise l'emulateur (flux NuGet du projet Ryujinx,
+       voir nuget.config). Aucun fichier du jeu n'est livre : la sortie va dans build/ (hors git). -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ryujinx.LibHac" Version="0.21.0-alpha.133" />
+  </ItemGroup>
+
+</Project>

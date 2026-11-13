@@ -1,7 +1,7 @@
 # PROGRESS
 
 États : non commencé / en cours / partiel / vérifié / bloqué / abandonné.
-Dernière mise à jour : 2026-11-12. Détails et sources dans NOTES.md, preuves dans `docs/evidence/`.
+Dernière mise à jour : 2026-11-13. Étude du projet `botw-coop` comme référence : `docs/AUDIT_REFERENCE_BOTW_COOP.md`. Détails et sources dans NOTES.md, preuves dans `docs/evidence/`.
 
 Environnement de test : Ryujinx 1.3.3, firmware 22.5.0, BOTW 1.9.0 (build ID `cd57b23fa4bbad65803d9788c01821ee`), Windows 11, Ryzen 5 5600X, RTX 3070, 32 Go.
 
@@ -70,7 +70,8 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 | A. Outil de transposition d'adresses 1.5.0 → 1.9.0 | non commencé | pas d'exécutable 1.5.0 |
 | B. Identifiant commun des objets de carte | **vérifié** : identiques sur les deux instances (54 acteurs sur 54) | `2026-11-11_phaseB_hashid-identiques-deux-instances.log` |
 | B. Drapeaux du jeu : lecture et détection des changements | **vérifié** : 42 031 booléens lus, changements détectés, noms retrouvés par CRC32 | `2026-11-11_phaseB_drapeaux-lus-et-changements.log` |
-| B. Drapeaux : envoi à l'autre joueur et écriture | **partiel** : vérifié à l'écran sur un cas (J2 en nouvelle partie reçoit la tablette de J1). Les objets déjà affichés ne se mettent pas à jour (porte restée fermée) ; pas de liste fiable des drapeaux personnels à exclure | `2026-11-11_phaseB_drapeaux-partages_deux-instances.log`, `..._J2-nouvelle-partie-a-la-tablette.png`, NOTES §4.4 |
+| B. Drapeaux : envoi à l'autre joueur et écriture | **partiel** : vérifié à l'écran sur un cas (J2 en nouvelle partie reçoit la tablette de J1). Les objets déjà affichés ne se mettent pas à jour (porte restée fermée) | `2026-11-11_phaseB_drapeaux-partages_deux-instances.log`, `..._J2-nouvelle-partie-a-la-tablette.png`, NOTES §4.4 |
+| B. Liste blanche des drapeaux (catalogue de 45 031 drapeaux lu dans la RomFS de l'utilisateur) | **vérifié à deux instances le 2026-11-13** (niveau 4) sur un ramassage et un ennemi tué : seuls les drapeaux de la liste partent ; `IsGet_*`, cinématiques vues, etc. restent à chacun. Garde de la paravoile : codée, **non essayée** | `2026-11-13_liste-blanche-drapeaux_wl1.log`, NOTES §5.26 |
 | B. Serveur d'état : mémoire des drapeaux partagés, état complet donné au joueur qui entre en jeu, doublons ignorés, mémoire gardée sur disque | **vérifié sur un scénario** (J2 arrive après le ramassage et reçoit l'état : objet retiré chez lui) | `2026-11-11_serveur-etat_arrivee-tardive_et_deconnexion.log`, NOTES §5.5 |
 | B. Personnage distant retiré à la déconnexion | **vérifié à l'écran** | `2026-11-11_serveur_J2-voit-J1.png`, `..._J1-parti-personnage-retire.png` |
 | B. Protocole binaire, accusés de réception, arbitrage avant action, cadence réglable | non commencé | — |

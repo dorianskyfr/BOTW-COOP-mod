@@ -9,3 +9,5 @@ build/
 
 backups/
 __pycache__/
+tools/romfs-extract/bin/
+tools/romfs-extract/obj/

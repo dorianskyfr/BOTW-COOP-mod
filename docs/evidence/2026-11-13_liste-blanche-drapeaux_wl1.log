@@ -1,0 +1,54 @@
+# Essai wl1 (2026-11-13) : liste blanche des drapeaux, deux instances Ryujinx 1.3.3, sauvegarde t_lv1 (plateau, sans paravoile)
+# J1 ramasse Item_Mushroom_E en (-1028.9, 249.6, 1841.0) puis fait tomber un Bokoblin (outil drop).
+# Noms des hachages : catalogue build/gamedata/flags.tsv genere depuis la RomFS 1.9.0 (tools/gamedata_names.py).
+#   6e263cbb DoSnatchDisplay (non sauvegarde) | 23969f9e IsPlayed_Demo025_0 | a089b5c2 WM_DaytimeFlag | 352278dc IsGet_Item_Mushroom_E
+#   8cd04190 IsPlayed_Demo002_0 | f86167a4 MainField_Item_Mushroom_E_2470176584 (groupe 2) | 09ac3cb2 MainField_Enemy_Bokoblin_Junior_1384488657 (groupe 2, lune de sang)
+
+--- pilote
+    7.9s appui B x2 -> (?)
+   17.5s appui A x3 -> (?)
+   43.7s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   69.2s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+   70.7s calibration haut : deplacement (-1.32, 6.68) -> (-1025.80, 252.02, 1806.63)
+   72.2s calibration droite : deplacement (-6.11, -1.16) -> (-1031.91, 251.61, 1805.46)
+   72.2s camera : avant=(-0.19, 0.98) sens droite=1
+   78.9s goto (-1028.9, 1841.0) -> arrive, position (-1028.97, 249.59, 1840.14)
+   78.9s position (-1028.97, 249.59, 1840.14) avant acteur (0.0678, 0.9977)
+   80.1s appui A x1 -> (-1029.03, 249.72, 1840.97)
+   84.3s appui A x1 -> (-1029.03, 249.69, 1840.97)
+   89.3s drop : chute d'un Bokoblin demandee
+  104.3s position (-1029.03, 249.69, 1840.97) avant acteur (0.0637, 0.998)
+--- J1
+00:00:16.672 [botw-coop] config: liste blanche lue : 33350 drapeaux (progression 1330, objets de carte 31535, portes logiques 485), groupes actifs 0x6
+00:00:29.398 [botw-coop] drapeaux : Manager=65fa4474f0, tampon candidat a +0xbf8 = 65686d5b58, 42031 booleens
+00:00:29.398 [botw-coop] drapeaux : Manager=65fa4474f0, tampon candidat a +0xc00 = 65fa610528, 42031 booleens
+00:00:29.398 [botw-coop] drapeaux : 64 drapeaux examines, hachage a +0xc (64 concordances)
+00:00:29.403 [botw-coop] drapeaux : instantane de 42031 booleens pris (288 a 1, 1523 ni 0 ni 1) ; drapeau 0 : 000000000a227a20 0002fc0400840700 0000000000000000
+00:02:02.188 [botw-coop] drapeaux : resynchronisation envoyee (total envoyes 1, recus appliques 0, perdus 0)
+00:02:02.190 [botw-coop] drapeau change : n.18258 hachage=6e263cbb 0 -> 1
+00:02:04.074 [botw-coop] drapeau change : n.5897 hachage=23969f9e 0 -> 1
+00:02:15.643 [botw-coop] drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+00:02:40.407 [botw-coop] drapeau change : n.8779 hachage=352278dc 0 -> 1
+00:02:40.408 [botw-coop] drapeau change : n.9645 hachage=39f7b876 0 -> 1
+00:02:40.408 [botw-coop] drapeau change : n.12066 hachage=4869f39a 0 -> 1
+00:02:40.408 [botw-coop] drapeau change : n.14411 hachage=5650a1e6 0 -> 1
+00:02:44.811 [botw-coop] drapeau change : n.9645 hachage=39f7b876 1 -> 0
+00:02:44.811 [botw-coop] drapeau change : n.12066 hachage=4869f39a 1 -> 0
+00:02:44.812 [botw-coop] drapeau change : n.14411 hachage=5650a1e6 1 -> 0
+00:02:44.813 [botw-coop] drapeau change : n.23176 hachage=8cd04190 0 -> 1
+00:02:44.815 [botw-coop] drapeau change : n.40837 hachage=f86167a4 0 -> 1 (envoye)
+00:02:55.041 [botw-coop] drapeau change : n.1640 hachage=09ac3cb2 0 -> 1 (envoye, lune de sang)
+--- J2
+00:00:17.489 [botw-coop] config: liste blanche lue : 33350 drapeaux (progression 1330, objets de carte 31535, portes logiques 485), groupes actifs 0x6
+00:01:51.270 [botw-coop] drapeau change : n.18258 hachage=6e263cbb 0 -> 1
+00:01:52.670 [botw-coop] drapeau change : n.5897 hachage=23969f9e 0 -> 1
+00:02:04.322 [botw-coop] drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+00:02:34.952 [botw-coop] drapeau recu : n.40837 hachage=f86167a4 mis a 1
+00:02:34.960 [botw-coop] objet : Item_Mushroom_E pris, ouvert ou vaincu par l'autre joueur (drapeau f86167a4) -> retire ici
+00:02:45.252 [botw-coop] drapeau change : n.1640 hachage=09ac3cb2 0 -> 1 (envoye, lune de sang)
+--- relais
+18:03:37.697 joueur 2 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+18:03:38.706 joueur 1 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+18:03:38.721 joueur 2 : drapeau nouveau n.1 = c2aa7d7e 1 (1 en memoire, 0 deja connus)
+18:04:21.894 joueur 1 : drapeau nouveau n.1 = f86167a4 1 (2 en memoire, 1 deja connus)
+18:04:32.178 joueur 1 : drapeau de lune de sang 09ac3cb2 a 1 (1 en memoire)

@@ -545,3 +545,27 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Outils : `drive.py <nom> nudge`, `drive.py <nom> epos` (releve des positions). Preuve : `2026-11-13_ennemis_position-suivie-par-l-autre-joueur.log`.
 - Tentatives d'essai avec un ennemi qui bouge de lui-meme (essais `la`, `lb`) : **ECHEC de l'essai, pas du code**. Le pilote devait amener J1 a portee des Bokoblin (120 m). `la` : delai de marche atteint a 65 m, les ennemis n'ont pas reagi. `lb` : J1 est tombe du plateau (y 252 -> 205) et y est reste bloque. Sans image, le pilote ne sait pas traverser ce terrain. Rien n'est donc appris sur le combat.
 - [V] Seul constat utile de `lb` : quand les ennemis ne sont plus actifs chez celui qui faisait foi (J1 tombe au loin, ses envois s'arretent a 103), l'autre reprend la main au bout de 3 s (« notre copie fait foi ») et envoie a son tour (9 envois par releve de 3 s pour 3 ennemis).
+
+### 5.26 Catalogue des drapeaux et liste blanche (2026-11-13, essai `wl1`) - [V] sur un ramassage et un ennemi tue
+
+**Lecture de la RomFS de l'utilisateur** (nouveau) :
+- `tools/romfs-extract` (C#, notre code) ouvre les deux NSP de l'utilisateur en lecture seule, prend les cles de titre dans leurs tickets et applique la mise a jour comme Ryujinx (`Nca.OpenStorageWithPatch`, bibliotheque `Ryujinx.LibHac` 0.21.0-alpha.133, flux NuGet du projet Ryujinx). SDK .NET 10.0.404 portable dans `build/tools/dotnet` (script officiel `dotnet-install.ps1`, sans PATH ni installation systeme). Le depot GitHub de LibHac (hactoolnet) n'existe plus (`gh api` : 404).
+- [V] `System/Version.txt` de la RomFS lue : `1.9.0`.
+- Methode d'apres botw-coop (`tools/RomfsTool`), reecrite.
+
+**Catalogue** (`tools/gamedata_names.py`, paquet PyPI `oead` 1.3.0) : `Pack/Bootup.pack` -> `GameData/gamedata.ssarc` -> fichiers BYML. [V] 45 031 drapeaux dont **42 031 booleens** : le meme nombre que les booleens lus en memoire par le plugin (PROGRESS, phase B). Champs : `DataName`, `HashValue` (= CRC32 du nom, une seule exception), `IsSave`, `IsProgramWritable`, `IsOneTrigger`, `IsEventAssociated`, `ResetType`, `DeleteRev`, `Category`. Sortie `build/gamedata/flags.tsv` (hors git, derive du jeu).
+
+**Liste blanche** (`tools/build_sync_flags.py` -> `sync-flags.bin`, 166 758 octets) :
+- Groupe 1 progression, **1 330** : `Enter_/Open_/Clear_DungeonNNN` (137 chacun), `Clear_Remains*` (4), `MapTower_NN` (15), `MainField_Npc_HiddenKorok*` (900). Meme total que botw-coop (README : 1,330). [V] les drapeaux de tours ne sont pas « modifiables par le programme » (`IsProgramWritable = False`) : le groupe 1 n'exige donc que `IsSave`.
+- Groupe 2 objets de carte, **31 535** : noms `<carte>_<classe>_<HashId>` des cartes `MainField`, `AocField`, `CDungeon`, `MainFieldDungeon`, hors `Npc_` et `LinkTag*`.
+- Groupe 3 portes logiques `LinkTag*`, **485** : classees, inactives par defaut (etat d'enigmes et d'evenements, a essayer).
+- Restent hors liste : `IsGet_*` (1 067, objets obtenus), Compendium (`IsRegistered/IsNewPictureBook_*`), PNJ et quetes (`Npc_*`), `CompleteTreasure_*`, `IsPlayed_Demo*` (cinematiques vues)...
+- Plugin : sans fichier valide, **aucun** drapeau n'est partage (journal explicite). `share_groups=` dans `romfs/botw-coop.txt` (defaut `1,2`).
+- Garde de la paravoile (idee de botw-coop) : sans `IsGet_PlayerStole2`, la progression recue attend ; quand ce drapeau passe a 1, l'etat complet est redemande au serveur. **Non essaye** (aucun drapeau du groupe 1 dans l'essai).
+
+**Essai `wl1`** (deux instances, `t_lv1`) :
+- [V] Les deux jeux : « liste blanche lue : 33350 drapeaux (progression 1330, objets de carte 31535, portes logiques 485), groupes actifs 0x6 ».
+- [V] J1 ramasse un champignon : `MainField_Item_Mushroom_E_2470176584` envoye ; chez J2 « drapeau recu ... retire ici ».
+- [V] **Non envoyes**, alors que l'ancienne regle en aurait envoye une partie : `IsGet_Item_Mushroom_E` (sauvegarde et modifiable : l'ancienne liste noire le partageait), `IsPlayed_Demo002_0`, `IsPlayed_Demo025_0`, `WM_DaytimeFlag`, et des drapeaux non sauvegardes (`DoSnatchDisplay`, `CarryProhibition`...).
+- [V] Bokoblin tue par l'outil `drop` : `MainField_Enemy_Bokoblin_Junior_1384488657` envoye (lune de sang). Chez J2 la copie, ramenee par le partage de position, est tombee et morte aussi : le drapeau y a ete pose par le jeu lui-meme.
+- Preuve : `docs/evidence/2026-11-13_liste-blanche-drapeaux_wl1.log`.

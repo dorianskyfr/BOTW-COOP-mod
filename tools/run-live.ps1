@@ -80,6 +80,13 @@ foreach ($d in @($Dir, $Dir2)) {
     $modDir = Join-Path $dataDir 'mods\contents\01007ef00011e000\botw-coop\exefs'
     New-Item -ItemType Directory -Force $modDir | Out-Null
     Copy-Item (Join-Path $project 'build\deploy\subsdk9') (Join-Path $modDir 'subsdk9') -Force
+    # Fichiers generes depuis la RomFS de l'utilisateur (liste blanche des drapeaux...), hors git.
+    $romfsSrc = Join-Path $project 'build\deploy\romfs'
+    if (Test-Path $romfsSrc) {
+        $romfsDst = Join-Path (Split-Path $modDir -Parent) 'romfs'
+        New-Item -ItemType Directory -Force $romfsDst | Out-Null
+        Copy-Item (Join-Path $romfsSrc '*') $romfsDst -Recurse -Force
+    }
     $suffix = if ($n -eq 1) { '' } else { "$n" }
     $gameOut = Join-Path $runs "${Name}_game$suffix.txt"
     $p = Start-Process -FilePath $ryujinx -ArgumentList ('--root-data-dir "' + $dataDir + '" "' + $game + '"') -PassThru -RedirectStandardOutput $gameOut -RedirectStandardError (Join-Path $runs "${Name}_game$suffix.err.txt")

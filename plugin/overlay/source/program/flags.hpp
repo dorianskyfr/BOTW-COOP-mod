@@ -86,4 +86,7 @@ namespace coop::flags {
      */
     inline std::atomic<bool> g_ResyncRequested { false };
 
+    /* Leve par le fil du jeu pour redemander l'etat complet au serveur (paravoile obtenue). */
+    inline std::atomic<bool> g_StateRequested { false };
+
 }

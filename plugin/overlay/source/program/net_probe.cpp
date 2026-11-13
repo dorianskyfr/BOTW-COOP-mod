@@ -393,7 +393,8 @@ namespace coop::net_probe {
                 inGameTicks = worldReady ? inGameTicks + 1 : 0;
                 if (!worldReady || s_Fd < 0)
                     stateFd = -1;
-                if (worldReady && s_Fd >= 0 && stateFd != s_Fd && inGameTicks >= 30 && coop::session::g_LocalId != 0) {
+                const bool again = worldReady && s_Fd >= 0 && stateFd == s_Fd && coop::flags::g_StateRequested.exchange(false);
+                if (again || (worldReady && s_Fd >= 0 && stateFd != s_Fd && inGameTicks >= 30 && coop::session::g_LocalId != 0)) {
                     stateFd = s_Fd;
                     if (SendAll(s_Fd, "STATE\n", 6)) {
                         coop::flags::g_ResyncRequested.store(true);

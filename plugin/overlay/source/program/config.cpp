@@ -43,8 +43,76 @@ namespace coop::config {
             unsigned flag = 0;
             if (std::sscanf(line, "enemy_pos=%u", &flag) == 1)
                 g_EnemyPos = flag != 0;
+            if (std::strncmp(line, "share_groups=", 13) == 0) {
+                std::uint32_t groups = 0;
+                for (const char* p = line + 13; *p != '\0'; p++)
+                    if (*p >= '1' && *p <= '9')
+                        groups |= 1u << (*p - '0');
+                g_ShareGroups = groups;
+            }
         }
 
+        /* Liste blanche : "CSF1", u32 n, n x u32 hachage trie, n x u8 groupe. */
+        constexpr int MaxSyncFlags = 40000;
+        std::uint32_t s_SyncHashes[MaxSyncFlags];
+        std::uint8_t s_SyncGroups[MaxSyncFlags];
+
+        std::uintptr_t s_Open = 0, s_Size = 0, s_Read = 0, s_Close = 0;
+
+        void LoadSyncFlags() {
+            FileHandle file {};
+            std::uint32_t rc = reinterpret_cast<OpenFn>(s_Open)(&file, "content:/botw-coop/sync-flags.bin", OpenMode_Read);
+            if (rc != 0) {
+                Logging.Log("[botw-coop] config: pas de liste blanche botw-coop/sync-flags.bin (0x%x) : AUCUN drapeau ne sera partage", rc);
+                return;
+            }
+            long size = 0;
+            std::uint8_t header[8] = {};
+            std::size_t got = 0, gotHashes = 0, gotGroups = 0;
+            std::uint32_t n = 0;
+            rc = reinterpret_cast<GetSizeFn>(s_Size)(&size, file);
+            if (rc == 0)
+                rc = reinterpret_cast<ReadFn>(s_Read)(&got, file, 0, header, sizeof(header));
+            std::memcpy(&n, header + 4, 4);
+            const bool valid = rc == 0 && got == 8 && std::memcmp(header, "CSF1", 4) == 0 && n > 0 && n <= MaxSyncFlags
+                && size == static_cast<long>(8 + 5ull * n);
+            if (valid) {
+                rc = reinterpret_cast<ReadFn>(s_Read)(&gotHashes, file, 8, s_SyncHashes, 4ull * n);
+                if (rc == 0)
+                    rc = reinterpret_cast<ReadFn>(s_Read)(&gotGroups, file, static_cast<long>(8 + 4ull * n), s_SyncGroups, n);
+            }
+            reinterpret_cast<CloseFn>(s_Close)(file);
+            if (!valid || rc != 0 || gotHashes != 4ull * n || gotGroups != n) {
+                Logging.Log("[botw-coop] config: liste blanche invalide (taille %ld, %u entrees, code 0x%x) : AUCUN drapeau ne sera partage", size, n, rc);
+                return;
+            }
+            for (std::uint32_t i = 1; i < n; i++)
+                if (s_SyncHashes[i - 1] >= s_SyncHashes[i]) {
+                    Logging.Log("[botw-coop] config: liste blanche non triee (entree %u) : AUCUN drapeau ne sera partage", i);
+                    return;
+                }
+            int perGroup[4] = {};
+            for (std::uint32_t i = 0; i < n; i++)
+                perGroup[s_SyncGroups[i] < 4 ? s_SyncGroups[i] : 0]++;
+            g_SyncFlagCount = static_cast<int>(n);
+            Logging.Log("[botw-coop] config: liste blanche lue : %u drapeaux (progression %d, objets de carte %d, portes logiques %d), groupes actifs 0x%x",
+                n, perGroup[1], perGroup[2], perGroup[3], g_ShareGroups);
+        }
+
+    }
+
+    int SyncFlagGroup(std::uint32_t hash) {
+        int lo = 0, hi = g_SyncFlagCount - 1;
+        while (lo <= hi) {
+            const int mid = (lo + hi) / 2;
+            if (s_SyncHashes[mid] == hash)
+                return s_SyncGroups[mid];
+            if (s_SyncHashes[mid] < hash)
+                lo = mid + 1;
+            else
+                hi = mid - 1;
+        }
+        return 0;
     }
 
     void Load() {
@@ -58,6 +126,13 @@ namespace coop::config {
                 openAddr != 0, sizeAddr != 0, readAddr != 0, closeAddr != 0);
             return;
         }
+        s_Open = openAddr;
+        s_Size = sizeAddr;
+        s_Read = readAddr;
+        s_Close = closeAddr;
+        struct AfterConfig {
+            ~AfterConfig() { LoadSyncFlags(); } /* apres la lecture des reglages (share_groups) */
+        } afterConfig;
 
         /*
          * "content:" est le point de montage des donnees du jeu (RomFS), monte par le

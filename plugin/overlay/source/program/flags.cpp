@@ -1,4 +1,5 @@
 #include "flags.hpp"
+#include "config.hpp"
 #include "objects.hpp"
 
 #include "game.hpp"
@@ -84,10 +85,18 @@ namespace coop::flags {
         constexpr std::uint8_t Prop_Writable = 0x2; /* FlagProperties::PropertyFlag (gdtFlag.h) */
         constexpr std::uint8_t Prop_Save     = 0x4;
 
-        /* Partageable : sauvegarde, modifiable par le programme, pas dans la liste privee. */
+        /*
+         * Partageable : dans la liste blanche (groupe actif), sauvegarde, modifiable par le
+         * programme (sauf groupe 1 : les tours ne sont posees que par un evenement), pas
+         * dans la liste privee, jamais vu repasser a 0.
+         */
         bool Shareable(std::uintptr_t flag, int index, std::uint32_t hash) {
+            const int group = coop::config::SyncFlagGroup(hash);
+            if (group <= 0 || (coop::config::g_ShareGroups & (1u << group)) == 0)
+                return false;
             std::uint8_t props = 0;
-            if (!Read(flag + 0x9, props) || (props & (Prop_Save | Prop_Writable)) != (Prop_Save | Prop_Writable))
+            const std::uint8_t need = group == 1 ? Prop_Save : (Prop_Save | Prop_Writable);
+            if (!Read(flag + 0x9, props) || (props & need) != need)
                 return false;
             if (index >= 0 && index < MaxBools && s_Toggles[index])
                 return false;
@@ -543,6 +552,25 @@ namespace coop::flags {
         }
         s_WasInGame = inGame;
 
+        /*
+         * Garde de la paravoile (idee reprise de botw-coop, README « Shared progress ») : tant que
+         * le joueur n'a pas la paravoile (IsGet_PlayerStole2, nom du catalogue GameData), la
+         * progression recue (groupe 1) attend : les sanctuaires du plateau donnent les runes, et
+         * les marquer termines ferait avancer la quete du vieil homme sans elles.
+         */
+        static constexpr std::uint32_t ParagliderHash = Crc32("IsGet_PlayerStole2");
+        static int s_HeldProgress = 0;
+        std::uintptr_t glider = 0;
+        std::uint8_t hasGlider = 0;
+        const int gliderIdx = FindByHash(bools, ParagliderHash, glider);
+        if (gliderIdx < 0 || !Read(glider + s_ValueOffset, hasGlider))
+            hasGlider = 0;
+        if (hasGlider == 1 && s_HeldProgress > 0 && inGame && s_HaveSnapshot) {
+            Logging.Log("[botw-coop] drapeaux : paravoile obtenue, %d drapeaux de progression mis en attente : etat redemande", s_HeldProgress);
+            s_HeldProgress = 0;
+            g_StateRequested.store(true);
+        }
+
         /* Drapeaux recus de l'autre joueur : mise a 1 seulement, jamais de remise a 0. */
         Change in {};
         for (int n = 0; n < 256 && s_HaveSnapshot && inGame && g_Incoming.Pop(in); n++) {
@@ -551,6 +579,11 @@ namespace coop::flags {
             std::uint8_t cur = 0xff;
             if (idx < 0 || in.m_Value != 1 || !Read(flag + s_ValueOffset, cur) || cur != 0 || !Shareable(flag, idx, in.m_Hash))
                 continue;
+            if (hasGlider != 1 && coop::config::SyncFlagGroup(in.m_Hash) == 1) {
+                if (s_HeldProgress++ < 5)
+                    Logging.Log("[botw-coop] drapeau recu : hachage=%08x mis en attente (pas de paravoile)", in.m_Hash);
+                continue;
+            }
             *reinterpret_cast<std::uint8_t*>(flag + s_ValueOffset) = 1;
             s_LastBool[idx] = 1; /* pas de renvoi */
             coop::objects::OnRemoteFlagSet(in.m_Hash); /* objet de carte deja charge ? */

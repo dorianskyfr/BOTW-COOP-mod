@@ -6,8 +6,10 @@ Mod de présence à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 
 
 ## Ce que fait la version actuelle
 - Chaque joueur voit l'autre dans son monde, sous la forme d'un personnage du jeu (pas encore le modèle de Link, pas d'animation).
-- L'heure du jeu suit celle du joueur 1.
-- Le reste (objets, ennemis, inventaire, quêtes) n'est pas partagé.
+- Heure de la session (elle ne recule jamais ; un joueur en pause ne retient pas l'autre), jours, minuteur de lune de sang, météo (à moins de 300 m).
+- Drapeaux de la liste blanche : progression (sanctuaires, tours, Créatures divines, Koroks) et objets de carte (ramassés, coffres, ennemis tués). Les étapes de quête, l'inventaire et le Compendium restent à chacun.
+- Points de vie et position des ennemis (première version).
+- Inventaire, santé et équipement restent individuels.
 
 Testé uniquement avec deux instances de Ryujinx 1.3.3 sur un même PC. Non testé entre deux PC, ni sous Eden.
 
@@ -20,12 +22,13 @@ Il faut, sur chaque PC : BOTW avec la mise à jour 1.9.0, Ryujinx, et ce dépôt
    python tools\relay.py --host <adresse LAN du PC hôte>
    ```
    Sans `--host`, le relais n'écoute que sur 127.0.0.1 (deux instances sur le même PC). Windows demandera d'autoriser Python dans le pare-feu : c'est nécessaire pour qu'un autre PC se connecte. Ne pas rediriger de port vers Internet.
-2. **Installer le mod dans Ryujinx**, sur chaque PC :
+2. **Générer la liste blanche des drapeaux** (une fois, sur chaque PC ; voir « Liste blanche » plus bas). Sans elle, rien n'est partagé à part la présence, l'heure et les ennemis.
+3. **Installer le mod dans Ryujinx**, sur chaque PC :
    ```
    powershell -ExecutionPolicy Bypass -File tools\install-mod.ps1 -DataDir "<dossier de données Ryujinx>" -Relay <adresse LAN du PC hôte>:47800
    ```
    Le dossier de données est celui qui contient `mods`, `bis`, `system` (installation standard : `%APPDATA%\Ryujinx`). Dans la configuration de Ryujinx, « Ignorer les services manquants » doit être activé (sinon le jeu 1.9.0 s'arrête après environ 2 minutes).
-3. Lancer le jeu sur les deux PC et charger une partie. Le personnage de l'autre joueur apparaît une vingtaine de secondes après l'entrée en jeu, s'il est à moins de 120 m.
+4. Lancer le jeu sur les deux PC et charger une partie. Le personnage de l'autre joueur apparaît une vingtaine de secondes après l'entrée en jeu, s'il est à moins de 120 m.
 
 Désinstaller : `tools\install-mod.ps1 -DataDir "<dossier>" -Uninstall`.
 
@@ -37,6 +40,32 @@ Prérequis : MSYS2 avec devkitPro (devkitA64, libnx), exlaunch dans `third_party
 bash plugin/build.sh "<chemin du projet>"
 ```
 Résultat : `build\deploy\subsdk9`.
+
+## Liste blanche des drapeaux
+
+Le mod ne partage que les drapeaux d'une liste générée depuis **votre** copie du jeu (rien de Nintendo n'est dans ce dépôt). Tout reste dans `build\` :
+
+1. SDK .NET portable (script officiel de Microsoft, sans rien installer dans le système) :
+   ```
+   powershell -ExecutionPolicy Bypass -File build\tools\dotnet-install.ps1 -Channel 10.0 -InstallDir build\tools\dotnet -NoPath
+   ```
+   (`dotnet-install.ps1` se télécharge depuis `https://dot.net/v1/dotnet-install.ps1`.)
+2. Outil de lecture de la RomFS (`tools\romfs-extract`, bibliothèque `Ryujinx.LibHac`) :
+   ```
+   build\tools\dotnet\dotnet.exe build tools\romfs-extract\RomfsExtract.csproj -c Release -o build\tools\romfs-extract
+   build\tools\romfs-extract\RomfsExtract.exe "%APPDATA%\Ryujinx\system\prod.keys" "<jeu de base .nsp>" "<mise à jour 1.9.0 .nsp>" build\romfs-1.9.0 /Pack/Bootup.pack
+   ```
+   Clés et NSP sont seulement lus.
+3. Catalogue des drapeaux puis liste blanche (Python avec le paquet `oead` de PyPI) :
+   ```
+   python -m venv build\venv
+   build\venv\Scripts\python.exe -m pip install oead
+   build\venv\Scripts\python.exe -I tools\gamedata_names.py build\romfs-1.9.0 build\gamedata\flags.tsv
+   build\venv\Scripts\python.exe -I tools\build_sync_flags.py build\gamedata\flags.tsv build\deploy\romfs\botw-coop\sync-flags.bin
+   ```
+   `install-mod.ps1` et `run-live.ps1` copient ensuite `build\deploy\romfs` dans le mod.
+
+Groupes (réglage `share_groups=` dans `romfs\botw-coop.txt`, par défaut `1,2`) : 1 progression (1 330 drapeaux), 2 objets de carte (31 539), 3 portes logiques des énigmes (485, inactif par défaut). Tant qu'un joueur n'a pas la paravoile, la progression reçue attend (les sanctuaires du plateau donnent les runes).
 
 ## Outils de test
 `tools\run-live.ps1` et `tools\drive.py` lancent une ou deux instances et les pilotent par le réseau (déplacements, boutons, captures d'écran). Ils demandent une build de test (`-Defines '-DCOOP_REMOTE_PAD'`), à ne pas utiliser pour jouer.
