@@ -46,7 +46,7 @@ Mode d'emploi : `README.md`.
 | Personnage distant sans invite « Parler » (A près de lui ne bloque plus) | **vérifié à l'écran**, une et deux instances | `2026-11-12_parler_avant_invite-affichee.png`, `..._apres_invite-retiree.png`, `..._deux-instances_J2-face-a-J1_sans-invite.png`, NOTES §5.7 |
 | Cœurs partagés et alerte « Joueur N en danger » | **vérifié à l'image, deux instances, le 2026-11-13** (J2 à 1 cœur, bandeau d'alerte chez J1) | NOTES §5.32, `2026-11-13_coeurs_*.png` |
 | Téléportation vers l'autre joueur (maintien du clic du stick gauche, ≤ 250 m) | **vérifié à deux instances le 2026-11-13** sur 16 m (arrivée à 12 cm du partenaire, cœurs intacts) ; le clic court reste l'accroupissement du jeu. Grandes distances et terrains difficiles non essayés | NOTES §5.31 |
-| Sauvegardes coop séparées (`save:/coop/`, copie des sauvegardes normales au premier lancement) | **vérifié le 2026-11-13 à une instance** : copie faite, partie chargée depuis la copie, écriture du jeu dans la copie, originaux identiques (SHA-256). Sauvegarde de partie complète non essayée | NOTES §5.30, `2026-11-13_sauvegardes-coop-separees_sv1.log` |
+| Sauvegardes coop séparées (`save:/coop/`, copie des sauvegardes normales au premier lancement) | **vérifié le 2026-11-13 à une instance** : copie faite, partie chargée depuis la copie, écriture du jeu dans la copie, originaux identiques (SHA-256) ; **sauvegarde manuelle depuis le menu** écrite dans `coop/2/` (essai sv2). Sauvegarde automatique et rechargement non essayés | NOTES §5.30, `2026-11-13_sauvegardes-coop-separees_sv1.log` |
 | Messages à l'écran (bandeau du jeu) : connexion, arrivée, départ, liaison perdue | **vérifié à l'écran le 2026-11-13** pour « connecté » et « Joueur 2 a quitté la partie » ; « a rejoint » et « liaison perdue » émis mais pas vus à l'image | NOTES §5.29, `2026-11-13_bandeau_*.png` |
 | Disparition du personnage quand le joueur distant se déconnecte | **vérifié à l'écran** (essai `c5`) | `2026-11-11_serveur_J1-parti-personnage-retire.png` |
 
@@ -98,7 +98,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 
 ## Point de reprise
 **2026-11-13 (soir)** — fait dans la journée : liste blanche des drapeaux, Link animé (escalade comprise), messages à l'écran, sauvegardes coop séparées, téléportation courte, cœurs partagés. Ordre proposé ensuite (voir `docs/AUDIT_REFERENCE_BOTW_COOP.md`) :
-1. Une vraie sauvegarde de partie dans `coop/`. (Cœurs et alerte : revus à l'image le soir même.) Pour les essais à l'image, l'affichage de Windows doit être réveillé, pas seulement l'écran allumé.
+1. Recharger une sauvegarde faite dans `coop/` lors d'une nouvelle session. (Cœurs et alerte, sauvegarde manuelle : vérifiés le soir même.) Pour les essais à l'image, l'affichage de Windows doit être réveillé, pas seulement l'écran allumé.
 2. Armure et armes sur le pantin.
 3. Mort et réanimation par le partenaire.
 4. Attaques des ennemis partagées (même mécanisme de séquences).
