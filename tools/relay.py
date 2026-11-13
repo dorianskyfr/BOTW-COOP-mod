@@ -54,7 +54,8 @@ import sys
 #          simplement retransmis aux autres, le serveur n'en garde rien.
 #   EMTX : position d'un ennemi de carte (hachage d'objet, distance de l'emetteur, matrice
 #          3x4), retransmise telle quelle ; le plugin decide qui fait foi.
-STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14}
+#   HP : coeurs du joueur (vie et maximum, en quarts de coeur), retransmis tels quels.
+STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2}
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur.
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
 OPTIONAL_EXTRA = {"TIME": 1, "MTX": 1}

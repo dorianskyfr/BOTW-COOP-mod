@@ -177,6 +177,9 @@ namespace coop::game {
      */
     int DisableActorAttention(std::uintptr_t actor);
 
+    /* Vie du joueur local en quarts de cœur (et maximum), lifePtr : ou elle est rangee. Fil du jeu. */
+    bool GetPlayerLife(int& life, int& maxLife, std::uintptr_t& lifePtr);
+
     /* Nom d'un acteur (BaseProc::mName), ou "" si le pointeur de chaine est invalide. */
     const char* GetActorName(std::uintptr_t actor);
 

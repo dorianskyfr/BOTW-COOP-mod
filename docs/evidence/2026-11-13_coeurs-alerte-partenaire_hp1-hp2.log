@@ -1,0 +1,29 @@
+# Essais hp1, hp2 (2026-11-13) : coeurs partages et alerte « en danger », deux instances Ryujinx 1.3.3, t_lv1 (3 coeurs)
+# J2 : outil hpdown (vie locale mise a 4 quarts). Captures d'ecran impossibles pendant ces essais (« aucune image obtenue »).
+
+--- hp1 J2
+00:01:45.489 [botw-coop] c??urs : vie locale 12 / 12 quarts
+00:02:15.155 [botw-coop] c??urs : essai, vie locale mise a 4 quarts
+00:02:15.522 [botw-coop] c??urs : vie locale 4 / 12 quarts
+--- hp1 J1
+00:01:54.839 [botw-coop] messages : "Joueur 2 a rejoint la partie"
+00:01:57.507 [botw-coop] c??urs : vie locale 12 / 12 quarts
+00:02:09.525 [botw-coop] messages : bandeau demande (26 caracteres)
+00:02:13.056 [botw-coop] messages : bandeau demande (28 caracteres)
+00:02:28.622 [botw-coop] messages : "Joueur 2 en danger : 1,00 c??urs, 0 m"
+00:02:28.657 [botw-coop] messages : bandeau demande (36 caracteres)
+--- hp1 relais (HP)
+19:50:39.176 joueur 1 : etat n.200 = HP 12 12
+--- hp2 J2
+00:01:45.899 [botw-coop] c??urs : vie locale 12 / 12 quarts
+00:02:15.981 [botw-coop] c??urs : essai, vie locale mise a 4 quarts
+00:02:16.482 [botw-coop] c??urs : vie locale 4 / 12 quarts
+--- hp2 J1
+00:01:54.751 [botw-coop] messages : "Joueur 2 a rejoint la partie"
+00:01:58.139 [botw-coop] c??urs : vie locale 12 / 12 quarts
+00:02:09.808 [botw-coop] messages : bandeau demande (26 caracteres)
+00:02:13.338 [botw-coop] messages : bandeau demande (28 caracteres)
+00:02:29.405 [botw-coop] messages : "Joueur 2 en danger : 1,00 c??urs, 0 m"
+00:02:29.439 [botw-coop] messages : bandeau demande (36 caracteres)
+--- hp2 relais (HP)
+19:53:31.973 joueur 2 : etat n.100 = HP 12 12

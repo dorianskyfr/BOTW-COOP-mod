@@ -2,6 +2,7 @@
 #include "anim_state.hpp"
 #include "notify.hpp"
 #include "warp.hpp"
+#include "status.hpp"
 
 #include "clock.hpp"
 #include "dynsym.hpp"
@@ -171,6 +172,7 @@ namespace coop::input_inject {
                 coop::anim_state::OnFrame();
                 coop::notify::OnFrame();
                 coop::warp::OnFrame();
+                coop::status::OnFrame();
                 coop::remote_actor::OnFrame();
                 coop::world_sync::OnFrame();
                 coop::flags::OnFrame();
@@ -240,6 +242,16 @@ namespace coop::input_inject {
                             coop::enemy_life::DebugHurtNearest(5);
                         }
                         buttons &= ~(1ull << 60);
+                    }
+                    /* Bit 57 : vie locale mise a 1 cœur (essai de l'alerte « en danger »). */
+                    if ((buttons >> 57) & 1) {
+                        static std::uint64_t s_LastHp = 0;
+                        const auto cmd6 = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmd6 != s_LastHp) {
+                            s_LastHp = cmd6;
+                            coop::status::DebugHurtSelf();
+                        }
+                        buttons &= ~(1ull << 57);
                     }
                     /* Bit 59 : decale de 4 m l'ennemi de carte le plus proche. Bit 58 : releve des positions. */
                     if ((buttons >> 58) & 3) {

@@ -44,6 +44,7 @@ Mode d'emploi : `README.md`.
 | Animation du joueur distant (marche, course, saut) | **vérifié à l'écran le 2026-11-13** pour attente / marche / course / sprint (d'après la vitesse, essai cp6) et **escalade** (état envoyé par le joueur, essai an2). Nage, vol plané, chute annoncée : en place, non vus à l'image. Surf : pas de séquence (empêche la création du pantin) | NOTES §5.27, §5.28, `2026-11-13_pantin-link_*.png` |
 | Modèle de Link pour le joueur distant | **vérifié à l'écran le 2026-11-13** (niveau 4) : acteur `CoopPlayer` (Link sans physique) généré depuis la RomFS de l'utilisateur ; repli automatique sur le PNJ s'il manque. Sans équipement | NOTES §5.27, `2026-11-13_pantin-link_deux-instances_J2-voit-J1.png` |
 | Personnage distant sans invite « Parler » (A près de lui ne bloque plus) | **vérifié à l'écran**, une et deux instances | `2026-11-12_parler_avant_invite-affichee.png`, `..._apres_invite-retiree.png`, `..._deux-instances_J2-face-a-J1_sans-invite.png`, NOTES §5.7 |
+| Cœurs partagés et alerte « Joueur N en danger » | **vérifié par les journaux le 2026-11-13** (vie lue 12/12 = 3 cœurs, alerte émise à 1 cœur) ; **pas à l'image** (captures impossibles pendant l'essai) | NOTES §5.32 |
 | Téléportation vers l'autre joueur (maintien du clic du stick gauche, ≤ 250 m) | **vérifié à deux instances le 2026-11-13** sur 16 m (arrivée à 12 cm du partenaire, cœurs intacts) ; le clic court reste l'accroupissement du jeu. Grandes distances et terrains difficiles non essayés | NOTES §5.31 |
 | Sauvegardes coop séparées (`save:/coop/`, copie des sauvegardes normales au premier lancement) | **vérifié le 2026-11-13 à une instance** : copie faite, partie chargée depuis la copie, écriture du jeu dans la copie, originaux identiques (SHA-256). Sauvegarde de partie complète non essayée | NOTES §5.30, `2026-11-13_sauvegardes-coop-separees_sv1.log` |
 | Messages à l'écran (bandeau du jeu) : connexion, arrivée, départ, liaison perdue | **vérifié à l'écran le 2026-11-13** pour « connecté » et « Joueur 2 a quitté la partie » ; « a rejoint » et « liaison perdue » émis mais pas vus à l'image | NOTES §5.29, `2026-11-13_bandeau_*.png` |
@@ -96,7 +97,14 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 - Fenêtre du pare-feu Windows : lancer le relais sur l'adresse LAN fait apparaître la demande d'autorisation pour Python. Elle n'a pas été validée par Claude (réglage de sécurité, à la main de l'utilisateur). Sans autorisation, un second PC ne pourra pas joindre le relais.
 
 ## Point de reprise
-Prochaines étapes proposées, dans l'ordre :
+**2026-11-13 (soir)** — fait dans la journée : liste blanche des drapeaux, Link animé (escalade comprise), messages à l'écran, sauvegardes coop séparées, téléportation courte, cœurs partagés. Ordre proposé ensuite (voir `docs/AUDIT_REFERENCE_BOTW_COOP.md`) :
+1. Revoir à l'image les cœurs et l'alerte (écran allumé) ; une vraie sauvegarde de partie dans `coop/`.
+2. Armure et armes sur le pantin.
+3. Mort et réanimation par le partenaire.
+4. Attaques des ennemis partagées (même mécanisme de séquences).
+5. Partenaire sur la carte, repas partagés, dons d'objets.
+
+Anciennes étapes (2026-11-12) :
 1. (fait le 2026-11-12) Dialogue « Parler » du personnage distant supprimé.
 2. Phase C, suite : coffre montré ouvert au lieu d'être retiré ; ouverture de coffre en direct ; nom du drapeau hors du monde principal.
 2 bis. Serveur : arbitrage avant ramassage. Ennemi tué : fait le 2026-11-13 par chute provoquée (`drive.py ... drop`, NOTES §5.11) ; l'ennemi mort reste inactif chez l'autre joueur à 57 m (essai kf, NOTES §5.16) ; reste : de plus près, mort par arme, et retour à la lune de sang. Chute des deux joueurs au chargement corrigée (personnage distant tenu à 1,2 m, NOTES §5.15).

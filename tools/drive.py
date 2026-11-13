@@ -17,6 +17,7 @@ Commandes :
   shot etiquette           capture d'ecran -> build/runs/<nom>_<etiquette>.png
   actors [regex]           acteurs proches (nom, position)
   drop                     essai : fait tomber de 40 m le Bokoblin le plus proche (mort reelle)
+  hpdown                   essai : vie du joueur pilote mise a 1 coeur
   days n                   essai : annonce a la session un compteur de jours avance de n
   hour h [lune]            essai : fait avancer l'heure de la session a h (0..360), meme jour ;
                            lune = minuteur de lune de sang annonce (2520 = 7 jours)
@@ -143,6 +144,10 @@ def main():
             # Essai chute : le plugin place le Bokoblin le plus proche au-dessus du joueur.
             p.pad(buttons=1 << 62, ms=300)
             p.log("drop : chute d'un Bokoblin demandee")
+        elif op == "hpdown":
+            # Essai : le plugin met la vie du joueur pilote a 1 coeur (alerte « en danger » chez l'autre).
+            p.pad(buttons=1 << 57, ms=300)
+            p.log("hpdown : vie locale mise a 1 coeur")
         elif op == "life":
             # Essai : le plugin journalise les points de vie des ennemis a moins de 200 m.
             p.pad(buttons=1 << 61, ms=300)

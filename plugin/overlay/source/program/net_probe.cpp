@@ -1,6 +1,7 @@
 #include "net_probe.hpp"
 #include "anim_state.hpp"
 #include "notify.hpp"
+#include "status.hpp"
 #include "config.hpp"
 #include "enemy_life.hpp"
 #include "flags.hpp"
@@ -220,6 +221,9 @@ namespace coop::net_probe {
                 /* 13e valeur facultative : etat d'animation (anim_state.hpp) ; absente = au sol. */
                 coop::anim_state::g_Remote.store(anim < coop::anim_state::Count ? static_cast<std::uint8_t>(anim) : 0);
                 coop::session::g_Remote.Push(id, m, coop::clock::NowMs());
+            } else if (int hpLife = 0, hpMax = 0; std::sscanf(line, "HP %d %d %d", &id, &hpLife, &hpMax) == 3) {
+                coop::status::g_RemoteLife.store(hpLife);
+                coop::status::g_RemoteMax.store(hpMax);
             } else if (std::sscanf(line, "STATEEND %d", &id) == 1) {
                 Logging.Log("[botw-coop] net: etat complet recu du serveur (%d drapeaux en memoire chez lui)", id);
             } else if (unsigned flagHash = 0, flagValue = 0; std::sscanf(line, "FLAG %d %x %u", &id, &flagHash, &flagValue) == 3
@@ -383,6 +387,17 @@ namespace coop::net_probe {
                         s_Sent++;
                     else
                         Disconnect("echec d'envoi");
+                }
+
+                /* Cœurs du joueur : une fois par seconde (status.hpp). */
+                if (inGame && s_Fd >= 0 && tick % 10 == 5) {
+                    const int life = coop::status::g_LocalLife.load(), maxLife = coop::status::g_LocalMax.load();
+                    if (life >= 0 && maxLife > 0) {
+                        char hp[48];
+                        const int len = std::snprintf(hp, sizeof(hp), "HP %d %d\n", life, maxLife);
+                        if (len > 0 && !SendAll(s_Fd, hp, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
                 }
 
                 /* Etat du monde : une fois par seconde (heure, jours, meteo). */

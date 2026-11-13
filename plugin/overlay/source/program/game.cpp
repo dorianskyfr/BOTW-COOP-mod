@@ -816,6 +816,32 @@ namespace coop::game {
         return maxLife > 0 && maxLife < 1000000 && life <= maxLife;
     }
 
+    bool GetPlayerLife(int& life, int& maxLife, std::uintptr_t& lifePtr) {
+        /* Memes fonctions virtuelles que GetEnemyLife (cases 30 et 87), appliquees a l'acteur du
+           joueur ; resultat a controler en jeu (NOTES 5.32). */
+        PlayerState st;
+        if (!ReadPlayer(st) || st.m_PlayerActor == 0 || !CanRead(st.m_PlayerActor, 0x850))
+            return false;
+        const auto actor = st.m_PlayerActor;
+        const auto& info = exl::util::GetMainModuleInfo();
+        const auto inMain = [&](std::uintptr_t p) {
+            return p >= info.m_Total.m_Start && p < info.m_Total.m_Start + info.m_Total.m_Size;
+        };
+        const auto vtable = Peek<std::uintptr_t>(actor);
+        if (!inMain(vtable) || !CanRead(vtable, 88 * 8))
+            return false;
+        const auto fnMax = Peek<std::uintptr_t>(vtable + 30 * 8);
+        const auto fnLife = Peek<std::uintptr_t>(vtable + 87 * 8);
+        if (!inMain(fnMax) || !inMain(fnLife))
+            return false;
+        lifePtr = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(fnLife)(actor);
+        if (lifePtr < actor || lifePtr >= actor + 0x4000 || !CanRead(lifePtr, 4))
+            return false;
+        maxLife = reinterpret_cast<int (*)(std::uintptr_t)>(fnMax)(actor);
+        life = Peek<std::int32_t>(lifePtr);
+        return maxLife > 0 && maxLife <= 200 && life >= 0 && life <= maxLife + 120; /* + cœurs jaunes */
+    }
+
     void LogEnemyLife(float radius) {
         PlayerState st;
         if (!ReadPlayer(st) || st.m_PlayerActor == 0 || s_ActorNameOffset == 0)

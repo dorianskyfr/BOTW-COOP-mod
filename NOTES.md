@@ -641,3 +641,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] Essai `wp4` : J1 de (-1024.48, 252.63, 1799.95) vers J2 a 16,0 m en (-1015.75, 250.96, 1813.27) ; arrivee en (-1015.80, 250.94, 1813.38), soit 12 cm de J2, au sol, cœurs inchanges ; pas d'accroupissement (capture `2026-11-13_teleportation_J1-arrive-chez-J2.png`). Appui court de 201 ms ensuite : rendu au jeu, Link accroupi a cote du pantin de J2 (`..._appui-court-accroupi.png`).
 - Non verifie : grandes distances (jusqu'a 250 m), pente, eau, falaise, partenaire en vol plane ou en escalade, interieur, vraie manette (seulement le pilote), Eden.
 - Preuves : `docs/evidence/2026-11-13_teleportation_essais-wp1-a-wp4.log`.
+
+### 5.32 Cœurs partages et alerte « en danger » (2026-11-13, essais `hp1`, `hp2`) - [V] par les journaux, pas a l'image
+
+- Vie de Link : memes fonctions virtuelles que pour les ennemis (cases 30 `getMaxLife` et 87 `getLife` de la vtable de l'acteur), appliquees a l'acteur du joueur. [V] Lu : 12 / 12 quarts dans la sauvegarde de test, qui affiche 3 cœurs.
+- Message `HP <vie> <max>` une fois par seconde, retransmis par le relais avec l'identifiant (essai automatique de plus : 40/40).
+- Alerte (idee et seuils d'apres botw-coop) : partenaire a un quart de ses cœurs ou a 2 cœurs (le plus haut), une fois jusqu'a ce qu'il repasse au-dessus de 40 %, au plus toutes les 30 s ; texte « Joueur N en danger : X,YY cœurs, D m ».
+- Outil d'essai : `drive.py <nom> hpdown` (build `-DCOOP_REMOTE_PAD`) ecrit 4 quarts dans la vie du joueur pilote.
+- [V] `hp1`, `hp2` : J2 « vie locale mise a 4 quarts » puis relu 4 / 12 ; chez J1 « Joueur 2 en danger : 1,00 cœurs, 0 m » puis « bandeau demande (36 caracteres) ».
+- **Non verifie a l'image** : ni le bandeau chez J1, ni les cœurs de J2 a l'ecran (toutes les captures ont echoue pendant ces deux essais, « aucune image obtenue » : l'outil de capture a besoin de l'ecran allume). L'affichage du bandeau lui-meme est verifie en 5.29.
+- Preuve : `docs/evidence/2026-11-13_coeurs-alerte-partenaire_hp1-hp2.log`.
