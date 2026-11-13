@@ -604,3 +604,18 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] Essai `an2` (deux instances) : J1 court vers la paroi et grimpe (« WallDashSt -> etat 1 », « ClimbMove », « ClimbWait ») ; chez J2 le pantin passe « Run » -> « Climb » -> « ClimbWait », et la capture le montre accroche a la paroi en pose d'escalade. Captures `2026-11-13_pantin-link_J2-voit-J1-grimper.png` et `..._zoom.png`.
 - Non verifie a l'image : nage, vol plane, chute annoncee (sequences en place). Le saut n'a pas de sequence.
 - Preuves : `docs/evidence/2026-11-13_etat-animation_essais-an1-an2-cp7-cpb.log`.
+
+### 5.29 Messages dans le bandeau d'information du jeu (2026-11-13, essais `nt1` a `nt5`) - [V] a l'ecran
+
+- Methode d'apres botw-coop (`docs/reverse-engineering.md`, « On-screen messages »), reverifiee sur notre image de `main` 1.9.0 :
+  - [V] `main+0xe7a780(idx)` charge une chaine vide (`main+0x1dad0b8`) et continue dans `main+0xe7a790(idx, const SafeString*)`, qui appelle `main+0xe89ae0`, puis `main+0xe7a240` (ecran principal), puis `main+0xe213c8` ;
+  - [V] table de libelles a `main+0x1daa3b0` (0x10 octets par entree, vtable `main+0x1bc32c8` = vtable `SafeString`) : indice 0x21 = « 0028 », 0x2a = « 0061 » ;
+  - [V] `getMessage(fichier, libelle, sortie)` a `main+0xe84870` renvoie 0 si trouve ; la sortie est remplie par `main+0xf6a1b8`, qui copie un pointeur (+0x0) et un entier 32 bits (+0x8) : texte UTF-16 et nombre de caracteres (le nombre de caracteres est celui de botw-coop).
+- `notify.cpp` (notre code) : file de 8 messages (tout fil), affichage depuis le fil du jeu, un message toutes les 3,5 s ; crochet sur `getMessage` qui remplace le texte de « 0028 » (fichier `LayoutMsg/MainScreen_00`) pendant 2 s apres notre demande. Texte UTF-8 -> UTF-16, 46 caracteres au plus.
+- [V] Conditions de `main+0xe7a790` lues dans le code : `main+0xe89ae0` renvoie le bit 4 de l'octet `[[main+0x1d67908]] + 0x64c31` (si 1 : rien n'est affiche), puis l'ecran principal doit exister. Le plugin les verifie avant d'afficher et garde le message sinon.
+- [V] Piege : le « monde pret » du plugin arrive avant la fin du fondu au noir qui suit l'ecran de chargement ; un bandeau demande 5 s apres (essais `nt2` a `nt4`) n'etait jamais visible, alors que les deux conditions ci-dessus etaient remplies. Avec 12 s d'attente (`nt5`), il s'affiche. Valeur choisie d'apres ces essais, pas mesuree plus finement.
+- Messages actuels : « Coop : connecté (joueur N) », « Joueur N a rejoint la partie », « Joueur N a quitté la partie », « Coop : liaison perdue, reconnexion... ».
+- [V] `nt1` (deux instances, J2 arrete) : « Joueur 2 a quitté la partie » vu chez J1, accents corrects. Capture `2026-11-13_bandeau_joueur-2-a-quitte.png`.
+- [V] `nt5` (une instance) : « Coop : connecté (joueur 1) » a l'entree en jeu. Capture `2026-11-13_bandeau_connecte-a-l-entree-en-jeu.png`. Le jeu de l'essai est en anglais (« Great Plateau ») ; nos messages sont en francais.
+- Non vu a l'ecran : « a rejoint » (emis au bon moment dans `nt1`, mais pendant le fondu, avant la correction des 12 s), « liaison perdue ».
+- Preuves : `docs/evidence/2026-11-13_bandeau-messages_essais-nt1-a-nt5.log`.

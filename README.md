@@ -9,6 +9,7 @@ Mod de présence à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 
 - Heure de la session (elle ne recule jamais ; un joueur en pause ne retient pas l'autre), jours, minuteur de lune de sang, météo (à moins de 300 m).
 - Drapeaux de la liste blanche : progression (sanctuaires, tours, Créatures divines, Koroks) et objets de carte (ramassés, coffres, ennemis tués). Les étapes de quête, l'inventaire et le Compendium restent à chacun.
 - Points de vie et position des ennemis (première version).
+- Messages dans le bandeau du jeu quand l'autre joueur arrive ou part, et à la connexion.
 - Inventaire, santé et équipement restent individuels.
 
 Testé uniquement avec deux instances de Ryujinx 1.3.3 sur un même PC. Non testé entre deux PC, ni sous Eden.

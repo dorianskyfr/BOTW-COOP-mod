@@ -6,6 +6,7 @@
 #include "game.hpp"
 #include "input_inject.hpp"
 #include "net_probe.hpp"
+#include "notify.hpp"
 
 /*
  * Point d'entree du plugin botw-coop (module subsdk9 charge par le rtld du jeu).
@@ -29,8 +30,11 @@ extern "C" void exl_main(void* x0, void* x1) {
     coop::input_inject::Install();
 
     /* Crochet sur le demarrage des sequences d'animation : adresse de la 1.9.0 seulement. */
-    if (coop::game::IsSupported())
+    if (coop::game::IsSupported()) {
         coop::anim_state::Install();
+        /* Messages dans le bandeau d'information du jeu. */
+        coop::notify::Install();
+    }
 
     /* Thread reseau + sonde d'etat. */
     coop::net_probe::Start();

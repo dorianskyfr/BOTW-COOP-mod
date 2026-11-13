@@ -1,5 +1,6 @@
 #include "net_probe.hpp"
 #include "anim_state.hpp"
+#include "notify.hpp"
 #include "config.hpp"
 #include "enemy_life.hpp"
 #include "flags.hpp"
@@ -166,6 +167,7 @@ namespace coop::net_probe {
             s_RxLen = 0;
             coop::session::g_Remote.SetInactive();
             Logging.Log("[botw-coop] net: liaison fermee (%s), reconnexion automatique", why);
+            coop::notify::Post("Coop : liaison perdue, reconnexion...");
         }
 
         void TryConnect() {
@@ -210,6 +212,11 @@ namespace coop::net_probe {
             if (unsigned anim = 0; std::sscanf(line, "MTX %d %f %f %f %f %f %f %f %f %f %f %f %f %u", &id,
                     &m[0], &m[1], &m[2], &m[3], &m[4], &m[5], &m[6], &m[7], &m[8], &m[9], &m[10], &m[11], &anim) >= 13) {
                 s_LastRemoteId = id;
+                if (!coop::session::g_Remote.IsActive()) {
+                    char msg[48];
+                    std::snprintf(msg, sizeof(msg), "Joueur %d a rejoint la partie", id);
+                    coop::notify::Post(msg);
+                }
                 /* 13e valeur facultative : etat d'animation (anim_state.hpp) ; absente = au sol. */
                 coop::anim_state::g_Remote.store(anim < coop::anim_state::Count ? static_cast<std::uint8_t>(anim) : 0);
                 coop::session::g_Remote.Push(id, m, coop::clock::NowMs());
@@ -249,9 +256,16 @@ namespace coop::net_probe {
             } else if (std::sscanf(line, "HELLO %d", &id) == 1) {
                 coop::session::g_LocalId = id;
                 Logging.Log("[botw-coop] net: le relais nous attribue l'identifiant J%d", id);
+                char msg[48];
+                std::snprintf(msg, sizeof(msg), "Coop : connecté (joueur %d)", id);
+                coop::notify::Post(msg);
             } else if (std::sscanf(line, "BYE %d", &id) == 1) {
-                if (coop::session::g_Remote.Id() == id)
+                if (coop::session::g_Remote.Id() == id && coop::session::g_Remote.IsActive()) {
                     coop::session::g_Remote.SetInactive();
+                    char msg[48];
+                    std::snprintf(msg, sizeof(msg), "Joueur %d a quitté la partie", id);
+                    coop::notify::Post(msg);
+                }
                 if (id == s_LastRemoteId)
                     s_LastRemoteId = 0;
                 Logging.Log("[botw-coop] net: J%d a quitte la session", id);

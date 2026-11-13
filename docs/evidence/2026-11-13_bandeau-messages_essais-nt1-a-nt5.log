@@ -1,0 +1,28 @@
+# Messages dans le bandeau d'information du jeu (2026-11-13), Ryujinx 1.3.3, t_lv1
+# nt1 : deux instances, J2 arrete en cours de partie ; nt2 a nt5 : une instance, bandeau a l'entree en jeu
+# Les accents apparaissent en ?? dans le journal de Ryujinx (encodage du journal) ; ils sont corrects a l'ecran.
+
+--- nt1
+00:00:06.374 [botw-coop] messages : crochet pose sur main+0xe84870
+00:00:15.575 [botw-coop] messages : "Coop : connect?? (joueur 1)"
+00:01:56.779 [botw-coop] messages : "Joueur 2 a rejoint la partie"
+00:02:52.593 [botw-coop] messages : "Joueur 2 a quitt?? la partie"
+00:02:52.593 [botw-coop] net: J2 a quitte la session
+00:03:01.824 [botw-coop] messages : "Coop : liaison perdue, reconnexion..."
+--- nt2
+00:00:07.531 [botw-coop] messages : crochet pose sur main+0xe84870
+00:00:16.474 [botw-coop] messages : "Coop : connect?? (joueur 1)"
+00:01:50.553 [botw-coop] messages : bandeau demande (26 caracteres)
+--- nt3
+00:00:06.371 [botw-coop] messages : crochet pose sur main+0xe84870
+00:00:15.373 [botw-coop] messages : "Coop : connect?? (joueur 1)"
+00:01:49.589 [botw-coop] messages : bandeau demande (26 caracteres)
+--- nt4
+00:00:07.453 [botw-coop] messages : crochet pose sur main+0xe84870
+00:00:16.442 [botw-coop] messages : "Coop : connect?? (joueur 1)"
+00:01:51.032 [botw-coop] messages : bandeau demande (26 caracteres)
+--- nt5
+00:00:06.522 [botw-coop] messages : crochet pose sur main+0xe84870
+00:00:15.578 [botw-coop] messages : "Coop : connect?? (joueur 1)"
+00:01:56.149 [botw-coop] messages : bandeau demande (26 caracteres)
+--- mesure du bandeau (pixels tres clairs dans la zone 450..850 x 180..215) : nt1 q1 = 218 ; nt2 f01..f12 = 0 ; nt3 g07..g14 = 0 ; nt4 h05..h12 = 0 ; nt5 k03 = 185
