@@ -1,4 +1,5 @@
 #include "input_inject.hpp"
+#include "anim_state.hpp"
 
 #include "clock.hpp"
 #include "dynsym.hpp"
@@ -165,6 +166,7 @@ namespace coop::input_inject {
 #ifdef COOP_REMOTE_PAD
                 coop::game::DropHoldOnFrame();
 #endif
+                coop::anim_state::OnFrame();
                 coop::remote_actor::OnFrame();
                 coop::world_sync::OnFrame();
                 coop::flags::OnFrame();

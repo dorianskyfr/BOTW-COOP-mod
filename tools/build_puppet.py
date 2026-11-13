@@ -37,9 +37,16 @@ SEQUENCES = {
     "Glide": "Float_Float_F",
     "Swim": "Swim_Move_Slow_F",
     "SwimWait": "Swim_Wait",
+    # Clips lus dans les sequences du vrai joueur (GameROMPlayer, TitleBG.pack) : ClimbMove,
+    # ClimbWait, SwimDash (2026-11-13).
+    "Climb": "Climb_Wall_Move_U",
+    "ClimbWait": "Climb_Wall_Wait_FootL",
+    "SwimDash": "Swim_Move_Dash",
+    # Pas de surf : avec « Surf » -> Shield_Board_Go2 (clip de Player_SurfingSlide), le jeu ne cree
+    # plus l'acteur du tout (essais cp7, cp8 ; sans lui, cpa et cpb le creent). Cause inconnue.
 }
 
-INST_SIZE = 700000  # tas de l'acteur ; Link du menu pause : 557256 (ActorInfo 1.9.0)
+INST_SIZE = 700000  # tas de l'acteur ; Link du menu pause : 557256 (ActorInfo 1.9.0). 1200000 ne changeait rien a l'echec du surf (cp8)
 
 
 def read_sarc(path):

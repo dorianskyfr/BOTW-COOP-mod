@@ -150,8 +150,9 @@ class Pilot:
                 parts = raw.decode("ascii", "replace").split()
                 if len(parts) >= 5 and parts[0] == "TIME":
                     self.session_time = parts[2:]  # heure, jours, meteo [, minuteur de lune]
-                if len(parts) == 14 and parts[0] == "MTX" and self.target in (0, int(parts[1])):
-                    m = [float(v) for v in parts[2:]]
+                # MTX <id> <12 floats> [etat d'animation]
+                if len(parts) in (14, 15) and parts[0] == "MTX" and self.target in (0, int(parts[1])):
+                    m = [float(v) for v in parts[2:14]]
                     with self.lock:
                         self.pos = (m[3], m[7], m[11])
                         self.fwd = (m[2], m[10])

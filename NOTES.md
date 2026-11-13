@@ -592,3 +592,15 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] `cp6` (deux instances, J1 avance de 8 m en diagonale) : chez J2, le pantin de J1 est vu a la position de J1 ; sequences « Run », « Walk », « Wait » dans le journal. Capture `2026-11-13_pantin-link_deux-instances_J2-voit-J1.png`.
 - Non verifie : longue duree, chargements, plusieurs pantins, distance d'affichage (a 27 m le pantin etait cache, pas mesure au-dela), equipement (le pantin est en sous-vetements), orientation pendant l'animation vue de pres.
 - Preuves : `docs/evidence/2026-11-13_pantin-link_essais-cp1-a-cp6.log`.
+
+### 5.28 Etat d'animation du joueur envoye avec sa position (2026-11-13, essais `an1`, `an2`, `cp7` a `cpb`) - [V] escalade a deux instances
+
+- Crochet (`anim_state.cpp`, idee de botw-coop) sur `main+0x149f24c` : chaque sequence demarree sur le creneau 0 de la liste du joueur local (acteur du joueur `+0x560`) est classee : escalade (`ClimbMove*`, `ClimbJump*`, `WallDash*`, `ClimbSlip`), escalade a l'arret (`ClimbWait`), nage (`SwimMove*`, `SwimAtnMove`), nage a l'arret (`SwimWait`), nage rapide (`SwimDash`), vol plane (`ParashawlGlide`, `SurfingOnPara`), chute (`Fall`, `SlippingDown*`), surf (`Surfing*`), sinon « au sol ». Noms lus dans l'ASList « Player » de `GameROMPlayer` (TitleBG.pack, 399 sequences).
+- [V] Le crochet ne gene pas le jeu : J1 marche, grimpe, l'IA et les ennemis tournent ; aucune erreur. Le pantin, cree par notre propre appel a la meme fonction, n'est pas pris pour le joueur (liste differente).
+- Protocole : `MTX <12 valeurs> <etat>` (13e valeur facultative ; le relais l'accepte et la retransmet, 2 essais automatiques de plus : 39/39). `tools/pilot.py` accepte les deux formes.
+- Chez le spectateur, un etat autre que « au sol » prime sur l'allure deduite de la vitesse.
+- Nouvelles sequences du pantin : `Climb` (`Climb_Wall_Move_U`), `ClimbWait` (`Climb_Wall_Wait_FootL`), `SwimDash` (`Swim_Move_Dash`) ; clips lus dans les fichiers AS du vrai joueur.
+- [V] **Surf impossible pour l'instant** : avec une sequence `Surf` -> `Shield_Board_Go2` (clip de `Player_Link_SurfingSlide`), le jeu ne cree plus du tout `CoopPlayer` (essais `an1`, `cp7`). Le tas porte a 1 200 000 octets n'y change rien (`cp8`). Bissection : 8 sequences + crochet -> cree (`cp9`) ; + escalade -> cree (`cpa`) ; + nage rapide -> cree (`cpb`). [?] Cause inconnue (le clip demande peut-etre une ressource du bouclier). Le surf retombe donc sur l'allure.
+- [V] Essai `an2` (deux instances) : J1 court vers la paroi et grimpe (« WallDashSt -> etat 1 », « ClimbMove », « ClimbWait ») ; chez J2 le pantin passe « Run » -> « Climb » -> « ClimbWait », et la capture le montre accroche a la paroi en pose d'escalade. Captures `2026-11-13_pantin-link_J2-voit-J1-grimper.png` et `..._zoom.png`.
+- Non verifie a l'image : nage, vol plane, chute annoncee (sequences en place). Le saut n'a pas de sequence.
+- Preuves : `docs/evidence/2026-11-13_etat-animation_essais-an1-an2-cp7-cpb.log`.

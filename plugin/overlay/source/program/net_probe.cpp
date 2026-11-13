@@ -1,4 +1,5 @@
 #include "net_probe.hpp"
+#include "anim_state.hpp"
 #include "config.hpp"
 #include "enemy_life.hpp"
 #include "flags.hpp"
@@ -206,9 +207,11 @@ namespace coop::net_probe {
             int m_days = 0, m_weather = 0;
             [[maybe_unused]] int m_lx = 0, m_ly = 0, m_ms = 0;
             float m[12];
-            if (std::sscanf(line, "MTX %d %f %f %f %f %f %f %f %f %f %f %f %f", &id,
-                    &m[0], &m[1], &m[2], &m[3], &m[4], &m[5], &m[6], &m[7], &m[8], &m[9], &m[10], &m[11]) == 13) {
+            if (unsigned anim = 0; std::sscanf(line, "MTX %d %f %f %f %f %f %f %f %f %f %f %f %f %u", &id,
+                    &m[0], &m[1], &m[2], &m[3], &m[4], &m[5], &m[6], &m[7], &m[8], &m[9], &m[10], &m[11], &anim) >= 13) {
                 s_LastRemoteId = id;
+                /* 13e valeur facultative : etat d'animation (anim_state.hpp) ; absente = au sol. */
+                coop::anim_state::g_Remote.store(anim < coop::anim_state::Count ? static_cast<std::uint8_t>(anim) : 0);
                 coop::session::g_Remote.Push(id, m, coop::clock::NowMs());
             } else if (std::sscanf(line, "STATEEND %d", &id) == 1) {
                 Logging.Log("[botw-coop] net: etat complet recu du serveur (%d drapeaux en memoire chez lui)", id);
@@ -357,10 +360,11 @@ namespace coop::net_probe {
                 if (inGame && st.m_PlayerActor != 0 && s_Fd >= 0) {
                     char line[256];
                     const int len = std::snprintf(line, sizeof(line),
-                        "MTX %.4f %.4f %.4f %.3f %.4f %.4f %.4f %.3f %.4f %.4f %.4f %.3f\n",
+                        "MTX %.4f %.4f %.4f %.3f %.4f %.4f %.4f %.3f %.4f %.4f %.4f %.3f %u\n",
                         static_cast<double>(mtx[0]), static_cast<double>(mtx[1]), static_cast<double>(mtx[2]), static_cast<double>(mtx[3]),
                         static_cast<double>(mtx[4]), static_cast<double>(mtx[5]), static_cast<double>(mtx[6]), static_cast<double>(mtx[7]),
-                        static_cast<double>(mtx[8]), static_cast<double>(mtx[9]), static_cast<double>(mtx[10]), static_cast<double>(mtx[11]));
+                        static_cast<double>(mtx[8]), static_cast<double>(mtx[9]), static_cast<double>(mtx[10]), static_cast<double>(mtx[11]),
+                        static_cast<unsigned>(coop::anim_state::Local()));
                     if (len > 0 && len < static_cast<int>(sizeof(line)) && SendAll(s_Fd, line, static_cast<std::size_t>(len)))
                         s_Sent++;
                     else

@@ -41,7 +41,7 @@ Mode d'emploi : `README.md`.
 | Reprise après coupure en cours de session | **vérifié** (relais arrêté 12 s puis relancé : les deux jeux se reconnectent) | `2026-11-11_duo_recreation-acteur_et_reconnexion.log` |
 | Recréation du personnage distant quand le jeu le détruit | **vérifié par les logs** (une fois, joueur 2 tombé d'une falaise) | même preuve |
 | Test entre deux PC réels | **non fait** (un seul PC) | — |
-| Animation du joueur distant (marche, course, saut) | **vérifié à l'écran le 2026-11-13** pour attente / marche / course / sprint / chute, choisies d'après la vitesse du joueur distant (deux instances, essai cp6). Vol plané, nage, escalade : séquences prêtes, pas encore choisies | NOTES §5.27, `2026-11-13_pantin-link_*.png` |
+| Animation du joueur distant (marche, course, saut) | **vérifié à l'écran le 2026-11-13** pour attente / marche / course / sprint (d'après la vitesse, essai cp6) et **escalade** (état envoyé par le joueur, essai an2). Nage, vol plané, chute annoncée : en place, non vus à l'image. Surf : pas de séquence (empêche la création du pantin) | NOTES §5.27, §5.28, `2026-11-13_pantin-link_*.png` |
 | Modèle de Link pour le joueur distant | **vérifié à l'écran le 2026-11-13** (niveau 4) : acteur `CoopPlayer` (Link sans physique) généré depuis la RomFS de l'utilisateur ; repli automatique sur le PNJ s'il manque. Sans équipement | NOTES §5.27, `2026-11-13_pantin-link_deux-instances_J2-voit-J1.png` |
 | Personnage distant sans invite « Parler » (A près de lui ne bloque plus) | **vérifié à l'écran**, une et deux instances | `2026-11-12_parler_avant_invite-affichee.png`, `..._apres_invite-retiree.png`, `..._deux-instances_J2-face-a-J1_sans-invite.png`, NOTES §5.7 |
 | Disparition du personnage quand le joueur distant se déconnecte | **vérifié à l'écran** (essai `c5`) | `2026-11-11_serveur_J1-parti-personnage-retire.png` |
@@ -113,7 +113,7 @@ Sauvegarde de test en monde ouvert (plateau du Prélude, sortie du sanctuaire) :
 - `tools/run-test.ps1`, `tools/run-duo.ps1` : anciens tests automatiques (script d'entrées).
 - `tools/capture_dd.py` : capture d'une fenêtre (écran allumé obligatoire).
 - `tools/analysis/` : recherche d'adresses dans l'image mémoire de `main`.
-- Options de build de test : `-DCOOP_REMOTE_PAD`, `-DCOOP_TEST_SPAWN`, `-DCOOP_TEST_SPAWN_SET`, `-DCOOP_POS_SITES`, `-DCOOP_ACTOR_DUMP`, `-DCOOP_ATT_DUMP`, `-DCOOP_INPUT_SCRIPT`, `-DCOOP_TEST_TIME`, `-DCOOP_TEST_UNFREEZE_TIME`, `-DCOOP_DUMP_MAIN`, `-DCOOP_SYMDUMP`, `-DCOOP_SYMDUMP_HID`. Aucune dans la build à jouer.
+- Options de build de test : `-DCOOP_REMOTE_PAD`, `-DCOOP_TEST_SPAWN` (avec `-DCOOP_TEST_CIRCLE` : pantin en cercle), `-DCOOP_TEST_SPAWN_SET`, `-DCOOP_POS_SITES`, `-DCOOP_ACTOR_DUMP`, `-DCOOP_ATT_DUMP`, `-DCOOP_INPUT_SCRIPT`, `-DCOOP_TEST_TIME`, `-DCOOP_TEST_UNFREEZE_TIME`, `-DCOOP_DUMP_MAIN`, `-DCOOP_SYMDUMP`, `-DCOOP_SYMDUMP_HID`. Aucune dans la build à jouer.
 
 ## Installé sur le PC (2026-11-10)
 - Git (MinGit 2.56.0), Python 3.12.10, MSYS2 : via winget.

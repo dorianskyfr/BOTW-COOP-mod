@@ -1,0 +1,32 @@
+# Etat d'animation du joueur envoye avec sa position (2026-11-13), Ryujinx 1.3.3, t_lv1
+# an1/an2 : deux instances, J1 court vers la paroi et grimpe ; cp7..cpb : une instance, pantin de test (bissection du pack)
+
+--- an2 J1
+00:00:06.145 [botw-coop] animation locale : crochet pose sur main+0x149f24c
+00:02:49.244 [botw-coop] animation locale : sequence "WallDashSt" -> etat 1
+00:02:50.517 [botw-coop] animation locale : sequence "ClimbWait" -> etat 2
+00:02:50.547 [botw-coop] animation locale : sequence "ClimbMove" -> etat 1
+00:02:54.677 [botw-coop] animation locale : sequence "ClimbWait" -> etat 2
+--- an2 J2
+00:02:06.733 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:02:06.902 [botw-coop] acteur distant : CREE apres 5 images, acteur=66071d5ee8 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+00:02:06.934 [botw-coop] acteur distant : sequence "Wait" (avant "-")
+00:02:31.433 [botw-coop] acteur distant : sequence "Run" (avant "Wait")
+00:02:37.199 [botw-coop] acteur distant : sequence "Climb" (avant "Run")
+00:02:42.801 [botw-coop] acteur distant : sequence "ClimbWait" (avant "Climb")
+--- an2 pilote
+    8.4s capture r1 : build\runs\an2_r1.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1024.48, 252.63, 1799.95)   12.2s push -> deplacement (-1.21, 4.43, 1.50), position (-1044.63, 255.57, 1827.93)
+--- cp7 (12 sequences dont Surf)
+00:02:06.379 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1021.48, 252.64, 1799.95)
+--- cp8 (12 sequences, tas 1200000)
+00:02:04.408 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1021.48, 252.64, 1799.95)
+00:02:24.439 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images), repli sur le PNJ
+--- cp9 (8 sequences (pack de cp6) avec le crochet)
+00:02:04.391 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1021.48, 252.64, 1799.95)
+00:02:04.557 [botw-coop] acteur distant : CREE apres 5 images, acteur=660721c5b8 nom="CoopPlayer" pos=(-1021.48, 252.64, 1799.95)
+--- cpa (10 : + Climb, ClimbWait)
+00:02:04.471 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1021.48, 252.64, 1799.95)
+00:02:04.641 [botw-coop] acteur distant : CREE apres 5 images, acteur=66072f6f38 nom="CoopPlayer" pos=(-1021.48, 252.64, 1799.95)
+--- cpb (11 : + SwimDash)
+00:02:04.409 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1021.48, 252.64, 1799.95)
+00:02:04.576 [botw-coop] acteur distant : CREE apres 5 images, acteur=66071171f0 nom="CoopPlayer" pos=(-1021.48, 252.64, 1799.95)

@@ -1,4 +1,5 @@
 #include "remote_actor.hpp"
+#include "anim_state.hpp"
 
 #include "clock.hpp"
 #include "game.hpp"
@@ -82,7 +83,8 @@ namespace coop::remote_actor {
         const char* WantedSequence() {
 #ifdef COOP_TEST_SPAWN
             /* Essai sans joueur distant : chaque sequence 4 s a tour de role. */
-            static const char* const all[] = { "Wait", "Walk", "Run", "Dash", "Fall", "Glide", "Swim", "SwimWait" };
+            static const char* const all[] = { "Wait", "Walk", "Run", "Dash", "Fall", "Glide", "Swim", "SwimWait",
+                                               "SwimDash", "Climb", "ClimbWait" };
             return all[(s_Frames / 120) % (sizeof(all) / sizeof(all[0]))];
 #else
             coop::session::Sample prev, last;
@@ -90,6 +92,9 @@ namespace coop::remote_actor {
             if (!coop::session::g_Remote.Snapshot(prev, last, updates) || updates < 2)
                 return "Wait";
             const std::uint64_t now = coop::clock::NowMs();
+            /* Etat annonce par le joueur distant (escalade, nage, vol plane...) : il prime. */
+            if (const char* told = coop::anim_state::PuppetSequence(coop::anim_state::g_Remote.load()))
+                return told;
             if (now - last.m_TimeMs > 1000 || last.m_TimeMs <= prev.m_TimeMs || last.m_TimeMs - prev.m_TimeMs > 1000)
                 return "Wait";
             const float dt = static_cast<float>(last.m_TimeMs - prev.m_TimeMs) / 1000.0f;

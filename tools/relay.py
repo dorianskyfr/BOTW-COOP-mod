@@ -5,13 +5,13 @@ identifiant de joueur et retransmet aux autres joueurs chaque ligne recue.
 
 Protocole (lignes ASCII terminees par \\n) :
   relais -> client : HELLO <id>            a la connexion
-                     MTX <id> <12 floats>  matrice 3x4 de l'acteur d'un autre joueur
+                     MTX <id> <12 floats> [etat]  matrice 3x4 de l'acteur d'un autre joueur, etat d'animation
                      TIME <id> <heure> <jours> <meteo> [minuteur de lune de sang]
                      FLAG <id> <hachage hex> 1   drapeau partage a 1 (id 0 = memoire du serveur)
                      FLAGR <id> <hachage hex> 1  idem, drapeau remis a zero par le jeu a la lune de sang
                      STATEEND <n>          fin de l'etat complet demande par STATE
                      BYE <id>              un autre joueur s'est deconnecte
-  client -> relais : MTX <12 floats> | TIME ... | FLAG <hachage hex> 1
+  client -> relais : MTX <12 floats> [etat] | TIME ... | FLAG <hachage hex> 1
                      FLAGR <hachage hex> 1|0   drapeau « lune de sang » passe a 1 / revenu a 0
                      STATE                 demande l'etat complet (drapeaux connus du serveur)
                      PILOT                 outil de test : rend son identifiant de joueur
@@ -56,7 +56,8 @@ import sys
 #          3x4), retransmise telle quelle ; le plugin decide qui fait foi.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14}
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur.
-OPTIONAL_EXTRA = {"TIME": 1}
+# MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
+OPTIONAL_EXTRA = {"TIME": 1, "MTX": 1}
 
 
 class Client:

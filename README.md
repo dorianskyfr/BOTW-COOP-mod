@@ -5,7 +5,7 @@ Mod de présence à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 
 État réel, limites et preuves : `PROGRESS.md`. Détails techniques : `NOTES.md`, `ARCHITECTURE.md`. Décisions : `DECISIONS.md`.
 
 ## Ce que fait la version actuelle
-- Chaque joueur voit l'autre dans son monde sous la forme d'un Link animé (attente, marche, course, sprint, chute), sans équipement pour l'instant.
+- Chaque joueur voit l'autre dans son monde sous la forme d'un Link animé (attente, marche, course, sprint, escalade, nage, vol plané, chute), sans équipement pour l'instant.
 - Heure de la session (elle ne recule jamais ; un joueur en pause ne retient pas l'autre), jours, minuteur de lune de sang, météo (à moins de 300 m).
 - Drapeaux de la liste blanche : progression (sanctuaires, tours, Créatures divines, Koroks) et objets de carte (ramassés, coffres, ennemis tués). Les étapes de quête, l'inventaire et le Compendium restent à chacun.
 - Points de vie et position des ennemis (première version).

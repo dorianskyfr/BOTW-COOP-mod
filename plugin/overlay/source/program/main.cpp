@@ -1,6 +1,7 @@
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
 
+#include "anim_state.hpp"
 #include "dynsym.hpp"
 #include "game.hpp"
 #include "input_inject.hpp"
@@ -26,6 +27,10 @@ extern "C" void exl_main(void* x0, void* x1) {
 
     /* Hooks manette : battement d'image (+ script de test avec -DCOOP_INPUT_SCRIPT). */
     coop::input_inject::Install();
+
+    /* Crochet sur le demarrage des sequences d'animation : adresse de la 1.9.0 seulement. */
+    if (coop::game::IsSupported())
+        coop::anim_state::Install();
 
     /* Thread reseau + sonde d'etat. */
     coop::net_probe::Start();

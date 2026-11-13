@@ -108,6 +108,12 @@ def main():
         check("position de J1 retransmise a J2 avec son identifiant", line == "MTX 1 " + MTX[4:], line)
         a.pump(0.3)
         check("J1 ne recoit pas sa propre position", not a.take("MTX"))
+        a.send(MTX + " 6")
+        line = b.expect("MTX")
+        check("etat d'animation (13e valeur) retransmis avec la position", line == "MTX 1 " + MTX[4:] + " 6", line)
+        a.send(MTX + " 6 7")
+        b.pump(0.4)
+        check("... mais pas une 14e valeur", not b.take("MTX"), str(b.lines))
 
         # Drapeaux : premiere annonce retransmise, doublon ignore, valeur 0 ignoree.
         a.send("FLAG 6ca64187 1")
