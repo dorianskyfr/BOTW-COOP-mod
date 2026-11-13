@@ -642,12 +642,15 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Non verifie : grandes distances (jusqu'a 250 m), pente, eau, falaise, partenaire en vol plane ou en escalade, interieur, vraie manette (seulement le pilote), Eden.
 - Preuves : `docs/evidence/2026-11-13_teleportation_essais-wp1-a-wp4.log`.
 
-### 5.32 Cœurs partages et alerte « en danger » (2026-11-13, essais `hp1`, `hp2`) - [V] par les journaux, pas a l'image
+### 5.32 Cœurs partages et alerte « en danger » (2026-11-13, essais `hp1` a `hp6`) - [V] a l'image, deux instances
 
 - Vie de Link : memes fonctions virtuelles que pour les ennemis (cases 30 `getMaxLife` et 87 `getLife` de la vtable de l'acteur), appliquees a l'acteur du joueur. [V] Lu : 12 / 12 quarts dans la sauvegarde de test, qui affiche 3 cœurs.
 - Message `HP <vie> <max>` une fois par seconde, retransmis par le relais avec l'identifiant (essai automatique de plus : 40/40).
 - Alerte (idee et seuils d'apres botw-coop) : partenaire a un quart de ses cœurs ou a 2 cœurs (le plus haut), une fois jusqu'a ce qu'il repasse au-dessus de 40 %, au plus toutes les 30 s ; texte « Joueur N en danger : X,YY cœurs, D m ».
 - Outil d'essai : `drive.py <nom> hpdown` (build `-DCOOP_REMOTE_PAD`) ecrit 4 quarts dans la vie du joueur pilote.
 - [V] `hp1`, `hp2` : J2 « vie locale mise a 4 quarts » puis relu 4 / 12 ; chez J1 « Joueur 2 en danger : 1,00 cœurs, 0 m » puis « bandeau demande (36 caracteres) ».
-- **Non verifie a l'image** : ni le bandeau chez J1, ni les cœurs de J2 a l'ecran (toutes les captures ont echoue pendant ces deux essais, « aucune image obtenue » : l'outil de capture a besoin de l'ecran allume). L'affichage du bandeau lui-meme est verifie en 5.29.
+- Captures : echec pendant `hp1` a `hp4` (« aucune image obtenue ») ; la duplication d'ecran ne rendait aucune image meme jeu en marche, ecran allume, sans verrouillage. Apres que l'utilisateur a bouge la souris, elle a remarche (18/30 images) : Windows avait mis l'affichage en veille. Une copie d'ecran GDI (Pillow) donne l'image Vulkan en noir et laisse voir le bureau : essayee puis retiree.
+- [V] `hp5` : chez J2, la barre de vie montre 1 cœur rouge et 2 vides apres `hpdown` (`2026-11-13_coeurs_J2-a-1-coeur.png`).
+- [V] `hp6` : chez J1, juste apres, bandeau « Joueur 2 en danger : 1,00 cœurs, 0 m », « œ » bien affiche (`2026-11-13_coeurs_alerte-chez-J1.png`).
+- Piege d'analyse : les horodatages des journaux de J1 et J2 partent chacun du lancement de leur instance (decalage ~13 s dans ces essais) ; l'alerte part en fait dans la seconde qui suit la baisse.
 - Preuve : `docs/evidence/2026-11-13_coeurs-alerte-partenaire_hp1-hp2.log`.

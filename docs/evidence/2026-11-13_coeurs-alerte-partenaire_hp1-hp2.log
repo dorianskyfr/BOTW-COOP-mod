@@ -27,3 +27,13 @@
 00:02:29.439 [botw-coop] messages : bandeau demande (36 caracteres)
 --- hp2 relais (HP)
 19:53:31.973 joueur 2 : etat n.100 = HP 12 12
+
+# Essais hp5, hp6 (meme jour, apres reveil de l'affichage) : captures obtenues.
+# Les horodatages des journaux de J1 et J2 partent chacun du lancement de leur instance (decalage ~13 s).
+--- hp5 J2 : capture 2026-11-13_coeurs_J2-a-1-coeur.png (barre : 1 coeur rouge, 2 vides)
+--- hp6 J1 : capture 2026-11-13_coeurs_alerte-chez-J1.png (bandeau « Joueur 2 en danger : 1,00 coeurs, 0 m ») ; pixels clairs du bandeau a=308 b=303 c..e=0
+00:01:55.927 [botw-coop] messages : "Joueur 2 a rejoint la partie"
+00:02:10.942 [botw-coop] messages : bandeau demande (26 caracteres)
+00:02:14.441 [botw-coop] messages : bandeau demande (28 caracteres)
+00:02:29.157 [botw-coop] messages : "Joueur 2 en danger : 1,00 c??urs, 0 m"
+00:02:29.191 [botw-coop] messages : bandeau demande (36 caracteres)
