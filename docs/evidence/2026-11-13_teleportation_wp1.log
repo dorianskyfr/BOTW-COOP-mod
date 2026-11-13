@@ -1,0 +1,15 @@
+# Essai wp1 (2026-11-13) : teleportation de J1 vers J2, deux instances Ryujinx 1.3.3, t_lv1
+# J2 s'eloigne (push), puis J1 maintient le clic du stick gauche 2 s.
+
+--- pilote
+   67.5s push -> deplacement (8.69, -1.66, 13.26), position (-1015.79, 250.98, 1813.21)
+   69.5s position (-1015.59, 250.95, 1813.54) avant acteur (0.5483, 0.8363)
+   70.0s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+   72.0s maintien LS 2.0 s -> (-1015.59, 251.45, 1813.54)
+   75.0s position (-1015.63, 250.93, 1813.65) avant acteur (-0.1943, 0.9809)
+   76.8s capture apres : build\runs\wp1_apres.png (1280x758), pixels non noirs au centre : 100.0 % | position (-1015.63, 250.93, 1813.65)
+   77.3s position (-1015.59, 250.95, 1813.54) avant acteur (0.5483, 0.8363)
+--- J1
+00:02:35.129 [botw-coop] teleportation : de (-1024.48, 252.63, 1799.95) vers J2 (-1015.59, 251.45, 1813.54), 16.3 m
+00:02:35.130 [botw-coop] messages : "T??l??port?? vers le joueur 2 (16 m)"
+00:02:35.471 [botw-coop] teleportation : arrivee, position (-1015.59, 251.16, 1813.54)

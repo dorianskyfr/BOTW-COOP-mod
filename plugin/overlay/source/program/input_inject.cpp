@@ -1,6 +1,7 @@
 #include "input_inject.hpp"
 #include "anim_state.hpp"
 #include "notify.hpp"
+#include "warp.hpp"
 
 #include "clock.hpp"
 #include "dynsym.hpp"
@@ -169,6 +170,7 @@ namespace coop::input_inject {
 #endif
                 coop::anim_state::OnFrame();
                 coop::notify::OnFrame();
+                coop::warp::OnFrame();
                 coop::remote_actor::OnFrame();
                 coop::world_sync::OnFrame();
                 coop::flags::OnFrame();
@@ -264,6 +266,9 @@ namespace coop::input_inject {
                 }
             }
 #endif
+            /* Teleportation : maintien du clic du stick gauche (boutons tels que le jeu les voit). */
+            if (states != nullptr && count > 0)
+                coop::warp::OnPad(states[count - 1].m_Buttons);
             (void)states;
             (void)count;
         }
