@@ -619,3 +619,14 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] `nt5` (une instance) : « Coop : connecté (joueur 1) » a l'entree en jeu. Capture `2026-11-13_bandeau_connecte-a-l-entree-en-jeu.png`. Le jeu de l'essai est en anglais (« Great Plateau ») ; nos messages sont en francais.
 - Non vu a l'ecran : « a rejoint » (emis au bon moment dans `nt1`, mais pendant le fondu, avant la correction des 12 s), « liaison perdue ».
 - Preuves : `docs/evidence/2026-11-13_bandeau-messages_essais-nt1-a-nt5.log`.
+
+### 5.30 Sauvegardes coop separees (2026-11-13, essai `sv1`) - [V] une instance
+
+- Methode d'apres botw-coop (`docs/reverse-engineering.md`, « Save files ») : le jeu monte ses sauvegardes sous `save` et passe toujours par des fonctions `nn::fs` qui prennent un chemin ; on les accroche et on reecrit `save:/X` en `save:/coop/X`. Code a nous : `saves.cpp`.
+- [V] Les 8 fonctions accrochees (`OpenFile`, `CreateFile`, `DeleteFile`, `GetEntryType`, `OpenDirectory`, `CreateDirectory`, `DeleteDirectoryRecursively`, `RenameFile`) et les 7 annexes (`ReadDirectory`, `CloseDirectory`, `ReadFile`, `WriteFile`, `FlushFile`, `CloseFile`, `CommitSaveData`) sont trouvees par leur nom mangle dans la table des symboles du SDK 1.9.0 (journal : « 8 crochets poses », aucun symbole manquant). Les noms mangles ont ete ecrits d'apres les signatures des en-tetes nn d'exlaunch ; c'est cette recherche qui les confirme.
+- Premiere ouverture d'un chemin `save:` : copie recursive de `save:/` (sauf `coop*`) vers `save:/coop/`, fichier temoin `save:/coop/seeded`, `CommitSaveData("save")`. Copie incomplete d'une session precedente : effacee et refaite. Echec : `save:/coop` efface, redirection coupee, le jeu utilise ses sauvegardes normales. Les originaux ne sont qu'ouverts en lecture.
+- Chemins vus (journal) : `save:/exhibition`, `save:/N/caption.sav`, `save:/N/caption.jpg`, `save:/N/game_data.sav`, `save:/option.sav`, `save:/tracker/trackblock00.sav` (forme `save:/`, pas `save://`).
+- [V] Essai `sv1` : « premiere copie faite (8 fichiers, 2144488 octets) » a 15,6 s (ecran-titre), puis tout passe par `save:/coop/`. La partie se charge depuis la copie, au meme endroit. Sur le disque : les 8 fichiers d'origine ont **la meme empreinte SHA-256 qu'avant** ; la copie `coop/` contient les 8 fichiers + `seeded` ; `coop/option.sav` a ete **reecrit par le jeu** (empreinte differente de l'original), l'original non.
+- Non verifie : une vraie sauvegarde de partie (menu ou automatique) qui ecrit `game_data.sav` ; une sauvegarde a 100 % (226 fichiers, photos) ; plusieurs profils ; sauvegardes de secours (botw-coop en garde 3, pas nous) ; Eden ; Switch (journal de 1,5 Mo).
+- Desactivation : build avec `-DCOOP_NO_SEPARATE_SAVE` (le fichier de reglages est lu apres l'ouverture des sauvegardes par le jeu).
+- Preuve : `docs/evidence/2026-11-13_sauvegardes-coop-separees_sv1.log`.

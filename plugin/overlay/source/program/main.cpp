@@ -7,6 +7,7 @@
 #include "input_inject.hpp"
 #include "net_probe.hpp"
 #include "notify.hpp"
+#include "saves.hpp"
 
 /*
  * Point d'entree du plugin botw-coop (module subsdk9 charge par le rtld du jeu).
@@ -25,6 +26,10 @@ extern "C" void exl_main(void* x0, void* x1) {
     /* Outil d'analyse : liste les symboles exportes par les modules (voir dynsym.cpp). */
     coop::dynsym::LogInterestingExports();
 #endif
+
+    /* Sauvegardes coop separees : avant que le jeu ouvre ses sauvegardes. */
+    if (coop::game::IsSupported())
+        coop::saves::Install();
 
     /* Hooks manette : battement d'image (+ script de test avec -DCOOP_INPUT_SCRIPT). */
     coop::input_inject::Install();

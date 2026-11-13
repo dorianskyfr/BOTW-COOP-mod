@@ -1,0 +1,56 @@
+# Essai sv1 (2026-11-13) : sauvegardes coop separees, une instance Ryujinx 1.3.3, copie de t_lv1
+# Dossier de la sauvegarde de test : build/ryu/t_sv1_p1/bis/user/save/0000000000000001/0 (copie de t_lv1, hors git)
+
+--- journal du plugin
+00:00:06.312 [botw-coop] sauvegardes : 8 crochets poses, copie coop a la premiere ouverture d'une sauvegarde
+00:00:15.649 [botw-coop] sauvegardes : premiere copie faite (8 fichiers, 2144488 octets), redirection vers save:/coop/
+00:00:15.650 [botw-coop] sauvegardes : save:/exhibition -> save:/coop/exhibition
+00:00:16.113 [botw-coop] sauvegardes : save:/0/caption.sav -> save:/coop/0/caption.sav
+00:00:16.166 [botw-coop] sauvegardes : save:/1/caption.sav -> save:/coop/1/caption.sav
+00:00:16.178 [botw-coop] sauvegardes : save:/2/caption.sav -> save:/coop/2/caption.sav
+00:00:16.188 [botw-coop] sauvegardes : save:/3/caption.sav -> save:/coop/3/caption.sav
+00:00:16.199 [botw-coop] sauvegardes : save:/4/caption.sav -> save:/coop/4/caption.sav
+00:00:16.208 [botw-coop] sauvegardes : save:/5/caption.sav -> save:/coop/5/caption.sav
+00:00:16.216 [botw-coop] sauvegardes : save:/6/caption.sav -> save:/coop/6/caption.sav
+00:00:16.224 [botw-coop] sauvegardes : save:/7/caption.sav -> save:/coop/7/caption.sav
+00:00:16.233 [botw-coop] sauvegardes : save:/option.sav -> save:/coop/option.sav
+00:00:20.344 [botw-coop] sauvegardes : save:/option.sav -> save:/coop/option.sav
+00:00:20.345 [botw-coop] sauvegardes : save:/option.sav -> save:/coop/option.sav
+00:01:17.301 [botw-coop] sauvegardes : save:/option.sav -> save:/coop/option.sav
+00:01:17.302 [botw-coop] sauvegardes : save:/option.sav -> save:/coop/option.sav
+00:01:19.382 [botw-coop] sauvegardes : save:/1/caption.jpg -> save:/coop/1/caption.jpg
+00:01:19.382 [botw-coop] sauvegardes : save:/0/caption.jpg -> save:/coop/0/caption.jpg
+00:01:19.383 [botw-coop] sauvegardes : save:/1/caption.jpg -> save:/coop/1/caption.jpg
+00:01:19.384 [botw-coop] sauvegardes : save:/0/caption.jpg -> save:/coop/0/caption.jpg
+00:01:27.859 [botw-coop] sauvegardes : save:/1/game_data.sav -> save:/coop/1/game_data.sav
+00:01:27.890 [botw-coop] sauvegardes : save:/1/caption.sav -> save:/coop/1/caption.sav
+00:01:27.891 [botw-coop] sauvegardes : save:/option.sav -> save:/coop/option.sav
+00:01:32.747 [botw-coop] sauvegardes : save:/tracker/trackblock00.sav -> save:/coop/tracker/trackblock00.sav
+00:01:32.748 [botw-coop] sauvegardes : save:/tracker/trackblock00.sav -> save:/coop/tracker/trackblock00.sav
+--- empreintes SHA-256 des originaux AVANT (t_lv1)
+04FFB3ED6F20C8CA4BC01B00593F8BD739DDD56526754D6FACACF47D7FA36F8E  \option.sav
+DE6ED2D1E05CB503FB01267817F96DB7B688B0BC7F676142B4C1081C3954A1F3  \0\caption.jpg
+BFC3077C6EBED9AD6A0C4647B48B6BE0C3BFC1FFAB25669B4A2729A0DBFA41EC  \0\caption.sav
+FF2FF128DA574EE81D93250EAD03AFD26E601CF983FB34FFF9EDCCC6663D416C  \0\game_data.sav
+E358D6C8510A922D3AA37E6D9FABBF6B171F36036C90D5144D938451C16C627C  \1\caption.jpg
+A2C1DF5062FF79A66CDD170E033A5E3C540E8389CE2C7720FB1F852F4797996E  \1\caption.sav
+FCFF01DFE2F89961CB63E693FABDEF2E5B61D835364F152A8BD48D30A5D7D326  \1\game_data.sav
+6562E3A17BFF500A17459F823260A304948B02AAF059BD23128FBEA70C88C0F8  \tracker\trackblock00.sav
+--- empreintes SHA-256 APRES (t_sv1_p1), originaux puis copie coop
+04FFB3ED6F20C8CA4BC01B00593F8BD739DDD56526754D6FACACF47D7FA36F8E  \option.sav
+DE6ED2D1E05CB503FB01267817F96DB7B688B0BC7F676142B4C1081C3954A1F3  \0\caption.jpg
+BFC3077C6EBED9AD6A0C4647B48B6BE0C3BFC1FFAB25669B4A2729A0DBFA41EC  \0\caption.sav
+FF2FF128DA574EE81D93250EAD03AFD26E601CF983FB34FFF9EDCCC6663D416C  \0\game_data.sav
+E358D6C8510A922D3AA37E6D9FABBF6B171F36036C90D5144D938451C16C627C  \1\caption.jpg
+A2C1DF5062FF79A66CDD170E033A5E3C540E8389CE2C7720FB1F852F4797996E  \1\caption.sav
+FCFF01DFE2F89961CB63E693FABDEF2E5B61D835364F152A8BD48D30A5D7D326  \1\game_data.sav
+701AD35F1B4D0AE7C3CC536C1C348DC9167AB6D73D6E0DD092D8A07485000865  \coop\option.sav
+E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855  \coop\seeded
+DE6ED2D1E05CB503FB01267817F96DB7B688B0BC7F676142B4C1081C3954A1F3  \coop\0\caption.jpg
+BFC3077C6EBED9AD6A0C4647B48B6BE0C3BFC1FFAB25669B4A2729A0DBFA41EC  \coop\0\caption.sav
+FF2FF128DA574EE81D93250EAD03AFD26E601CF983FB34FFF9EDCCC6663D416C  \coop\0\game_data.sav
+E358D6C8510A922D3AA37E6D9FABBF6B171F36036C90D5144D938451C16C627C  \coop\1\caption.jpg
+A2C1DF5062FF79A66CDD170E033A5E3C540E8389CE2C7720FB1F852F4797996E  \coop\1\caption.sav
+FCFF01DFE2F89961CB63E693FABDEF2E5B61D835364F152A8BD48D30A5D7D326  \coop\1\game_data.sav
+6562E3A17BFF500A17459F823260A304948B02AAF059BD23128FBEA70C88C0F8  \coop\tracker\trackblock00.sav
+6562E3A17BFF500A17459F823260A304948B02AAF059BD23128FBEA70C88C0F8  \tracker\trackblock00.sav
