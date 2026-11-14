@@ -1,0 +1,25 @@
+﻿## Essai rv5 : J2 envoye a 462 m (voyage d'essai), puis J1 a 1 coeur souleve de 50 m
+## rv5_game.txt
+[botw-coop] sauvetage : crochet pose sur main+0xcead24
+[botw-coop] config: 135 points de voyage (sanctuaires, tours)
+[botw-coop] c??urs : vie locale 12 / 12 quarts
+[botw-coop] c??urs : essai, vie locale mise a 4 quarts
+[botw-coop] c??urs : vie locale 4 / 12 quarts
+[botw-coop] essai chute du joueur : Link souleve de 50 m a (-1024.48, 302.63, 1799.95)
+[botw-coop] sauvetage : refuse (partenaire trop loin, distance 462 m) -> Game Over
+[botw-coop] c??urs : vie locale 0 / 12 quarts
+## rv5_game2.txt
+[botw-coop] sauvetage : crochet pose sur main+0xcead24
+[botw-coop] config: 135 points de voyage (sanctuaires, tours)
+[botw-coop] c??urs : vie locale 12 / 12 quarts
+[botw-coop] voyage (essai) : MainField/E-6 StartPos_CDungeon038, point (-672.5, 186.1, 1513.6), a 459 m de Link
+[botw-coop] voyage : chargement commence (1786 ms apres la demande)
+[botw-coop] voyage : arrive en (-666.0, 173.1, 1518.7), a 15.4 m du point vise, 10928 ms apres la demande
+## pilote
+    7.9s appui B x2 -> (?)
+   19.9s appui A x10 -> (?)
+   22.8s appui B x2 -> (?)
+   34.8s appui A x10 -> (?)
+    0.6s travel : voyage vers un point a plus de 300 m demande
+    0.7s hpdown : vie locale mise a 1 coeur
+    0.6s lift : Link souleve de 50 m
