@@ -278,10 +278,13 @@ namespace coop::warp {
         }
 #ifdef COOP_REMOTE_PAD
         if (s_DebugTravelRequested) {
-            /* Essai : voyage vers le point le plus proche de Link a plus de 300 m. */
+            /* Essai : voyage vers le point le plus proche de Link a plus de 300 m (COOP_TEST_TRAVEL_MIN pour changer). */
+#ifndef COOP_TEST_TRAVEL_MIN
+#define COOP_TEST_TRAVEL_MIN 300
+#endif
             s_DebugTravelRequested = false;
             float d = 0.0f;
-            const int i = NearestTravelPoint(st.m_Pos, st.m_Pos, 300.0f, d);
+            const int i = NearestTravelPoint(st.m_Pos, st.m_Pos, static_cast<float>(COOP_TEST_TRAVEL_MIN), d);
             s_TravelDebug = i >= 0 && StartTravel(i, st.m_Pos, "essai");
             if (i < 0)
                 Logging.Log("[botw-coop] voyage (essai) : aucun point de voyage a plus de 300 m (%d points lus)",

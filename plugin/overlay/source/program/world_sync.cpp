@@ -131,8 +131,17 @@ namespace coop::world_sync {
                 } else {
                     const float dx = last.m_Mtx[3] - player.m_Pos[0];
                     const float dz = last.m_Mtx[11] - player.m_Pos[2];
-                    if (dx * dx + dz * dz > WeatherRadius * WeatherRadius) {
-                        why = "joueur distant a plus de 300 m";
+                    /* Meme climat que le joueur de reference : on suit sa meteo, ou qu'il soit (idee de
+                       botw-coop : meteo de l'hote dans le meme climat seulement). Climat inconnu d'un cote :
+                       ancienne regle des 300 m. */
+                    coop::game::WorldState here;
+                    const int theirClimate = remote.m_Climate.load(std::memory_order_acquire);
+                    const int myClimate = coop::game::ReadWorld(here) ? here.m_Climate : -1;
+                    const bool climateKnown = theirClimate >= 0 && myClimate >= 0;
+                    if (climateKnown && theirClimate != myClimate) {
+                        why = "autre climat que le joueur de reference";
+                    } else if (!climateKnown && dx * dx + dz * dz > WeatherRadius * WeatherRadius) {
+                        why = "joueur distant a plus de 300 m (climat inconnu)";
                     } else {
                         coop::game::WorldState world;
                         int type = -1, timer = 0, demo = 0;
@@ -152,8 +161,11 @@ namespace coop::world_sync {
                 }
             }
             if (following != s_Following) {
-                if (following >= 0)
-                    Logging.Log("[botw-coop] meteo : on suit la meteo %d de la session", following);
+                if (following >= 0) {
+                    coop::game::WorldState here;
+                    Logging.Log("[botw-coop] meteo : on suit la meteo %d de la session (climat ici %d, chez la reference %d)", following,
+                        coop::game::ReadWorld(here) ? here.m_Climate : -1, remote.m_Climate.load());
+                }
                 else
                     Logging.Log("[botw-coop] meteo : on ne suit plus la meteo de la session (%s), %lu demandes au total", why, s_Requests);
                 s_Following = following;

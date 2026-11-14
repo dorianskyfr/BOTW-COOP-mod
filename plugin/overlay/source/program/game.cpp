@@ -344,6 +344,15 @@ namespace coop::game {
         out.m_NumberOfDays = Peek<std::int32_t>(timeMgr + Time_NumberOfDays);
         if (LooksLikeHeapPtr(weatherMgr) && CanRead(weatherMgr, Weather_Weather + 1))
             out.m_Weather = Peek<std::uint8_t>(weatherMgr + Weather_Weather);
+        /* Climat courant : Manager+0x784. botw-coop (reverse-engineering.md « Weather ») le place a +0x780 ;
+           mesure chez nous (essai cl3, NOTES 5.45) : sur le plateau +0x780 = +0x784 = 0, apres un voyage de
+           2,5 km vers l'ouest seul +0x784 passe a 6 (+0x780 reste 0). Accesseurs voisins sur notre image :
+           main+0x14318f0 rend +0x780, main+0x14318f8 rend +0x784. */
+        constexpr std::size_t World_Climate = 0x784;
+        if (CanRead(mgr, World_Climate + 4)) {
+            const int climate = Peek<std::int32_t>(mgr + World_Climate);
+            out.m_Climate = climate >= 0 && climate < 64 ? climate : -1;
+        }
         return true;
     }
 

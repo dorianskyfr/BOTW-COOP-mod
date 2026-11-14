@@ -272,6 +272,14 @@ def main():
         b.send("TIME 4.2 5 3 500.0")
         check("reference en retard sur l'heure : sa meteo passe quand meme", c.expect("TIME") == "TIME 0 4.5 5 3 500.0")
 
+        # Climat (protocole v3) : celui de la reference meteo accompagne sa meteo ; jamais celui d'un autre.
+        b.send("TIME 4.6 5 2 500.0 7")
+        line = c.expect("TIME")
+        check("climat de la reference meteo transmis avec sa meteo", line == "TIME 0 4.6 5 2 500.0 7", line)
+        c.send("TIME 4.7 5 3 500.0 9")
+        line = b.expect("TIME")
+        check("... la reference ne recoit pas de climat (ni celui d'un autre joueur)", line == "TIME 0 4.7 5 -1 500.0", line)
+
         # Drapeaux « lune de sang » : retenus, donnes dans l'etat, oublies a leur remise a zero.
         b.send("FLAGR aaaa0001 1")
         check("drapeau de lune de sang retransmis", c.expect("FLAGR") == "FLAGR 2 aaaa0001 1")
@@ -328,7 +336,7 @@ def main():
         check("memoire relue apres redemarrage", d.expect("FLAG") == "FLAG 0 6ca64187 1")
         end = d.expect("STATEEND")
         d.pump(0.3)
-        check("heure de la session relue apres redemarrage", d.take("TIME") == ["TIME 0 4.5 5 -1 500.0"] and end == "STATEEND 1", str(d.lines))
+        check("heure de la session relue apres redemarrage", d.take("TIME") == ["TIME 0 4.7 5 -1 500.0"] and end == "STATEEND 1", str(d.lines))
         d.close()
 
         # Essai de latence : chaque ligne envoyee est retardee, l'ordre est garde.

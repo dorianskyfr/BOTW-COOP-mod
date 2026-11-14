@@ -80,6 +80,7 @@ namespace coop::session {
         std::atomic<int>           m_NumberOfDays { 0 };
         std::atomic<int>           m_Weather { -1 };
         std::atomic<float>         m_BloodMoonTimer { -1.0f };  /* -1 = non annonce */
+        std::atomic<int>           m_Climate { -1 };            /* climat du joueur de reference de la meteo, -1 = inconnu */
     };
 
     inline RemoteWorld g_RemoteWorld;

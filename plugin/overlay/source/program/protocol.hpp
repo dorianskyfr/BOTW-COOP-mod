@@ -10,7 +10,8 @@ namespace coop::protocol {
      * Le plugin l'annonce (VER <n>) des sa connexion ; le relais la rend dans HELLO
      * et refuse (REFUSE <n>) un jeu d'une autre version.
      */
-    /* 1 : premiere version controlee. 2 : GIFT porte le bonus de l'arme (bits hex, valeur). */
-    inline constexpr int Version = 2;
+    /* 1 : premiere version controlee. 2 : GIFT porte le bonus de l'arme (bits hex, valeur).
+       3 : TIME porte le climat (envoye par le joueur, rendu par le relais : celui de la reference meteo). */
+    inline constexpr int Version = 3;
 
 }

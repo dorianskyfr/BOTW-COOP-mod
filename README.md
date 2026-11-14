@@ -23,7 +23,7 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 
 ## Ce que fait la version actuelle
 - Chaque joueur voit l'autre dans son monde sous la forme d'un Link animé (attente, marche, course, sprint, escalade, nage, vol plané, chute), avec son armure (tête, torse, jambes ; couleurs pas encore justes : les pièces gardent leur teinte par défaut) et ses armes, bouclier, arc et carquois.
-- Heure de la session (elle ne recule jamais ; un joueur en pause ne retient pas l'autre), jours, minuteur de lune de sang, météo (à moins de 300 m).
+- Heure de la session (elle ne recule jamais ; un joueur en pause ne retient pas l'autre), jours, minuteur de lune de sang, météo (quand les deux joueurs sont dans le même climat).
 - Drapeaux de la liste blanche : progression (sanctuaires, tours, Créatures divines, Koroks) et objets de carte (ramassés, coffres, ennemis tués). Les étapes de quête, l'inventaire et le Compendium restent à chacun.
 - Points de vie et position des ennemis (première version).
 - Messages dans le bandeau du jeu quand l'autre joueur arrive ou part, et à la connexion.

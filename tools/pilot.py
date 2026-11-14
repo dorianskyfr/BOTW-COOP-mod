@@ -158,7 +158,7 @@ class Pilot:
                         self.fwd = (m[2], m[10])
                         self.pos_time = time.time()
                         self.states += 1
-                elif len(parts) == 5 and parts[0] == "TIME":
+                elif len(parts) >= 5 and parts[0] == "TIME":
                     with self.lock:
                         self.world_time = float(parts[2])
                 elif len(parts) >= 2 and parts[0] == "HELLO":

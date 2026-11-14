@@ -313,6 +313,10 @@ namespace coop::net_probe {
                 if (m_days >= 0)
                     coop::enemy_life::g_Incoming.Push({ lifeHash, static_cast<std::uint32_t>(m_days) });
             } else if (float t = 0, moon = -1.0f; std::sscanf(line, "TIME %d %f %d %d %f", &id, &t, &m_days, &m_weather, &moon) >= 4) {
+                /* 6e valeur facultative : climat du joueur de reference de la meteo (-1 inconnu). */
+                int climate = -1;
+                std::sscanf(line, "TIME %*d %*f %*d %*d %*f %d", &climate);
+                coop::session::g_RemoteWorld.m_Climate.store(climate, std::memory_order_release);
                 auto& world = coop::session::g_RemoteWorld;
                 world.m_FromId.store(id, std::memory_order_release);
                 world.m_Time.store(t, std::memory_order_release);
@@ -541,8 +545,10 @@ namespace coop::net_probe {
                 const bool hasWorld = coop::game::ReadWorld(world);
                 if (inGame && hasWorld && s_Fd >= 0 && tick % 10 == 0) {
                     char line[96];
-                    const int len = std::snprintf(line, sizeof(line), "TIME %.3f %d %d %.1f\n",
-                        static_cast<double>(world.m_Time), world.m_NumberOfDays, world.m_Weather, static_cast<double>(world.m_BloodMoonTimer));
+                    /* 5e valeur : notre climat (la meteo n'est suivie que dans le meme climat, protocole v3). */
+                    const int len = std::snprintf(line, sizeof(line), "TIME %.3f %d %d %.1f %d\n",
+                        static_cast<double>(world.m_Time), world.m_NumberOfDays, world.m_Weather, static_cast<double>(world.m_BloodMoonTimer),
+                        world.m_Climate);
                     if (!(len > 0 && SendAll(s_Fd, line, static_cast<std::size_t>(len))))
                         Disconnect("echec d'envoi");
                 }
@@ -610,12 +616,21 @@ namespace coop::net_probe {
 
                 if (tick % StatusEveryTicks == 0) {
                     const auto& rw = coop::session::g_RemoteWorld;
-                    Logging.Log("[botw-coop] monde: %s gestionnaires=%d heure=%.3f pas=%.5f jours=%d lune=%.1f meteo=%d | recu de J%d: heure=%.3f jours=%d meteo=%d (%lu maj)",
+                    Logging.Log("[botw-coop] monde: %s gestionnaires=%d heure=%.3f pas=%.5f jours=%d lune=%.1f meteo=%d climat=%d | recu de J%d: heure=%.3f jours=%d meteo=%d climat=%d (%lu maj)",
                         hasWorld ? "ok" : "indisponible", world.m_NumMgrs,
                         static_cast<double>(world.m_Time), static_cast<double>(world.m_TimeStep),
-                        world.m_NumberOfDays, static_cast<double>(world.m_BloodMoonTimer), world.m_Weather,
+                        world.m_NumberOfDays, static_cast<double>(world.m_BloodMoonTimer), world.m_Weather, world.m_Climate,
                         rw.m_FromId.load(), static_cast<double>(rw.m_Time.load()), rw.m_NumberOfDays.load(),
-                        rw.m_Weather.load(), rw.m_Updates.load());
+                        rw.m_Weather.load(), rw.m_Climate.load(), rw.m_Updates.load());
+#ifdef COOP_TEST_CLIMATE
+                    /* Essai : champs entiers du gestionnaire du monde autour de +0x780 (climat ?). */
+                    if (hasWorld && coop::game::CanReadMemory(world.m_WorldMgr + 0x760, 0x60)) {
+                        const auto* v = reinterpret_cast<const std::int32_t*>(world.m_WorldMgr + 0x760);
+                        Logging.Log("[botw-coop] essai climat : +0x760.. %d %d %d %d %d %d %d %d | +0x780.. %d %d %d %d %d %d %d %d | +0x7a0.. %d %d %d %d %d %d %d %d",
+                            v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], v[9], v[10], v[11], v[12], v[13], v[14], v[15],
+                            v[16], v[17], v[18], v[19], v[20], v[21], v[22], v[23]);
+                    }
+#endif
                 }
 
                 if (tick % StatusEveryTicks == 0) {

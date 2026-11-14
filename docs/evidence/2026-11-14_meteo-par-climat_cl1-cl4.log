@@ -1,0 +1,53 @@
+﻿## cl3 (une instance, -DCOOP_TEST_CLIMATE) : champs du gestionnaire du monde avant / apres un voyage de 2,5 km
+[botw-coop] config: 135 points de voyage (sanctuaires, tours)
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] voyage (essai) : MainField/B-6 StartPos_CDungeon076, point (-3560.3, 361.8, 1953.9), a 2543 m de Link
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 0 0 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] voyage : chargement commence (1789 ms apres la demande)
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 0 1120403456 -1082130432 9 | +0x780.. 6 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] voyage : arrive en (-3564.3, 352.8, 1961.0), a 12.2 m du point vise, 10159 ms apres la demande
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 1159361001 1120403456 -1082130432 9 | +0x780.. 0 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 9 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 1159361001 1120403456 -1082130432 9 | +0x780.. 0 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 1159361001 1120403456 -1082130432 9 | +0x780.. 0 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 1159361001 1120403456 -1082130432 9 | +0x780.. 0 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 1159361001 1120403456 -1082130432 9 | +0x780.. 0 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 1159361001 1120403456 -1082130432 9 | +0x780.. 0 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 1159361001 1120403456 -1082130432 9 | +0x780.. 0 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 1159361001 1120403456 -1082130432 9 | +0x780.. 0 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+[botw-coop] essai climat : +0x760.. 1203982323 1203982323 1203982323 1203982323 1159361001 1120403456 -1082130432 9 | +0x780.. 0 6 0 0 0 0 -1 0 | +0x7a0.. 0 0 0 0 0 0 0 0
+## cl4 cl4_game.txt (climat lu a +0x784)
+[botw-coop] monde: ok gestionnaires=9 heure=104.499 pas=0.00833 jours=0 lune=24.7 meteo=0 climat=6 | recu de J0: heure=104.231 jours=0 meteo=-1 climat=-1 (16 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=106.390 pas=0.00833 jours=0 lune=26.6 meteo=0 climat=6 | recu de J0: heure=106.123 jours=0 meteo=-1 climat=-1 (21 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=108.281 pas=0.00833 jours=0 lune=28.5 meteo=0 climat=6 | recu de J0: heure=108.014 jours=0 meteo=-1 climat=-1 (26 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=110.172 pas=0.00833 jours=0 lune=30.4 meteo=0 climat=6 | recu de J0: heure=109.905 jours=0 meteo=-1 climat=-1 (31 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=112.055 pas=0.00833 jours=0 lune=32.3 meteo=0 climat=6 | recu de J0: heure=111.788 jours=0 meteo=-1 climat=-1 (36 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=113.946 pas=0.00833 jours=0 lune=34.2 meteo=0 climat=6 | recu de J0: heure=113.679 jours=0 meteo=-1 climat=-1 (41 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=115.837 pas=0.00833 jours=0 lune=36.0 meteo=0 climat=6 | recu de J0: heure=115.570 jours=0 meteo=-1 climat=-1 (46 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=117.729 pas=0.00833 jours=0 lune=37.9 meteo=0 climat=6 | recu de J0: heure=117.462 jours=0 meteo=-1 climat=-1 (51 maj)
+## cl4 cl4_game2.txt (climat lu a +0x784)
+[botw-coop] monde: ok gestionnaires=9 heure=104.231 pas=0.00833 jours=0 lune=25.7 meteo=0 climat=0 | recu de J0: heure=104.115 jours=0 meteo=0 climat=6 (54 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=106.123 pas=0.00833 jours=0 lune=27.6 meteo=0 climat=0 | recu de J0: heure=106.006 jours=0 meteo=0 climat=6 (59 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=108.014 pas=0.00833 jours=0 lune=29.5 meteo=0 climat=0 | recu de J0: heure=107.898 jours=0 meteo=0 climat=6 (64 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=109.905 pas=0.00833 jours=0 lune=31.4 meteo=0 climat=0 | recu de J0: heure=109.789 jours=0 meteo=0 climat=6 (69 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=111.788 pas=0.00833 jours=0 lune=33.3 meteo=0 climat=0 | recu de J0: heure=111.680 jours=0 meteo=0 climat=6 (74 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=113.679 pas=0.00833 jours=0 lune=35.2 meteo=0 climat=0 | recu de J0: heure=113.571 jours=0 meteo=0 climat=6 (79 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=115.570 pas=0.00833 jours=0 lune=37.1 meteo=0 climat=0 | recu de J0: heure=115.463 jours=0 meteo=0 climat=6 (84 maj)
+[botw-coop] monde: ok gestionnaires=9 heure=117.462 pas=0.00833 jours=0 lune=39.0 meteo=0 climat=0 | recu de J0: heure=117.354 jours=0 meteo=0 climat=6 (89 maj)
+## cl4 relais
+23:34:05.709 relais en ecoute sur 127.0.0.1:47800, protocole v3
+23:35:40.661 joueur 1 : fait avancer l'heure de la session (TIME 85.886 0 0 7.1), changement n.1
+23:35:40.661 joueur 1 : monde n.1 = TIME 85.886 0 0 7.1
+23:36:39.353 joueur 2 : fait avancer l'heure de la session (TIME 98.941 0 0 20.4), changement n.2
+23:37:00.105 joueur 1 : fait avancer l'heure de la session (TIME 104.115 0 0 25.4), changement n.3
+23:37:00.541 joueur 2 : fait avancer l'heure de la session (TIME 104.231 0 0 25.7), changement n.4

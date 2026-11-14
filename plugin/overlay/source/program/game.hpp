@@ -58,6 +58,7 @@ namespace coop::game {
         float m_BloodMoonTimer = 0;      /* TimeMgr::mBloodMoonTimer */
         int   m_NumberOfDays = 0;        /* TimeMgr::mNumberOfDays */
         int   m_Weather = -1;            /* WeatherMgr::mWeather (octet) */
+        int   m_Climate = -1;            /* Manager+0x780 : climat courant (-1 si illisible) */
     };
 
     /* false si la version n'est pas supportee ou si le gestionnaire du monde n'existe pas. */

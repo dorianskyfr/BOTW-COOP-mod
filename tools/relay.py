@@ -57,7 +57,7 @@ import time
 
 # Version du protocole : a changer en meme temps que coop::protocol::Version
 # (plugin/overlay/source/program/protocol.hpp) ; tools/test_relay.py compare les deux.
-PROTOCOL_VERSION = 2   # 2 : GIFT porte le bonus de l'arme
+PROTOCOL_VERSION = 3   # 2 : GIFT porte le bonus de l'arme ; 3 : TIME porte le climat
 
 
 # Messages d'etat retransmis tels quels aux autres joueurs : nom -> nombre de valeurs.
@@ -81,10 +81,11 @@ PROTOCOL_VERSION = 2   # 2 : GIFT porte le bonus de l'arme
 #   MEAL : soin d'un repas mange par le joueur (quarts de coeur), retransmis tel quel.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
                 "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1}
-# TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur.
+# TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur, et une 5e : son climat
+#   (le relais rend aux autres le climat du joueur de reference de la meteo, avec sa meteo).
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
 # GIFT peut porter 2 valeurs de plus : le bonus de l'arme (bits WeaponModifier en hexadecimal, valeur).
-OPTIONAL_EXTRA = {"TIME": 1, "MTX": 1, "GIFT": 2}
+OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2}
 
 
 class Client:
@@ -100,6 +101,7 @@ class Client:
         self.pilot = False  # outil de test (tools/pilot.py), pas un joueur
         self.moon = None    # dernier minuteur de lune de sang annonce
         self.weather = None  # derniere meteo annoncee
+        self.climate = None  # dernier climat annonce (TIME, 5e valeur)
         self.version = None  # version du protocole annoncee par VER
         self.outbox = collections.deque()  # --lag : (heure d'envoi, texte), dans l'ordre
 
@@ -241,6 +243,11 @@ def main():
         authority = min(players, key=lambda c: c.pid) if players else None
         # Aucun joueur de reference en ligne (serveur relance) : pas de meteo a imposer.
         fields[2] = "-1" if authority is None or recipient is authority else str(authority.weather)
+        # Climat : celui de la reference (le plugin ne suit sa meteo que dans le meme climat) ;
+        # jamais celui d'un autre joueur. Seulement apres le minuteur (4e valeur).
+        fields = fields[:4]
+        if len(fields) == 4 and authority is not None and recipient is not authority and authority.climate is not None:
+            fields.append(str(authority.climate))
         return f"TIME 0 {' '.join(fields)}\n"
 
     def drop(client, why, announce=True):
@@ -395,6 +402,8 @@ def main():
                                 client.moon = float(parts[4])
                             if not client.pilot:
                                 client.weather = int(parts[3])
+                                if len(parts) > 5:
+                                    client.climate = int(parts[5]) if int(parts[5]) >= 0 else None
                         except ValueError:
                             continue
                         # Minuteur de lune de sang de la session : le plus avance des joueurs
