@@ -25,6 +25,9 @@ namespace coop::game {
     /* Nombre de lectures refusees parce que l'adresse n'etait pas mappee en lecture. */
     std::uint64_t RefusedReads();
 
+    /* Nombre total d'appels a svcQueryMemory faits par les lectures protegees (mesure). */
+    std::uint64_t MemoryQueries();
+
     /* true si le build ID correspond a une version dont on connait les adresses. */
     bool IsSupported();
 

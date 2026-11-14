@@ -1,0 +1,114 @@
+﻿# Temps du plugin par image (2026-11-14), deux instances, joueurs immobiles, ~690 acteurs.
+# Le PC etait charge par un autre jeu (processeur a 83-95 %) : temps en us bruites ; le nombre d'appels systeme ne depend pas de la charge.
+# pa1 : ancien parcours (COOP_PERF_OLDWALK) ; pb1 : un releve par image ; pd1 : + cache de 64 plages ; pe1 : + acteurs deja vus non reverifies ; pf2 : cache remis a 8 plages, drapeaux relus par tranches (version retenue).
+
+## pa1_game.txt
+00:04:51.454 perf (us/image) : debut 385, anim 2, notify 1, warp 1, status 1, armure 13, armes 134, distant 704, monde 9, drapeaux 335, ennemis 299, objets 1 | acteurs 690
+00:05:21.991 perf: 900 images, intervalle moyen 33927 us (29.4 img/s), max 92926 us | plugin moyen 1888 us, max 14118 us | lectures refusees 293
+00:05:21.991 perf (us/image) : debut 370, anim 5, notify 1, warp 1, status 1, armure 11, armes 117, distant 687, monde 1, drapeaux 377, ennemis 304, objets 4 | acteurs 690
+00:05:54.660 perf: 900 images, intervalle moyen 36300 us (27.5 img/s), max 283221 us | plugin moyen 1962 us, max 16456 us | lectures refusees 293
+00:05:54.660 perf (us/image) : debut 382, anim 1, notify 1, warp 2, status 1, armure 29, armes 138, distant 741, monde 1, drapeaux 347, ennemis 311, objets 1 | acteurs 690
+00:06:25.755 perf: 900 images, intervalle moyen 34548 us (28.9 img/s), max 132701 us | plugin moyen 1855 us, max 16307 us | lectures refusees 293
+00:06:25.755 perf (us/image) : debut 348, anim 1, notify 1, warp 1, status 1, armure 13, armes 122, distant 687, monde 1, drapeaux 365, ennemis 308, objets 1 | acteurs 690
+00:06:56.683 perf: 900 images, intervalle moyen 34368 us (29.0 img/s), max 108938 us | plugin moyen 1795 us, max 14668 us | lectures refusees 293
+00:06:56.683 perf (us/image) : debut 336, anim 1, notify 1, warp 1, status 1, armure 11, armes 122, distant 666, monde 2, drapeaux 349, ennemis 299, objets 1 | acteurs 690
+
+## pa1_game2.txt
+00:04:19.020 perf (us/image) : debut 358, anim 1, notify 1, warp 1, status 0, armure 14, armes 136, distant 230, monde 8, drapeaux 340, ennemis 379, objets 5 | acteurs 719
+00:04:49.371 perf: 900 images, intervalle moyen 33724 us (29.6 img/s), max 109811 us | plugin moyen 1367 us, max 11316 us | lectures refusees 293
+00:04:49.371 perf (us/image) : debut 354, anim 1, notify 1, warp 0, status 0, armure 11, armes 122, distant 215, monde 8, drapeaux 273, ennemis 374, objets 2 | acteurs 719
+00:05:19.948 perf: 900 images, intervalle moyen 33971 us (29.4 img/s), max 114720 us | plugin moyen 1385 us, max 13805 us | lectures refusees 293
+00:05:19.948 perf (us/image) : debut 354, anim 1, notify 1, warp 0, status 0, armure 12, armes 134, distant 215, monde 8, drapeaux 294, ennemis 358, objets 1 | acteurs 719
+00:05:51.212 perf: 900 images, intervalle moyen 34740 us (28.7 img/s), max 131048 us | plugin moyen 1463 us, max 13288 us | lectures refusees 293
+00:05:51.213 perf (us/image) : debut 370, anim 2, notify 1, warp 0, status 0, armure 15, armes 141, distant 236, monde 8, drapeaux 308, ennemis 375, objets 1 | acteurs 719
+00:06:22.028 perf: 900 images, intervalle moyen 34237 us (29.2 img/s), max 101412 us | plugin moyen 1494 us, max 16578 us | lectures refusees 293
+00:06:22.029 perf (us/image) : debut 364, anim 2, notify 2, warp 0, status 1, armure 15, armes 146, distant 252, monde 8, drapeaux 308, ennemis 391, objets 1 | acteurs 719
+
+## pb1_game.txt
+00:04:38.549 perf (us/image) : debut 394, anim 1, notify 1, warp 1, status 1, armure 7, armes 87, distant 219, monde 3, drapeaux 379, ennemis 127, objets 4 | acteurs 696
+00:05:10.763 perf: 900 images, intervalle moyen 35794 us (27.9 img/s), max 209889 us | plugin moyen 951 us, max 15252 us | lectures refusees 293
+00:05:10.764 perf (us/image) : debut 303, anim 1, notify 1, warp 1, status 0, armure 6, armes 60, distant 141, monde 1, drapeaux 340, ennemis 89, objets 1 | acteurs 696
+00:05:46.955 perf: 900 images, intervalle moyen 40208 us (24.8 img/s), max 261891 us | plugin moyen 1064 us, max 24573 us | lectures refusees 293
+00:05:46.955 perf (us/image) : debut 322, anim 1, notify 1, warp 0, status 1, armure 6, armes 65, distant 152, monde 1, drapeaux 401, ennemis 105, objets 1 | acteurs 696
+00:06:23.113 perf: 900 images, intervalle moyen 40180 us (24.8 img/s), max 192101 us | plugin moyen 1406 us, max 18314 us | lectures refusees 293
+00:06:23.113 perf (us/image) : debut 421, anim 3, notify 1, warp 1, status 1, armure 7, armes 87, distant 234, monde 4, drapeaux 501, ennemis 131, objets 6 | acteurs 696
+00:07:03.177 perf: 900 images, intervalle moyen 44515 us (22.4 img/s), max 255461 us | plugin moyen 1384 us, max 25190 us | lectures refusees 293
+00:07:03.177 perf (us/image) : debut 438, anim 4, notify 1, warp 1, status 1, armure 9, armes 83, distant 230, monde 5, drapeaux 470, ennemis 133, objets 3 | acteurs 696
+
+## pb1_game2.txt
+00:04:29.631 perf (us/image) : debut 300, anim 1, notify 1, warp 1, status 1, armure 6, armes 60, distant 27, monde 8, drapeaux 379, ennemis 151, objets 1 | acteurs 706
+00:04:59.630 perf: 900 images, intervalle moyen 33335 us (29.9 img/s), max 42324 us | plugin moyen 864 us, max 7737 us | lectures refusees 293
+00:04:59.631 perf (us/image) : debut 286, anim 1, notify 1, warp 0, status 1, armure 6, armes 57, distant 26, monde 8, drapeaux 329, ennemis 143, objets 1 | acteurs 706
+00:05:35.460 perf: 900 images, intervalle moyen 39812 us (25.1 img/s), max 197407 us | plugin moyen 1239 us, max 25706 us | lectures refusees 293
+00:05:35.460 perf (us/image) : debut 452, anim 2, notify 1, warp 3, status 1, armure 8, armes 75, distant 38, monde 11, drapeaux 428, ennemis 211, objets 2 | acteurs 706
+00:06:08.455 perf: 900 images, intervalle moyen 36661 us (27.2 img/s), max 103286 us | plugin moyen 1210 us, max 17890 us | lectures refusees 293
+00:06:08.455 perf (us/image) : debut 403, anim 1, notify 1, warp 1, status 1, armure 8, armes 80, distant 37, monde 11, drapeaux 444, ennemis 214, objets 3 | acteurs 706
+00:06:48.539 perf: 900 images, intervalle moyen 44539 us (22.4 img/s), max 282632 us | plugin moyen 1406 us, max 33314 us | lectures refusees 293
+00:06:48.539 perf (us/image) : debut 474, anim 2, notify 2, warp 1, status 2, armure 9, armes 83, distant 40, monde 15, drapeaux 520, ennemis 245, objets 5 | acteurs 706
+
+## pd1_game.txt
+00:06:06.756 perf: 900 images, intervalle moyen 56437 us (17.7 img/s), max 236947 us | plugin moyen 2224 us, max 36895 us | lectures refusees 293
+00:06:06.756 perf (us/image) : debut 848, anim 6, notify 1, warp 1, status 1, armure 11, armes 114, distant 299, monde 59, drapeaux 654, ennemis 212, objets 9 | acteurs 687, svcQueryMemory 263/image
+00:06:06.756 perf (max us) : debut 9550, armure 1473, armes 6522, distant 5533, drapeaux 23753, ennemis 9332, objets 3346
+00:06:47.339 perf: 900 images, intervalle moyen 45090 us (22.1 img/s), max 306409 us | plugin moyen 1720 us, max 15166 us | lectures refusees 293
+00:06:47.339 perf (us/image) : debut 703, anim 3, notify 2, warp 1, status 2, armure 9, armes 90, distant 264, monde 8, drapeaux 468, ennemis 159, objets 4 | acteurs 687, svcQueryMemory 263/image
+00:06:47.339 perf (max us) : debut 5307, armure 631, armes 4399, distant 2505, drapeaux 13720, ennemis 2984, objets 1439
+00:07:30.987 perf: 900 images, intervalle moyen 48499 us (20.6 img/s), max 258713 us | plugin moyen 1903 us, max 20751 us | lectures refusees 293
+00:07:30.987 perf (us/image) : debut 772, anim 3, notify 1, warp 1, status 1, armure 10, armes 95, distant 288, monde 7, drapeaux 550, ennemis 166, objets 4 | acteurs 687, svcQueryMemory 263/image
+00:07:30.987 perf (max us) : debut 15174, armure 1439, armes 1822, distant 6701, drapeaux 19480, ennemis 2392, objets 1172
+
+## pd1_game2.txt
+00:05:04.408 perf: 900 images, intervalle moyen 53162 us (18.8 img/s), max 205922 us | plugin moyen 2197 us, max 21688 us | lectures refusees 293
+00:05:04.408 perf (us/image) : debut 791, anim 4, notify 2, warp 1, status 2, armure 11, armes 135, distant 353, monde 13, drapeaux 639, ennemis 236, objets 3 | acteurs 673, svcQueryMemory 257/image
+00:05:04.408 perf (max us) : debut 9161, armure 1856, armes 3986, distant 12506, drapeaux 18441, ennemis 10737, objets 569
+00:05:53.309 perf: 900 images, intervalle moyen 54333 us (18.4 img/s), max 304837 us | plugin moyen 2022 us, max 31888 us | lectures refusees 293
+00:05:53.309 perf (us/image) : debut 746, anim 6, notify 2, warp 2, status 1, armure 14, armes 113, distant 326, monde 29, drapeaux 598, ennemis 173, objets 6 | acteurs 684, svcQueryMemory 257/image
+00:05:53.309 perf (max us) : debut 22870, armure 2650, armes 4896, distant 17830, drapeaux 22064, ennemis 2529, objets 1866
+00:06:32.470 perf: 900 images, intervalle moyen 43518 us (22.9 img/s), max 209728 us | plugin moyen 1565 us, max 13626 us | lectures refusees 293
+00:06:32.470 perf (us/image) : debut 601, anim 3, notify 2, warp 2, status 0, armure 9, armes 80, distant 228, monde 11, drapeaux 465, ennemis 152, objets 4 | acteurs 684, svcQueryMemory 257/image
+00:06:32.470 perf (max us) : debut 11376, armure 831, armes 1113, distant 2376, drapeaux 12022, ennemis 3313, objets 668
+
+## pe1_game.txt
+00:04:42.510 perf: 900 images, intervalle moyen 41680 us (23.9 img/s), max 147519 us | plugin moyen 1502 us, max 13672 us | lectures refusees 293
+00:04:42.510 perf (us/image) : debut 397, anim 2, notify 1, warp 1, status 1, armure 8, armes 77, distant 209, monde 26, drapeaux 598, ennemis 172, objets 4 | acteurs 675, svcQueryMemory 0/image
+00:04:42.510 perf (max us) : debut 5691, armure 644, armes 4458, distant 4076, drapeaux 11393, ennemis 6378, objets 1083
+00:05:25.685 perf: 900 images, intervalle moyen 47973 us (20.8 img/s), max 213074 us | plugin moyen 1690 us, max 14584 us | lectures refusees 293
+00:05:25.685 perf (us/image) : debut 439, anim 2, notify 1, warp 2, status 1, armure 9, armes 87, distant 265, monde 3, drapeaux 690, ennemis 175, objets 5 | acteurs 675, svcQueryMemory 0/image
+00:05:25.685 perf (max us) : debut 6107, armure 1558, armes 3690, distant 13200, drapeaux 7278, ennemis 4982, objets 2113
+00:06:05.310 perf: 900 images, intervalle moyen 44030 us (22.7 img/s), max 168828 us | plugin moyen 1600 us, max 21637 us | lectures refusees 293
+00:06:05.310 perf (us/image) : debut 441, anim 3, notify 1, warp 1, status 1, armure 6, armes 80, distant 223, monde 4, drapeaux 675, ennemis 154, objets 4 | acteurs 675, svcQueryMemory 0/image
+00:06:05.310 perf (max us) : debut 15683, armure 418, armes 3498, distant 6252, drapeaux 8205, ennemis 8095, objets 950
+
+## pe1_game2.txt
+00:04:08.377 perf: 900 images, intervalle moyen 44348 us (22.5 img/s), max 500074 us | plugin moyen 1517 us, max 14067 us | lectures refusees 293
+00:04:08.377 perf (us/image) : debut 409, anim 5, notify 1, warp 1, status 1, armure 8, armes 67, distant 218, monde 10, drapeaux 615, ennemis 168, objets 4 | acteurs 687, svcQueryMemory 0/image
+00:04:08.377 perf (max us) : debut 13136, armure 1339, armes 1145, distant 6484, drapeaux 6997, ennemis 4015, objets 1321
+00:04:49.778 perf: 900 images, intervalle moyen 46003 us (21.7 img/s), max 213528 us | plugin moyen 1616 us, max 17628 us | lectures refusees 293
+00:04:49.778 perf (us/image) : debut 451, anim 2, notify 1, warp 1, status 1, armure 9, armes 82, distant 222, monde 11, drapeaux 653, ennemis 173, objets 3 | acteurs 688, svcQueryMemory 0/image
+00:04:49.778 perf (max us) : debut 12292, armure 1857, armes 3994, distant 3975, drapeaux 16701, ennemis 5056, objets 1570
+00:05:32.054 perf: 900 images, intervalle moyen 46975 us (21.2 img/s), max 214175 us | plugin moyen 1728 us, max 17083 us | lectures refusees 293
+00:05:32.054 perf (us/image) : debut 485, anim 4, notify 1, warp 2, status 1, armure 13, armes 84, distant 262, monde 12, drapeaux 682, ennemis 173, objets 5 | acteurs 688, svcQueryMemory 0/image
+00:05:32.054 perf (max us) : debut 7662, armure 4437, armes 5810, distant 8033, drapeaux 9170, ennemis 7797, objets 2061
+
+## pf2_game.txt
+00:04:35.771 perf: 900 images, intervalle moyen 39520 us (25.3 img/s), max 168597 us | plugin moyen 1281 us, max 15430 us | lectures refusees 293
+00:04:35.771 perf (us/image) : debut 355, anim 5, notify 1, warp 1, status 1, armure 10, armes 58, distant 158, monde 21, drapeaux 531, ennemis 129, objets 4 | acteurs 683, svcQueryMemory 3/image
+00:04:35.771 perf (max us) : debut 4344, armure 3163, armes 1451, distant 2848, drapeaux 5399, ennemis 3800, objets 1244
+00:05:11.291 perf: 900 images, intervalle moyen 39466 us (25.3 img/s), max 149878 us | plugin moyen 1203 us, max 11634 us | lectures refusees 293
+00:05:11.291 perf (us/image) : debut 343, anim 1, notify 1, warp 1, status 1, armure 5, armes 67, distant 145, monde 2, drapeaux 518, ennemis 111, objets 1 | acteurs 683, svcQueryMemory 3/image
+00:05:11.291 perf (max us) : debut 10198, armure 247, armes 6395, distant 3214, drapeaux 7621, ennemis 1718, objets 205
+00:05:45.058 perf: 900 images, intervalle moyen 37520 us (26.6 img/s), max 136775 us | plugin moyen 1316 us, max 10464 us | lectures refusees 293
+00:05:45.058 perf (us/image) : debut 360, anim 7, notify 1, warp 1, status 1, armure 6, armes 68, distant 170, monde 3, drapeaux 570, ennemis 119, objets 4 | acteurs 683, svcQueryMemory 3/image
+00:05:45.058 perf (max us) : debut 5745, armure 217, armes 4417, distant 5197, drapeaux 7247, ennemis 3843, objets 907
+
+## pf2_game2.txt
+00:04:06.569 perf: 900 images, intervalle moyen 40428 us (24.7 img/s), max 132249 us | plugin moyen 1323 us, max 8380 us | lectures refusees 293
+00:04:06.569 perf (us/image) : debut 380, anim 4, notify 1, warp 1, status 3, armure 7, armes 63, distant 164, monde 9, drapeaux 562, ennemis 122, objets 1 | acteurs 687, svcQueryMemory 3/image
+00:04:06.569 perf (max us) : debut 5170, armure 575, armes 1621, distant 4256, drapeaux 7282, ennemis 2073, objets 245
+00:04:42.697 perf: 900 images, intervalle moyen 40143 us (24.9 img/s), max 147231 us | plugin moyen 1300 us, max 22257 us | lectures refusees 293
+00:04:42.697 perf (us/image) : debut 355, anim 1, notify 2, warp 1, status 1, armure 7, armes 82, distant 153, monde 10, drapeaux 561, ennemis 121, objets 1 | acteurs 687, svcQueryMemory 3/image
+00:04:42.697 perf (max us) : debut 4831, armure 660, armes 6400, distant 5222, drapeaux 21014, ennemis 2725, objets 312
+00:05:18.241 perf: 900 images, intervalle moyen 39493 us (25.3 img/s), max 160797 us | plugin moyen 1339 us, max 8905 us | lectures refusees 293
+00:05:18.242 perf (us/image) : debut 372, anim 1, notify 1, warp 1, status 2, armure 8, armes 71, distant 172, monde 9, drapeaux 563, ennemis 130, objets 4 | acteurs 687, svcQueryMemory 3/image
+00:05:18.242 perf (max us) : debut 4066, armure 1162, armes 4110, distant 5215, drapeaux 8039, ennemis 3619, objets 1886
+

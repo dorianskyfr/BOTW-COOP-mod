@@ -1,0 +1,81 @@
+﻿# Vraie armure et vraies armes vues par l'autre joueur (2026-11-14, essai ve1, deux instances, COOP_TEST_GIVE).
+
+## J1 (ve1_game.txt)
+00:02:16.154 essai inventaire : Armor_001_Head x1 -> objets 1 -> 2
+00:02:16.155 essai inventaire : Armor_001_Upper x1 -> objets 2 -> 3
+00:02:16.156 essai inventaire : Armor_001_Lower x1 -> objets 3 -> 4
+00:02:16.161 essai inventaire : Weapon_Sword_001 x2000 -> objets 4 -> 5
+00:02:16.163 essai inventaire : Weapon_Shield_001 x2000 -> objets 5 -> 6
+00:02:16.165 essai inventaire : Weapon_Bow_001 x2000 -> objets 6 -> 7
+00:03:39.169 armes : emplacement 0 = Weapon_Sword_001 (908e69a9), position dans le repere de Link (-0.18, 1.44, -0.05)
+00:03:39.169 armes : emplacement 1 = Weapon_Bow_001 (ad66ce4f), position dans le repere de Link (-0.09, 1.08, -0.10)
+00:03:39.169 armes : emplacement 2 = Weapon_Sheath_001 (f240ddb0), position dans le repere de Link (-0.18, 1.44, -0.05)
+00:03:39.169 armes : emplacement 3 = Weapon_Quiver_001 (bc3641b9), position dans le repere de Link (-0.12, 0.89, -0.05)
+00:03:40.049 armure : portee Armor_001_Head_B (f2b0eb45) / Armor_001_Upper (63162bda) / - (00000000)
+00:04:57.266 armes : emplacement 0 = Weapon_Sword_001 (908e69a9), position dans le repere de Link (-0.18, 1.44, -0.04)
+00:04:57.267 armes : emplacement 1 = Weapon_Bow_001 (ad66ce4f), position dans le repere de Link (-0.09, 1.08, -0.09)
+00:04:57.267 armes : emplacement 2 = Weapon_Sheath_001 (f240ddb0), position dans le repere de Link (-0.18, 1.44, -0.04)
+00:04:57.267 armes : emplacement 3 = Weapon_Quiver_001 (bc3641b9), position dans le repere de Link (-0.12, 0.89, -0.05)
+00:04:57.267 armes : emplacement 4 = Weapon_Shield_001 (7bd5811b), position dans le repere de Link (0.12, 1.15, -0.11)
+00:04:58.170 armure : portee Armor_001_Head_B (f2b0eb45) / Armor_001_Upper (63162bda) / Armor_001_Lower (03d38f65)
+
+## J2 (ve1_game2.txt)
+00:02:39.203 acteur distant : CREE apres 5 images, acteur=6607208188 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+00:03:18.288 armes du partenaire : "CoopWeapon_Weapon_Sword_001" CREE apres 5 images (objet 0)
+00:03:18.351 armes du partenaire : "CoopWeapon_Weapon_Bow_001" CREE apres 5 images (objet 1)
+00:03:18.382 armes du partenaire : "CoopWeapon_Weapon_Sheath_001" CREE apres 5 images (objet 2)
+00:03:18.465 armes du partenaire : "CoopWeapon_Weapon_Quiver_001" CREE apres 5 images (objet 3)
+00:03:19.843 armure du partenaire : creation de "CoopGear_Armor_001_Head_B" demandee (piece 0)
+00:03:19.874 armure du partenaire : creation de "CoopGear_Armor_001_Upper" demandee (piece 1)
+00:03:20.045 armure du partenaire : "CoopGear_Armor_001_Upper" CREE apres 5 images (piece 1)
+00:03:20.256 armure du partenaire : "CoopGear_Armor_001_Head_B" CREE apres 10 images (piece 0)
+00:04:36.724 armes du partenaire : "CoopWeapon_Weapon_Shield_001" CREE apres 5 images (objet 4)
+00:04:38.541 armure du partenaire : creation de "CoopGear_Armor_001_Lower" demandee (piece 2)
+00:04:38.765 armure du partenaire : "CoopGear_Armor_001_Lower" CREE apres 5 images (piece 2)
+00:09:21.010 armure du partenaire : piece 0 (CoopGear_Armor_001_Head_B) retiree
+00:09:21.010 armure du partenaire : piece 1 (CoopGear_Armor_001_Upper) retiree
+00:09:21.010 armure du partenaire : piece 2 (CoopGear_Armor_001_Lower) retiree
+00:09:21.012 armes du partenaire : objet 0 (CoopWeapon_Weapon_Sword_001) retire
+00:09:21.012 armes du partenaire : objet 1 (CoopWeapon_Weapon_Bow_001) retire
+00:09:21.012 armes du partenaire : objet 2 (CoopWeapon_Weapon_Sheath_001) retire
+00:09:21.012 armes du partenaire : objet 3 (CoopWeapon_Weapon_Quiver_001) retire
+00:09:21.012 armes du partenaire : objet 4 (CoopWeapon_Weapon_Shield_001) retire
+
+# Couleurs : essais cc2 a cc7 (une instance, COOP_TEST_SPAWN + COOP_TEST_GEAR)
+## cc2
+00:02:06.434 armure du partenaire : "CoopGear_Armor_001_Head" introuvable apres 600 images (echec 1/3)
+00:02:06.468 armure du partenaire : "CoopGear_Armor_001_Upper" introuvable apres 600 images (echec 1/3)
+00:02:06.501 armure du partenaire : "CoopGear_Armor_001_Lower" introuvable apres 600 images (echec 1/3)
+00:02:39.384 armure du partenaire : "CoopGear_Armor_001_Head" introuvable apres 600 images (echec 2/3)
+00:02:39.418 armure du partenaire : "CoopGear_Armor_001_Upper" introuvable apres 600 images (echec 2/3)
+00:02:39.450 armure du partenaire : "CoopGear_Armor_001_Lower" introuvable apres 600 images (echec 2/3)
+## cc3
+00:02:30.962 armure du partenaire : "CoopGear_Armor_001_Head" introuvable apres 600 images (echec 1/3)
+00:02:30.998 armure du partenaire : "CoopGear_Armor_001_Upper" introuvable apres 600 images (echec 1/3)
+00:02:31.027 armure du partenaire : "CoopGear_Armor_001_Lower" introuvable apres 600 images (echec 1/3)
+00:03:03.088 armure du partenaire : "CoopGear_Armor_001_Head" introuvable apres 600 images (echec 2/3)
+00:03:03.136 armure du partenaire : "CoopGear_Armor_001_Upper" introuvable apres 600 images (echec 2/3)
+00:03:03.188 armure du partenaire : "CoopGear_Armor_001_Lower" introuvable apres 600 images (echec 2/3)
+## cc4
+00:01:52.272 armure du partenaire : "CoopGear_Armor_001_Upper" CREE apres 5 images (piece 1)
+00:01:52.596 armure du partenaire : "CoopGear_Armor_001_Head" CREE apres 10 images (piece 0)
+00:02:12.776 armure du partenaire : "CoopGear_Armor_001_Lower" introuvable apres 600 images (echec 1/3)
+00:02:22.999 armure du partenaire : "CoopGear_Armor_001_Lower" CREE apres 5 images (piece 2)
+## cc5
+00:01:44.818 armure du partenaire : "CoopGear_Armor_001_Head" CREE apres 10 images (piece 0)
+00:01:44.927 armure du partenaire : "CoopGear_Armor_001_Upper" CREE apres 10 images (piece 1)
+00:01:44.943 armure du partenaire : "CoopGear_Armor_001_Lower" CREE apres 10 images (piece 2)
+## cc7
+00:01:39.292 armure du partenaire : "CoopGear_Armor_001_Head" CREE apres 5 images (piece 0)
+00:01:39.324 armure du partenaire : "CoopGear_Armor_001_Upper" CREE apres 5 images (piece 1)
+00:01:39.364 armure du partenaire : "CoopGear_Armor_001_Lower" CREE apres 5 images (piece 2)
+
+## drapeaux, releve par tranches (pf2_game.txt)
+00:00:17.125 config: liste blanche lue : 33350 drapeaux (progression 1330, objets de carte 31535, portes logiques 485), groupes actifs 0x6
+00:00:31.065 drapeaux : Manager=65fa4574f0, tampon candidat a +0xbf8 = 65686dcb58, 42031 booleens
+00:00:31.065 drapeaux : Manager=65fa4574f0, tampon candidat a +0xc00 = 65fa620528, 42031 booleens
+00:00:31.065 drapeaux : 64 drapeaux examines, hachage a +0xc (64 concordances)
+00:00:31.694 drapeaux : instantane de 42031 booleens pris (288 a 1, 1523 ni 0 ni 1) ; drapeau 0 : 000000000a227a20 0002fc0400840700 0000000000000000
+00:00:51.330 perf (us/image) : debut 9, anim 1, notify 8, warp 2, status 2, armure 2, armes 9, distant 3, monde 5, drapeaux 318, ennemis 3, objets 3 | acteurs 62, svcQueryMemory 0/image
+00:00:51.330 perf (max us) : debut 3826, armure 1661, armes 7113, distant 1748, drapeaux 7060, ennemis 1539, objets 2280
+00:01:21.852 perf (us/image) : debut 5, anim 1, notify 1, warp 0, status 0, armure 0, armes 6, distant 2, monde 2, drapeaux 619, ennemis 1, objets 1 | acteurs 62, svcQueryMemory 0/image

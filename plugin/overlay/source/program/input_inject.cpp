@@ -173,10 +173,14 @@ namespace coop::input_inject {
                     "distant", "monde", "drapeaux", "ennemis", "objets" };
                 constexpr int PartCount = sizeof(s_PartNames) / sizeof(s_PartNames[0]);
                 static std::uint64_t s_PartUs[PartCount] = {};
+                static std::uint64_t s_PrevQueries = 0;
+                static std::uint64_t s_PartMax[PartCount] = {};
                 int part = 0;
                 std::uint64_t tPart = coop::clock::NowUs();
                 auto mark = [&]() {
                     const std::uint64_t now2 = coop::clock::NowUs();
+                    if (now2 - tPart > s_PartMax[part])
+                        s_PartMax[part] = now2 - tPart;
                     s_PartUs[part++] += now2 - tPart;
                     tPart = now2;
                 };
@@ -223,13 +227,18 @@ namespace coop::input_inject {
                         s_N, avgGap, avgGap ? 1000000 / avgGap : 0, avgGap ? (10000000 / avgGap) % 10 : 0, s_MaxGapUs,
                         s_SumUs / s_N, s_MaxUs, coop::game::RefusedReads());
 #ifdef COOP_PERF_DETAIL
-                    Logging.Log("[botw-coop] perf (us/image) : %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu | acteurs %d",
+                    Logging.Log("[botw-coop] perf (us/image) : %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu | acteurs %d, svcQueryMemory %lu/image",
                         s_PartNames[0], s_PartUs[0] / s_N, s_PartNames[1], s_PartUs[1] / s_N, s_PartNames[2], s_PartUs[2] / s_N,
                         s_PartNames[3], s_PartUs[3] / s_N, s_PartNames[4], s_PartUs[4] / s_N, s_PartNames[5], s_PartUs[5] / s_N,
                         s_PartNames[6], s_PartUs[6] / s_N, s_PartNames[7], s_PartUs[7] / s_N, s_PartNames[8], s_PartUs[8] / s_N,
                         s_PartNames[9], s_PartUs[9] / s_N, s_PartNames[10], s_PartUs[10] / s_N, s_PartNames[11], s_PartUs[11] / s_N,
-                        coop::game::ListedActorCount());
+                        coop::game::ListedActorCount(), (coop::game::MemoryQueries() - s_PrevQueries) / s_N);
+                    s_PrevQueries = coop::game::MemoryQueries();
+                    Logging.Log("[botw-coop] perf (max us) : debut %lu, armure %lu, armes %lu, distant %lu, drapeaux %lu, ennemis %lu, objets %lu",
+                        s_PartMax[0], s_PartMax[5], s_PartMax[6], s_PartMax[7], s_PartMax[9], s_PartMax[10], s_PartMax[11]);
                     for (auto& v : s_PartUs)
+                        v = 0;
+                    for (auto& v : s_PartMax)
                         v = 0;
 #endif
                     s_SumUs = s_MaxUs = s_SumGapUs = s_MaxGapUs = s_N = 0;

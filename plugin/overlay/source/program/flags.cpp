@@ -63,6 +63,9 @@ namespace coop::flags {
         std::uint8_t s_Toggles[MaxBools];
         int s_ResyncCursor = -1;
         bool s_WasInGame = false;
+        /* Relecture etalee : prochain indice a relire, changements vus dans la passe en cours. */
+        int s_ScanPos = 0;
+        int s_PassChanged = 0;
         std::uint64_t s_Sent = 0, s_Applied = 0, s_Dropped = 0;
 
         constexpr std::uint32_t Crc32(const char* s) {
@@ -495,9 +498,10 @@ namespace coop::flags {
 
     void OnFrame() {
         s_Frames++;
-        /* Une passe toutes les 15 images (2 fois par seconde a 30 img/s). */
-        if (s_Frames % 15 != 0)
-            return;
+        /* Echanges (drapeaux recus, resynchronisation) toutes les 15 images (2 fois par seconde a
+           30 img/s). La relecture des booleens est etalee sur ces 15 images, 1/15 de la liste par
+           image : relue d'un bloc, elle faisait des pics de 13 a 46 ms (mesure du 2026-11-14). */
+        const bool exchange = s_Frames % 15 == 0;
 
         const auto base = exl::util::GetMainModuleInfo().m_Total.m_Start;
         std::uintptr_t mgr = 0;
@@ -521,6 +525,7 @@ namespace coop::flags {
             || !coop::game::CanReadMemory(bools.m_Buffer, 8ull * bools.m_Num)) {
             s_Param = 0; /* tampon remplace (chargement de sauvegarde) : on recherchera */
             s_HaveSnapshot = false;
+            s_ScanPos = s_PassChanged = 0;
             return;
         }
 
@@ -528,6 +533,7 @@ namespace coop::flags {
             s_LayoutKnown = MeasureLayout(bools);
             if (!s_LayoutKnown) {
                 s_Param = 0;
+                s_ScanPos = s_PassChanged = 0;
                 return;
             }
         }
@@ -552,75 +558,80 @@ namespace coop::flags {
         }
         s_WasInGame = inGame;
 
-        /*
-         * Garde de la paravoile (idee reprise de botw-coop, README « Shared progress ») : tant que
-         * le joueur n'a pas la paravoile (IsGet_PlayerStole2, nom du catalogue GameData), la
-         * progression recue (groupe 1) attend : les sanctuaires du plateau donnent les runes, et
-         * les marquer termines ferait avancer la quete du vieil homme sans elles.
-         */
-        static constexpr std::uint32_t ParagliderHash = Crc32("IsGet_PlayerStole2");
-        static int s_HeldProgress = 0;
-        std::uintptr_t glider = 0;
-        std::uint8_t hasGlider = 0;
-        const int gliderIdx = FindByHash(bools, ParagliderHash, glider);
-        if (gliderIdx < 0 || !Read(glider + s_ValueOffset, hasGlider))
-            hasGlider = 0;
-        if (hasGlider == 1 && s_HeldProgress > 0 && inGame && s_HaveSnapshot) {
-            Logging.Log("[botw-coop] drapeaux : paravoile obtenue, %d drapeaux de progression mis en attente : etat redemande", s_HeldProgress);
-            s_HeldProgress = 0;
-            g_StateRequested.store(true);
-        }
-
-        /* Drapeaux recus de l'autre joueur : mise a 1 seulement, jamais de remise a 0. */
-        Change in {};
-        for (int n = 0; n < 256 && s_HaveSnapshot && inGame && g_Incoming.Pop(in); n++) {
-            std::uintptr_t flag = 0;
-            const int idx = FindByHash(bools, in.m_Hash, flag);
-            std::uint8_t cur = 0xff;
-            if (idx < 0 || in.m_Value != 1 || !Read(flag + s_ValueOffset, cur) || cur != 0 || !Shareable(flag, idx, in.m_Hash))
-                continue;
-            if (hasGlider != 1 && coop::config::SyncFlagGroup(in.m_Hash) == 1) {
-                if (s_HeldProgress++ < 5)
-                    Logging.Log("[botw-coop] drapeau recu : hachage=%08x mis en attente (pas de paravoile)", in.m_Hash);
-                continue;
+        if (exchange) {
+            /*
+             * Garde de la paravoile (idee reprise de botw-coop, README « Shared progress ») : tant que
+             * le joueur n'a pas la paravoile (IsGet_PlayerStole2, nom du catalogue GameData), la
+             * progression recue (groupe 1) attend : les sanctuaires du plateau donnent les runes, et
+             * les marquer termines ferait avancer la quete du vieil homme sans elles.
+             */
+            static constexpr std::uint32_t ParagliderHash = Crc32("IsGet_PlayerStole2");
+            static int s_HeldProgress = 0;
+            std::uintptr_t glider = 0;
+            std::uint8_t hasGlider = 0;
+            const int gliderIdx = FindByHash(bools, ParagliderHash, glider);
+            if (gliderIdx < 0 || !Read(glider + s_ValueOffset, hasGlider))
+                hasGlider = 0;
+            if (hasGlider == 1 && s_HeldProgress > 0 && inGame && s_HaveSnapshot) {
+                Logging.Log("[botw-coop] drapeaux : paravoile obtenue, %d drapeaux de progression mis en attente : etat redemande", s_HeldProgress);
+                s_HeldProgress = 0;
+                g_StateRequested.store(true);
             }
-            *reinterpret_cast<std::uint8_t*>(flag + s_ValueOffset) = 1;
-            s_LastBool[idx] = 1; /* pas de renvoi */
-            coop::objects::OnRemoteFlagSet(in.m_Hash); /* objet de carte deja charge ? */
-            s_Applied++;
-            if (s_Applied <= 60)
-                Logging.Log("[botw-coop] drapeau recu : n.%d hachage=%08x mis a 1", idx, in.m_Hash);
-        }
 
-        /* Resynchronisation : on renvoie par tranches tous les drapeaux partages deja a 1. */
-        if (s_HaveSnapshot && inGame && g_ResyncRequested.exchange(false))
-            s_ResyncCursor = 0;
-        if (s_ResyncCursor >= 0 && s_HaveSnapshot) {
-            int pushed = 0;
-            while (s_ResyncCursor < bools.m_Num && pushed < 400) {
-                const int i = s_ResyncCursor++;
-                if (s_LastBool[i] != 1)
-                    continue;
+            /* Drapeaux recus de l'autre joueur : mise a 1 seulement, jamais de remise a 0. */
+            Change in {};
+            for (int n = 0; n < 256 && s_HaveSnapshot && inGame && g_Incoming.Pop(in); n++) {
                 std::uintptr_t flag = 0;
-                std::uint32_t hash = 0;
-                if (!Read(bools.m_Buffer + 8ull * i, flag) || !Read(flag + s_HashOffset, hash) || !Shareable(flag, i, hash))
+                const int idx = FindByHash(bools, in.m_Hash, flag);
+                std::uint8_t cur = 0xff;
+                if (idx < 0 || in.m_Value != 1 || !Read(flag + s_ValueOffset, cur) || cur != 0 || !Shareable(flag, idx, in.m_Hash))
                     continue;
-                if (!g_Outgoing.Push({ hash, IsBloodMoonFlag(flag) ? Change_MoonSet : Change_Set })) {
-                    s_ResyncCursor--; /* file pleine : on reprendra a la prochaine passe */
-                    break;
+                if (hasGlider != 1 && coop::config::SyncFlagGroup(in.m_Hash) == 1) {
+                    if (s_HeldProgress++ < 5)
+                        Logging.Log("[botw-coop] drapeau recu : hachage=%08x mis en attente (pas de paravoile)", in.m_Hash);
+                    continue;
                 }
-                pushed++;
-                s_Sent++;
+                *reinterpret_cast<std::uint8_t*>(flag + s_ValueOffset) = 1;
+                s_LastBool[idx] = 1; /* pas de renvoi */
+                coop::objects::OnRemoteFlagSet(in.m_Hash); /* objet de carte deja charge ? */
+                s_Applied++;
+                if (s_Applied <= 60)
+                    Logging.Log("[botw-coop] drapeau recu : n.%d hachage=%08x mis a 1", idx, in.m_Hash);
             }
-            if (s_ResyncCursor >= bools.m_Num) {
-                s_ResyncCursor = -1;
-                Logging.Log("[botw-coop] drapeaux : resynchronisation envoyee (total envoyes %lu, recus appliques %lu, perdus %lu)",
-                    s_Sent, s_Applied, s_Dropped);
+
+            /* Resynchronisation : on renvoie par tranches tous les drapeaux partages deja a 1. */
+            if (s_HaveSnapshot && inGame && g_ResyncRequested.exchange(false))
+                s_ResyncCursor = 0;
+            if (s_ResyncCursor >= 0 && s_HaveSnapshot) {
+                int pushed = 0;
+                while (s_ResyncCursor < bools.m_Num && pushed < 400) {
+                    const int i = s_ResyncCursor++;
+                    if (s_LastBool[i] != 1)
+                        continue;
+                    std::uintptr_t flag = 0;
+                    std::uint32_t hash = 0;
+                    if (!Read(bools.m_Buffer + 8ull * i, flag) || !Read(flag + s_HashOffset, hash) || !Shareable(flag, i, hash))
+                        continue;
+                    if (!g_Outgoing.Push({ hash, IsBloodMoonFlag(flag) ? Change_MoonSet : Change_Set })) {
+                        s_ResyncCursor--; /* file pleine : on reprendra a la prochaine passe */
+                        break;
+                    }
+                    pushed++;
+                    s_Sent++;
+                }
+                if (s_ResyncCursor >= bools.m_Num) {
+                    s_ResyncCursor = -1;
+                    Logging.Log("[botw-coop] drapeaux : resynchronisation envoyee (total envoyes %lu, recus appliques %lu, perdus %lu)",
+                        s_Sent, s_Applied, s_Dropped);
+                }
             }
         }
 
-        int changed = 0;
-        for (int i = 0; i < bools.m_Num; i++) {
+        const int chunk = (bools.m_Num + 14) / 15;
+        const int from = s_ScanPos < bools.m_Num ? s_ScanPos : 0;
+        const int to = from + chunk < bools.m_Num ? from + chunk : bools.m_Num;
+        int& changed = s_PassChanged;
+        for (int i = from; i < to; i++) {
             std::uintptr_t flag;
             std::memcpy(&flag, reinterpret_cast<const void*>(bools.m_Buffer + 8ull * i), 8);
             std::uint8_t value = 0xff;
@@ -655,6 +666,10 @@ namespace coop::flags {
             }
             s_LastBool[i] = value;
         }
+        s_ScanPos = to;
+        if (to < bools.m_Num)
+            return; /* passe pas finie : la suite a l'image suivante */
+        s_ScanPos = 0;
         if (!s_HaveSnapshot || s_NumBools != bools.m_Num) {
             int ones = 0, others = 0;
             for (int i = 0; i < bools.m_Num; i++) {
@@ -672,6 +687,7 @@ namespace coop::flags {
             Logging.Log("[botw-coop] drapeaux : %d changements dans cette passe (40 journalises)", changed);
         s_NumBools = bools.m_Num;
         s_HaveSnapshot = true;
+        s_PassChanged = 0;
     }
 
 }

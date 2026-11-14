@@ -4,6 +4,7 @@
 #include <lib/log/logger_mgr.hpp>
 #include <lib/util/sys/modules.hpp>
 
+#include <algorithm>
 #include <atomic>
 #include <cmath>
 #include <cstdio>
@@ -193,26 +194,39 @@ namespace coop::game {
          * cache des plages deja validees, vide toutes les 600 images.
          */
         struct Range { std::uintptr_t m_Start, m_End; };
-        Range s_Ranges[8] = {};
+        /* La derniere plage trouvee est essayee en premier. 64 plages n'evitaient pas les ~250
+           appels systeme par image du releve des acteurs (mesure du 2026-11-14, regle autrement :
+           WasListed) et ralentissaient la relecture des drapeaux : on garde 8. */
+        constexpr int RangeCount = 8;
+        Range s_Ranges[RangeCount] = {};
         int s_NextRange = 0;
+        int s_LastHit = 0;
         std::uint64_t s_Refused = 0;
+        std::uint64_t s_Queries = 0; /* appels a svcQueryMemory (mesure) */
         std::uint32_t s_FramesSinceFlush = 0;
 
         bool CanRead(std::uintptr_t addr, std::size_t size) {
             if (addr < 0x10000 || addr + size < addr)
                 return false;
-            for (const auto& r : s_Ranges)
-                if (addr >= r.m_Start && addr + size <= r.m_End)
+            const Range& last = s_Ranges[s_LastHit];
+            if (addr >= last.m_Start && addr + size <= last.m_End)
+                return true;
+            for (int i = 0; i < RangeCount; i++)
+                if (addr >= s_Ranges[i].m_Start && addr + size <= s_Ranges[i].m_End) {
+                    s_LastHit = i;
                     return true;
+                }
             MemoryInfo mi;
             u32 pageInfo;
+            s_Queries++;
             if (R_FAILED(svcQueryMemory(&mi, &pageInfo, addr)) || (mi.perm & Perm_R) == 0
                 || addr + size > mi.addr + mi.size) {
                 s_Refused++;
                 return false;
             }
             s_Ranges[s_NextRange] = { mi.addr, mi.addr + mi.size };
-            s_NextRange = (s_NextRange + 1) % 8;
+            s_LastHit = s_NextRange;
+            s_NextRange = (s_NextRange + 1) % RangeCount;
             return true;
         }
     }
@@ -250,6 +264,10 @@ namespace coop::game {
 
     std::uint64_t RefusedReads() {
         return s_Refused;
+    }
+
+    std::uint64_t MemoryQueries() {
+        return s_Queries;
     }
 
     bool ReadPlayer(PlayerState& out) {
@@ -413,7 +431,33 @@ namespace coop::game {
         int s_SnapshotCount = 0;
         std::uint64_t s_SnapshotFrame = ~0ull;
 
+        /* Releve precedent, trie : un acteur qui y figurait et qui est encore chaine dans la liste
+           est vivant (le jeu le retire de la liste avant de le liberer, et le releve se fait dans
+           son fil, entre deux images) ; inutile de redemander si sa memoire est lisible. Mesure du
+           2026-11-14 : ~250 appels a svcQueryMemory par image sans cela, cache de plages ou non. */
+        std::uintptr_t s_Previous[MaxSnapshot];
+        int s_PreviousCount = 0;
+
+        bool WasListed(std::uintptr_t actor) {
+            int lo = 0, hi = s_PreviousCount;
+            while (lo < hi) {
+                const int mid = (lo + hi) / 2;
+                if (s_Previous[mid] < actor)
+                    lo = mid + 1;
+                else
+                    hi = mid;
+            }
+            return lo < s_PreviousCount && s_Previous[lo] == actor;
+        }
+
         void TakeSnapshot() {
+            /* Releve de l'image precedente garde (trie) ; un releve fait dans la meme image (mesure
+               COOP_PERF_OLDWALK) ne le remplace pas. */
+            if (s_SnapshotFrame != s_Frame) {
+                std::memcpy(s_Previous, s_Snapshot, sizeof(std::uintptr_t) * s_SnapshotCount);
+                s_PreviousCount = s_SnapshotCount;
+                std::sort(s_Previous, s_Previous + s_PreviousCount);
+            }
             s_SnapshotFrame = s_Frame;
             s_SnapshotCount = 0;
             if (s_Offsets == nullptr)
@@ -429,8 +473,9 @@ namespace coop::game {
             auto node = Peek<std::uintptr_t>(sentinel + 0x8);
             for (int i = 0; i < count && s_SnapshotCount < MaxSnapshot && node != sentinel && LooksLikeHeapPtr(node); i++) {
                 const auto actor = node - static_cast<std::uintptr_t>(nodeOffset);
-                /* Tout l'acteur jusqu'a son noeud de liste doit etre lisible. */
-                if (!CanRead(actor, static_cast<std::size_t>(nodeOffset) + 0x10))
+                /* Tout l'acteur jusqu'a son noeud de liste doit etre lisible (deja verifie s'il
+                   etait dans le releve precedent). */
+                if (!WasListed(actor) && !CanRead(actor, static_cast<std::size_t>(nodeOffset) + 0x10))
                     return;
                 s_Snapshot[s_SnapshotCount++] = actor;
                 node = Peek<std::uintptr_t>(node + 0x8);
@@ -440,8 +485,13 @@ namespace coop::game {
         /* Appelle fn(actor) pour chaque acteur du releve de l'image ; arret si fn renvoie true. */
         template<typename Fn>
         void ForEachActor(Fn fn) {
+#ifdef COOP_PERF_OLDWALK
+            /* Mesure de comparaison : ancien comportement, un parcours complet a chaque appel. */
+            TakeSnapshot();
+#else
             if (s_SnapshotFrame != s_Frame)
                 TakeSnapshot();
+#endif
             for (int i = 0; i < s_SnapshotCount; i++)
                 if (fn(s_Snapshot[i]))
                     return;
