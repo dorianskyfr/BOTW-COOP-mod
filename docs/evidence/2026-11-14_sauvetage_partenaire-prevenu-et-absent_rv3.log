@@ -1,0 +1,27 @@
+﻿# Sauvetage : partenaire prevenu, partenaire absent (2026-11-14, essai rv3, deux instances reduites, outil lift).
+
+## J1 (rv3_game.txt)
+00:00:06.749 sauvetage : crochet pose sur main+0xcead24
+00:00:15.913 messages : "Coop : connect?? (joueur 1)"
+00:01:27.575 monde : pret (acteur du joueur actif)
+00:02:03.811 messages : "Joueur 2 a rejoint la partie"
+00:02:36.364 essai chute du joueur : Link souleve de 50 m a (-1024.48, 302.63, 1799.95)
+00:02:38.269 sauvetage : Link releve par le partenaire (J2 a 0 m), vie 0 -> 12 quarts (n.1)
+00:02:38.269 messages : "Sauv?? par Joueur 2 ! (prochain dans 120 s)"
+00:02:56.150 messages : "Joueur 2 a quitt?? la partie"
+00:02:56.151 net: J2 a quitte la session
+00:03:08.407 essai chute du joueur : Link souleve de 50 m a (-1024.52, 302.63, 1800.04)
+00:03:10.310 sauvetage : refuse (pas de partenaire en jeu, distance -1 m) -> Game Over
+00:03:16.222 monde : plus pret (chargement ou ecran-titre)
+00:03:39.660 messages : "Coop : liaison perdue, reconnexion..."
+
+## J2 (rv3_game2.txt)
+00:00:07.353 sauvetage : crochet pose sur main+0xcead24
+00:00:16.481 messages : "Coop : connect?? (joueur 2)"
+00:01:12.620 messages : "Joueur 1 a rejoint la partie"
+00:02:25.979 messages : "Vous avez sauv?? le joueur 1 !"
+00:02:25.979 sauvetage : le joueur 1 a ete releve grace a nous (0 m)
+
+## relais
+19:53:05.267 joueur 1 : releve par son partenaire (0 m)
+19:53:22.976 joueur 2 deconnecte (erreur [WinError 10054] Une connexion existante a dû être fermée par l’hôte distant), 367 positions recues, derniere 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0

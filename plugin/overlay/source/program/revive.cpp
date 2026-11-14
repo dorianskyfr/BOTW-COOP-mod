@@ -90,6 +90,7 @@ namespace coop::revive {
                 std::snprintf(msg, sizeof(msg), "Sauvé par Joueur %d ! (prochain dans %d s)", coop::session::g_Remote.Id(),
                     coop::config::g_ReviveDelayS);
                 coop::notify::Post(msg);
+                g_PendingSaved.store(dist < 0 ? 0 : dist);
                 return true;
             }
         };

@@ -1,6 +1,7 @@
 #include "net_probe.hpp"
 #include "anim_state.hpp"
 #include "notify.hpp"
+#include "revive.hpp"
 #include "status.hpp"
 #include "gear.hpp"
 #include "weapons.hpp"
@@ -226,6 +227,12 @@ namespace coop::net_probe {
             } else if (int hpLife = 0, hpMax = 0; std::sscanf(line, "HP %d %d %d", &id, &hpLife, &hpMax) == 3) {
                 coop::status::g_RemoteLife.store(hpLife);
                 coop::status::g_RemoteMax.store(hpMax);
+            } else if (int savedDist = 0; std::sscanf(line, "SAVED %d %d", &id, &savedDist) == 2) {
+                /* Le partenaire vient d'etre releve grace a nous (revive.cpp). */
+                char msg[64];
+                std::snprintf(msg, sizeof(msg), "Vous avez sauvé le joueur %d !", id);
+                coop::notify::Post(msg);
+                Logging.Log("[botw-coop] sauvetage : le joueur %d a ete releve grace a nous (%d m)", id, savedDist);
             } else if (unsigned g0 = 0, g1 = 0, g2 = 0; std::sscanf(line, "GEAR %d %x %x %x", &id, &g0, &g1, &g2) == 4) {
                 /* Armure du partenaire : CRC32 des noms de pieces, 0 = rien (gear.hpp). */
                 coop::gear::g_Remote[0].store(g0);
@@ -417,6 +424,14 @@ namespace coop::net_probe {
                         if (len > 0 && !SendAll(s_Fd, hp, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
+                }
+
+                /* Sauvetage par le partenaire : annonce une fois (revive.cpp). */
+                if (const int saved = coop::revive::g_PendingSaved.exchange(-1); saved >= 0 && s_Fd >= 0) {
+                    char msg[32];
+                    const int len = std::snprintf(msg, sizeof(msg), "SAVED %d\n", saved);
+                    if (len > 0 && !SendAll(s_Fd, msg, static_cast<std::size_t>(len)))
+                        Disconnect("echec d'envoi");
                 }
 
                 /* Armure portee : une fois par seconde, meme sans changement (partenaire arrive apres coup). */

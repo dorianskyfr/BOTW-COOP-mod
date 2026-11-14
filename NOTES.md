@@ -720,5 +720,6 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Outil d'essai `drive.py ... lift` (bit 56, build `COOP_REMOTE_PAD`) : Link pose 50 m plus haut par la meme ecriture que la teleportation (hauteurs de depart de chute comprises), il retombe.
 - [V] `rv2` (3 cœurs, J2 a cote) : 1re chute -> `sauvetage : Link releve par le partenaire (J2 a 0 m), vie 0 -> 12 quarts`, sequence `LandDamage`, pas de Game Over ; Link marche ensuite (9 m au stick). 2e chute 20 s plus tard -> `refuse (sauvetage trop recent)` -> Game Over, le monde se recharge.
 - Fenetres de jeu reduites pendant tout l'essai : les deux jeux tournent et se pilotent normalement ainsi.
-- **Non verifie** : a l'image (relevement, bandeau) ; ce que voit le partenaire ; refus quand le partenaire est absent, mort ou trop loin (code ecrit, pas essaye) ; mort par un coup d'ennemi, noyade, lave. Pas d'etat « a terre » a relever : le sauvetage est immediat.
-- Preuve : `docs/evidence/2026-11-14_sauvetage-par-le-partenaire_rv2.log`.
+- Partenaire prevenu : message `SAVED <distance>` (relais : retransmis, essai automatique de plus, 43/43) ; le partenaire affiche « Vous avez sauvé le joueur N ! ». [V] `rv3` : J1 releve, J2 affiche le message, le relais le journalise. [V] `rv3`, jeu de J2 ferme : J1 retombe -> `refuse (pas de partenaire en jeu)` -> Game Over.
+- **Non verifie** : a l'image (relevement, bandeau) ; refus quand le partenaire est mort ou trop loin (code ecrit, pas essaye) ; mort par un coup d'ennemi, noyade, lave. Pas d'etat « a terre » a relever : le sauvetage est immediat.
+- Preuve : `docs/evidence/2026-11-14_sauvetage-par-le-partenaire_rv2.log`, `2026-11-14_sauvetage_partenaire-prevenu-et-absent_rv3.log`.

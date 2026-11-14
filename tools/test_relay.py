@@ -123,6 +123,9 @@ def main():
         a.send(wpn)
         line = b.expect("WPN")
         check("objet porte retransmis avec l'identifiant", line == "WPN 1 " + wpn[4:], line)
+        a.send("SAVED 12")
+        line = b.expect("SAVED")
+        check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
 
         # Drapeaux : premiere annonce retransmise, doublon ignore, valeur 0 ignoree.
         a.send("FLAG 6ca64187 1")
