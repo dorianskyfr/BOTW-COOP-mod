@@ -798,6 +798,15 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Apres le voyage d'essai (sanctuaire 076), le jeu fait une sauvegarde automatique : `save:/2/game_data.sav -> save:/coop/2/game_data.sav` (deux ouvertures, 23:37:00). Sur disque : `coop\2\game_data.sav` cree (empreinte nouvelle) ; les sauvegardes normales `0` et `1` ont la meme empreinte SHA-256 que celles de la sauvegarde source `t_lv1` (inchangees), et aucun emplacement normal `2` n'a ete cree. La redirection de 5.30 vaut donc aussi pour la sauvegarde automatique.
 - Preuve : `docs/evidence/2026-11-14_sauvegarde-automatique-dans-coop_cl4.log`.
 
+### 5.44 ter Garde de la paravoile (2026-11-14, essais `pg1`, `pg2`) - [V] par les journaux
+
+- Methode d'essai : une instance (sauvegarde du plateau, pas de paravoile) ; un petit script local se connecte au relais comme outil de test (`PILOT`) et annonce trois drapeaux : `Clear_Dungeon100` et `Enter_Dungeon100` (groupe 1, progression), un champignon de carte (groupe 2).
+- [V] `pg2` : `Enter_Dungeon100` -> `mis en attente (pas de paravoile)` ; champignon -> `mis a 1`. La garde de 5.26 fonctionne.
+- Observation : `Clear_Dungeon100` est ignore avant la garde : sa valeur lue sur cette sauvegarde est **2** (proprietes 0x1f, pas une bascule). Cause inconnue (je ne peux pas confirmer comment le jeu range ces drapeaux) ; un drapeau a une autre valeur que 0 n'est jamais ecrit, donc rien n'est abime. A regarder avant de compter sur le partage des sanctuaires termines.
+- Ajout : un drapeau recu ignore est journalise (20 premiers) avec la raison (index, valeur, groupe, proprietes, bascule).
+- Non essaye : obtention de la paravoile puis application des drapeaux en attente.
+- Preuve : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`.
+
 ### 5.45 Meteo suivie seulement dans le meme climat (2026-11-14, essais `cl1` a `cl4`) - [V] par les journaux
 
 - Idee de botw-coop (meteo de l'hote dans le meme climat seulement ; ils lisent `mCurrentClimate` a `Manager+0x780`). **Chez nous, ce n'est pas +0x780** : [V] `cl3` (une instance, `-DCOOP_TEST_CLIMATE` qui journalise `Manager+0x760..0x7bc`) : sur le plateau +0x780 = +0x784 = 0 ; apres un voyage de 2,5 km vers l'ouest (sanctuaire 076, B-6) seul **+0x784 passe a 6**, +0x780 reste a 0. Sur notre image, deux accesseurs voisins : `main+0x14318f0` rend +0x780, `main+0x14318f8` rend +0x784. Le plugin lit +0x784 (0 a 63 accepte, sinon inconnu).

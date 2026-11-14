@@ -1,0 +1,18 @@
+﻿## Essais pg1, pg2 : une instance sans paravoile (sauvegarde du plateau) ; un outil de test (PILOT) annonce au relais Clear_Dungeon100 (f66ba753), Enter_Dungeon100 (3678c8aa), un champignon de carte (f0143def)
+## pg1 plugin
+[botw-coop] drapeau recu : n.39484 hachage=f0143def mis a 1
+## pg1 relais
+23:48:56.410 joueur 1 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+23:48:57.124 joueur 1 : drapeau nouveau n.1 = c2aa7d7e 1 (1 en memoire, 0 deja connus)
+23:49:28.791 joueur 1001 : drapeau nouveau n.1 = f66ba753 1 (2 en memoire, 0 deja connus)
+23:49:28.791 joueur 1001 : drapeau nouveau n.2 = f0143def 1 (3 en memoire, 0 deja connus)
+## pg2 plugin
+[botw-coop] drapeau recu : hachage=f66ba753 ignore (index 40530, valeur ici 2, groupe 1, proprietes 0x1f, bascule 0)
+[botw-coop] drapeau recu : hachage=3678c8aa mis en attente (pas de paravoile)
+[botw-coop] drapeau recu : n.39484 hachage=f0143def mis a 1
+## pg2 relais
+23:52:11.711 joueur 1 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+23:52:12.400 joueur 1 : drapeau nouveau n.1 = c2aa7d7e 1 (1 en memoire, 0 deja connus)
+23:52:44.022 joueur 1001 : drapeau nouveau n.1 = f66ba753 1 (2 en memoire, 0 deja connus)
+23:52:44.022 joueur 1001 : drapeau nouveau n.2 = 3678c8aa 1 (3 en memoire, 0 deja connus)
+23:52:44.022 joueur 1001 : drapeau nouveau n.3 = f0143def 1 (4 en memoire, 0 deja connus)

@@ -584,8 +584,17 @@ namespace coop::flags {
                 std::uintptr_t flag = 0;
                 const int idx = FindByHash(bools, in.m_Hash, flag);
                 std::uint8_t cur = 0xff;
-                if (idx < 0 || in.m_Value != 1 || !Read(flag + s_ValueOffset, cur) || cur != 0 || !Shareable(flag, idx, in.m_Hash))
+                if (idx < 0 || in.m_Value != 1 || !Read(flag + s_ValueOffset, cur) || cur != 0 || !Shareable(flag, idx, in.m_Hash)) {
+                    static int s_SkipLogs = 0;
+                    std::uint8_t props = 0;
+                    if (idx >= 0)
+                        Read(flag + 0x9, props);
+                    if (s_SkipLogs++ < 20)
+                        Logging.Log("[botw-coop] drapeau recu : hachage=%08x ignore (index %d, valeur ici %d, groupe %d, proprietes 0x%x, bascule %d)",
+                            in.m_Hash, idx, cur, coop::config::SyncFlagGroup(in.m_Hash), props,
+                            idx >= 0 && idx < MaxBools ? s_Toggles[idx] : -1);
                     continue;
+                }
                 if (hasGlider != 1 && coop::config::SyncFlagGroup(in.m_Hash) == 1) {
                     if (s_HeldProgress++ < 5)
                         Logging.Log("[botw-coop] drapeau recu : hachage=%08x mis en attente (pas de paravoile)", in.m_Hash);
