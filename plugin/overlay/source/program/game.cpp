@@ -978,6 +978,81 @@ namespace coop::game {
         return n;
     }
 
+    /*
+     * Tampons de la carte. D'apres botw-coop (reverse-engineering.md, « Map stamps ») ; reecrit et
+     * reverifie sur notre image 1.9.0 (capstone, NOTES 5.43) : gestionnaire = global main+0x1e17ef8 ;
+     * reserve PtrArray (nombre +0x610, tableau +0x618) ; tampon : icone +0x1c, position +0x28,
+     * bits +0x3c (0x10 actif) ; vtable main+0x1cdd340, +0xb8 setPos, +0xc8 setActive ; pose :
+     * main+0xd8aaa0(gestionnaire, icone, const Vec3f*, bool) prend le premier tampon inactif,
+     * appelle setPos, ecrit l'icone, setActive(true) puis setVisible(true).
+     */
+    namespace {
+        constexpr std::uintptr_t MapMgrGlobal = 0x1e17ef8;
+        constexpr std::uintptr_t MapAddStamp = 0xd8aaa0;
+        constexpr std::uintptr_t MapStampVtable = 0x1cdd340;
+
+        std::uintptr_t MapMgr() {
+            const auto mgr = Peek<std::uintptr_t>(MainBase() + MapMgrGlobal);
+            return mgr != 0 && CanRead(mgr, 0x660) ? mgr : 0;
+        }
+
+        bool IsMapStamp(std::uintptr_t stamp) {
+            return stamp != 0 && CanRead(stamp, 0x40) && Peek<std::uintptr_t>(stamp) == MainBase() + MapStampVtable;
+        }
+    }
+
+    int MapStampCount() {
+        if (s_Offsets == nullptr)
+            return -1;
+        const auto mgr = MapMgr();
+        if (mgr == 0)
+            return -1;
+        const int n = Peek<std::int32_t>(mgr + 0x610);
+        const auto arr = Peek<std::uintptr_t>(mgr + 0x618);
+        return n >= 0 && n <= 1000 && (n == 0 || (arr != 0 && CanRead(arr, static_cast<std::size_t>(n) * 8))) ? n : -1;
+    }
+
+    bool ReadMapStamp(int index, MapStamp& out) {
+        out = MapStamp {};
+        const int n = MapStampCount();
+        if (index < 0 || index >= n)
+            return false;
+        const auto stamp = Peek<std::uintptr_t>(Peek<std::uintptr_t>(MapMgr() + 0x618) + static_cast<std::uintptr_t>(index) * 8);
+        if (!IsMapStamp(stamp))
+            return false;
+        out.m_Object = stamp;
+        out.m_Icon = Peek<std::int32_t>(stamp + 0x1c);
+        out.m_Pos[0] = Peek<float>(stamp + 0x28);
+        out.m_Pos[1] = Peek<float>(stamp + 0x2c);
+        out.m_Pos[2] = Peek<float>(stamp + 0x30);
+        out.m_Flags = Peek<std::uint32_t>(stamp + 0x3c);
+        return true;
+    }
+
+    bool AddMapStamp(int icon, const float pos[3]) {
+        const auto mgr = s_Offsets != nullptr ? MapMgr() : 0;
+        if (mgr == 0)
+            return false;
+        reinterpret_cast<void (*)(std::uintptr_t, int, const float*, bool)>(MainBase() + MapAddStamp)(mgr, icon, pos, false);
+        return true;
+    }
+
+    bool SetMapStampPos(std::uintptr_t stamp, const float pos[3]) {
+        if (s_Offsets == nullptr || !IsMapStamp(stamp))
+            return false;
+        const auto fn = Peek<std::uintptr_t>(Peek<std::uintptr_t>(stamp) + 0xb8);
+        reinterpret_cast<void (*)(std::uintptr_t, const float*)>(fn)(stamp, pos);
+        return true;
+    }
+
+    bool SetMapStampActive(std::uintptr_t stamp, bool active) {
+        if (s_Offsets == nullptr || !IsMapStamp(stamp))
+            return false;
+        const auto fn = Peek<std::uintptr_t>(Peek<std::uintptr_t>(stamp) + 0xc8);
+        reinterpret_cast<void (*)(std::uintptr_t, bool)>(fn)(stamp, active);
+        return true;
+    }
+
     bool AddInventoryItem(const char* name, int value, int& before, int& after, const WeaponBonus* bonus) {
         /*
          * uking::ui::PauseMenuDataMgr::itemGet(this, const SafeString& nom, int nombre, const WeaponModifierInfo*)

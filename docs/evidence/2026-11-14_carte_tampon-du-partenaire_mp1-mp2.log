@@ -1,0 +1,38 @@
+﻿## mp1_game.txt
+[botw-coop] net: le relais nous attribue l'identifiant J1
+[botw-coop] carte : reserve de 100 tampons, 0 tampon(s) du partenaire laisse(s) par une sauvegarde retire(s)
+[botw-coop] carte : tampon du partenaire J2 pose, reserve n.0, icone 34, bits 0x7638, en (-1024.5, 252.6, 1799.9)
+[botw-coop] carte : tampon du partenaire deplace (n.1), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+[botw-coop] carte : tampon du partenaire deplace (n.31), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+[botw-coop] carte : tampon du partenaire deplace (n.61), relu en (-1024.5, 252.6, 1800.0), bits 0x211
+[botw-coop] net: J2 a quitte la session
+[botw-coop] carte : tampon du partenaire retire (partenaire absent) -> ok
+## mp1_game2.txt
+[botw-coop] net: le relais nous attribue l'identifiant J2
+[botw-coop] carte : reserve de 100 tampons, 0 tampon(s) du partenaire laisse(s) par une sauvegarde retire(s)
+[botw-coop] carte : tampon du partenaire J1 pose, reserve n.0, icone 34, bits 0x7638, en (-1024.5, 252.6, 1799.9)
+[botw-coop] carte : tampon du partenaire deplace (n.1), relu en (-1024.5, 252.6, 1799.9), bits 0x7638
+[botw-coop] carte : tampon du partenaire deplace (n.31), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+[botw-coop] carte : tampon du partenaire deplace (n.61), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+## mp2_game.txt
+[botw-coop] net: le relais nous attribue l'identifiant J1
+[botw-coop] carte : reserve de 100 tampons, 0 tampon(s) du partenaire laisse(s) par une sauvegarde retire(s)
+[botw-coop] carte : tampon du partenaire J2 pose, reserve n.0, icone 34, bits 0x7638, en (-1024.5, 252.6, 1799.9)
+[botw-coop] carte : tampon du partenaire deplace (n.1), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+[botw-coop] carte : tampon du partenaire deplace (n.26), relu en (-1024.5, 287.7, 1799.9), bits 0x4211
+[botw-coop] carte : tampon du partenaire deplace (n.27), relu en (-1024.5, 252.6, 1800.0), bits 0x4211
+[botw-coop] carte : tampon du partenaire deplace (n.31), relu en (-1024.5, 252.6, 1800.0), bits 0x211
+[botw-coop] net: J2 a quitte la session
+[botw-coop] carte : tampon du partenaire retire (partenaire absent) -> ok, bits relus 0x221
+## mp2_game2.txt
+[botw-coop] net: le relais nous attribue l'identifiant J2
+[botw-coop] carte : reserve de 100 tampons, 0 tampon(s) du partenaire laisse(s) par une sauvegarde retire(s)
+[botw-coop] carte : tampon du partenaire J1 pose, reserve n.0, icone 34, bits 0x7638, en (-1024.5, 252.6, 1799.9)
+[botw-coop] carte : tampon du partenaire deplace (n.1), relu en (-1024.5, 252.6, 1799.9), bits 0x7638
+[botw-coop] carte : tampon du partenaire deplace (n.31), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+## mp2 pilote (lift J2), puis fermeture du jeu de J2
+    7.9s appui B x2 -> (?)
+   19.9s appui A x10 -> (?)
+   22.8s appui B x2 -> (?)
+   34.8s appui A x10 -> (?)
+    0.6s lift : Link souleve de 50 m

@@ -213,6 +213,25 @@ namespace coop::game {
        Renvoie le nombre d'objets lus, -1 si l'inventaire est illisible. Fil du jeu. */
     int ReadPouch(PouchEntry* out, int max, std::uint32_t typeMask = 0xffffffffu);
 
+    /* ---- Carte : tampons (marqueurs poses sur la carte) ---- */
+
+    struct MapStamp {
+        std::uintptr_t m_Object = 0;
+        int            m_Icon = -1;
+        float          m_Pos[3] = {};
+        std::uint32_t  m_Flags = 0;   /* 0x10 actif, 0x8 pose, 0x200 visible */
+    };
+
+    /* Nombre de tampons du gestionnaire de carte (reserve du jeu), -1 si illisible. Fil du jeu. */
+    int MapStampCount();
+    /* Tampon n.index de la reserve ; false si illisible. */
+    bool ReadMapStamp(int index, MapStamp& out);
+    /* Pose un tampon (fonction du jeu qui prend un tampon libre de la reserve). Fil du jeu. */
+    bool AddMapStamp(int icon, const float pos[3]);
+    /* Deplace / retire (desactive) un tampon de la reserve. Fil du jeu. */
+    bool SetMapStampPos(std::uintptr_t stamp, const float pos[3]);
+    bool SetMapStampActive(std::uintptr_t stamp, bool active);
+
     /* Nom d'un acteur (BaseProc::mName), ou "" si le pointeur de chaine est invalide. */
     const char* GetActorName(std::uintptr_t actor);
 

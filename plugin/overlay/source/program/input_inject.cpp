@@ -11,6 +11,7 @@
 #include "enemy_life.hpp"
 #include "flags.hpp"
 #include "objects.hpp"
+#include "map_marker.hpp"
 #include "game.hpp"
 #include "remote_actor.hpp"
 #include "session.hpp"
@@ -215,6 +216,7 @@ namespace coop::input_inject {
                 COOP_PART();
                 coop::objects::OnFrame();
                 COOP_PART();
+                coop::map_marker::OnFrame();
 #undef COOP_PART
 
                 const std::uint64_t spent = coop::clock::NowUs() - t0;

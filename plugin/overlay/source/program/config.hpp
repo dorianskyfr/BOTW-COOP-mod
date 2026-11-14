@@ -35,6 +35,8 @@ namespace coop::config {
 
     /* Repas partages (status.cpp, NOTES 5.39) : un repas mange par l'un soigne aussi l'autre. */
     inline bool g_Meal = true;
+    /* Partenaire montre sur la carte par un tampon (map_marker.hpp). */
+    inline bool g_Map = true;
     inline int g_ReviveDelayS = 120;
     inline int g_ReviveRangeM = 150;
 
