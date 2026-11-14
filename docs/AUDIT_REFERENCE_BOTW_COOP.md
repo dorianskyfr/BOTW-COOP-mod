@@ -45,11 +45,11 @@ Niveaux : 0 absent · 1 code · 2 compilé · 3 essai simulé · 4 deux vraies i
 | **Objets ramassés, coffres** (P1) | 4 (objets) ; coffre retiré au lieu d'ouvert | non traité (chacun son butin) | garder notre partage d'objets, derrière une option |
 | **Ennemis : vie, mort, position** (P1) | 4 (vie, mort par chute) ; position sur ennemi immobile | 4 (Bokoblins), + répétition toutes les 15 s | comparer avec leur règle de propriété (60 % de la distance du propriétaire − 1 m) |
 | **Ennemis : attaques, IA** (P1) | 0 | 4 sur Bokoblins (séquences du propriétaire rejouées) | après le chantier 1 (même mécanisme `ASList`) |
-| **Mort, à terre, réanimation** (P1) | 0 | 4 | à faire |
+| **Mort, à terre, réanimation** (P1) | 4 par journaux : sauvetage immédiat (3 cœurs) si le partenaire est là, délai de 2 min ; pas d'état « à terre » | 4 | état « à terre » à relever par le partenaire (NOTES §5.37) |
 | **Téléportation vers un partenaire** (P2) | 0 | 4 (≤ 250 m direct, bonds au-delà, changement de stage du jeu `main+0x12082e0`) | à faire ; gros risque de chargement bloqué sous Ryujinx |
 | **Carte : marqueurs, tampons** (P2) | 0 | 3–4 | à faire |
 | **Repas partagés, effets** (P2) | 0 | 4 (soins) ; effets non | à faire |
-| **Dons d'objets** (P2) | 0 | 4 (armes avec bonus, matériaux) | à faire |
+| **Dons d'objets** (P2) | 4 par journaux pour les armes (sans bonus) | 4 (armes avec bonus, matériaux) | bonus d'arme, matériaux (NOTES §5.38) |
 | **Sauvegardes coop séparées** (P1) | 0 (nos essais utilisent des copies) | 3–4 (`save:/coop/`, 3 sauvegardes de secours) | **important** avant de jouer sur une vraie sauvegarde |
 | **Messages à l'écran** (P2) | 0 | 4 (bannière d'information du jeu) | utile partout : à faire tôt |
 | **Chevaux, cinématiques, spectateur, 3–4 joueurs, Rivals** (P3) | 0 | partiel / 0 | plus tard |

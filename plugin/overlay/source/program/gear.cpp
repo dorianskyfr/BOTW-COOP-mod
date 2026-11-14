@@ -124,24 +124,9 @@ namespace coop::gear {
     namespace {
         /*
          * Essai seulement (sauvegardes de test sans equipement) : met des objets dans l'inventaire
-         * ~20 s apres l'entree en jeu, par la fonction du jeu qui range un objet ramasse.
-         * D'apres botw-coop (reverse-engineering.md, offsets.hpp ; reecrit ici) :
-         *   uking::ui::PauseMenuDataMgr::itemGet(this, const SafeString& nom, int nombre, const WeaponModifierInfo*)
-         *   a main+0xd921bc (pour une arme, nombre = durabilite) ; instance : **(main+0x1d67af0) ;
-         *   liste des objets a +0x68, son compte (s32) a +0x78.
-         * Reverifie sur notre image de main 1.9.0 : prologue de fonction a 0xd921bc (8 appelants),
-         * 0x1d67af0 lu par 88 sites du code. Vtable SafeString : *(main+0x1d66260)+0x10 (NOTES 5.27).
+         * ~20 s apres l'entree en jeu, par la fonction du jeu qui range un objet ramasse
+         * (coop::game::AddInventoryItem).
          */
-        constexpr std::uintptr_t ItemGet = 0xd921bc;
-        constexpr std::uintptr_t PauseMenuDataMgrSlot = 0x1d67af0;
-        constexpr std::uintptr_t SafeStringVtableSlot = 0x1d66260;
-        constexpr std::uintptr_t ItemListCount = 0x68 + 0x10;
-
-        struct GiveSafeString {
-            std::uintptr_t m_Vtable;
-            const char* m_Str;
-        };
-
         bool s_Given = false;
         std::uint64_t s_ReadyFrames = 0;
 
@@ -153,14 +138,6 @@ namespace coop::gear {
             if (++s_ReadyFrames < 600)
                 return;
             s_Given = true;
-            const std::uintptr_t base = exl::util::GetMainModuleInfo().m_Total.m_Start;
-            const std::uintptr_t slot = *reinterpret_cast<const std::uintptr_t*>(base + PauseMenuDataMgrSlot);
-            const std::uintptr_t mgr = slot != 0 ? *reinterpret_cast<const std::uintptr_t*>(slot) : 0;
-            const std::uintptr_t vtSlot = *reinterpret_cast<const std::uintptr_t*>(base + SafeStringVtableSlot);
-            if (mgr == 0 || vtSlot == 0) {
-                Logging.Log("[botw-coop] essai inventaire : gestionnaire introuvable (%lx, %lx)", mgr, vtSlot);
-                return;
-            }
             struct Item {
                 const char* m_Name;
                 int m_Count;
@@ -169,12 +146,12 @@ namespace coop::gear {
                 { "Armor_001_Head", 1 }, { "Armor_001_Upper", 1 }, { "Armor_001_Lower", 1 },
                 { "Weapon_Sword_001", 2000 }, { "Weapon_Shield_001", 2000 }, { "Weapon_Bow_001", 2000 },
             };
-            using ItemGetFn = void (*)(std::uintptr_t, const GiveSafeString&, int, const void*);
             for (const Item& it : items) {
-                const int before = *reinterpret_cast<const int*>(mgr + ItemListCount);
-                const GiveSafeString name { vtSlot + 0x10, it.m_Name };
-                reinterpret_cast<ItemGetFn>(base + ItemGet)(mgr, name, it.m_Count, nullptr);
-                const int after = *reinterpret_cast<const int*>(mgr + ItemListCount);
+                int before = -1, after = -1;
+                if (!coop::game::AddInventoryItem(it.m_Name, it.m_Count, before, after)) {
+                    Logging.Log("[botw-coop] essai inventaire : gestionnaire introuvable");
+                    return;
+                }
                 Logging.Log("[botw-coop] essai inventaire : %s x%d -> objets %d -> %d", it.m_Name, it.m_Count, before, after);
             }
         }

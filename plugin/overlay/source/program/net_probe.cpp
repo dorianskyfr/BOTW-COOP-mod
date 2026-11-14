@@ -227,6 +227,12 @@ namespace coop::net_probe {
             } else if (int hpLife = 0, hpMax = 0; std::sscanf(line, "HP %d %d %d", &id, &hpLife, &hpMax) == 3) {
                 coop::status::g_RemoteLife.store(hpLife);
                 coop::status::g_RemoteMax.store(hpMax);
+            } else if (coop::weapons::Gift gift; std::sscanf(line, "GIFT %d %47s %d", &id, gift.m_Name, &gift.m_Value) == 3) {
+                /* Arme donnee par le partenaire : ajoutee a l'inventaire dans le fil du jeu. Seuls les
+                   noms d'armes sont acceptes. */
+                gift.m_From = id;
+                if (std::strncmp(gift.m_Name, "Weapon_", 7) == 0 && gift.m_Value > 0)
+                    coop::weapons::g_GiftIn.Push(gift);
             } else if (int savedDist = 0; std::sscanf(line, "SAVED %d %d", &id, &savedDist) == 2) {
                 /* Le partenaire vient d'etre releve grace a nous (revive.cpp). */
                 char msg[64];
@@ -424,6 +430,14 @@ namespace coop::net_probe {
                         if (len > 0 && !SendAll(s_Fd, hp, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
+                }
+
+                /* Dons d'armes (weapons.hpp). */
+                for (coop::weapons::Gift gift; s_Fd >= 0 && coop::weapons::g_GiftOut.Pop(gift);) {
+                    char msg[96];
+                    const int len = std::snprintf(msg, sizeof(msg), "GIFT %s %d\n", gift.m_Name, gift.m_Value);
+                    if (len > 0 && !SendAll(s_Fd, msg, static_cast<std::size_t>(len)))
+                        Disconnect("echec d'envoi");
                 }
 
                 /* Sauvetage par le partenaire : annonce une fois (revive.cpp). */

@@ -186,6 +186,13 @@ namespace coop::game {
     /* Vie du joueur local en quarts de cœur (et maximum), lifePtr : ou elle est rangee. Fil du jeu. */
     bool GetPlayerLife(int& life, int& maxLife, std::uintptr_t& lifePtr);
 
+    /* Valeur de getLife (case 87) d'un acteur ; pour une arme, sa durabilite. Fil du jeu. */
+    bool GetActorLifeValue(std::uintptr_t actor, int& value);
+
+    /* Ajoute un objet a l'inventaire du joueur (itemGet ; pour une arme, value = durabilite).
+       before / after : nombre d'entrees de la liste d'objets avant et apres. Fil du jeu. */
+    bool AddInventoryItem(const char* name, int value, int& before, int& after);
+
     /* Nom d'un acteur (BaseProc::mName), ou "" si le pointeur de chaine est invalide. */
     const char* GetActorName(std::uintptr_t actor);
 

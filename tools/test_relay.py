@@ -126,6 +126,9 @@ def main():
         a.send("SAVED 12")
         line = b.expect("SAVED")
         check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
+        a.send("GIFT Weapon_Sword_001 1800")
+        line = b.expect("GIFT")
+        check("don d'arme retransmis avec l'identifiant", line == "GIFT 1 Weapon_Sword_001 1800", line)
 
         # Drapeaux : premiere annonce retransmise, doublon ignore, valeur 0 ignoree.
         a.send("FLAG 6ca64187 1")

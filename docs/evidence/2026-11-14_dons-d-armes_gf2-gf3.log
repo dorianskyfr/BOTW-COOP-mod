@@ -1,0 +1,33 @@
+﻿# Dons d'armes (2026-11-14, essais gf2 et gf3, deux instances reduites, COOP_TEST_GIVE).
+# gf2 : epee lancee (R) a 22 m, partenaire trop loin : surveillee puis oubliee. Puis chute reelle de J1 en marchant : sauvetage par le partenaire a 47 m.
+# gf3 : les deux joueurs au point de depart ; J1 equipe l'epee puis la lache par le menu (2e option).
+
+## gf2 J1
+00:00:08.651 sauvetage : crochet pose sur main+0xcead24
+00:02:31.997 armes : emplacement 0 = Weapon_Sword_001 (908e69a9), position dans le repere de Link (-0.18, 1.44, -0.04)
+00:02:31.997 armes : emplacement 1 = Weapon_Sheath_001 (f240ddb0), position dans le repere de Link (-0.18, 1.44, -0.04)
+00:02:46.340 don : Weapon_Sword_001 a quitte Link, surveillee 10 s
+00:02:46.808 armes : plus aucun objet porte
+00:03:23.430 sauvetage : Link releve par le partenaire (J2 a 47 m), vie 0 -> 12 quarts (n.1)
+
+## gf3 J1
+00:02:31.555 armes : emplacement 0 = Weapon_Sword_001 (908e69a9), position dans le repere de Link (-0.18, 1.44, -0.05)
+00:02:31.555 armes : emplacement 1 = Weapon_Sheath_001 (f240ddb0), position dans le repere de Link (-0.18, 1.44, -0.05)
+00:02:46.940 don : Weapon_Sword_001 a quitte Link, surveillee 10 s
+00:02:47.367 armes : plus aucun objet porte
+00:02:48.368 don : Weapon_Sword_001 (valeur 2000) donne au joueur 2, a 1.5 m de lui
+
+## gf3 J2
+00:02:16.421 essai inventaire : Armor_001_Head x1 -> objets 1 -> 2
+00:02:16.422 essai inventaire : Armor_001_Upper x1 -> objets 2 -> 3
+00:02:16.422 essai inventaire : Armor_001_Lower x1 -> objets 3 -> 4
+00:02:16.426 essai inventaire : Weapon_Sword_001 x2000 -> objets 4 -> 5
+00:02:16.428 essai inventaire : Weapon_Shield_001 x2000 -> objets 5 -> 6
+00:02:16.430 essai inventaire : Weapon_Bow_001 x2000 -> objets 6 -> 7
+00:02:36.081 don : Weapon_Sword_001 (valeur 2000) recu du joueur 1 -> inventaire ok, objets 7 -> 8
+
+## gf3 relais
+20:23:49.084 joueur 1 : don Weapon_Sword_001 2000
+
+## gf3 pilote : epee absente du monde de J1 apres le don
+    2.6s acteurs (Weapon_Sword_001|Weapon_Sheath) : 0

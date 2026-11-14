@@ -723,3 +723,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Partenaire prevenu : message `SAVED <distance>` (relais : retransmis, essai automatique de plus, 43/43) ; le partenaire affiche « Vous avez sauvé le joueur N ! ». [V] `rv3` : J1 releve, J2 affiche le message, le relais le journalise. [V] `rv3`, jeu de J2 ferme : J1 retombe -> `refuse (pas de partenaire en jeu)` -> Game Over.
 - **Non verifie** : a l'image (relevement, bandeau) ; refus quand le partenaire est mort ou trop loin (code ecrit, pas essaye) ; mort par un coup d'ennemi, noyade, lave. Pas d'etat « a terre » a relever : le sauvetage est immediat.
 - Preuve : `docs/evidence/2026-11-14_sauvetage-par-le-partenaire_rv2.log`, `2026-11-14_sauvetage_partenaire-prevenu-et-absent_rv3.log`.
+- [V] `gf2` : chute reelle (J1 tombe d'une falaise en marchant) -> releve, partenaire a 47 m (`2026-11-14_dons-d-armes_gf2-gf3.log`).
+
+### 5.38 Dons d'armes (2026-11-14, essais `gf2`, `gf3`) - [V] par les journaux, deux instances
+
+- Regle (a nous) : une arme **portee** par le joueur (dans la zone « portee » de 5.34 au releve precedent), qui la quitte en restant dans le monde (lachee ou lancee), est surveillee 10 s. Si elle reste immobile 1 s (moins de 3 cm par releve : une arme maniee bouge et revient dans la zone) et que le partenaire est a moins de 3 m, elle est donnee : `GIFT <nom> <durabilite>`, l'acteur est supprime chez nous, le partenaire l'ajoute a son inventaire. Les armes jamais portees (au sol, lachees par un ennemi) ne sont jamais donnees ; les fourreaux sont ignores.
+- Durabilite : `getLife` (case 87) de l'acteur de l'arme, d'apres botw-coop (« Trading ») ; ajout : `PauseMenuDataMgr::itemGet` (5.34), regroupe dans `game::AddInventoryItem` (aussi utilise par `COOP_TEST_GIVE`). Defaut corrige au passage : l'emplacement `main+0x1d67af0` pointe dans les donnees de `main`, pas dans le tas.
+- Relais : `GIFT` retransmis (essai automatique de plus, 44/44). Le plugin n'accepte en reception que des noms `Weapon_*`.
+- [V] `gf2` : epee lancee (R) a 22 m -> `a quitte Link, surveillee 10 s`, partenaire trop loin, rien donne.
+- [V] `gf3` (les deux joueurs au point de depart) : J1 equipe l'epee puis la lache par le menu (2e option, « Lâcher ») -> `donne au joueur 2, a 1.5 m de lui` (valeur 2000) ; chez J2 : `recu du joueur 1 -> inventaire ok, objets 7 -> 8` ; l'epee n'est plus dans le monde de J1.
+- **Non verifie** : a l'image ; bouclier, arc ; arme lancee jusqu'au partenaire ; bonus d'arme (modificateurs) : non transmis ; materiaux et nourriture : pas faits.

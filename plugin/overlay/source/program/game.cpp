@@ -898,6 +898,61 @@ namespace coop::game {
         return maxLife > 0 && maxLife < 1000000 && life <= maxLife;
     }
 
+    bool GetActorLifeValue(std::uintptr_t actor, int& value) {
+        /* Case 87 (getLife), comme GetEnemyLife, sans controle du nom. Pour une arme, d'apres
+           botw-coop (reverse-engineering.md, « Trading » et paragraphe sur getLife) : sa durabilite
+           dans les unites de l'inventaire. */
+        if (actor == 0 || !CanRead(actor, 0x850) || Peek<std::uint8_t>(actor + 0x64) != 1)
+            return false;
+        const auto& info = exl::util::GetMainModuleInfo();
+        const auto inMain = [&](std::uintptr_t p) {
+            return p >= info.m_Total.m_Start && p < info.m_Total.m_Start + info.m_Total.m_Size;
+        };
+        const auto vtable = Peek<std::uintptr_t>(actor);
+        if (!inMain(vtable) || !CanRead(vtable, 88 * 8))
+            return false;
+        const auto fnLife = Peek<std::uintptr_t>(vtable + 87 * 8);
+        if (!inMain(fnLife))
+            return false;
+        const auto ptr = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(fnLife)(actor);
+        if (ptr < actor || ptr >= actor + 0x4000 || !CanRead(ptr, 4))
+            return false;
+        value = Peek<std::int32_t>(ptr);
+        return true;
+    }
+
+    bool AddInventoryItem(const char* name, int value, int& before, int& after) {
+        /*
+         * uking::ui::PauseMenuDataMgr::itemGet(this, const SafeString& nom, int nombre, const WeaponModifierInfo*)
+         * a main+0xd921bc (pour une arme, nombre = durabilite) ; instance : **(main+0x1d67af0) ; compte
+         * de la liste des objets a +0x68+0x10. D'apres botw-coop (reverse-engineering.md, offsets.hpp ;
+         * reecrit) ; reverifie sur notre image 1.9.0 (prologue, 8 appelants ; emplacement lu par 88
+         * sites) et en jeu (essais gv1, vi1 : objets ajoutes, NOTES 5.34). Fil du jeu.
+         */
+        constexpr std::uintptr_t ItemGet = 0xd921bc;
+        constexpr std::uintptr_t PauseMenuDataMgrSlot = 0x1d67af0;
+        constexpr std::uintptr_t SafeStringVtableSlot = 0x1d66260;
+        constexpr std::uintptr_t ItemListCount = 0x68 + 0x10;
+        before = after = -1;
+        if (s_Offsets == nullptr || name == nullptr || name[0] == '\0')
+            return false;
+        const std::uintptr_t base = MainBase();
+        const auto slot = Peek<std::uintptr_t>(base + PauseMenuDataMgrSlot);
+        /* L'emplacement peut etre dans les donnees de main (pas dans le tas) : lisibilite seulement. */
+        const auto mgr = slot != 0 && CanRead(slot, 8) ? Peek<std::uintptr_t>(slot) : 0;
+        const auto vtSlot = Peek<std::uintptr_t>(base + SafeStringVtableSlot);
+        if (mgr == 0 || !CanRead(mgr, ItemListCount + 4) || vtSlot == 0)
+            return false;
+        struct SafeString {
+            std::uintptr_t m_Vtable;
+            const char* m_Str;
+        } str { vtSlot + 0x10, name };
+        before = Peek<std::int32_t>(mgr + ItemListCount);
+        reinterpret_cast<void (*)(std::uintptr_t, const SafeString&, int, const void*)>(base + ItemGet)(mgr, str, value, nullptr);
+        after = Peek<std::int32_t>(mgr + ItemListCount);
+        return true;
+    }
+
     bool GetPlayerLife(int& life, int& maxLife, std::uintptr_t& lifePtr) {
         /* Memes fonctions virtuelles que GetEnemyLife (cases 30 et 87), appliquees a l'acteur du
            joueur ; resultat a controler en jeu (NOTES 5.32). */

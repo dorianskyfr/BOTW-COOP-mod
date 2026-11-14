@@ -1,12 +1,16 @@
 #include "weapons.hpp"
 
+#include "clock.hpp"
 #include "config.hpp"
 #include "game.hpp"
+#include "notify.hpp"
+#include "session.hpp"
 
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
 
 #include <cmath>
+#include <cstdio>
 
 namespace coop::weapons {
 
@@ -61,6 +65,98 @@ namespace coop::weapons {
             int m_Count;
         };
 
+        /* ---- Dons ---- */
+
+        constexpr float GiftRange = 3.0f;  /* arme lachee a moins de 3 m du partenaire */
+        constexpr int LetGoScans = 100;    /* surveillee 10 s apres avoir quitte Link */
+
+        struct Held {
+            std::uintptr_t m_Actor = 0;
+            char m_Name[48] = {};
+        };
+        Held s_PrevWorn[Slots];
+        int s_PrevWornCount = 0;
+
+        constexpr int StillScans = 10;     /* immobile 1 s (une arme maniee bouge) */
+
+        struct LetGo {
+            std::uintptr_t m_Actor = 0;
+            char m_Name[48] = {};
+            int m_Scans = 0;
+            float m_Pos[3] = {};
+            int m_Still = 0;
+        };
+        LetGo s_LetGo[Slots];
+        int s_GiftLogs = 0;
+
+        bool IsWornRel(const float* rel) {
+            const float x = rel[3], y = rel[7], z = rel[11];
+            return y >= 0.30f && y <= 2.2f && x * x + z * z <= 0.9f * 0.9f;
+        }
+
+        /* Dons recus du partenaire : ajoutes a l'inventaire. */
+        void ApplyIncomingGifts() {
+            if (!coop::game::IsWorldReady())
+                return;
+            Gift g;
+            while (g_GiftIn.Pop(g)) {
+                int before = -1, after = -1;
+                const bool ok = coop::game::AddInventoryItem(g.m_Name, g.m_Value, before, after);
+                Logging.Log("[botw-coop] don : %s (valeur %d) recu du joueur %d -> inventaire %s, objets %d -> %d", g.m_Name,
+                    g.m_Value, g.m_From, ok ? "ok" : "ECHEC", before, after);
+                char msg[80];
+                std::snprintf(msg, sizeof(msg), "Joueur %d vous a donné : %s", g.m_From, g.m_Name);
+                coop::notify::Post(msg);
+            }
+        }
+
+        /* Armes lachees : donnees au partenaire s'il passe a portee. */
+        void HandleLetGo(const float link[12]) {
+            coop::session::Sample prev, last;
+            std::uint64_t updates = 0;
+            const bool partner = coop::session::g_Remote.Snapshot(prev, last, updates)
+                && coop::clock::NowMs() - last.m_TimeMs < 2000;
+            for (LetGo& lg : s_LetGo) {
+                if (lg.m_Actor == 0)
+                    continue;
+                if (++lg.m_Scans > LetGoScans || !coop::game::IsActorListed(lg.m_Actor) || coop::game::GetActorState(lg.m_Actor) == 3
+                    || std::strcmp(coop::game::GetActorName(lg.m_Actor), lg.m_Name) != 0) {
+                    lg = LetGo {};
+                    continue;
+                }
+                float m[12], rel[12];
+                coop::game::GetActorMtx(lg.m_Actor, m);
+                Relative(link, m, rel);
+                if (IsWornRel(rel)) { /* revenue sur Link (ramassee, ou arme maniee) */
+                    lg = LetGo {};
+                    continue;
+                }
+                const float mx = m[3] - lg.m_Pos[0], my = m[7] - lg.m_Pos[1], mz = m[11] - lg.m_Pos[2];
+                lg.m_Still = mx * mx + my * my + mz * mz < 0.03f * 0.03f ? lg.m_Still + 1 : 0;
+                lg.m_Pos[0] = m[3];
+                lg.m_Pos[1] = m[7];
+                lg.m_Pos[2] = m[11];
+                if (!partner || lg.m_Still < StillScans)
+                    continue;
+                const float dx = m[3] - last.m_Mtx[3], dy = m[7] - last.m_Mtx[7], dz = m[11] - last.m_Mtx[11];
+                if (dx * dx + dy * dy + dz * dz > GiftRange * GiftRange)
+                    continue;
+                Gift g;
+                std::strncpy(g.m_Name, lg.m_Name, sizeof(g.m_Name) - 1);
+                if (!coop::game::GetActorLifeValue(lg.m_Actor, g.m_Value) || g.m_Value <= 0)
+                    g.m_Value = 1;
+                if (!g_GiftOut.Push(g))
+                    continue; /* file pleine : on reessaiera au releve suivant */
+                coop::game::DeleteActor(lg.m_Actor);
+                Logging.Log("[botw-coop] don : %s (valeur %d) donne au joueur %d, a %.1f m de lui", g.m_Name, g.m_Value,
+                    coop::session::g_Remote.Id(), static_cast<double>(std::sqrt(dx * dx + dy * dy + dz * dz)));
+                char msg[80];
+                std::snprintf(msg, sizeof(msg), "Donné au joueur %d : %s", coop::session::g_Remote.Id(), g.m_Name);
+                coop::notify::Post(msg);
+                lg = LetGo {};
+            }
+        }
+
         bool CollectNear(const coop::game::ActorInfo& info, void* user) {
             auto& ctx = *static_cast<NearCtx*>(user);
             if (std::strncmp(info.m_Name, "Weapon_", 7) != 0 || ctx.m_Count >= MaxNear)
@@ -114,6 +210,7 @@ namespace coop::weapons {
     }
 
     void OnFrameLocal() {
+        ApplyIncomingGifts();
         if (++s_LocalFrames % ScanEvery != 0)
             return;
         coop::game::PlayerState st;
@@ -128,6 +225,7 @@ namespace coop::weapons {
 
         Pose found[Slots];
         char names[Slots][48] = {};
+        std::uintptr_t actors[Slots] = {};
         int n = 0;
         for (int i = 0; i < near.m_Count && n < Slots; i++) {
             float m[12];
@@ -141,8 +239,36 @@ namespace coop::weapons {
             p.m_Crc = Crc32(name);
             found[n] = p;
             std::strncpy(names[n], name, sizeof(names[n]) - 1);
+            actors[n] = near.m_Actors[i];
             n++;
         }
+
+        /* Dons : une arme portee au releve precedent qui ne l'est plus est surveillee (HandleLetGo). */
+        for (int k = 0; k < s_PrevWornCount; k++) {
+            bool still = false;
+            for (int i = 0; i < n; i++)
+                still |= actors[i] == s_PrevWorn[k].m_Actor;
+            if (still || std::strncmp(s_PrevWorn[k].m_Name, "Weapon_Sheath", 13) == 0)
+                continue;
+            bool known = false;
+            for (const LetGo& lg : s_LetGo)
+                known |= lg.m_Actor == s_PrevWorn[k].m_Actor;
+            for (LetGo& lg : s_LetGo)
+                if (!known && lg.m_Actor == 0) {
+                    lg.m_Actor = s_PrevWorn[k].m_Actor;
+                    std::memcpy(lg.m_Name, s_PrevWorn[k].m_Name, sizeof(lg.m_Name));
+                    lg.m_Scans = 0;
+                    if (s_GiftLogs++ < 20)
+                        Logging.Log("[botw-coop] don : %s a quitte Link, surveillee 10 s", lg.m_Name);
+                    break;
+                }
+        }
+        s_PrevWornCount = n;
+        for (int i = 0; i < n; i++) {
+            s_PrevWorn[i].m_Actor = actors[i];
+            std::memcpy(s_PrevWorn[i].m_Name, names[i], sizeof(s_PrevWorn[i].m_Name));
+        }
+        HandleLetGo(link);
 
         int before = 0;
         for (int k = 0; k < Slots; k++)
