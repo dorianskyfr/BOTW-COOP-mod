@@ -11,3 +11,6 @@ backups/
 __pycache__/
 tools/romfs-extract/bin/
 tools/romfs-extract/obj/
+
+# Reglages personnels de Claude Code (non publies)
+.claude/settings.local.json
