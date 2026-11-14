@@ -1,0 +1,60 @@
+﻿# Vraie armure et vraies armes equipees par le menu (2026-11-14, essai vi1, une instance, COOP_TEST_SPAWN + COOP_TEST_GIVE).
+# Le Link temoin (a 3 m) recopie ce que le plugin releve sur le joueur local ; il fait defiler ses animations toutes les 4 s (mode essai).
+
+00:02:05.766 essai inventaire : Armor_001_Head x1 -> objets 1 -> 2
+00:02:05.766 essai inventaire : Armor_001_Upper x1 -> objets 2 -> 3
+00:02:05.766 essai inventaire : Armor_001_Lower x1 -> objets 3 -> 4
+00:02:05.775 essai inventaire : Weapon_Sword_001 x2000 -> objets 4 -> 5
+00:02:05.776 essai inventaire : Weapon_Shield_001 x2000 -> objets 5 -> 6
+00:02:05.778 essai inventaire : Weapon_Bow_001 x2000 -> objets 6 -> 7
+00:02:14.258 acteur distant : sequence "Fall" (avant "Dash")
+00:02:18.257 acteur distant : sequence "Glide" (avant "Fall")
+00:02:58.483 acteur distant : sequence "Fall" (avant "Dash")
+00:03:02.483 acteur distant : sequence "Glide" (avant "Fall")
+00:03:42.486 acteur distant : sequence "Fall" (avant "Dash")
+00:03:46.482 acteur distant : sequence "Glide" (avant "Fall")
+00:04:17.810 armes : emplacement 0 = Weapon_Sword_001 (908e69a9), position dans le repere de Link (-0.18, 1.44, -0.04)
+00:04:17.810 armes : emplacement 1 = Weapon_Shield_001 (7bd5811b), position dans le repere de Link (0.12, 1.15, -0.11)
+00:04:17.810 armes : emplacement 2 = Weapon_Bow_001 (ad66ce4f), position dans le repere de Link (-0.09, 1.08, -0.09)
+00:04:17.891 armes : emplacement 0 = Weapon_Sword_001 (908e69a9), position dans le repere de Link (-0.17, 1.44, -0.04)
+00:04:17.891 armes : emplacement 1 = Weapon_Shield_001 (7bd5811b), position dans le repere de Link (0.12, 1.15, -0.11)
+00:04:17.891 armes : emplacement 2 = Weapon_Bow_001 (ad66ce4f), position dans le repere de Link (-0.09, 1.08, -0.09)
+00:04:17.891 armes : emplacement 3 = Weapon_Sheath_001 (f240ddb0), position dans le repere de Link (-0.17, 1.44, -0.04)
+00:04:17.891 armes : emplacement 4 = Weapon_Quiver_001 (bc3641b9), position dans le repere de Link (-0.12, 0.89, -0.05)
+00:04:17.959 armes du partenaire : "CoopWeapon_Weapon_Sword_001" CREE apres 5 images (objet 0)
+00:04:17.992 armes du partenaire : "CoopWeapon_Weapon_Shield_001" CREE apres 5 images (objet 1)
+00:04:18.029 armes du partenaire : "CoopWeapon_Weapon_Bow_001" CREE apres 5 images (objet 2)
+00:04:18.061 armes du partenaire : "CoopWeapon_Weapon_Sheath_001" CREE apres 5 images (objet 3)
+00:04:18.097 armes du partenaire : "CoopWeapon_Weapon_Quiver_001" CREE apres 5 images (objet 4)
+00:04:18.391 armure : portee Armor_001_Head_B (f2b0eb45) / Armor_001_Upper (63162bda) / Armor_001_Lower (03d38f65)
+00:04:18.392 armure du partenaire : creation de "CoopGear_Armor_001_Head_B" demandee (piece 0)
+00:04:18.424 armure du partenaire : creation de "CoopGear_Armor_001_Upper" demandee (piece 1)
+00:04:18.458 armure du partenaire : creation de "CoopGear_Armor_001_Lower" demandee (piece 2)
+00:04:18.561 armure du partenaire : "CoopGear_Armor_001_Head_B" CREE apres 5 images (piece 0)
+00:04:18.592 armure du partenaire : "CoopGear_Armor_001_Upper" CREE apres 5 images (piece 1)
+00:04:18.625 armure du partenaire : "CoopGear_Armor_001_Lower" CREE apres 5 images (piece 2)
+00:04:26.459 acteur distant : sequence "Fall" (avant "Dash")
+00:04:30.458 acteur distant : sequence "Glide" (avant "Fall")
+00:06:09.856 armure du partenaire : piece 0 (CoopGear_Armor_001_Head_B) oubliee
+00:06:09.856 armure du partenaire : piece 1 (CoopGear_Armor_001_Upper) oubliee
+00:06:09.856 armure du partenaire : piece 2 (CoopGear_Armor_001_Lower) oubliee
+00:06:09.858 armes du partenaire : objet 0 (CoopWeapon_Weapon_Sword_001) oublie
+00:06:09.858 armes du partenaire : objet 1 (CoopWeapon_Weapon_Shield_001) oublie
+00:06:09.858 armes du partenaire : objet 2 (CoopWeapon_Weapon_Bow_001) oublie
+00:06:09.858 armes du partenaire : objet 3 (CoopWeapon_Weapon_Sheath_001) oublie
+00:06:09.858 armes du partenaire : objet 4 (CoopWeapon_Weapon_Quiver_001) oublie
+
+## perf (plugin par image)
+00:00:50.902 perf: 900 images, intervalle moyen 45199 us (22.1 img/s), max 9085998 us | plugin moyen 200 us, max 21794 us | lectures refusees 293
+00:01:21.135 perf: 900 images, intervalle moyen 33593 us (29.7 img/s), max 227429 us | plugin moyen 257 us, max 5600 us | lectures refusees 293
+00:02:00.195 perf: 900 images, intervalle moyen 43404 us (23.0 img/s), max 1474703 us | plugin moyen 374 us, max 26114 us | lectures refusees 293
+00:02:30.199 perf: 900 images, intervalle moyen 33337 us (29.9 img/s), max 56292 us | plugin moyen 1090 us, max 20146 us | lectures refusees 293
+00:03:00.421 perf: 900 images, intervalle moyen 33582 us (29.7 img/s), max 202722 us | plugin moyen 1102 us, max 6967 us | lectures refusees 293
+00:03:30.420 perf: 900 images, intervalle moyen 33334 us (29.9 img/s), max 48052 us | plugin moyen 1073 us, max 6195 us | lectures refusees 293
+00:04:00.420 perf: 900 images, intervalle moyen 33333 us (30.0 img/s), max 47064 us | plugin moyen 1047 us, max 8125 us | lectures refusees 293
+00:04:30.395 perf: 900 images, intervalle moyen 33306 us (30.0 img/s), max 47231 us | plugin moyen 1085 us, max 8821 us | lectures refusees 293
+00:05:00.512 perf: 900 images, intervalle moyen 33463 us (29.8 img/s), max 84045 us | plugin moyen 1187 us, max 13165 us | lectures refusees 293
+00:05:31.413 perf: 900 images, intervalle moyen 34338 us (29.1 img/s), max 154939 us | plugin moyen 1421 us, max 12250 us | lectures refusees 293
+00:06:01.836 perf: 900 images, intervalle moyen 33804 us (29.5 img/s), max 156890 us | plugin moyen 1468 us, max 12232 us | lectures refusees 293
+00:06:34.100 perf: 900 images, intervalle moyen 35853 us (27.8 img/s), max 319896 us | plugin moyen 531 us, max 8130 us | lectures refusees 293
+00:07:09.136 perf: 900 images, intervalle moyen 38928 us (25.6 img/s), max 633956 us | plugin moyen 395 us, max 12654 us | lectures refusees 293

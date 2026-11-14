@@ -132,6 +132,9 @@ namespace coop::game {
     /* true si ce pointeur figure encore dans la liste d'ActorCreator (acteur vivant). */
     bool IsActorListed(std::uintptr_t actor);
 
+    /* Nombre d'acteurs de la liste d'ActorCreator (mesure). */
+    int ListedActorCount();
+
     /* BaseProc::mState (0 Init, 1 Calc, 2 Sleep, 3 Delete), -1 si inconnu. */
     int GetActorState(std::uintptr_t actor);
 

@@ -220,10 +220,12 @@ namespace coop::game {
     namespace {
         std::atomic<bool> s_WorldReady { false };
         std::uint32_t s_ReadyFrames = 0;
+        std::uint64_t s_Frame = 0; /* images vues par OnFrameStart (releve des acteurs, plus bas) */
         bool ComputeWorldReadyNow();
     }
 
     void OnFrameStart() {
+        s_Frame++; /* nouveau releve de la liste des acteurs a la premiere demande */
         if (++s_FramesSinceFlush >= 600) {
             s_FramesSinceFlush = 0;
             for (auto& r : s_Ranges)
@@ -399,9 +401,21 @@ namespace coop::game {
     namespace {
         bool RequestCreateActorImpl(const char* name, const float pos[3], ActorHandle* handle);
 
-        /* ActorCreator::mActorList, voir LogNearbyActors. Appelle fn(actor) ; arret si fn renvoie true. */
-        template<typename Fn>
-        void ForEachActor(Fn fn) {
+        /*
+         * Releve de ActorCreator::mActorList (voir LogNearbyActors), fait une seule fois par image.
+         * Mesure du 2026-11-14 (essais vi1, vd1) : armure, armes, pantin et monde pret parcouraient
+         * chacun la liste plusieurs fois par image, et le plugin montait de 0,2 a 1-3 ms par image.
+         * Tous les appelants tournent dans le fil du jeu, entre deux images : la liste ne change pas
+         * pendant ce temps (les creations et destructions demandees par le plugin sont differees).
+         */
+        constexpr int MaxSnapshot = 8192;
+        std::uintptr_t s_Snapshot[MaxSnapshot];
+        int s_SnapshotCount = 0;
+        std::uint64_t s_SnapshotFrame = ~0ull;
+
+        void TakeSnapshot() {
+            s_SnapshotFrame = s_Frame;
+            s_SnapshotCount = 0;
             if (s_Offsets == nullptr)
                 return;
             const auto creator = Peek<std::uintptr_t>(MainBase() + s_Offsets->m_ActorCreatorInstancePtr);
@@ -413,15 +427,24 @@ namespace coop::game {
             if (count <= 0 || count > 20000 || nodeOffset < 0 || nodeOffset > 0x2000)
                 return;
             auto node = Peek<std::uintptr_t>(sentinel + 0x8);
-            for (int i = 0; i < count && node != sentinel && LooksLikeHeapPtr(node); i++) {
+            for (int i = 0; i < count && s_SnapshotCount < MaxSnapshot && node != sentinel && LooksLikeHeapPtr(node); i++) {
                 const auto actor = node - static_cast<std::uintptr_t>(nodeOffset);
                 /* Tout l'acteur jusqu'a son noeud de liste doit etre lisible. */
                 if (!CanRead(actor, static_cast<std::size_t>(nodeOffset) + 0x10))
                     return;
-                if (fn(actor))
-                    return;
+                s_Snapshot[s_SnapshotCount++] = actor;
                 node = Peek<std::uintptr_t>(node + 0x8);
             }
+        }
+
+        /* Appelle fn(actor) pour chaque acteur du releve de l'image ; arret si fn renvoie true. */
+        template<typename Fn>
+        void ForEachActor(Fn fn) {
+            if (s_SnapshotFrame != s_Frame)
+                TakeSnapshot();
+            for (int i = 0; i < s_SnapshotCount; i++)
+                if (fn(s_Snapshot[i]))
+                    return;
         }
     }
 
@@ -474,6 +497,15 @@ namespace coop::game {
             return false;
         using DeleteLaterFn = bool (*)(std::uintptr_t proc, int reason);
         return reinterpret_cast<DeleteLaterFn>(MainBase() + s_Offsets->m_BaseProc_DeleteLater)(actor, 0);
+    }
+
+    int ListedActorCount() {
+        int n = 0;
+        ForEachActor([&](std::uintptr_t) {
+            n++;
+            return false;
+        });
+        return n;
     }
 
     bool IsActorListed(std::uintptr_t actor) {

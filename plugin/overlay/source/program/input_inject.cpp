@@ -167,21 +167,51 @@ namespace coop::input_inject {
                 }
                 s_PrevUs = t0;
 
+#ifdef COOP_PERF_DETAIL
+                /* Essai : temps de chaque module, cumule et journalise avec le bilan "perf". */
+                static const char* const s_PartNames[] = { "debut", "anim", "notify", "warp", "status", "armure", "armes",
+                    "distant", "monde", "drapeaux", "ennemis", "objets" };
+                constexpr int PartCount = sizeof(s_PartNames) / sizeof(s_PartNames[0]);
+                static std::uint64_t s_PartUs[PartCount] = {};
+                int part = 0;
+                std::uint64_t tPart = coop::clock::NowUs();
+                auto mark = [&]() {
+                    const std::uint64_t now2 = coop::clock::NowUs();
+                    s_PartUs[part++] += now2 - tPart;
+                    tPart = now2;
+                };
+#define COOP_PART() mark()
+#else
+#define COOP_PART() ((void)0)
+#endif
                 coop::game::OnFrameStart();
 #ifdef COOP_REMOTE_PAD
                 coop::game::DropHoldOnFrame();
 #endif
+                COOP_PART();
                 coop::anim_state::OnFrame();
+                COOP_PART();
                 coop::notify::OnFrame();
+                COOP_PART();
                 coop::warp::OnFrame();
+                COOP_PART();
                 coop::status::OnFrame();
+                COOP_PART();
                 coop::gear::OnFrameLocal();
+                COOP_PART();
                 coop::weapons::OnFrameLocal();
+                COOP_PART();
                 coop::remote_actor::OnFrame();
+                COOP_PART();
                 coop::world_sync::OnFrame();
+                COOP_PART();
                 coop::flags::OnFrame();
+                COOP_PART();
                 coop::enemy_life::OnFrame();
+                COOP_PART();
                 coop::objects::OnFrame();
+                COOP_PART();
+#undef COOP_PART
 
                 const std::uint64_t spent = coop::clock::NowUs() - t0;
                 s_SumUs += spent;
@@ -192,6 +222,16 @@ namespace coop::input_inject {
                     Logging.Log("[botw-coop] perf: %lu images, intervalle moyen %lu us (%lu.%lu img/s), max %lu us | plugin moyen %lu us, max %lu us | lectures refusees %lu",
                         s_N, avgGap, avgGap ? 1000000 / avgGap : 0, avgGap ? (10000000 / avgGap) % 10 : 0, s_MaxGapUs,
                         s_SumUs / s_N, s_MaxUs, coop::game::RefusedReads());
+#ifdef COOP_PERF_DETAIL
+                    Logging.Log("[botw-coop] perf (us/image) : %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu | acteurs %d",
+                        s_PartNames[0], s_PartUs[0] / s_N, s_PartNames[1], s_PartUs[1] / s_N, s_PartNames[2], s_PartUs[2] / s_N,
+                        s_PartNames[3], s_PartUs[3] / s_N, s_PartNames[4], s_PartUs[4] / s_N, s_PartNames[5], s_PartUs[5] / s_N,
+                        s_PartNames[6], s_PartUs[6] / s_N, s_PartNames[7], s_PartUs[7] / s_N, s_PartNames[8], s_PartUs[8] / s_N,
+                        s_PartNames[9], s_PartUs[9] / s_N, s_PartNames[10], s_PartUs[10] / s_N, s_PartNames[11], s_PartUs[11] / s_N,
+                        coop::game::ListedActorCount());
+                    for (auto& v : s_PartUs)
+                        v = 0;
+#endif
                     s_SumUs = s_MaxUs = s_SumGapUs = s_MaxGapUs = s_N = 0;
                 }
             }
