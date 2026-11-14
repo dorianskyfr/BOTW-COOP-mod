@@ -49,7 +49,7 @@ Niveaux : 0 absent · 1 code · 2 compilé · 3 essai simulé · 4 deux vraies i
 | **Téléportation vers un partenaire** (P2) | 0 | 4 (≤ 250 m direct, bonds au-delà, changement de stage du jeu `main+0x12082e0`) | à faire ; gros risque de chargement bloqué sous Ryujinx |
 | **Carte : marqueurs, tampons** (P2) | 0 | 3–4 | à faire |
 | **Repas partagés, effets** (P2) | 4 par journaux (soins) ; effets non | 4 (soins) ; effets non | effets des plats (NOTES §5.39) |
-| **Dons d'objets** (P2) | 4 par journaux pour les armes (sans bonus) | 4 (armes avec bonus, matériaux) | bonus d'arme, matériaux (NOTES §5.38) |
+| **Dons d'objets** (P2) | 4 par journaux : épée, bouclier, bonus d'arme, matériaux `Item_*` | 4 (armes avec bonus, matériaux) | arc ; insectes, minerais ; vérification à l'image (NOTES §5.42) |
 | **Sauvegardes coop séparées** (P1) | 0 (nos essais utilisent des copies) | 3–4 (`save:/coop/`, 3 sauvegardes de secours) | **important** avant de jouer sur une vraie sauvegarde |
 | **Messages à l'écran** (P2) | 0 | 4 (bannière d'information du jeu) | utile partout : à faire tôt |
 | **Chevaux, cinématiques, spectateur, 3–4 joueurs, Rivals** (P3) | 0 | partiel / 0 | plus tard |

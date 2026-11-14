@@ -57,7 +57,7 @@ import time
 
 # Version du protocole : a changer en meme temps que coop::protocol::Version
 # (plugin/overlay/source/program/protocol.hpp) ; tools/test_relay.py compare les deux.
-PROTOCOL_VERSION = 1
+PROTOCOL_VERSION = 2   # 2 : GIFT porte le bonus de l'arme
 
 
 # Messages d'etat retransmis tels quels aux autres joueurs : nom -> nombre de valeurs.
@@ -83,7 +83,8 @@ STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2
                 "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1}
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur.
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
-OPTIONAL_EXTRA = {"TIME": 1, "MTX": 1}
+# GIFT peut porter 2 valeurs de plus : le bonus de l'arme (bits WeaponModifier en hexadecimal, valeur).
+OPTIONAL_EXTRA = {"TIME": 1, "MTX": 1, "GIFT": 2}
 
 
 class Client:

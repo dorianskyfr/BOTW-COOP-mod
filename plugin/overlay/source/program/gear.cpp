@@ -130,6 +130,16 @@ namespace coop::gear {
         bool s_Given = false;
         std::uint64_t s_ReadyFrames = 0;
 
+        /* Essai : contenu de l'inventaire lu par coop::game::ReadPouch, dans le journal. */
+        void LogPouch(const char* when) {
+            static coop::game::PouchEntry items[64];
+            const int n = coop::game::ReadPouch(items, 64);
+            Logging.Log("[botw-coop] essai inventaire (%s) : %d objet(s) lu(s)", when, n);
+            for (int i = 0; i < n; i++)
+                Logging.Log("[botw-coop]   %d: %s type=%d valeur=%d equipe=%d bonus=%x/%d", i, items[i].m_Name, items[i].m_Type,
+                    items[i].m_Value, items[i].m_Equipped ? 1 : 0, items[i].m_Bonus.m_Flags, items[i].m_Bonus.m_Value);
+        }
+
         void GiveTestItems() {
             if (s_Given || !coop::game::IsSupported() || !coop::game::IsWorldReady()) {
                 s_ReadyFrames = 0;
@@ -150,12 +160,20 @@ namespace coop::gear {
             };
             for (const Item& it : items) {
                 int before = -1, after = -1;
-                if (!coop::game::AddInventoryItem(it.m_Name, it.m_Count, before, after)) {
+                coop::game::WeaponBonus bonus;
+#ifdef COOP_TEST_BONUS
+                /* Essai des bonus : l'epee recoit « Attaque + » (bit 1), valeur 10. */
+                if (std::strcmp(it.m_Name, "Weapon_Sword_001") == 0)
+                    bonus = { 1u, 10 };
+#endif
+                if (!coop::game::AddInventoryItem(it.m_Name, it.m_Count, before, after, &bonus)) {
                     Logging.Log("[botw-coop] essai inventaire : gestionnaire introuvable");
                     return;
                 }
-                Logging.Log("[botw-coop] essai inventaire : %s x%d -> objets %d -> %d", it.m_Name, it.m_Count, before, after);
+                Logging.Log("[botw-coop] essai inventaire : %s x%d (bonus %x/%d) -> objets %d -> %d", it.m_Name, it.m_Count,
+                    bonus.m_Flags, bonus.m_Value, before, after);
             }
+            LogPouch("apres les objets d'essai");
         }
     }
 #endif

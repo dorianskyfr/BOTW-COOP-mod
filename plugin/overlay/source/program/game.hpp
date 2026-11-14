@@ -189,9 +189,29 @@ namespace coop::game {
     /* Valeur de getLife (case 87) d'un acteur ; pour une arme, sa durabilite. Fil du jeu. */
     bool GetActorLifeValue(std::uintptr_t actor, int& value);
 
-    /* Ajoute un objet a l'inventaire du joueur (itemGet ; pour une arme, value = durabilite).
-       before / after : nombre d'entrees de la liste d'objets avant et apres. Fil du jeu. */
-    bool AddInventoryItem(const char* name, int value, int& before, int& after);
+    /* Bonus d'une arme (WeaponModifierInfo du jeu) : bits WeaponModifier, valeur. flags = 0 : aucun. */
+    struct WeaponBonus {
+        std::uint32_t m_Flags = 0;
+        std::int32_t  m_Value = 0;
+    };
+
+    /* Ajoute un objet a l'inventaire du joueur (itemGet ; pour une arme, value = durabilite, bonus
+       facultatif). before / after : nombre d'entrees de la liste d'objets avant et apres. Fil du jeu. */
+    bool AddInventoryItem(const char* name, int value, int& before, int& after, const WeaponBonus* bonus = nullptr);
+
+    /* Un objet de l'inventaire (PouchItem du jeu). Type : 0 epee, 1 arc, 2 fleche, 3 bouclier,
+       4-6 armure, 7 materiau, 8 plat, 9 objet cle. */
+    struct PouchEntry {
+        char          m_Name[48] = {};
+        int           m_Type = -1;
+        int           m_Value = 0;   /* durabilite pour une arme, nombre pour une pile */
+        bool          m_Equipped = false;
+        WeaponBonus   m_Bonus;
+    };
+
+    /* Lit l'inventaire (au plus max objets, filtre facultatif par types : bit 1 << type).
+       Renvoie le nombre d'objets lus, -1 si l'inventaire est illisible. Fil du jeu. */
+    int ReadPouch(PouchEntry* out, int max, std::uint32_t typeMask = 0xffffffffu);
 
     /* Nom d'un acteur (BaseProc::mName), ou "" si le pointeur de chaine est invalide. */
     const char* GetActorName(std::uintptr_t actor);

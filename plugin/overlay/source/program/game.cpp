@@ -921,7 +921,64 @@ namespace coop::game {
         return true;
     }
 
-    bool AddInventoryItem(const char* name, int value, int& before, int& after) {
+    namespace {
+        constexpr std::uintptr_t PauseMenuDataMgrSlot = 0x1d67af0;
+        constexpr std::uintptr_t ItemList = 0x68;              /* sead::OffsetList : noeud debut/fin, compte +0x10, decalage +0x14 */
+        constexpr std::uintptr_t ItemListCount = ItemList + 0x10;
+
+        std::uintptr_t PauseMenuDataMgr() {
+            const auto slot = Peek<std::uintptr_t>(MainBase() + PauseMenuDataMgrSlot);
+            /* L'emplacement peut etre dans les donnees de main (pas dans le tas) : lisibilite seulement. */
+            const auto mgr = slot != 0 && CanRead(slot, 8) ? Peek<std::uintptr_t>(slot) : 0;
+            return mgr != 0 && CanRead(mgr, ItemListCount + 8) ? mgr : 0;
+        }
+    }
+
+    int ReadPouch(PouchEntry* out, int max, std::uint32_t typeMask) {
+        /*
+         * Liste des objets de PauseMenuDataMgr : sead::OffsetList a +0x68 (noeud de debut/fin : precedent,
+         * suivant ; compte a +0x78 ; decalage du noeud dans l'objet a +0x7c). Objet (PouchItem) : noeud a
+         * +0x08, type +0x18, valeur +0x20, equipe +0x24, pointeur du nom +0x30, valeur du bonus +0x80,
+         * bits du bonus +0x88. D'apres botw-coop (reverse-engineering.md, « PauseMenuDataMgr », mise en
+         * page de la decompilation 1.5.0) ; reecrit, a reverifier en jeu (essai wb1).
+         */
+        if (s_Offsets == nullptr || out == nullptr || max <= 0)
+            return -1;
+        const auto mgr = PauseMenuDataMgr();
+        if (mgr == 0)
+            return -1;
+        const std::uintptr_t head = mgr + ItemList;
+        const int count = Peek<std::int32_t>(mgr + ItemListCount);
+        const int offset = Peek<std::int32_t>(mgr + ItemListCount + 4);
+        if (count < 0 || count > 1000 || offset != 8)
+            return -1;
+        int n = 0;
+        std::uintptr_t node = Peek<std::uintptr_t>(head + 8);
+        for (int guard = 0; node != head && guard <= count; guard++) {
+            if (node == 0 || !CanRead(node - 8, 0x90))
+                return -1;
+            const std::uintptr_t item = node - 8;
+            const int type = Peek<std::int32_t>(item + 0x18);
+            if (type >= 0 && type < 32 && (typeMask & (1u << type)) != 0 && n < max) {
+                PouchEntry& e = out[n++];
+                e = PouchEntry {};
+                e.m_Type = type;
+                e.m_Value = Peek<std::int32_t>(item + 0x20);
+                e.m_Equipped = Peek<std::uint8_t>(item + 0x24) != 0;
+                e.m_Bonus.m_Value = Peek<std::int32_t>(item + 0x80);
+                e.m_Bonus.m_Flags = Peek<std::uint32_t>(item + 0x88);
+                const auto str = Peek<std::uintptr_t>(item + 0x30);
+                if (str != 0 && CanRead(str, sizeof(e.m_Name))) {
+                    std::memcpy(e.m_Name, reinterpret_cast<const void*>(str), sizeof(e.m_Name) - 1);
+                    e.m_Name[sizeof(e.m_Name) - 1] = '\0';
+                }
+            }
+            node = Peek<std::uintptr_t>(node + 8);
+        }
+        return n;
+    }
+
+    bool AddInventoryItem(const char* name, int value, int& before, int& after, const WeaponBonus* bonus) {
         /*
          * uking::ui::PauseMenuDataMgr::itemGet(this, const SafeString& nom, int nombre, const WeaponModifierInfo*)
          * a main+0xd921bc (pour une arme, nombre = durabilite) ; instance : **(main+0x1d67af0) ; compte
@@ -930,25 +987,23 @@ namespace coop::game {
          * sites) et en jeu (essais gv1, vi1 : objets ajoutes, NOTES 5.34). Fil du jeu.
          */
         constexpr std::uintptr_t ItemGet = 0xd921bc;
-        constexpr std::uintptr_t PauseMenuDataMgrSlot = 0x1d67af0;
         constexpr std::uintptr_t SafeStringVtableSlot = 0x1d66260;
-        constexpr std::uintptr_t ItemListCount = 0x68 + 0x10;
         before = after = -1;
         if (s_Offsets == nullptr || name == nullptr || name[0] == '\0')
             return false;
         const std::uintptr_t base = MainBase();
-        const auto slot = Peek<std::uintptr_t>(base + PauseMenuDataMgrSlot);
-        /* L'emplacement peut etre dans les donnees de main (pas dans le tas) : lisibilite seulement. */
-        const auto mgr = slot != 0 && CanRead(slot, 8) ? Peek<std::uintptr_t>(slot) : 0;
+        const auto mgr = PauseMenuDataMgr();
         const auto vtSlot = Peek<std::uintptr_t>(base + SafeStringVtableSlot);
-        if (mgr == 0 || !CanRead(mgr, ItemListCount + 4) || vtSlot == 0)
+        if (mgr == 0 || vtSlot == 0)
             return false;
         struct SafeString {
             std::uintptr_t m_Vtable;
             const char* m_Str;
         } str { vtSlot + 0x10, name };
         before = Peek<std::int32_t>(mgr + ItemListCount);
-        reinterpret_cast<void (*)(std::uintptr_t, const SafeString&, int, const void*)>(base + ItemGet)(mgr, str, value, nullptr);
+        /* WeaponModifierInfo : { u32 bits ; s32 valeur } (d'apres botw-coop, reverse-engineering.md). */
+        const WeaponBonus* mod = bonus != nullptr && bonus->m_Flags != 0 ? bonus : nullptr;
+        reinterpret_cast<void (*)(std::uintptr_t, const SafeString&, int, const void*)>(base + ItemGet)(mgr, str, value, mod);
         after = Peek<std::int32_t>(mgr + ItemListCount);
         return true;
     }

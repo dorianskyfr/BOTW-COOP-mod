@@ -63,7 +63,52 @@ namespace coop::weapons {
             float m_Pos[3];
             std::uintptr_t m_Actors[MaxNear];
             int m_Count;
+            std::uintptr_t m_Items[MaxNear];  /* materiaux (Item_*) a moins de 3 m */
+            int m_ItemCount;
         };
+
+        /*
+         * Materiaux tenus : d'apres botw-coop (reverse-engineering.md, inventaire), « Tenir » dans le
+         * menu fait apparaitre l'objet dans les mains de Link (~1,1 m au-dessus de ses pieds) a la
+         * fermeture du menu ; A le pose. Un Item_* tenu (meme zone que les objets portes) qui quitte
+         * les mains est surveille comme une arme lachee. A reverifier en jeu (essai mt1).
+         */
+        constexpr int MaxHeld = 6;
+        std::uintptr_t s_PrevHeld[MaxHeld] = {};
+        char s_PrevHeldName[MaxHeld][48] = {};
+        int s_PrevHeldCount = 0;
+
+        /*
+         * Seuls les Item_* que l'inventaire a deja contenus (materiaux, plats) comptent : un autre
+         * acteur Item_* reste pres de Link sans etre un objet tenu (Item_Conductor, vu a 0,84 m, essai
+         * mt1). Noms releves dans l'inventaire toutes les 3 s ; la liste ne fait que grandir.
+         */
+        constexpr int MatMax = 160;
+        constexpr std::uint32_t MatTypes = (1u << 7) | (1u << 8);
+        coop::game::PouchEntry s_MatRead[MatMax];
+        char s_MatNames[MatMax][48] = {};
+        int s_MatCount = 0;
+        int s_MatScans = 0;
+
+        void RefreshMaterialNames() {
+            if (s_MatScans++ % 30 != 0)
+                return;
+            const int n = coop::game::ReadPouch(s_MatRead, MatMax, MatTypes);
+            for (int i = 0; i < n; i++) {
+                bool known = false;
+                for (int k = 0; k < s_MatCount && !known; k++)
+                    known = std::strcmp(s_MatNames[k], s_MatRead[i].m_Name) == 0;
+                if (!known && s_MatCount < MatMax)
+                    std::memcpy(s_MatNames[s_MatCount++], s_MatRead[i].m_Name, sizeof(s_MatNames[0]));
+            }
+        }
+
+        bool IsPouchMaterial(const char* name) {
+            for (int k = 0; k < s_MatCount; k++)
+                if (std::strcmp(s_MatNames[k], name) == 0)
+                    return true;
+            return false;
+        }
 
         /* ---- Dons ---- */
 
@@ -85,9 +130,85 @@ namespace coop::weapons {
             int m_Scans = 0;
             float m_Pos[3] = {};
             int m_Still = 0;
+            coop::game::WeaponBonus m_Bonus;
         };
         LetGo s_LetGo[Slots];
         int s_GiftLogs = 0;
+
+        /*
+         * Bonus des armes : l'acteur lache ne dit pas ou il le garde (botw-coop non plus,
+         * reverse-engineering.md « Weapon bonuses »). On relit donc les armes de l'inventaire ~3 fois
+         * par seconde ; une arme qui en sort est notee (nom, bonus) pendant 15 s. Quand une arme
+         * quitte Link, la derniere notee sous ce nom donne son bonus. (L'objet sort de l'inventaire des
+         * le choix « Lacher », menu encore ouvert, avant que l'acteur ne quitte Link.)
+         */
+        constexpr int PouchMax = 64;
+        constexpr std::uint32_t WeaponTypes = (1u << 0) | (1u << 1) | (1u << 3); /* epee, arc, bouclier */
+        constexpr int PouchEvery = 3;          /* releves : ~3 fois par seconde */
+        constexpr int RemovedKeepScans = 150;  /* 15 s */
+        coop::game::PouchEntry s_PouchPrev[PouchMax];
+        coop::game::PouchEntry s_PouchNow[PouchMax];
+        int s_PouchPrevN = -1;
+        int s_PouchScans = 0;
+
+        struct Removed {
+            char m_Name[48] = {};
+            coop::game::WeaponBonus m_Bonus;
+            int m_Scan = -1000000;
+            bool m_Used = true;
+        };
+        Removed s_Removed[8];
+        int s_RemovedNext = 0;
+
+        bool SameEntry(const coop::game::PouchEntry& a, const coop::game::PouchEntry& b) {
+            return std::strcmp(a.m_Name, b.m_Name) == 0 && a.m_Bonus.m_Flags == b.m_Bonus.m_Flags && a.m_Bonus.m_Value == b.m_Bonus.m_Value;
+        }
+
+        /* Relit l'inventaire ; note les armes qui en sont sorties depuis la lecture precedente. */
+        void RefreshPouch(bool force) {
+            if (++s_PouchScans % PouchEvery != 0 && !force)
+                return;
+            const int now = coop::game::ReadPouch(s_PouchNow, PouchMax, WeaponTypes);
+            if (now < 0)
+                return;
+            if (s_PouchPrevN < 0)
+                Logging.Log("[botw-coop] dons : inventaire lu, %d arme(s)", now);
+            for (int i = 0; s_PouchPrevN > 0 && i < s_PouchPrevN; i++) {
+                /* Combien de copies identiques (nom + bonus) avant / maintenant ; on ne note qu'a la derniere. */
+                int before = 0, after = 0, later = 0;
+                for (int j = 0; j < s_PouchPrevN; j++) {
+                    before += SameEntry(s_PouchPrev[j], s_PouchPrev[i]);
+                    later += j > i && SameEntry(s_PouchPrev[j], s_PouchPrev[i]);
+                }
+                for (int j = 0; j < now; j++)
+                    after += SameEntry(s_PouchNow[j], s_PouchPrev[i]);
+                if (later < before - after) {
+                    Removed& r = s_Removed[s_RemovedNext++ % 8];
+                    std::memcpy(r.m_Name, s_PouchPrev[i].m_Name, sizeof(r.m_Name));
+                    r.m_Bonus = s_PouchPrev[i].m_Bonus;
+                    r.m_Scan = s_PouchScans;
+                    r.m_Used = false;
+                    if (s_GiftLogs++ < 20)
+                        Logging.Log("[botw-coop] dons : %s sorti de l'inventaire (bonus %x/%d)", r.m_Name, r.m_Bonus.m_Flags, r.m_Bonus.m_Value);
+                }
+            }
+            std::memcpy(s_PouchPrev, s_PouchNow, sizeof(s_PouchPrev[0]) * static_cast<std::size_t>(now));
+            s_PouchPrevN = now;
+        }
+
+        /* Bonus de l'arme `name` sortie de l'inventaire dans les 15 dernieres secondes (aucun sinon). */
+        coop::game::WeaponBonus BonusOfRemoved(const char* name) {
+            RefreshPouch(true);
+            Removed* best = nullptr;
+            for (Removed& r : s_Removed)
+                if (!r.m_Used && s_PouchScans - r.m_Scan <= RemovedKeepScans && std::strcmp(r.m_Name, name) == 0
+                    && (best == nullptr || r.m_Scan > best->m_Scan))
+                    best = &r;
+            if (best == nullptr)
+                return {};
+            best->m_Used = true;
+            return best->m_Bonus;
+        }
 
         bool IsWornRel(const float* rel) {
             const float x = rel[3], y = rel[7], z = rel[11];
@@ -101,9 +222,18 @@ namespace coop::weapons {
             Gift g;
             while (g_GiftIn.Pop(g)) {
                 int before = -1, after = -1;
-                const bool ok = coop::game::AddInventoryItem(g.m_Name, g.m_Value, before, after);
-                Logging.Log("[botw-coop] don : %s (valeur %d) recu du joueur %d -> inventaire %s, objets %d -> %d", g.m_Name,
-                    g.m_Value, g.m_From, ok ? "ok" : "ECHEC", before, after);
+                coop::game::WeaponBonus bonus { g.m_BonusFlags, g.m_BonusValue };
+                const bool ok = coop::game::AddInventoryItem(g.m_Name, g.m_Value, before, after, &bonus);
+                Logging.Log("[botw-coop] don : %s (valeur %d, bonus %x/%d) recu du joueur %d -> inventaire %s, objets %d -> %d", g.m_Name,
+                    g.m_Value, g.m_BonusFlags, g.m_BonusValue, g.m_From, ok ? "ok" : "ECHEC", before, after);
+#if defined(COOP_TEST_BONUS) || defined(COOP_TEST_GIVE)
+                /* Essai : relecture de l'objet recu dans l'inventaire (bonus, nombre). */
+                const int n = coop::game::ReadPouch(s_MatRead, MatMax, WeaponTypes | MatTypes);
+                for (int i = 0; i < n; i++)
+                    if (std::strcmp(s_MatRead[i].m_Name, g.m_Name) == 0)
+                        Logging.Log("[botw-coop] don : relu dans l'inventaire %s valeur=%d bonus=%x/%d", s_MatRead[i].m_Name,
+                            s_MatRead[i].m_Value, s_MatRead[i].m_Bonus.m_Flags, s_MatRead[i].m_Bonus.m_Value);
+#endif
                 char msg[80];
                 std::snprintf(msg, sizeof(msg), "Joueur %d vous a donné : %s", g.m_From, g.m_Name);
                 coop::notify::Post(msg);
@@ -143,13 +273,16 @@ namespace coop::weapons {
                     continue;
                 Gift g;
                 std::strncpy(g.m_Name, lg.m_Name, sizeof(g.m_Name) - 1);
-                if (!coop::game::GetActorLifeValue(lg.m_Actor, g.m_Value) || g.m_Value <= 0)
+                /* Arme : sa durabilite ; materiau : un exemplaire (un acteur = un objet). */
+                if (std::strncmp(lg.m_Name, "Weapon_", 7) != 0 || !coop::game::GetActorLifeValue(lg.m_Actor, g.m_Value) || g.m_Value <= 0)
                     g.m_Value = 1;
+                g.m_BonusFlags = lg.m_Bonus.m_Flags;
+                g.m_BonusValue = lg.m_Bonus.m_Value;
                 if (!g_GiftOut.Push(g))
                     continue; /* file pleine : on reessaiera au releve suivant */
                 coop::game::DeleteActor(lg.m_Actor);
-                Logging.Log("[botw-coop] don : %s (valeur %d) donne au joueur %d, a %.1f m de lui", g.m_Name, g.m_Value,
-                    coop::session::g_Remote.Id(), static_cast<double>(std::sqrt(dx * dx + dy * dy + dz * dz)));
+                Logging.Log("[botw-coop] don : %s (valeur %d, bonus %x/%d) donne au joueur %d, a %.1f m de lui", g.m_Name, g.m_Value,
+                    g.m_BonusFlags, g.m_BonusValue, coop::session::g_Remote.Id(), static_cast<double>(std::sqrt(dx * dx + dy * dy + dz * dz)));
                 char msg[80];
                 std::snprintf(msg, sizeof(msg), "Donné au joueur %d : %s", coop::session::g_Remote.Id(), g.m_Name);
                 coop::notify::Post(msg);
@@ -159,11 +292,17 @@ namespace coop::weapons {
 
         bool CollectNear(const coop::game::ActorInfo& info, void* user) {
             auto& ctx = *static_cast<NearCtx*>(user);
-            if (std::strncmp(info.m_Name, "Weapon_", 7) != 0 || ctx.m_Count >= MaxNear)
+            const bool weapon = std::strncmp(info.m_Name, "Weapon_", 7) == 0;
+            const bool item = !weapon && std::strncmp(info.m_Name, "Item_", 5) == 0;
+            if (!weapon && !item)
                 return false;
             const float dx = info.m_Pos[0] - ctx.m_Pos[0], dy = info.m_Pos[1] - ctx.m_Pos[1], dz = info.m_Pos[2] - ctx.m_Pos[2];
-            if (dx * dx + dy * dy + dz * dz <= 3.0f * 3.0f)
+            if (dx * dx + dy * dy + dz * dz > 3.0f * 3.0f)
+                return false;
+            if (weapon && ctx.m_Count < MaxNear)
                 ctx.m_Actors[ctx.m_Count++] = info.m_Actor;
+            else if (item && ctx.m_ItemCount < MaxNear)
+                ctx.m_Items[ctx.m_ItemCount++] = info.m_Actor;
             return false;
         }
 
@@ -219,6 +358,9 @@ namespace coop::weapons {
         float link[12];
         coop::game::GetActorMtx(st.m_PlayerActor, link);
 
+        RefreshPouch(false);
+        RefreshMaterialNames();
+
         NearCtx near {};
         std::memcpy(near.m_Pos, st.m_Pos, sizeof(near.m_Pos));
         coop::game::ForEachListedActor(CollectNear, &near);
@@ -258,8 +400,10 @@ namespace coop::weapons {
                     lg.m_Actor = s_PrevWorn[k].m_Actor;
                     std::memcpy(lg.m_Name, s_PrevWorn[k].m_Name, sizeof(lg.m_Name));
                     lg.m_Scans = 0;
+                    lg.m_Bonus = BonusOfRemoved(lg.m_Name);
                     if (s_GiftLogs++ < 20)
-                        Logging.Log("[botw-coop] don : %s a quitte Link, surveillee 10 s", lg.m_Name);
+                        Logging.Log("[botw-coop] don : %s a quitte Link, surveillee 10 s (bonus %x/%d)", lg.m_Name,
+                            lg.m_Bonus.m_Flags, lg.m_Bonus.m_Value);
                     break;
                 }
         }
@@ -268,6 +412,54 @@ namespace coop::weapons {
             s_PrevWorn[i].m_Actor = actors[i];
             std::memcpy(s_PrevWorn[i].m_Name, names[i], sizeof(s_PrevWorn[i].m_Name));
         }
+
+        /* Materiaux tenus dans les mains, puis poses : surveilles comme les armes lachees. */
+        std::uintptr_t held[MaxHeld] = {};
+        char heldName[MaxHeld][48] = {};
+        int h = 0;
+        for (int i = 0; i < near.m_ItemCount && h < MaxHeld; i++) {
+            float m[12], rel[12];
+            coop::game::GetActorMtx(near.m_Items[i], m);
+            Relative(link, m, rel);
+            if (!IsWornRel(rel))
+                continue;
+            const char* itemName = coop::game::GetActorName(near.m_Items[i]);
+            if (!IsPouchMaterial(itemName))
+                continue; /* jamais vu dans l'inventaire : pas un objet tenu */
+            held[h] = near.m_Items[i];
+            std::strncpy(heldName[h], itemName, sizeof(heldName[h]) - 1);
+            bool before = false;
+            for (int k = 0; k < s_PrevHeldCount; k++)
+                before |= s_PrevHeld[k] == held[h];
+            if (!before && s_GiftLogs++ < 20)
+                Logging.Log("[botw-coop] don : %s tenu par Link (%.2f m au-dessus de ses pieds)", heldName[h], static_cast<double>(rel[7]));
+            h++;
+        }
+        for (int k = 0; k < s_PrevHeldCount; k++) {
+            bool still = false;
+            for (int i = 0; i < h; i++)
+                still |= held[i] == s_PrevHeld[k];
+            bool known = false;
+            for (const LetGo& lg : s_LetGo)
+                known |= lg.m_Actor == s_PrevHeld[k];
+            if (still || known)
+                continue;
+            for (LetGo& lg : s_LetGo)
+                if (lg.m_Actor == 0) {
+                    lg = LetGo {};
+                    lg.m_Actor = s_PrevHeld[k];
+                    std::memcpy(lg.m_Name, s_PrevHeldName[k], sizeof(lg.m_Name));
+                    if (s_GiftLogs++ < 20)
+                        Logging.Log("[botw-coop] don : %s pose ou lance, surveille 10 s", lg.m_Name);
+                    break;
+                }
+        }
+        s_PrevHeldCount = h;
+        for (int i = 0; i < h; i++) {
+            s_PrevHeld[i] = held[i];
+            std::memcpy(s_PrevHeldName[i], heldName[i], sizeof(s_PrevHeldName[i]));
+        }
+
         HandleLetGo(link);
 
         int before = 0;

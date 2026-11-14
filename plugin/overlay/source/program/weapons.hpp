@@ -69,6 +69,8 @@ namespace coop::weapons {
         char m_Name[48] = {};
         int m_Value = 0;
         int m_From = 0;
+        std::uint32_t m_BonusFlags = 0;  /* bonus de l'arme (WeaponModifier), 0 = aucun */
+        std::int32_t m_BonusValue = 0;
     };
 
     /* File a un ecrivain et un lecteur (fils differents). */

@@ -1,0 +1,56 @@
+﻿## Essai mt1 : premiere version (sans filtre) ; Item_Conductor vu pres de Link
+[botw-coop] dons : inventaire lu, 0 arme(s)
+[botw-coop] don : Item_Conductor tenu par Link (0.84 m au-dessus de ses pieds)
+[botw-coop] don : Item_Fruit_A tenu par Link (1.28 m au-dessus de ses pieds)
+[botw-coop] don : Item_Fruit_A pose ou lance, surveille 10 s
+[botw-coop] don : Item_Fruit_A (valeur 1, bonus 0/0) donne au joueur 2, a 2.3 m de lui
+## mt1 J2
+[botw-coop] don : Item_Conductor tenu par Link (0.84 m au-dessus de ses pieds)
+[botw-coop] don : Item_Fruit_A (valeur 1, bonus 0/0) recu du joueur 1 -> inventaire ok, objets 8 -> 8
+## Essai mt2 : filtre (noms deja vus dans l'inventaire) ; pomme tenue puis posee (A), puis tenue puis rangee (B)
+## mt2 J1
+[botw-coop] dons : inventaire lu, 0 arme(s)
+[botw-coop] essai inventaire : Item_Fruit_A x5 (bonus 0/0) -> objets 1 -> 2
+[botw-coop] essai inventaire : Armor_001_Head x1 (bonus 0/0) -> objets 2 -> 3
+[botw-coop] essai inventaire : Armor_001_Upper x1 (bonus 0/0) -> objets 3 -> 4
+[botw-coop] essai inventaire : Armor_001_Lower x1 (bonus 0/0) -> objets 4 -> 5
+[botw-coop] essai inventaire : Weapon_Sword_001 x2000 (bonus 0/0) -> objets 5 -> 6
+[botw-coop] essai inventaire : Weapon_Shield_001 x2000 (bonus 0/0) -> objets 6 -> 7
+[botw-coop] essai inventaire : Weapon_Bow_001 x2000 (bonus 0/0) -> objets 7 -> 8
+[botw-coop] don : Item_Fruit_A tenu par Link (1.28 m au-dessus de ses pieds)
+[botw-coop] don : Item_Fruit_A pose ou lance, surveille 10 s
+[botw-coop] don : Item_Fruit_A (valeur 1, bonus 0/0) donne au joueur 2, a 2.1 m de lui
+[botw-coop] don : Item_Fruit_A tenu par Link (1.28 m au-dessus de ses pieds)
+[botw-coop] don : Item_Fruit_A pose ou lance, surveille 10 s
+## mt2 J2
+[botw-coop] dons : inventaire lu, 0 arme(s)
+[botw-coop] don : Item_Fruit_A (valeur 1, bonus 0/0) recu du joueur 1 -> inventaire ok, objets 8 -> 8
+[botw-coop] don : relu dans l'inventaire Item_Fruit_A valeur=6 bonus=0/0
+## mt2 relais
+22:19:55.047 relais en ecoute sur 127.0.0.1:47800, protocole v2
+22:20:17.401 joueur 1 connecte depuis 127.0.0.1:27791 (1 en ligne)
+22:20:30.930 joueur 2 connecte depuis 127.0.0.1:27798 (2 en ligne)
+22:21:01.769 joueur 3 connecte depuis 127.0.0.1:27812 (3 en ligne)
+22:22:36.781 joueur 3 connecte depuis 127.0.0.1:49710 (3 en ligne)
+22:23:05.385 joueur 3 connecte depuis 127.0.0.1:49732 (3 en ligne)
+22:23:08.336 joueur 1 : don Item_Fruit_A 1 0 0
+22:23:23.614 joueur 3 connecte depuis 127.0.0.1:14885 (3 en ligne)
+22:23:35.392 joueur 3 connecte depuis 127.0.0.1:4771 (3 en ligne)
+## mt2 pilote
+    7.9s appui B x2 -> (?)
+   19.9s appui A x10 -> (?)
+   22.8s appui B x2 -> (?)
+   34.8s appui A x10 -> (?)
+    1.8s appui PLUS x1 -> (-1024.48, 252.63, 1799.95)
+   18.6s appui RIGHT x14 -> (-1024.48, 252.63, 1799.95)
+   19.8s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   21.0s appui DOWN x1 -> (-1024.48, 252.63, 1799.95)
+   22.2s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   23.4s appui PLUS x1 -> (-1024.48, 252.64, 1799.95)
+    1.8s appui A x1 -> (-1024.48, 252.64, 1799.95)
+    1.8s appui PLUS x1 -> (-1024.48, 252.64, 1799.95)
+    3.0s appui A x1 -> (-1024.48, 252.64, 1799.95)
+    4.2s appui DOWN x1 -> (-1024.48, 252.64, 1799.95)
+    5.4s appui A x1 -> (-1024.48, 252.64, 1799.95)
+    6.6s appui PLUS x1 -> (-1024.48, 252.64, 1799.95)
+    1.8s appui B x1 -> (-1024.48, 252.64, 1799.95)

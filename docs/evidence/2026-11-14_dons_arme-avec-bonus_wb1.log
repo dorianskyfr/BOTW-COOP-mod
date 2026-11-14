@@ -1,0 +1,53 @@
+﻿## Essai wb1 : deux instances, -DCOOP_TEST_GIVE -DCOOP_TEST_BONUS (epee d'essai avec bonus 1/10 chez les deux) ; J1 equipe l'epee puis la lache pres de J2
+## plugin J1
+[botw-coop] dons : inventaire lu, 0 arme(s)
+[botw-coop] essai inventaire : Item_Fruit_A x5 (bonus 0/0) -> objets 1 -> 2
+[botw-coop] essai inventaire : Armor_001_Head x1 (bonus 0/0) -> objets 2 -> 3
+[botw-coop] essai inventaire : Armor_001_Upper x1 (bonus 0/0) -> objets 3 -> 4
+[botw-coop] essai inventaire : Armor_001_Lower x1 (bonus 0/0) -> objets 4 -> 5
+[botw-coop] essai inventaire : Weapon_Sword_001 x2000 (bonus 1/10) -> objets 5 -> 6
+[botw-coop] essai inventaire : Weapon_Shield_001 x2000 (bonus 0/0) -> objets 6 -> 7
+[botw-coop] essai inventaire : Weapon_Bow_001 x2000 (bonus 0/0) -> objets 7 -> 8
+[botw-coop] essai inventaire (apres les objets d'essai) : 8 objet(s) lu(s)
+[botw-coop]   0: Weapon_Sword_001 type=0 valeur=2000 equipe=0 bonus=1/10
+[botw-coop]   1: Weapon_Bow_001 type=1 valeur=2000 equipe=0 bonus=0/0
+[botw-coop]   2: Weapon_Shield_001 type=3 valeur=2000 equipe=0 bonus=0/0
+[botw-coop]   3: Armor_001_Head type=4 valeur=1 equipe=0 bonus=0/0
+[botw-coop]   4: Armor_001_Upper type=5 valeur=1 equipe=0 bonus=0/0
+[botw-coop]   5: Armor_001_Lower type=6 valeur=1 equipe=0 bonus=0/0
+[botw-coop]   6: Item_Fruit_A type=7 valeur=5 equipe=0 bonus=0/0
+[botw-coop]   7: Obj_DRStone_Get type=9 valeur=1 equipe=0 bonus=0/0
+[botw-coop] dons : Weapon_Sword_001 sorti de l'inventaire (bonus 1/10)
+[botw-coop] don : Weapon_Sword_001 a quitte Link, surveillee 10 s (bonus 1/10)
+[botw-coop] don : Weapon_Sword_001 (valeur 2000, bonus 1/10) donne au joueur 2, a 1.5 m de lui
+## plugin J2
+[botw-coop] essai inventaire (apres les objets d'essai) : 8 objet(s) lu(s)
+[botw-coop]   0: Weapon_Sword_001 type=0 valeur=2000 equipe=0 bonus=1/10
+[botw-coop]   1: Weapon_Bow_001 type=1 valeur=2000 equipe=0 bonus=0/0
+[botw-coop]   2: Weapon_Shield_001 type=3 valeur=2000 equipe=0 bonus=0/0
+[botw-coop] don : Weapon_Sword_001 (valeur 2000, bonus 1/10) recu du joueur 1 -> inventaire ok, objets 8 -> 9
+[botw-coop] don : relu dans l'inventaire Weapon_Sword_001 valeur=2000 bonus=1/10
+[botw-coop] don : relu dans l'inventaire Weapon_Sword_001 valeur=2000 bonus=1/10
+## relais
+22:10:26.868 relais en ecoute sur 127.0.0.1:47800, protocole v2
+22:10:49.947 joueur 1 connecte depuis 127.0.0.1:16032 (1 en ligne)
+22:11:02.658 joueur 2 connecte depuis 127.0.0.1:16045 (2 en ligne)
+22:11:32.406 joueur 3 connecte depuis 127.0.0.1:32618 (3 en ligne)
+22:13:11.188 joueur 3 connecte depuis 127.0.0.1:50728 (3 en ligne)
+22:13:27.773 joueur 3 connecte depuis 127.0.0.1:50736 (3 en ligne)
+22:13:34.887 joueur 1 : don Weapon_Sword_001 2000 1 10
+## pilote
+    7.9s appui B x2 -> (?)
+   19.9s appui A x10 -> (?)
+   22.8s appui B x2 -> (?)
+   34.8s appui A x10 -> (?)
+    1.8s appui PLUS x1 -> (-1024.48, 252.63, 1799.95)
+    7.8s appui LEFT x5 -> (-1024.48, 252.63, 1799.95)
+    9.0s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   10.2s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   11.4s appui B x1 -> (-1024.48, 252.63, 1799.95)
+    1.9s appui PLUS x1 -> (-1024.48, 252.63, 1799.95)
+    3.1s appui A x1 -> (-1024.48, 252.63, 1799.95)
+    4.3s appui DOWN x1 -> (-1024.48, 252.63, 1799.95)
+    5.5s appui A x1 -> (-1024.48, 252.63, 1799.95)
+    6.7s appui B x1 -> (-1024.48, 252.63, 1799.95)

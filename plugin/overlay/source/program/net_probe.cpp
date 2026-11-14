@@ -257,11 +257,16 @@ namespace coop::net_probe {
             } else if (int hpLife = 0, hpMax = 0; std::sscanf(line, "HP %d %d %d", &id, &hpLife, &hpMax) == 3) {
                 coop::status::g_RemoteLife.store(hpLife);
                 coop::status::g_RemoteMax.store(hpMax);
-            } else if (coop::weapons::Gift gift; std::sscanf(line, "GIFT %d %47s %d", &id, gift.m_Name, &gift.m_Value) == 3) {
-                /* Arme donnee par le partenaire : ajoutee a l'inventaire dans le fil du jeu. Seuls les
-                   noms d'armes sont acceptes. */
+            } else if (coop::weapons::Gift gift; std::sscanf(line, "GIFT %d %47s %d %x %d", &id, gift.m_Name, &gift.m_Value,
+                           &gift.m_BonusFlags, &gift.m_BonusValue) >= 3) {
+                /* Arme donnee par le partenaire (durabilite, bonus facultatif) : ajoutee a l'inventaire dans
+                   le fil du jeu. Seuls les noms d'armes (Weapon_*) et de materiaux (Item_*) sont acceptes. */
                 gift.m_From = id;
-                if (std::strncmp(gift.m_Name, "Weapon_", 7) == 0 && gift.m_Value > 0)
+                const bool weapon = std::strncmp(gift.m_Name, "Weapon_", 7) == 0;
+                const bool item = std::strncmp(gift.m_Name, "Item_", 5) == 0; /* materiau : un exemplaire */
+                if (item)
+                    gift.m_Value = 1, gift.m_BonusFlags = 0, gift.m_BonusValue = 0;
+                if ((weapon || item) && gift.m_Value > 0)
                     coop::weapons::g_GiftIn.Push(gift);
             } else if (int meal = 0; std::sscanf(line, "MEAL %d %d", &id, &meal) == 2) {
                 /* Repas du partenaire : soin applique dans le fil du jeu (status.cpp), 30 cœurs au plus. */
@@ -481,7 +486,8 @@ namespace coop::net_probe {
                 /* Dons d'armes (weapons.hpp). */
                 for (coop::weapons::Gift gift; s_Fd >= 0 && coop::weapons::g_GiftOut.Pop(gift);) {
                     char msg[96];
-                    const int len = std::snprintf(msg, sizeof(msg), "GIFT %s %d\n", gift.m_Name, gift.m_Value);
+                    const int len = std::snprintf(msg, sizeof(msg), "GIFT %s %d %x %d\n", gift.m_Name, gift.m_Value,
+                        static_cast<unsigned>(gift.m_BonusFlags), static_cast<int>(gift.m_BonusValue));
                     if (len > 0 && !SendAll(s_Fd, msg, static_cast<std::size_t>(len)))
                         Disconnect("echec d'envoi");
                 }
