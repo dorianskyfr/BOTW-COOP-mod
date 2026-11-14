@@ -168,6 +168,16 @@ namespace coop::config {
             LoadModelMap(s_WeaponMap);
         }
 
+        /* Le Link du partenaire est-il installe (RomFS du mod, tools/build_puppet.py) ? */
+        void CheckPuppet() {
+            FileHandle file {};
+            const std::uint32_t rc = reinterpret_cast<OpenFn>(s_Open)(&file, "content:/Actor/Pack/CoopPlayer.sbactorpack", OpenMode_Read);
+            if (rc == 0)
+                reinterpret_cast<CloseFn>(s_Close)(file);
+            g_PuppetInstalled.store(rc == 0 ? 1 : 0, std::memory_order_release);
+            Logging.Log("[botw-coop] config: Link du partenaire (CoopPlayer) %s (0x%x)", rc == 0 ? "installe" : "absent, PNJ a la place", rc);
+        }
+
         const char* Lookup(const ModelMap& map, std::uint32_t pieceHash) {
             int lo = 0, hi = map.m_Count->load(std::memory_order_acquire) - 1;
             while (lo <= hi) {
@@ -217,7 +227,7 @@ namespace coop::config {
         s_Read = readAddr;
         s_Close = closeAddr;
         struct AfterConfig {
-            ~AfterConfig() { LoadSyncFlags(); LoadGearMap(); } /* apres la lecture des reglages (share_groups) */
+            ~AfterConfig() { LoadSyncFlags(); LoadGearMap(); CheckPuppet(); } /* apres la lecture des reglages (share_groups) */
         } afterConfig;
 
         /*

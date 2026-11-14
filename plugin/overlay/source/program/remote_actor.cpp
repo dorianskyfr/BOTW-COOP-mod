@@ -2,6 +2,7 @@
 #include "anim_state.hpp"
 
 #include "clock.hpp"
+#include "config.hpp"
 #include "game.hpp"
 #include "gear.hpp"
 #include "weapons.hpp"
@@ -28,6 +29,19 @@ namespace coop::remote_actor {
         constexpr const char* PuppetName = "CoopPlayer";
         constexpr const char* FallbackName = "Npc_Kakariko003";
         const char* ActorName = PuppetName;
+        /* CoopPlayer installe mais pas apparu (vu sous forte charge, essais cc1 et vr2) : on le
+           redemande ; repli sur le PNJ seulement apres ce nombre d'echecs de suite. */
+        constexpr int PuppetRetries = 4;
+        int s_PuppetFailures = 0;
+
+        /* Le PNJ de repli disparait (partenaire parti, acteur detruit) : a la prochaine creation,
+           on redonne sa chance au Link s'il est installe. */
+        void RetryPuppet() {
+            if (ActorName == FallbackName && coop::config::g_PuppetInstalled.load(std::memory_order_acquire) == 1) {
+                ActorName = PuppetName;
+                s_PuppetFailures = 0;
+            }
+        }
 
         /*
          * Interpolation : les etats arrivent a 10 Hz. On affiche le joueur distant
@@ -351,6 +365,11 @@ namespace coop::remote_actor {
                 s_RequestPos[0] = targetPos[0];
                 s_RequestPos[1] = targetPos[1];
                 s_RequestPos[2] = targetPos[2];
+                /* Fichier du Link absent de la RomFS du mod : directement le PNJ. */
+                if (ActorName == PuppetName && coop::config::g_PuppetInstalled.load(std::memory_order_acquire) == 0) {
+                    Logging.Log("[botw-coop] acteur distant : CoopPlayer non installe, PNJ \"%s\" a la place", FallbackName);
+                    ActorName = FallbackName;
+                }
                 if (coop::game::RequestCreateActorAwake(ActorName, targetPos)) {
                     s_State = State::Requested;
                     s_RequestFrame = s_Frames;
@@ -368,11 +387,19 @@ namespace coop::remote_actor {
 
             case State::Requested: {
                 /* Cree sans poignee : on le retrouve par son nom pres du point de creation. */
-                const auto actor = (s_Frames - s_RequestFrame) % 5 == 0
+#ifdef COOP_TEST_PUPPET_FAIL
+                /* Essai : pour les N premieres demandes du Link, on fait comme s'il n'apparaissait pas. */
+                const bool simulateFail = ActorName == PuppetName && s_PuppetFailures < COOP_TEST_PUPPET_FAIL;
+#else
+                constexpr bool simulateFail = false;
+#endif
+                const auto actor = !simulateFail && (s_Frames - s_RequestFrame) % 5 == 0
                     ? coop::game::FindActor(ActorName, s_RequestPos, 8.0f) : 0;
                 if (actor != 0) {
                     s_Actor = actor;
                     s_State = State::Alive;
+                    if (ActorName == PuppetName)
+                        s_PuppetFailures = 0;
                     s_HasWritten = false;
                     s_LastAttentionRc = 0;
                     s_Sequence = nullptr;
@@ -384,11 +411,24 @@ namespace coop::remote_actor {
                         static_cast<double>(pos[0]), static_cast<double>(pos[1]), static_cast<double>(pos[2]));
                 } else if (s_Frames - s_RequestFrame > (ActorName == PuppetName ? 600u : 1800u)) {
                     /* Pas apparu : on redemandera (le jeu a pu annuler la creation). CoopPlayer
-                       absent (RomFS du mod non installee) : repli sur le PNJ. */
+                       installe : nouvel essai, repli sur le PNJ apres PuppetRetries echecs de suite
+                       (ou tout de suite si on ne sait pas s'il est installe). */
                     s_State = State::Idle;
-                    Logging.Log("[botw-coop] acteur distant : ECHEC de creation de \"%s\" (introuvable apres %lu images), %s",
-                        ActorName, s_Frames - s_RequestFrame, ActorName == PuppetName ? "repli sur le PNJ" : "nouvel essai");
-                    if (ActorName == PuppetName)
+                    if (simulateFail) {
+                        /* L'acteur ignore existe peut-etre : on le retire pour ne pas laisser de doublon. */
+                        const auto orphan = coop::game::FindActor(ActorName, s_RequestPos, 8.0f);
+                        Logging.Log("[botw-coop] acteur distant : essai, echec simule (acteur %s)",
+                            orphan == 0 ? "absent" : coop::game::DeleteActor(orphan) ? "ignore puis retire" : "ignore, non retire");
+                    }
+                    bool fallback = false;
+                    if (ActorName == PuppetName) {
+                        s_PuppetFailures++;
+                        fallback = coop::config::g_PuppetInstalled.load(std::memory_order_acquire) != 1
+                                   || s_PuppetFailures >= PuppetRetries;
+                    }
+                    Logging.Log("[botw-coop] acteur distant : ECHEC de creation de \"%s\" (introuvable apres %lu images, echec %d), %s",
+                        ActorName, s_Frames - s_RequestFrame, s_PuppetFailures, fallback ? "repli sur le PNJ" : "nouvel essai");
+                    if (fallback)
                         ActorName = FallbackName;
                 }
                 break;
@@ -400,6 +440,7 @@ namespace coop::remote_actor {
                     Logging.Log("[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree");
                     s_Actor = 0;
                     s_State = State::Idle;
+                    RetryPuppet();
                     coop::gear::RemoveAll(true);
                     coop::weapons::RemoveAll(true);
                     break;
@@ -415,6 +456,7 @@ namespace coop::remote_actor {
                     coop::weapons::RemoveAll(true);
                     s_Actor = 0;
                     s_State = State::Idle;
+                    RetryPuppet();
                     break;
                 }
 #endif

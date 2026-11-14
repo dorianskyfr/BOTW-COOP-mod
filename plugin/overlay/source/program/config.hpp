@@ -63,6 +63,9 @@ namespace coop::config {
     inline std::atomic<int> g_WeaponCount { 0 };
     const char* WeaponActorFor(std::uint32_t weaponHash);
 
+    /* Link du partenaire (content:/Actor/Pack/CoopPlayer.sbactorpack) : -1 pas encore regarde, 0 absent, 1 present. */
+    inline std::atomic<int> g_PuppetInstalled { -1 };
+
     inline std::uint8_t  g_HostIp[4] = { 127, 0, 0, 1 };
     inline std::uint16_t g_HostPort  = 47800;
 

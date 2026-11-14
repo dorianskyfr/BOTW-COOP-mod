@@ -1,0 +1,53 @@
+﻿## Essai pr2 : -DCOOP_TEST_PUPPET_FAIL=2 (les 2 premieres apparitions du Link sont ignorees), deux instances
+## plugin pr2_game.txt
+[botw-coop] config: Link du partenaire (CoopPlayer) installe (0x0)
+[botw-coop] net: le relais nous attribue l'identifiant J1
+[botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+[botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+[botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 1), nouvel essai
+[botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+[botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 2), nouvel essai
+[botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : CREE apres 5 images, acteur=6607312d88 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : sequence "Wait" (avant "-")
+[botw-coop] acteur distant : deplacement par le corps physique -> code -11
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=146 interpolees=1525 figees=67 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=296 interpolees=1671 figees=71 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=446 interpolees=1819 figees=73 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=596 interpolees=1966 figees=76 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=746 interpolees=2116 figees=76 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=896 interpolees=2263 figees=79 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1046 interpolees=2387 figees=105 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1196 interpolees=2519 figees=123 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1346 interpolees=2665 figees=127 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1496 interpolees=2810 figees=132 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1646 interpolees=2957 figees=135 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1796 interpolees=3104 figees=138 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1946 interpolees=3248 figees=144 pas max=0.000 m | deplace par le jeu=0
+## plugin pr2_game2.txt
+[botw-coop] config: Link du partenaire (CoopPlayer) installe (0x0)
+[botw-coop] net: le relais nous attribue l'identifiant J2
+[botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : essai, echec simule (acteur absent)
+[botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 1), nouvel essai
+[botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+[botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 2), nouvel essai
+[botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : CREE apres 5 images, acteur=6607645f90 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : sequence "Wait" (avant "-")
+[botw-coop] acteur distant : deplacement par le corps physique -> code -11
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=89 interpolees=1836 figees=64 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=239 interpolees=1983 figees=67 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=389 interpolees=2129 figees=71 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=539 interpolees=2260 figees=90 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=689 interpolees=2381 figees=119 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=839 interpolees=2527 figees=123 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=989 interpolees=2673 figees=127 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1139 interpolees=2821 figees=129 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1289 interpolees=2968 figees=132 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1439 interpolees=3115 figees=135 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1589 interpolees=3262 figees=138 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1739 interpolees=3411 figees=139 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1889 interpolees=3525 figees=175 pas max=0.000 m | deplace par le jeu=0

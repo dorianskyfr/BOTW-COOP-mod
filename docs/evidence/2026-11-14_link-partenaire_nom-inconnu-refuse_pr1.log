@@ -1,0 +1,5 @@
+﻿## Essai pr1 (abandonne) : demander un acteur au nom inconnu -> refuse tout de suite par le jeu
+[botw-coop] acteur distant : le jeu a refuse la creation de "CoopPlayer", repli sur "Npc_Kakariko003"
+[botw-coop] acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.1)
+[botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1023.28, 252.63, 1799.95)
+[botw-coop] acteur distant : CREE apres 10 images, acteur=660720dcd0 nom="Npc_Kakariko003" pos=(-1023.28, 252.63, 1799.95)
