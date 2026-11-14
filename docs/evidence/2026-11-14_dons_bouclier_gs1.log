@@ -1,0 +1,75 @@
+﻿## Essai gs1 : deux instances, -DCOOP_TEST_GIVE ; J1 equipe arc et bouclier par le menu, lache le bouclier (A, DOWN, A)
+## relais
+21:52:54.929 joueur 1 connecte depuis 127.0.0.1:53596 (1 en ligne)
+21:53:08.022 joueur 2 connecte depuis 127.0.0.1:53604 (2 en ligne)
+21:53:36.169 joueur 3 connecte depuis 127.0.0.1:53618 (3 en ligne)
+21:54:06.827 joueur 1 : objet porte 0 = 00000000 (position 0.000 0.000 0.000)
+21:54:06.828 joueur 1 : objet porte 1 = 00000000 (position 0.000 0.000 0.000)
+21:54:06.828 joueur 1 : objet porte 2 = 00000000 (position 0.000 0.000 0.000)
+21:54:06.829 joueur 1 : objet porte 3 = 00000000 (position 0.000 0.000 0.000)
+21:54:06.831 joueur 1 : objet porte 4 = 00000000 (position 0.000 0.000 0.000)
+21:54:06.831 joueur 1 : objet porte 5 = 00000000 (position 0.000 0.000 0.000)
+21:54:24.550 joueur 2 : objet porte 0 = 00000000 (position 0.000 0.000 0.000)
+21:54:24.550 joueur 2 : objet porte 1 = 00000000 (position 0.000 0.000 0.000)
+21:54:24.550 joueur 2 : objet porte 2 = 00000000 (position 0.000 0.000 0.000)
+21:54:24.551 joueur 2 : objet porte 3 = 00000000 (position 0.000 0.000 0.000)
+21:54:24.551 joueur 2 : objet porte 4 = 00000000 (position 0.000 0.000 0.000)
+21:54:24.553 joueur 2 : objet porte 5 = 00000000 (position 0.000 0.000 0.000)
+21:55:08.742 joueur 3 connecte depuis 127.0.0.1:53673 (3 en ligne)
+21:55:33.572 joueur 1 : objet porte 0 = 7bd5811b (position 0.118 1.148 -0.099)
+21:55:33.572 joueur 1 : objet porte 1 = ad66ce4f (position -0.053 1.182 -0.095)
+21:55:33.724 joueur 1 : objet porte 2 = bc3641b9 (position -0.119 0.893 -0.046)
+21:55:57.213 joueur 3 connecte depuis 127.0.0.1:53725 (3 en ligne)
+21:56:03.445 joueur 1 : objet porte 0 = 00000000 (position 0.000 0.000 0.000)
+21:56:04.509 joueur 1 : don Weapon_Shield_001 2000
+21:56:29.984 joueur 3 connecte depuis 127.0.0.1:53755 (3 en ligne)
+21:57:10.259 joueur 3 connecte depuis 127.0.0.1:53800 (3 en ligne)
+## plugin J1
+[botw-coop] essai inventaire : Item_Fruit_A x5 -> objets 1 -> 2
+[botw-coop] essai inventaire : Armor_001_Head x1 -> objets 2 -> 3
+[botw-coop] essai inventaire : Armor_001_Upper x1 -> objets 3 -> 4
+[botw-coop] essai inventaire : Armor_001_Lower x1 -> objets 4 -> 5
+[botw-coop] essai inventaire : Weapon_Sword_001 x2000 -> objets 5 -> 6
+[botw-coop] essai inventaire : Weapon_Shield_001 x2000 -> objets 6 -> 7
+[botw-coop] essai inventaire : Weapon_Bow_001 x2000 -> objets 7 -> 8
+[botw-coop] armes : emplacement 0 = Weapon_Shield_001 (7bd5811b), position dans le repere de Link (0.12, 1.15, -0.10)
+[botw-coop] armes : emplacement 1 = Weapon_Bow_001 (ad66ce4f), position dans le repere de Link (-0.05, 1.18, -0.09)
+[botw-coop] armes : emplacement 0 = Weapon_Shield_001 (7bd5811b), position dans le repere de Link (0.12, 1.15, -0.10)
+[botw-coop] armes : emplacement 1 = Weapon_Bow_001 (ad66ce4f), position dans le repere de Link (-0.05, 1.18, -0.09)
+[botw-coop] armes : emplacement 2 = Weapon_Quiver_001 (bc3641b9), position dans le repere de Link (-0.12, 0.89, -0.05)
+[botw-coop] don : Weapon_Shield_001 a quitte Link, surveillee 10 s
+[botw-coop] armes : emplacement 1 = Weapon_Bow_001 (ad66ce4f), position dans le repere de Link (-0.05, 1.19, -0.10)
+[botw-coop] armes : emplacement 2 = Weapon_Quiver_001 (bc3641b9), position dans le repere de Link (-0.12, 0.89, -0.05)
+[botw-coop] don : Weapon_Shield_001 (valeur 2000) donne au joueur 2, a 1.5 m de lui
+## plugin J2
+[botw-coop] don : Weapon_Shield_001 (valeur 2000) recu du joueur 1 -> inventaire ok, objets 8 -> 9
+## pilote
+    7.9s appui B x2 -> (?)
+   19.9s appui A x10 -> (?)
+   22.8s appui B x2 -> (?)
+   34.8s appui A x10 -> (?)
+    1.8s appui PLUS x1 -> (-1024.48, 252.63, 1799.95)
+    3.0s appui A x1 -> (-1024.48, 252.63, 1799.95)
+    4.2s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   10.2s appui LEFT x5 -> (-1024.48, 252.63, 1799.95)
+   22.2s appui RIGHT x10 -> (-1024.48, 252.63, 1799.95)
+   23.4s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   24.6s appui A x1 -> (-1024.48, 252.63, 1799.95)
+   25.8s appui B x1 -> (-1024.48, 252.63, 1799.95)
+    1.8s appui PLUS x1 -> (-1024.48, 252.63, 1799.95)
+    3.0s appui A x1 -> (-1024.48, 252.63, 1799.95)
+    4.2s appui DOWN x1 -> (-1024.48, 252.63, 1799.95)
+    5.4s appui A x1 -> (-1024.48, 252.63, 1799.95)
+    6.6s appui B x1 -> (-1024.48, 252.63, 1799.95)
+    1.8s appui PLUS x1 -> (-1024.48, 252.63, 1799.95)
+    3.0s appui LEFT x1 -> (-1024.48, 252.63, 1799.95)
+    4.2s appui A x1 -> (-1024.48, 252.63, 1799.95)
+    5.4s appui DOWN x1 -> (-1024.48, 252.63, 1799.95)
+    6.6s appui A x1 -> (-1024.48, 252.63, 1799.95)
+    7.8s appui B x1 -> (-1024.48, 252.63, 1799.95)
+    1.8s appui PLUS x1 -> (-1024.48, 252.63, 1799.95)
+    3.0s appui LEFT x1 -> (-1024.48, 252.63, 1799.95)
+    4.2s appui A x1 -> (-1024.48, 252.63, 1799.95)
+    5.4s appui DOWN x1 -> (-1024.48, 252.63, 1799.95)
+    6.6s appui A x1 -> (-1024.48, 252.63, 1799.95)
+    7.8s appui B x1 -> (-1024.48, 252.63, 1799.95)

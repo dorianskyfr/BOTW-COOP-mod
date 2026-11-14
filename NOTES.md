@@ -732,7 +732,9 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Relais : `GIFT` retransmis (essai automatique de plus, 44/44). Le plugin n'accepte en reception que des noms `Weapon_*`.
 - [V] `gf2` : epee lancee (R) a 22 m -> `a quitte Link, surveillee 10 s`, partenaire trop loin, rien donne.
 - [V] `gf3` (les deux joueurs au point de depart) : J1 equipe l'epee puis la lache par le menu (2e option, « Lâcher ») -> `donne au joueur 2, a 1.5 m de lui` (valeur 2000) ; chez J2 : `recu du joueur 1 -> inventaire ok, objets 7 -> 8` ; l'epee n'est plus dans le monde de J1.
-- **Non verifie** : a l'image ; bouclier, arc ; arme lancee jusqu'au partenaire ; bonus d'arme (modificateurs) : non transmis ; materiaux et nourriture : pas faits.
+- [V] **Bouclier** (essai `gs1`, deux instances, 2026-11-14) : J1 equipe arc + bouclier (`PLUS`, `A A`, `LEFT` x5, `RIGHT` x10, `A A`, `B`), puis rouvre le menu et lache le bouclier (`A`, `DOWN`, `A`, comme l'epee) -> `Weapon_Shield_001 (valeur 2000) donne au joueur 2, a 1.5 m` ; J2 : `recu du joueur 1 -> inventaire ok, objets 8 -> 9`. Aucun changement de code : le don vaut pour tout acteur `Weapon_*` porte (sauf fourreau). Preuve : `docs/evidence/2026-11-14_dons_bouclier_gs1.log`.
+- **Arc non essaye** : deux essais a l'aveugle (`PLUS`, `LEFT`, `A`, `DOWN`, `A`) n'ont rien lache ; position du curseur inconnue sans image. A refaire en voyant le menu.
+- **Non verifie** : a l'image ; arc ; arme lancee jusqu'au partenaire ; bonus d'arme (modificateurs) : non transmis ; materiaux et nourriture : pas faits.
 
 ### 5.39 Repas partages (2026-11-14, essai `ml1`) - [V] par les journaux, deux instances
 
