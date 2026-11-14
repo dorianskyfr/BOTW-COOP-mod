@@ -793,6 +793,11 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - **Non verifie** : a l'image ; grandes distances (plusieurs km) ; Ryujinx bloque (botw-coop : 22 a 40 s, foret Korogu qui fige le jeu) ; voyage depuis un sanctuaire ou un interieur ; points non actives.
 - Preuve : `docs/evidence/2026-11-14_voyage-vers-le-partenaire_tr1.log`.
 
+### 5.44 bis Sauvegarde automatique dans la copie coop (2026-11-14, essai `cl4`) - [V] par les journaux et les fichiers
+
+- Apres le voyage d'essai (sanctuaire 076), le jeu fait une sauvegarde automatique : `save:/2/game_data.sav -> save:/coop/2/game_data.sav` (deux ouvertures, 23:37:00). Sur disque : `coop\2\game_data.sav` cree (empreinte nouvelle) ; les sauvegardes normales `0` et `1` ont la meme empreinte SHA-256 que celles de la sauvegarde source `t_lv1` (inchangees), et aucun emplacement normal `2` n'a ete cree. La redirection de 5.30 vaut donc aussi pour la sauvegarde automatique.
+- Preuve : `docs/evidence/2026-11-14_sauvegarde-automatique-dans-coop_cl4.log`.
+
 ### 5.45 Meteo suivie seulement dans le meme climat (2026-11-14, essais `cl1` a `cl4`) - [V] par les journaux
 
 - Idee de botw-coop (meteo de l'hote dans le meme climat seulement ; ils lisent `mCurrentClimate` a `Manager+0x780`). **Chez nous, ce n'est pas +0x780** : [V] `cl3` (une instance, `-DCOOP_TEST_CLIMATE` qui journalise `Manager+0x760..0x7bc`) : sur le plateau +0x780 = +0x784 = 0 ; apres un voyage de 2,5 km vers l'ouest (sanctuaire 076, B-6) seul **+0x784 passe a 6**, +0x780 reste a 0. Sur notre image, deux accesseurs voisins : `main+0x14318f0` rend +0x780, `main+0x14318f8` rend +0x784. Le plugin lit +0x784 (0 a 63 accepte, sinon inconnu).

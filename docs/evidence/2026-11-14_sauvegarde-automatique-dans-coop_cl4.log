@@ -1,0 +1,17 @@
+﻿## Essai cl4 : sauvegarde automatique du jeu apres un voyage (sanctuaire 076)
+[botw-coop] sauvegardes : save:/1/game_data.sav -> save:/coop/1/game_data.sav
+[botw-coop] voyage : chargement commence (1789 ms apres la demande)
+[botw-coop] voyage : arrive en (-3564.3, 352.8, 1961.0), a 12.2 m du point vise, 11126 ms apres la demande
+[botw-coop] sauvegardes : save:/2/game_data.sav -> save:/coop/2/game_data.sav
+[botw-coop] sauvegardes : save:/2/game_data.sav -> save:/coop/2/game_data.sav
+## Fichiers (dossier de sauvegarde de la copie de test ; 0 et 1 = dossiers de Ryujinx)
+0\0\game_data.sav  23:37:00  sha256=FF2FF128DA574EE8  sauvegarde source=FF2FF128DA574EE8
+0\1\game_data.sav  23:37:00  sha256=FCFF01DFE2F89961  sauvegarde source=FCFF01DFE2F89961
+0\coop\0\game_data.sav  23:37:00  sha256=FF2FF128DA574EE8  sauvegarde source=absent
+0\coop\1\game_data.sav  23:37:00  sha256=FCFF01DFE2F89961  sauvegarde source=absent
+0\coop\2\game_data.sav  23:37:00  sha256=F85132169FD32B1A  sauvegarde source=absent
+1\0\game_data.sav  23:34:25  sha256=FF2FF128DA574EE8  sauvegarde source=FF2FF128DA574EE8
+1\1\game_data.sav  23:34:25  sha256=FCFF01DFE2F89961  sauvegarde source=FCFF01DFE2F89961
+1\coop\0\game_data.sav  23:34:27  sha256=FF2FF128DA574EE8  sauvegarde source=absent
+1\coop\1\game_data.sav  23:34:27  sha256=FCFF01DFE2F89961  sauvegarde source=absent
+1\coop\2\game_data.sav  23:37:00  sha256=F85132169FD32B1A  sauvegarde source=absent
