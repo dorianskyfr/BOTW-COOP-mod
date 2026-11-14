@@ -43,6 +43,8 @@ namespace coop::config {
             unsigned flag = 0;
             if (std::sscanf(line, "enemy_pos=%u", &flag) == 1)
                 g_EnemyPos = flag != 0;
+            if (std::sscanf(line, "meal=%u", &flag) == 1)
+                g_Meal = flag != 0;
             if (std::sscanf(line, "revive=%u", &flag) == 1)
                 g_Revive = flag != 0;
             if (std::sscanf(line, "revive_delay=%u", &flag) == 1 && flag <= 3600)

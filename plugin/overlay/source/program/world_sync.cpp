@@ -1,5 +1,6 @@
 #include "world_sync.hpp"
 
+#include "clock.hpp"
 #include "flags.hpp"
 #include "game.hpp"
 #include "session.hpp"
@@ -315,6 +316,7 @@ namespace coop::world_sync {
         }
 
         if (coop::game::RequestWorldTime(hostTime)) {
+            g_LastTimeAdjustMs.store(coop::clock::NowMs());
             s_LastAdjustFrame = s_Frames;
             s_Adjustments++;
             Logging.Log("[botw-coop] monde : heure locale %.2f, heure de J%d %.2f (ecart %.2f) -> recalage n.%lu demande",

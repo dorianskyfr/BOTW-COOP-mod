@@ -1,0 +1,15 @@
+﻿# Repas partages (2026-11-14, essai ml1, deux instances reduites, COOP_TEST_GIVE avec 5 pommes Item_Fruit_A : soin 2 quarts, cureItemHitPointRecover de ActorInfo).
+# Les deux joueurs mis a 1 coeur (drive.py hpdown), puis J1 mange une pomme depuis le menu.
+
+## J1
+00:01:54.075 essai inventaire : Item_Fruit_A x5 -> objets 1 -> 2
+00:02:25.022 c??urs : essai, vie locale mise a 4 quarts
+00:02:44.991 repas : vie 4 -> 6, heure figee a 99.395 (menu) -> partage avec le partenaire
+
+## J2
+00:02:11.099 c??urs : essai, vie locale mise a 4 quarts
+00:02:33.279 repas : soin de 2 quarts recu du joueur 1, vie 4 -> 6
+00:02:33.279 messages : "Repas partag?? par le joueur 1 : +0,50 c??urs"
+
+## relais
+20:45:08.262 joueur 1 : repas partage, 2 quarts

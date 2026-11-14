@@ -142,7 +142,9 @@ namespace coop::gear {
                 const char* m_Name;
                 int m_Count;
             };
+            /* Pomme en premier : le dernier objet recu reste l'arc, le menu s'ouvre sur son onglet. */
             static const Item items[] = {
+                { "Item_Fruit_A", 5 },
                 { "Armor_001_Head", 1 }, { "Armor_001_Upper", 1 }, { "Armor_001_Lower", 1 },
                 { "Weapon_Sword_001", 2000 }, { "Weapon_Shield_001", 2000 }, { "Weapon_Bow_001", 2000 },
             };

@@ -61,8 +61,9 @@ import sys
 #         retransmis tel quel ; 10 par seconde par objet porte.
 #   SAVED : le joueur vient d'etre releve par le partenaire (distance en metres), retransmis tel quel.
 #   GIFT : arme donnee au partenaire (nom de l'acteur, durabilite), retransmise telle quelle.
+#   MEAL : soin d'un repas mange par le joueur (quarts de coeur), retransmis tel quel.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
-                "WPN": 14, "SAVED": 1, "GIFT": 2}
+                "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1}
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur.
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
 OPTIONAL_EXTRA = {"TIME": 1, "MTX": 1}
@@ -363,6 +364,8 @@ def main():
                         log(f"joueur {client.pid} : releve par son partenaire ({payload} m)")
                     elif parts[0] == "GIFT":
                         log(f"joueur {client.pid} : don {payload}")
+                    elif parts[0] == "MEAL":
+                        log(f"joueur {client.pid} : repas partage, {payload} quarts")
                     elif parts[0] == "LIFE":
                         # Derniere vie annoncee par ennemi, pour un joueur qui arrive plus tard.
                         # Memoire vive seulement (pas sur disque) : au redemarrage du serveur,

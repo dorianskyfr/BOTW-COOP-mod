@@ -733,3 +733,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] `gf2` : epee lancee (R) a 22 m -> `a quitte Link, surveillee 10 s`, partenaire trop loin, rien donne.
 - [V] `gf3` (les deux joueurs au point de depart) : J1 equipe l'epee puis la lache par le menu (2e option, « Lâcher ») -> `donne au joueur 2, a 1.5 m de lui` (valeur 2000) ; chez J2 : `recu du joueur 1 -> inventaire ok, objets 7 -> 8` ; l'epee n'est plus dans le monde de J1.
 - **Non verifie** : a l'image ; bouclier, arc ; arme lancee jusqu'au partenaire ; bonus d'arme (modificateurs) : non transmis ; materiaux et nourriture : pas faits.
+
+### 5.39 Repas partages (2026-11-14, essai `ml1`) - [V] par les journaux, deux instances
+
+- Detection (idee de botw-coop, « The pause menu stops the world » : `WM_Time` ne bouge pas menu ouvert ; methode a nous, plus simple) : toutes les 15 images, si la vie monte alors que l'heure du monde est exactement la meme qu'au releve precedent, sans recalage d'heure par la session dans les 2 s (`world_sync::g_LastTimeAdjustMs`) ni passage dans `tryRevive` dans les 3 s, c'est un repas. Le gain (quarts) part au partenaire : `MEAL <quarts>` ; il est soigne d'autant, sans depasser son maximum, avec un message. Un soin recu n'est pas renvoye (pas d'echo). `meal=0` coupe tout.
+- Pomme : `Item_Fruit_A`, `cureItemHitPointRecover` = 2 dans l'ActorInfo de la RomFS de l'utilisateur ; ajoutee en tete de `COOP_TEST_GIVE` (5 pommes). Menu : depuis l'onglet des arcs, `RIGHT` x14 mene a l'onglet des materiaux ; la 1re option d'une pomme est « Manger ».
+- [V] `ml1` : J1 et J2 a 1 cœur (`hpdown`) ; J1 mange une pomme -> `repas : vie 4 -> 6, heure figee a 99.395 (menu) -> partage` ; J2 -> `soin de 2 quarts recu du joueur 1, vie 4 -> 6` + bandeau ; relais : un seul `MEAL` ; aucun soin renvoye a J1.
+- Limites : effets des plats (resistance, vitesse...) non partages ; une hausse de vie avec l'heure figee pour une autre raison (heure bloquee par le jeu en debut de partie, 5.12) serait prise pour un repas ; pas vu a l'image.
+- Relais : `MEAL` retransmis (essai automatique de plus, 45/45).
+- Preuve : `docs/evidence/2026-11-14_repas-partages_ml1.log`.

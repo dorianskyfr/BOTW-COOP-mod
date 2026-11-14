@@ -7,6 +7,7 @@
  * 3 cœurs. NOTES 5.37.
  */
 #include <atomic>
+#include <cstdint>
 
 namespace coop::revive {
 
@@ -15,5 +16,9 @@ namespace coop::revive {
 
     /* Sauvetage a annoncer au partenaire (message SAVED, net_probe.cpp) : distance en metres, -1 = rien. */
     inline std::atomic<int> g_PendingSaved { -1 };
+
+    /* Instant (clock::NowMs) du dernier passage dans tryRevive (fee, Mipha ou partenaire) : la vie
+       remonte alors sans repas (status.cpp). */
+    inline std::atomic<std::uint64_t> g_LastReviveCallMs { 0 };
 
 }

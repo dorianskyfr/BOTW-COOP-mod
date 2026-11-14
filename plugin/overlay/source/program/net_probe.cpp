@@ -233,6 +233,12 @@ namespace coop::net_probe {
                 gift.m_From = id;
                 if (std::strncmp(gift.m_Name, "Weapon_", 7) == 0 && gift.m_Value > 0)
                     coop::weapons::g_GiftIn.Push(gift);
+            } else if (int meal = 0; std::sscanf(line, "MEAL %d %d", &id, &meal) == 2) {
+                /* Repas du partenaire : soin applique dans le fil du jeu (status.cpp), 30 cœurs au plus. */
+                if (meal > 0 && meal <= 120) {
+                    coop::status::g_MealFrom.store(id);
+                    coop::status::g_PendingMealIn.fetch_add(meal);
+                }
             } else if (int savedDist = 0; std::sscanf(line, "SAVED %d %d", &id, &savedDist) == 2) {
                 /* Le partenaire vient d'etre releve grace a nous (revive.cpp). */
                 char msg[64];
@@ -436,6 +442,14 @@ namespace coop::net_probe {
                 for (coop::weapons::Gift gift; s_Fd >= 0 && coop::weapons::g_GiftOut.Pop(gift);) {
                     char msg[96];
                     const int len = std::snprintf(msg, sizeof(msg), "GIFT %s %d\n", gift.m_Name, gift.m_Value);
+                    if (len > 0 && !SendAll(s_Fd, msg, static_cast<std::size_t>(len)))
+                        Disconnect("echec d'envoi");
+                }
+
+                /* Repas partages (status.hpp). */
+                if (const int meal = coop::status::g_PendingMealOut.exchange(0); meal > 0 && s_Fd >= 0) {
+                    char msg[32];
+                    const int len = std::snprintf(msg, sizeof(msg), "MEAL %d\n", meal);
                     if (len > 0 && !SendAll(s_Fd, msg, static_cast<std::size_t>(len)))
                         Disconnect("echec d'envoi");
                 }

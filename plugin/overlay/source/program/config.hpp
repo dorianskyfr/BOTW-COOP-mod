@@ -15,6 +15,7 @@
  *   revive=0                     coupe le sauvetage par le partenaire (actif par defaut)
  *   revive_delay=120             secondes entre deux sauvetages par le partenaire
  *   revive_range=150             distance maximale du partenaire, en metres
+ *   meal=0                       coupe les repas partages (actifs par defaut)
  * Sans fichier : 127.0.0.1:47800.
  *
  * Liste blanche des drapeaux : content:/botw-coop/sync-flags.bin, generee a l'installation
@@ -31,6 +32,9 @@ namespace coop::config {
        ne sauvent Link et que le partenaire est en jeu, vivant et a moins de g_ReviveRangeM, Link
        repart avec 3 cœurs ; au plus une fois toutes les g_ReviveDelayS secondes. */
     inline bool g_Revive = true;
+
+    /* Repas partages (status.cpp, NOTES 5.39) : un repas mange par l'un soigne aussi l'autre. */
+    inline bool g_Meal = true;
     inline int g_ReviveDelayS = 120;
     inline int g_ReviveRangeM = 150;
 

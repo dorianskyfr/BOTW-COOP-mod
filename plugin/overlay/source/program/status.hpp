@@ -24,4 +24,13 @@ namespace coop::status {
     /* Outil de test (-DCOOP_REMOTE_PAD) : met la vie locale a 4 quarts (1 cœur). */
     void DebugHurtSelf();
 
+    /*
+     * Repas partages (NOTES 5.39) : une hausse de vie pendant que l'heure du monde est figee (menu
+     * ouvert : on mange depuis l'inventaire, d'apres botw-coop, « pause menu stops the world ») est
+     * un repas ; le gain est envoye au partenaire (MEAL <quarts>), qui est soigne d'autant.
+     */
+    inline std::atomic<int> g_PendingMealOut { 0 };  /* fil du jeu -> fil reseau, quarts a envoyer */
+    inline std::atomic<int> g_PendingMealIn { 0 };   /* fil reseau -> fil du jeu, quarts a ajouter */
+    inline std::atomic<int> g_MealFrom { 0 };
+
 }

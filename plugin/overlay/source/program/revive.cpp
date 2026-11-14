@@ -68,6 +68,7 @@ namespace coop::revive {
 
         HOOK_DEFINE_TRAMPOLINE(TryReviveHook) {
             static bool Callback(std::uintptr_t player) {
+                g_LastReviveCallMs.store(coop::clock::NowMs());
                 if (Orig(player)) {
                     Logging.Log("[botw-coop] sauvetage : Link releve par le jeu (fee ou Grace de Mipha)");
                     return true;
