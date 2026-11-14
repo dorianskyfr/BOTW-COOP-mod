@@ -1,0 +1,44 @@
+﻿## fv1 (-DCOOP_TEST_FLAGVALUES) : histogramme de l'octet +0xb des drapeaux booleens, sauvegarde du plateau
+[botw-coop] essai valeurs : n.32 hachage=002c5b5d valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 5d 5b 2c 00
+[botw-coop] essai valeurs : n.61 hachage=0059aae8 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 e8 aa 59 00
+[botw-coop] essai valeurs : n.67 hachage=0066ded0 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 d0 de 66 00
+[botw-coop] essai valeurs : n.73 hachage=00753066 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 66 30 75 00
+[botw-coop] essai valeurs : n.119 hachage=00bc9d09 valeur=2 proprietes=0x1f octets 8..f = 00 1f 00 02 09 9d bc 00
+[botw-coop] essai valeurs : n.135 hachage=00de8264 valeur=10 proprietes=0x7 octets 8..f = 00 07 00 0a 64 82 de 00
+[botw-coop] essai valeurs : n.165 hachage=0105ef12 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 12 ef 05 01
+[botw-coop] essai valeurs : n.227 hachage=0164fe15 valeur=20 proprietes=0xf octets 8..f = 00 0f 00 14 15 fe 64 01
+[botw-coop] essai valeurs : n.248 hachage=017ef73e valeur=2 proprietes=0x1f octets 8..f = 00 1f 00 02 3e f7 7e 01
+[botw-coop] essai valeurs : n.253 hachage=018ec3db valeur=4 proprietes=0x7 octets 8..f = 00 07 00 04 db c3 8e 01
+[botw-coop] essai valeurs : n.254 hachage=018f1101 valeur=8 proprietes=0x7 octets 8..f = 00 07 00 08 01 11 8f 01
+[botw-coop] essai valeurs : n.273 hachage=01a77626 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 26 76 a7 01
+[botw-coop] essai valeurs : n.347 hachage=022e0e12 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 12 0e 2e 02
+[botw-coop] essai valeurs : n.377 hachage=02621e0d valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 0d 1e 62 02
+[botw-coop] essai valeurs : n.383 hachage=026c7c33 valeur=10 proprietes=0x7 octets 8..f = 00 07 00 0a 33 7c 6c 02
+[botw-coop] essai valeurs : n.485 hachage=030bd873 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 73 d8 0b 03
+[botw-coop] essai valeurs : n.507 hachage=032d8700 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 00 87 2d 03
+[botw-coop] essai valeurs : n.523 hachage=03415ecc valeur=16 proprietes=0xf octets 8..f = 00 0f 00 10 cc 5e 41 03
+[botw-coop] essai valeurs : n.524 hachage=03443957 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 57 39 44 03
+[botw-coop] essai valeurs : n.558 hachage=036d6e47 valeur=16 proprietes=0xf octets 8..f = 00 0f 00 10 47 6e 6d 03
+[botw-coop] essai valeurs : n.571 hachage=037dfc51 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 51 fc 7d 03
+[botw-coop] essai valeurs : n.583 hachage=03902ab7 valeur=4 proprietes=0x7 octets 8..f = 00 07 00 04 b7 2a 90 03
+[botw-coop] essai valeurs : n.587 hachage=03924391 valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 91 43 92 03
+[botw-coop] essai valeurs : n.619 hachage=03c88997 valeur=14 proprietes=0x7 octets 8..f = 00 07 00 0e 97 89 c8 03
+[botw-coop] essai valeurs : n.628 hachage=03d6015e valeur=22 proprietes=0x7 octets 8..f = 00 07 00 16 5e 01 d6 03
+[botw-coop] essai valeurs : octet de valeur 0 -> 40200 drapeaux
+[botw-coop] essai valeurs : octet de valeur 1 -> 308 drapeaux
+[botw-coop] essai valeurs : octet de valeur 2 -> 137 drapeaux
+[botw-coop] essai valeurs : octet de valeur 4 -> 83 drapeaux
+[botw-coop] essai valeurs : octet de valeur 6 -> 65 drapeaux
+[botw-coop] essai valeurs : octet de valeur 8 -> 36 drapeaux
+[botw-coop] essai valeurs : octet de valeur 10 -> 185 drapeaux
+[botw-coop] essai valeurs : octet de valeur 12 -> 4 drapeaux
+[botw-coop] essai valeurs : octet de valeur 14 -> 21 drapeaux
+[botw-coop] essai valeurs : octet de valeur 16 -> 43 drapeaux
+[botw-coop] essai valeurs : octet de valeur 18 -> 5 drapeaux
+[botw-coop] essai valeurs : octet de valeur 20 -> 44 drapeaux
+[botw-coop] essai valeurs : octet de valeur 22 -> 900 drapeaux
+## correspondance avec la colonne Category du catalogue (build\gamedata\flags.tsv, RomFS de l'utilisateur) : octet >> 1 = Category pour les 9 drapeaux verifies (Clear_Dungeon012/112 -> 1, Koroks -> 11, Compendium -> 2/4/5/7, boss -> 8/10)
+## fv2 (correctif) : drapeaux annonces par un outil de test
+[botw-coop] drapeau recu : hachage=f66ba753 mis en attente (pas de paravoile)
+[botw-coop] drapeau recu : n.9810 hachage=3aefa053 mis a 1 (octet 17 : categorie 8 gardee)
+[botw-coop] drapeau recu : n.39484 hachage=f0143def mis a 1 (octet 1 : categorie 0 gardee)

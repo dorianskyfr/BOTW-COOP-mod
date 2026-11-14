@@ -807,6 +807,15 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Non essaye : obtention de la paravoile puis application des drapeaux en attente.
 - Preuve : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`.
 
+### 5.46 Defaut corrige : l'octet de valeur des drapeaux porte aussi la categorie (2026-11-15, essais `fv1`, `fv2`) - [V] par les journaux
+
+- Mesure `fv1` (`-DCOOP_TEST_FLAGVALUES`, histogramme de l'octet +0xb des 41 900 drapeaux booleens, sauvegarde du plateau) : 0 -> 40 200, 1 -> 308, puis seulement des valeurs **paires** (2, 4, ..., 22 ; 22 -> 900 drapeaux). Pour les 9 drapeaux relus, **octet >> 1 = colonne Category du catalogue** (Clear_Dungeon012/112 -> 1, Koroks -> 11, Compendium -> 2, 4, 5, 7, boss vaincus -> 8, 10). Donc octet = (categorie << 1) | valeur.
+- Consequence de l'ancien code (qui lisait l'octet entier) : un drapeau a categorie (sanctuaires termines, Koroks, Compendium, boss vaincus) n'etait **jamais** applique quand il etait recu (valeur lue != 0), ni envoye quand le joueur le posait (22 -> 23 n'est pas « 0 -> 1 ») ; et une ecriture `= 1` aurait efface la categorie. C'etait le `Clear_Dungeon100` « a 2 » de 5.44 ter.
+- Correctif : valeur = bit 0 (`ReadBoolValue`), mise a 1 = `octet | 1` (`SetBoolValue`), partout dans flags.cpp.
+- [V] `fv2` : `Clear_Dungeon100` -> `mis en attente (pas de paravoile)` ; Hinox vaincu (`MainField_IsDefeat_Enemy_Giant_Bone_...`, categorie 8, groupe 2) -> `mis a 1 (octet 17 : categorie 8 gardee)` ; champignon -> octet 1.
+- Non verifie : envoi d'un drapeau a categorie pose en jouant (Korok trouve, sanctuaire termine) ; a l'image (Compendium, carte).
+- Preuve : `docs/evidence/2026-11-15_drapeaux-octet-categorie-et-valeur_fv1-fv2.log`.
+
 ### 5.45 Meteo suivie seulement dans le meme climat (2026-11-14, essais `cl1` a `cl4`) - [V] par les journaux
 
 - Idee de botw-coop (meteo de l'hote dans le meme climat seulement ; ils lisent `mCurrentClimate` a `Manager+0x780`). **Chez nous, ce n'est pas +0x780** : [V] `cl3` (une instance, `-DCOOP_TEST_CLIMATE` qui journalise `Manager+0x760..0x7bc`) : sur le plateau +0x780 = +0x784 = 0 ; apres un voyage de 2,5 km vers l'ouest (sanctuaire 076, B-6) seul **+0x784 passe a 6**, +0x780 reste a 0. Sur notre image, deux accesseurs voisins : `main+0x14318f0` rend +0x780, `main+0x14318f8` rend +0x784. Le plugin lit +0x784 (0 a 63 accepte, sinon inconnu).

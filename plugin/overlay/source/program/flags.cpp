@@ -228,9 +228,25 @@ namespace coop::flags {
             if (checked < 16 || hashVotes[best] < checked * 3 / 4)
                 return false;
             s_HashOffset = static_cast<std::size_t>(best);
-            /* Flag<bool> (gdtFlag.h) : mType +0x8, mProperties +0x9, mConfig +0xa, mValue +0xb, mHash +0xc. */
+            /* Flag<bool> (gdtFlag.h) : mType +0x8, mProperties +0x9, mConfig +0xa, mValue +0xb, mHash +0xc.
+               L'octet +0xb vaut (categorie << 1) | valeur : mesure (essai fv1, NOTES 5.46), la categorie est
+               celle du catalogue GameData (Category). La valeur est donc le bit 0 seulement. */
             s_ValueOffset = 0xb;
             return true;
+        }
+
+        /* Valeur d'un drapeau booleen (bit 0 de l'octet +0xb). */
+        bool ReadBoolValue(std::uintptr_t flag, std::uint8_t& value) {
+            std::uint8_t raw = 0;
+            if (!Read(flag + s_ValueOffset, raw))
+                return false;
+            value = raw & 1;
+            return true;
+        }
+
+        /* Met un drapeau booleen a 1 sans toucher a sa categorie (bits 1 a 7). */
+        void SetBoolValue(std::uintptr_t flag) {
+            *reinterpret_cast<std::uint8_t*>(flag + s_ValueOffset) |= 1;
         }
 
     }
@@ -485,7 +501,7 @@ namespace coop::flags {
         if (FindByHash(bools, hash, flag) < 0)
             return -1;
         std::uint8_t value = 0, props = 0;
-        if (!Read(flag + s_ValueOffset, value) || !Read(flag + 0x9, props))
+        if (!ReadBoolValue(flag, value) || !Read(flag + 0x9, props))
             return -2;
         return (value ? 1 : 0) | (props << 8);
     }
@@ -549,6 +565,34 @@ namespace coop::flags {
            rechargement qui suit un Game Over, ou le jeu remet des drapeaux a 0 puis a 1
            (mesure, essai a2) ; sans cela ils etaient classes « qui basculent ». */
         const bool inGame = coop::game::IsWorldReady();
+#ifdef COOP_TEST_FLAGVALUES
+        /* Essai : histogramme des octets de valeur (+0xb) de tous les drapeaux booleens, une fois en jeu. */
+        static int s_ValueDumpFrames = 0;
+        if (inGame && s_HaveSnapshot && ++s_ValueDumpFrames == 300) {
+            int histo[256] = {};
+            int listed = 0;
+            for (int i = 0; i < bools.m_Num; i++) {
+                std::uintptr_t flag = 0;
+                std::uint8_t v = 0, props = 0;
+                std::uint32_t hash = 0;
+                if (!Read(bools.m_Buffer + 8ull * i, flag) || !Read(flag + s_ValueOffset, v))
+                    continue;
+                histo[v]++;
+                if (v > 1 && listed++ < 25) {
+                    Read(flag + s_HashOffset, hash);
+                    Read(flag + 0x9, props);
+                    std::uint8_t raw[0x10] = {};
+                    for (int k = 0; k < 0x10; k++)
+                        Read(flag + k, raw[k]);
+                    Logging.Log("[botw-coop] essai valeurs : n.%d hachage=%08x valeur=%d proprietes=0x%x octets 8..f = %02x %02x %02x %02x %02x %02x %02x %02x",
+                        i, hash, v, props, raw[8], raw[9], raw[10], raw[11], raw[12], raw[13], raw[14], raw[15]);
+                }
+            }
+            for (int v = 0; v < 256; v++)
+                if (histo[v] != 0)
+                    Logging.Log("[botw-coop] essai valeurs : octet de valeur %d -> %d drapeaux", v, histo[v]);
+        }
+#endif
         if (!inGame) {
             Change dropped {};
             while (g_Incoming.Pop(dropped)) { }
@@ -570,7 +614,7 @@ namespace coop::flags {
             std::uintptr_t glider = 0;
             std::uint8_t hasGlider = 0;
             const int gliderIdx = FindByHash(bools, ParagliderHash, glider);
-            if (gliderIdx < 0 || !Read(glider + s_ValueOffset, hasGlider))
+            if (gliderIdx < 0 || !ReadBoolValue(glider, hasGlider))
                 hasGlider = 0;
             if (hasGlider == 1 && s_HeldProgress > 0 && inGame && s_HaveSnapshot) {
                 Logging.Log("[botw-coop] drapeaux : paravoile obtenue, %d drapeaux de progression mis en attente : etat redemande", s_HeldProgress);
@@ -584,7 +628,7 @@ namespace coop::flags {
                 std::uintptr_t flag = 0;
                 const int idx = FindByHash(bools, in.m_Hash, flag);
                 std::uint8_t cur = 0xff;
-                if (idx < 0 || in.m_Value != 1 || !Read(flag + s_ValueOffset, cur) || cur != 0 || !Shareable(flag, idx, in.m_Hash)) {
+                if (idx < 0 || in.m_Value != 1 || !ReadBoolValue(flag, cur) || cur != 0 || !Shareable(flag, idx, in.m_Hash)) {
                     static int s_SkipLogs = 0;
                     std::uint8_t props = 0;
                     if (idx >= 0)
@@ -600,12 +644,15 @@ namespace coop::flags {
                         Logging.Log("[botw-coop] drapeau recu : hachage=%08x mis en attente (pas de paravoile)", in.m_Hash);
                     continue;
                 }
-                *reinterpret_cast<std::uint8_t*>(flag + s_ValueOffset) = 1;
+                SetBoolValue(flag);
                 s_LastBool[idx] = 1; /* pas de renvoi */
                 coop::objects::OnRemoteFlagSet(in.m_Hash); /* objet de carte deja charge ? */
                 s_Applied++;
-                if (s_Applied <= 60)
-                    Logging.Log("[botw-coop] drapeau recu : n.%d hachage=%08x mis a 1", idx, in.m_Hash);
+                if (s_Applied <= 60) {
+                    std::uint8_t raw = 0;
+                    Read(flag + s_ValueOffset, raw);
+                    Logging.Log("[botw-coop] drapeau recu : n.%d hachage=%08x mis a 1 (octet %d : categorie %d gardee)", idx, in.m_Hash, raw, raw >> 1);
+                }
             }
 
             /* Resynchronisation : on renvoie par tranches tous les drapeaux partages deja a 1. */
@@ -644,7 +691,7 @@ namespace coop::flags {
             std::uintptr_t flag;
             std::memcpy(&flag, reinterpret_cast<const void*>(bools.m_Buffer + 8ull * i), 8);
             std::uint8_t value = 0xff;
-            if (!Read(flag + s_ValueOffset, value))
+            if (!ReadBoolValue(flag, value))
                 continue;
             if (s_HaveSnapshot && inGame && i < s_NumBools && s_LastBool[i] != value) {
                 std::uint32_t hash = 0;
