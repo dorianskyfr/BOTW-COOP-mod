@@ -27,7 +27,7 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 - Drapeaux de la liste blanche : progression (sanctuaires, tours, Créatures divines, Koroks) et objets de carte (ramassés, coffres, ennemis tués). Les étapes de quête, l'inventaire et le Compendium restent à chacun.
 - Points de vie et position des ennemis (première version).
 - Messages dans le bandeau du jeu quand l'autre joueur arrive ou part, et à la connexion.
-- **Téléportation vers l'autre joueur** : maintenir le clic du stick gauche 1,5 s (jusqu'à 250 m). Un clic court accroupit Link comme d'habitude.
+- **Téléportation vers l'autre joueur** : maintenir le clic du stick gauche 1,5 s. Jusqu'à 250 m, Link arrive à côté de lui ; plus loin, le jeu fait un voyage (chargement) vers le sanctuaire ou la tour le plus proche de lui, puis Link le rejoint. Un clic court accroupit Link comme d'habitude.
 - **Sauvegardes coop séparées** : au premier lancement avec le mod, vos sauvegardes sont copiées dans un dossier `coop` des données de sauvegarde du jeu (les originales sont seulement lues) ; ensuite le jeu ne lit et n'écrit que cette copie. Retirer le mod rend vos sauvegardes normales, inchangées.
 - **Sauvetage par le partenaire** : à votre mort, si aucune fée ni la Grâce de Mipha ne vous sauve et que l'autre joueur est en jeu, vivant et à moins de 150 m, vous repartez avec 3 cœurs (au plus une fois toutes les 2 minutes) ; votre partenaire en est averti. Réglages dans `romfs\botw-coop.txt` : `revive=0` pour couper, `revive_delay=<secondes>`, `revive_range=<mètres>`.
 - **Dons d'objets** : lâchez (menu « Lâcher ») ou lancez une arme ou un bouclier que vous portiez près de l'autre joueur ; quand il s'arrête à moins de 3 m de lui, il disparaît de votre monde et arrive dans son inventaire, avec son usure et son bonus (« Attaque + »…). Pour un matériau : menu, « Tenir », fermer le menu, puis le poser (A) près de l'autre joueur ; il le reçoit (un exemplaire par objet posé).
@@ -87,7 +87,9 @@ Le mod ne partage que les drapeaux d'une liste générée depuis **votre** copie
    build\venv\Scripts\python.exe -m pip install oead
    build\venv\Scripts\python.exe -I tools\gamedata_names.py build\romfs-1.9.0 build\gamedata\flags.tsv
    build\venv\Scripts\python.exe -I tools\build_sync_flags.py build\gamedata\flags.tsv build\deploy\romfs\botw-coop\sync-flags.bin
+   build\venv\Scripts\python.exe -I tools\build_travel_points.py build\romfs-1.9.0 build\deploy\romfs\botw-coop\travel-points.txt
    ```
+   La dernière ligne liste les sanctuaires et tours (voyage vers un partenaire à plus de 250 m).
 4. Le Link qui représente l'autre joueur (acteur `CoopPlayer`) et ses pièces d'armure (acteurs `CoopGear_*`), à partir de quelques fichiers de plus :
    ```
    build\tools\romfs-extract\RomfsExtract.exe "%APPDATA%\Ryujinx\system\prod.keys" "<jeu de base .nsp>" "<mise à jour 1.9.0 .nsp>" build\romfs-1.9.0 /Actor/Pack/Npc_DungeonPriest001.sbactorpack /Actor/Pack/PauseMenuPlayer.sbactorpack /Actor/Pack/Armor_ /Actor/Pack/Weapon_ /Actor/ActorInfo.product.sbyml /System/Resource/ResourceSizeTable.product.srsizetable

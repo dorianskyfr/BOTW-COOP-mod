@@ -318,6 +318,16 @@ namespace coop::input_inject {
                         }
                         buttons &= ~(1ull << 56);
                     }
+                    /* Bit 55 : voyage du jeu vers un sanctuaire ou une tour a plus de 300 m (essai). */
+                    if ((buttons >> 55) & 1) {
+                        static std::uint64_t s_LastTravel = 0;
+                        const auto cmd8 = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmd8 != s_LastTravel) {
+                            s_LastTravel = cmd8;
+                            coop::warp::DebugTravel();
+                        }
+                        buttons &= ~(1ull << 55);
+                    }
                     /* Bit 59 : decale de 4 m l'ennemi de carte le plus proche. Bit 58 : releve des positions. */
                     if ((buttons >> 58) & 3) {
                         static std::uint64_t s_LastPos = 0;

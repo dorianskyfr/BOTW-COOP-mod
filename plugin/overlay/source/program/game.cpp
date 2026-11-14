@@ -1001,6 +1001,39 @@ namespace coop::game {
         }
     }
 
+    bool ChangeStage(const char* map, const char* startPos) {
+        /*
+         * main+0x12082e0 (const SafeString& carte, const SafeString& point, int, bool) : appelle le
+         * pointeur de fonction range a main+0x1e3f520 s'il existe. D'apres botw-coop
+         * (reverse-engineering.md, « The game's own stage change ») ; reverifie sur notre image
+         * (capstone, NOTES 5.44) : l'action d'evenement de voyage (main+0x616d44) y finit par un saut
+         * avec (this+0x58, this+0x68, [this+0x48], false).
+         */
+        constexpr std::uintptr_t StageChange = 0x12082e0;
+        constexpr std::uintptr_t StageChangeFnPtr = 0x1e3f520;
+        constexpr std::uintptr_t SafeStringVtableSlot = 0x1d66260;
+        if (s_Offsets == nullptr || map == nullptr || startPos == nullptr)
+            return false;
+        const std::uintptr_t base = MainBase();
+        const auto vtSlot = Peek<std::uintptr_t>(base + SafeStringVtableSlot);
+        if (vtSlot == 0 || Peek<std::uintptr_t>(base + StageChangeFnPtr) == 0)
+            return false;
+        struct SafeString {
+            std::uintptr_t m_Vtable;
+            const char* m_Str;
+        };
+        /* Chaines et objets statiques : l'evenement du jeu passe des objets qui lui survivent ; on ne
+           sait pas si le jeu garde une reference apres l'appel. */
+        static char s_Map[32], s_Pos[48];
+        static SafeString s_M, s_P;
+        std::strncpy(s_Map, map, sizeof(s_Map) - 1);
+        std::strncpy(s_Pos, startPos, sizeof(s_Pos) - 1);
+        s_M = { vtSlot + 0x10, s_Map };
+        s_P = { vtSlot + 0x10, s_Pos };
+        reinterpret_cast<void (*)(const SafeString&, const SafeString&, int, bool)>(base + StageChange)(s_M, s_P, 0, false);
+        return true;
+    }
+
     int MapStampCount() {
         if (s_Offsets == nullptr)
             return -1;

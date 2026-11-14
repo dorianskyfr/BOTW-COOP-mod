@@ -213,6 +213,10 @@ namespace coop::game {
        Renvoie le nombre d'objets lus, -1 si l'inventaire est illisible. Fil du jeu. */
     int ReadPouch(PouchEntry* out, int max, std::uint32_t typeMask = 0xffffffffu);
 
+    /* Voyage du jeu (changement de lieu avec chargement) : carte "MainField/A-1", point "StartPos_CDungeon118".
+       Le jeu peut l'ignorer pendant les ~20 s qui suivent un chargement. Fil du jeu. */
+    bool ChangeStage(const char* map, const char* startPos);
+
     /* ---- Carte : tampons (marqueurs poses sur la carte) ---- */
 
     struct MapStamp {

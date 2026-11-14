@@ -1,6 +1,7 @@
 #include "warp.hpp"
 
 #include "clock.hpp"
+#include "config.hpp"
 #include "game.hpp"
 #include "notify.hpp"
 #include "session.hpp"
@@ -110,6 +111,96 @@ namespace coop::warp {
 
         std::uintptr_t s_Body = 0;
 
+        /*
+         * Voyage lointain : au-dela de MaxDistance, voyage du jeu (chargement) vers le sanctuaire ou la
+         * tour le plus proche du partenaire, puis, une fois le monde charge, teleportation courte s'il
+         * est a portee. Points : config::GetTravelPoint (tools/build_travel_points.py).
+         */
+        constexpr std::uint64_t TravelNoLoadMs = 30000;   /* pas de chargement vu : le jeu a ignore la demande */
+        constexpr std::uint64_t TravelSettleMs = 4000;    /* monde pret depuis 4 s avant la teleportation courte */
+        bool s_Travelling = false;
+        bool s_TravelSawLoading = false;
+        bool s_TravelDebug = false;
+        std::uint64_t s_TravelSince = 0;
+        std::uint64_t s_TravelReadySince = 0;
+        int s_TravelIndex = -1;
+
+        /* Point de voyage le plus proche de `pos` a plus de minFromLink metres de Link (-1 si aucun). */
+        int NearestTravelPoint(const float pos[3], const float link[3], float minFromLink, float& dist) {
+            int best = -1;
+            dist = 0.0f;
+            const int n = coop::config::g_TravelPointCount.load(std::memory_order_acquire);
+            for (int i = 0; i < n; i++) {
+                const auto* t = coop::config::GetTravelPoint(i);
+                if (t == nullptr || Dist(t->m_Pos, link) < minFromLink)
+                    continue;
+                const float d = Dist(t->m_Pos, pos);
+                if (best < 0 || d < dist) {
+                    best = i;
+                    dist = d;
+                }
+            }
+            return best;
+        }
+
+        bool StartTravel(int index, const float link[3], const char* why) {
+            const auto* t = coop::config::GetTravelPoint(index);
+            if (t == nullptr || !coop::game::ChangeStage(t->m_Map, t->m_StartPos)) {
+                Logging.Log("[botw-coop] voyage : demande impossible (point %d)", index);
+                return false;
+            }
+            s_Travelling = true;
+            s_TravelSawLoading = false;
+            s_TravelSince = coop::clock::NowMs();
+            s_TravelReadySince = 0;
+            s_TravelIndex = index;
+            Logging.Log("[botw-coop] voyage (%s) : %s %s, point (%.1f, %.1f, %.1f), a %.0f m de Link", why, t->m_Map, t->m_StartPos,
+                static_cast<double>(t->m_Pos[0]), static_cast<double>(t->m_Pos[1]), static_cast<double>(t->m_Pos[2]),
+                static_cast<double>(Dist(t->m_Pos, link)));
+            return true;
+        }
+
+        /* Suivi d'un voyage en cours ; true tant qu'il faut laisser le reste de OnFrame de cote. */
+        bool FollowTravel(bool ready, const coop::game::PlayerState& st) {
+            if (!s_Travelling)
+                return false;
+            const std::uint64_t now = coop::clock::NowMs();
+            if (!ready) {
+                if (!s_TravelSawLoading)
+                    Logging.Log("[botw-coop] voyage : chargement commence (%lu ms apres la demande)", now - s_TravelSince);
+                s_TravelSawLoading = true;
+                s_TravelReadySince = 0;
+                return true;
+            }
+            if (!s_TravelSawLoading) {
+                if (now - s_TravelSince > TravelNoLoadMs) {
+                    Logging.Log("[botw-coop] voyage : aucun chargement en %lu ms, demande ignoree par le jeu", now - s_TravelSince);
+                    coop::notify::Post("Voyage : refusé par le jeu, réessayez");
+                    s_Travelling = false;
+                }
+                return false;
+            }
+            if (s_TravelReadySince == 0) {
+                s_TravelReadySince = now;
+                const auto* t = coop::config::GetTravelPoint(s_TravelIndex);
+                Logging.Log("[botw-coop] voyage : arrive en (%.1f, %.1f, %.1f), a %.1f m du point vise, %lu ms apres la demande",
+                    static_cast<double>(st.m_Pos[0]), static_cast<double>(st.m_Pos[1]), static_cast<double>(st.m_Pos[2]),
+                    static_cast<double>(t != nullptr ? Dist(st.m_Pos, t->m_Pos) : -1.0f), now - s_TravelSince);
+                return true;
+            }
+            if (now - s_TravelReadySince < TravelSettleMs)
+                return true;
+            s_Travelling = false;
+            if (!s_TravelDebug)
+                s_Requested = true; /* teleportation courte vers le partenaire s'il est maintenant a portee */
+            s_TravelDebug = false;
+            return false;
+        }
+
+#ifdef COOP_REMOTE_PAD
+        bool s_DebugTravelRequested = false;
+#endif
+
         /* Ecrit la position ; false si une verification echoue (rien n'est alors ecrit). */
         bool Place(const coop::game::PlayerState& st, const float target[3], bool firstWrite) {
             if (firstWrite) {
@@ -177,11 +268,27 @@ namespace coop::warp {
 
     void OnFrame() {
         coop::game::PlayerState st;
-        if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady()) {
+        const bool ready = coop::game::ReadPlayer(st) && st.m_PlayerActor != 0 && coop::game::IsWorldReady();
+        if (FollowTravel(ready, st))
+            return;
+        if (!ready) {
             s_Requested = false;
             s_HoldLeft = 0;
             return;
         }
+#ifdef COOP_REMOTE_PAD
+        if (s_DebugTravelRequested) {
+            /* Essai : voyage vers le point le plus proche de Link a plus de 300 m. */
+            s_DebugTravelRequested = false;
+            float d = 0.0f;
+            const int i = NearestTravelPoint(st.m_Pos, st.m_Pos, 300.0f, d);
+            s_TravelDebug = i >= 0 && StartTravel(i, st.m_Pos, "essai");
+            if (i < 0)
+                Logging.Log("[botw-coop] voyage (essai) : aucun point de voyage a plus de 300 m (%d points lus)",
+                    coop::config::g_TravelPointCount.load());
+            return;
+        }
+#endif
         if (s_HoldLeft > 0) {
             s_HoldLeft--;
             Place(st, s_Target, false);
@@ -206,6 +313,14 @@ namespace coop::warp {
         const float d = Dist(s_Target, st.m_Pos);
         char msg[64];
         if (d > MaxDistance) {
+            /* Voyage du jeu vers le sanctuaire ou la tour le plus proche du partenaire, s'il rapproche. */
+            float toPartner = 0.0f;
+            const int i = NearestTravelPoint(s_Target, st.m_Pos, 0.0f, toPartner);
+            if (i >= 0 && toPartner + 50.0f < d && StartTravel(i, st.m_Pos, "partenaire")) {
+                std::snprintf(msg, sizeof(msg), "Voyage vers le joueur %d (%d m)", coop::session::g_Remote.Id(), static_cast<int>(d));
+                coop::notify::Post(msg);
+                return;
+            }
             std::snprintf(msg, sizeof(msg), "Téléportation : partenaire trop loin (%d m)", static_cast<int>(d));
             coop::notify::Post(msg);
             return;
@@ -222,6 +337,10 @@ namespace coop::warp {
     }
 
 #ifdef COOP_REMOTE_PAD
+    void DebugTravel() {
+        s_DebugTravelRequested = true;
+    }
+
     void DebugLift(float height) {
         coop::game::PlayerState st;
         if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady())

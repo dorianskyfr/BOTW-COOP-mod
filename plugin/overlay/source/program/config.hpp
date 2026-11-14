@@ -65,6 +65,16 @@ namespace coop::config {
     inline std::atomic<int> g_WeaponCount { 0 };
     const char* WeaponActorFor(std::uint32_t weaponHash);
 
+    /* Points de voyage du jeu (sanctuaires, tours), lus dans content:/botw-coop/travel-points.txt. */
+    struct TravelPoint {
+        float m_Pos[3];
+        char  m_Map[24];       /* ex. "MainField/A-1" */
+        char  m_StartPos[32];  /* ex. "StartPos_CDungeon118" */
+    };
+    constexpr int MaxTravelPoints = 160;
+    inline std::atomic<int> g_TravelPointCount { 0 };
+    const TravelPoint* GetTravelPoint(int index);
+
     /* Link du partenaire (content:/Actor/Pack/CoopPlayer.sbactorpack) : -1 pas encore regarde, 0 absent, 1 present. */
     inline std::atomic<int> g_PuppetInstalled { -1 };
 

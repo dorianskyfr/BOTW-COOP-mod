@@ -153,6 +153,10 @@ def main():
             # Essai : le plugin souleve Link de 50 m ; il retombe (chute mortelle avec peu de cœurs).
             p.pad(buttons=1 << 56, ms=300)
             p.log("lift : Link souleve de 50 m")
+        elif op == "travel":
+            # Essai : voyage du jeu vers le sanctuaire ou la tour le plus proche a plus de 300 m.
+            p.pad(buttons=1 << 55, ms=300)
+            p.log("travel : voyage vers un point a plus de 300 m demande")
         elif op == "life":
             # Essai : le plugin journalise les points de vie des ennemis a moins de 200 m.
             p.pad(buttons=1 << 61, ms=300)

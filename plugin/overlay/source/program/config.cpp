@@ -170,6 +170,44 @@ namespace coop::config {
             LoadModelMap(s_WeaponMap);
         }
 
+        /* Points de voyage (tools/build_travel_points.py) : texte, une ligne « X Y Z carte point ». */
+        TravelPoint s_Travel[MaxTravelPoints];
+        char s_TravelText[16384];
+
+        void LoadTravelPoints() {
+            FileHandle file {};
+            std::uint32_t rc = reinterpret_cast<OpenFn>(s_Open)(&file, "content:/botw-coop/travel-points.txt", OpenMode_Read);
+            if (rc != 0) {
+                Logging.Log("[botw-coop] config: pas de botw-coop/travel-points.txt (0x%x) : pas de voyage vers un partenaire lointain", rc);
+                return;
+            }
+            long size = 0;
+            std::size_t got = 0;
+            rc = reinterpret_cast<GetSizeFn>(s_Size)(&size, file);
+            const bool fits = rc == 0 && size > 0 && size < static_cast<long>(sizeof(s_TravelText));
+            if (fits)
+                rc = reinterpret_cast<ReadFn>(s_Read)(&got, file, 0, s_TravelText, static_cast<std::size_t>(size));
+            reinterpret_cast<CloseFn>(s_Close)(file);
+            if (!fits || rc != 0 || got != static_cast<std::size_t>(size)) {
+                Logging.Log("[botw-coop] config: travel-points.txt illisible (taille %ld, code 0x%x)", size, rc);
+                return;
+            }
+            s_TravelText[got] = '\0';
+            int n = 0;
+            for (char* line = s_TravelText; line != nullptr && *line != '\0' && n < MaxTravelPoints;) {
+                char* next = std::strchr(line, '\n');
+                if (next != nullptr)
+                    *next++ = '\0';
+                TravelPoint& t = s_Travel[n];
+                if (std::sscanf(line, "%f %f %f %23s %31s", &t.m_Pos[0], &t.m_Pos[1], &t.m_Pos[2], t.m_Map, t.m_StartPos) == 5
+                    && std::strncmp(t.m_Map, "MainField/", 10) == 0)
+                    n++;
+                line = next;
+            }
+            g_TravelPointCount.store(n, std::memory_order_release);
+            Logging.Log("[botw-coop] config: %d points de voyage (sanctuaires, tours)", n);
+        }
+
         /* Le Link du partenaire est-il installe (RomFS du mod, tools/build_puppet.py) ? */
         void CheckPuppet() {
             FileHandle file {};
@@ -194,6 +232,10 @@ namespace coop::config {
             return nullptr;
         }
 
+    }
+
+    const TravelPoint* GetTravelPoint(int index) {
+        return index >= 0 && index < g_TravelPointCount.load(std::memory_order_acquire) ? &s_Travel[index] : nullptr;
     }
 
     const char* GearActorFor(std::uint32_t pieceHash) { return Lookup(s_GearMap, pieceHash); }
@@ -229,7 +271,7 @@ namespace coop::config {
         s_Read = readAddr;
         s_Close = closeAddr;
         struct AfterConfig {
-            ~AfterConfig() { LoadSyncFlags(); LoadGearMap(); CheckPuppet(); } /* apres la lecture des reglages (share_groups) */
+            ~AfterConfig() { LoadSyncFlags(); LoadGearMap(); CheckPuppet(); LoadTravelPoints(); } /* apres la lecture des reglages (share_groups) */
         } afterConfig;
 
         /*

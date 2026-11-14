@@ -46,7 +46,7 @@ Niveaux : 0 absent · 1 code · 2 compilé · 3 essai simulé · 4 deux vraies i
 | **Ennemis : vie, mort, position** (P1) | 4 (vie, mort par chute) ; position sur ennemi immobile | 4 (Bokoblins), + répétition toutes les 15 s | comparer avec leur règle de propriété (60 % de la distance du propriétaire − 1 m) |
 | **Ennemis : attaques, IA** (P1) | 0 | 4 sur Bokoblins (séquences du propriétaire rejouées) | après le chantier 1 (même mécanisme `ASList`) |
 | **Mort, à terre, réanimation** (P1) | 4 par journaux : sauvetage immédiat (3 cœurs) si le partenaire est là, délai de 2 min ; pas d'état « à terre » | 4 | état « à terre » à relever par le partenaire (NOTES §5.37) |
-| **Téléportation vers un partenaire** (P2) | 0 | 4 (≤ 250 m direct, bonds au-delà, changement de stage du jeu `main+0x12082e0`) | à faire ; gros risque de chargement bloqué sous Ryujinx |
+| **Téléportation vers un partenaire** (P2) | 4 : ≤ 250 m direct ; au-delà, voyage du jeu (`main+0x12082e0`) vers le sanctuaire ou la tour le plus proche, puis direct (NOTES §5.44) | 4 (≤ 250 m direct, bonds au-delà, changement de stage du jeu `main+0x12082e0`) | plusieurs km ; voir à l'image |
 | **Carte : marqueurs, tampons** (P2) | 4 par journaux (tampon posé, suivi, retiré ; NOTES §5.43) ; pas vu à l'image | 3–4 | voir le tampon sur l'écran de la carte ; révélation de la carte |
 | **Repas partagés, effets** (P2) | 4 par journaux (soins) ; effets non | 4 (soins) ; effets non | effets des plats (NOTES §5.39) |
 | **Dons d'objets** (P2) | 4 par journaux : épée, bouclier, bonus d'arme, matériaux `Item_*` | 4 (armes avec bonus, matériaux) | arc ; insectes, minerais ; vérification à l'image (NOTES §5.42) |

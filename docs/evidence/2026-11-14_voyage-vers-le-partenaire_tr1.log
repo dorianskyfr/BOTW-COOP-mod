@@ -1,0 +1,42 @@
+﻿## Essai tr1 : deux instances ; points de voyage generes depuis la RomFS de l'utilisateur (135)
+## plugin tr1_game.txt
+[botw-coop] config: 135 points de voyage (sanctuaires, tours)
+[botw-coop] messages : "Coop : connect?? (joueur 1)"
+[botw-coop] messages : "Joueur 2 a rejoint la partie"
+[botw-coop] voyage (essai) : MainField/E-6 StartPos_CDungeon038, point (-672.5, 186.1, 1513.6), a 459 m de Link
+[botw-coop] voyage : chargement commence (1787 ms apres la demande)
+[botw-coop] voyage : arrive en (-666.0, 173.1, 1518.7), a 15.4 m du point vise, 11878 ms apres la demande
+[botw-coop] messages : "T??l??portation : partenaire trop loin (462 m)"
+[botw-coop] voyage (essai) : MainField/E-6 StartPos_CDungeon041, point (-447.7, 193.0, 1990.2), a 520 m de Link
+[botw-coop] voyage : chargement commence (1794 ms apres la demande)
+[botw-coop] voyage : arrive en (-455.9, 180.0, 1990.2), a 15.4 m du point vise, 9767 ms apres la demande
+[botw-coop] teleportation : clic relache apres 1033 ms, ni appui court ni maintien
+[botw-coop] teleportation : clic relache apres 1200 ms, ni appui court ni maintien
+[botw-coop] voyage (partenaire) : MainField/E-6 StartPos_CDungeon038, point (-672.5, 186.1, 1513.6), a 523 m de Link
+[botw-coop] messages : "Voyage vers le joueur 2 (516 m)"
+[botw-coop] voyage : chargement commence (2591 ms apres la demande)
+[botw-coop] voyage : arrive en (-666.0, 173.1, 1518.7), a 15.4 m du point vise, 10031 ms apres la demande
+[botw-coop] teleportation : de (-666.04, 173.10, 1518.72) vers J2 (-666.04, 173.60, 1518.72), 0.5 m
+[botw-coop] teleportation : chaine acteur -> 655f990d70, vtable attendue, position (-666.04, 173.10, 1518.72)
+[botw-coop] teleportation : corps Havok trouve par la chaine acteur
+[botw-coop] messages : "T??l??port?? vers le joueur 2 (0 m)"
+[botw-coop] teleportation : arrivee, position (-666.04, 173.31, 1518.72)
+[botw-coop] messages : "Coop : liaison perdue, reconnexion..."
+## plugin tr1_game2.txt
+[botw-coop] config: 135 points de voyage (sanctuaires, tours)
+[botw-coop] messages : "Coop : connect?? (joueur 2)"
+[botw-coop] messages : "Joueur 1 a rejoint la partie"
+[botw-coop] voyage (essai) : MainField/E-6 StartPos_CDungeon038, point (-672.5, 186.1, 1513.6), a 459 m de Link
+[botw-coop] voyage : chargement commence (1790 ms apres la demande)
+[botw-coop] voyage : arrive en (-666.0, 173.1, 1518.7), a 15.4 m du point vise, 11226 ms apres la demande
+## pilote
+    7.9s appui B x2 -> (?)
+   19.9s appui A x10 -> (?)
+   22.8s appui B x2 -> (?)
+   34.8s appui A x10 -> (?)
+    0.6s travel : voyage vers un point a plus de 300 m demande
+    2.8s maintien LS 2.2 s -> (-666.04, 173.10, 1518.72)
+    0.6s travel : voyage vers un point a plus de 300 m demande
+    0.6s travel : voyage vers un point a plus de 300 m demande
+    2.9s maintien LS 2.2 s -> (-455.89, 180.03, 1990.18)
+    3.6s maintien LS 3.0 s -> (-455.89, 180.03, 1990.18)

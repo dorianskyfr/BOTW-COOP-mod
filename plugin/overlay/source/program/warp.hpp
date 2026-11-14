@@ -23,6 +23,8 @@ namespace coop::warp {
 #ifdef COOP_REMOTE_PAD
     /* Essai seulement : Link souleve de height metres, il retombe (chute mortelle, NOTES 5.37). */
     void DebugLift(float height);
+    /* Essai : voyage du jeu vers le point de voyage le plus proche a plus de 300 m. */
+    void DebugTravel();
 #endif
 
 }
