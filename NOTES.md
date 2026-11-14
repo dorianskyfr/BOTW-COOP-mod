@@ -711,3 +711,14 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - `cc5`, `cc7` : `VariationMatAnim` = `Upper_ftp` puis `Upper`, image 0, dans la liste de modeles -> creees, couleur inchangee.
 - Remarque : la creation d'un acteur echoue parfois une fois sous forte charge (`cc1` : `CoopPlayer` introuvable apres 601 images, repli sur le PNJ ; `cc4` : une piece), puis reussit au nouvel essai.
 - Pistes non essayees : un acteur genere avec l'IA et le profil d'une armure (`Armor`, `ArmorUpper`) plutot que ceux du PNJ ; ecrire directement le choix de texture dans le materiau a l'execution. Teintures : de toute facon non transmises.
+- `ra1` (option d'essai `-DCOOP_TEST_REALARMOR` avec `COOP_TEST_SPAWN` + `COOP_TEST_GEAR`) : les **vraies** pieces du jeu (`Armor_001_Head/Upper/Lower`) creees a la place des `CoopGear_*` : creees en 5 images et posees sur le pantin (positions identiques), pas sur le Link local. **Couleurs et animation non vues** : ecran 2 occupe par l'utilisateur, et la capture interne de Ryujinx (F8) ne repond pas sans le focus.
+
+### 5.37 Sauvetage par le partenaire (2026-11-14, essai `rv2`) - [V] par les journaux, deux instances
+
+- D'apres botw-coop (reverse-engineering.md, gestionnaire de degats du joueur ; reecrit) et **reverifie sur notre image 1.9.0** : `tryRevive(joueur)` a `main+0xcead24` (debut de fonction), un seul appel, a `main+0xca93f8`, juste apres `ldr w8, [x0] ; cmp w8, #0 ; b.gt` (vie <= 0) ; s'il renvoie faux, saut a `0xca9b84` (Game Over). Il essaie la Grace de Mipha puis une fee.
+- `revive.cpp` : crochet sur `tryRevive`. Le jeu essaie d'abord ; si rien ne sauve Link et que le partenaire est en jeu, vivant (vie annoncee > 0) et a moins de `revive_range` m (defaut 150), la vie est mise a 3 cœurs (ou au maximum s'il est plus bas) et la fonction renvoie vrai. Au plus un sauvetage toutes les `revive_delay` s (defaut 120). Message dans le bandeau. `revive=0` coupe tout.
+- Outil d'essai `drive.py ... lift` (bit 56, build `COOP_REMOTE_PAD`) : Link pose 50 m plus haut par la meme ecriture que la teleportation (hauteurs de depart de chute comprises), il retombe.
+- [V] `rv2` (3 cœurs, J2 a cote) : 1re chute -> `sauvetage : Link releve par le partenaire (J2 a 0 m), vie 0 -> 12 quarts`, sequence `LandDamage`, pas de Game Over ; Link marche ensuite (9 m au stick). 2e chute 20 s plus tard -> `refuse (sauvetage trop recent)` -> Game Over, le monde se recharge.
+- Fenetres de jeu reduites pendant tout l'essai : les deux jeux tournent et se pilotent normalement ainsi.
+- **Non verifie** : a l'image (relevement, bandeau) ; ce que voit le partenaire ; refus quand le partenaire est absent, mort ou trop loin (code ecrit, pas essaye) ; mort par un coup d'ennemi, noyade, lave. Pas d'etat « a terre » a relever : le sauvetage est immediat.
+- Preuve : `docs/evidence/2026-11-14_sauvetage-par-le-partenaire_rv2.log`.

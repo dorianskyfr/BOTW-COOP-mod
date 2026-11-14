@@ -12,9 +12,23 @@ Mod de présence à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 
 - Messages dans le bandeau du jeu quand l'autre joueur arrive ou part, et à la connexion.
 - **Téléportation vers l'autre joueur** : maintenir le clic du stick gauche 1,5 s (jusqu'à 250 m). Un clic court accroupit Link comme d'habitude.
 - **Sauvegardes coop séparées** : au premier lancement avec le mod, vos sauvegardes sont copiées dans un dossier `coop` des données de sauvegarde du jeu (les originales sont seulement lues) ; ensuite le jeu ne lit et n'écrit que cette copie. Retirer le mod rend vos sauvegardes normales, inchangées.
+- **Sauvetage par le partenaire** : à votre mort, si aucune fée ni la Grâce de Mipha ne vous sauve et que l'autre joueur est en jeu, vivant et à moins de 150 m, vous repartez avec 3 cœurs (au plus une fois toutes les 2 minutes). Réglages dans `romfs\botw-coop.txt` : `revive=0` pour couper, `revive_delay=<secondes>`, `revive_range=<mètres>`.
 - Inventaire, santé et équipement restent individuels.
 
 Testé uniquement avec deux instances de Ryujinx 1.3.3 sur un même PC. Non testé entre deux PC, ni sous Eden.
+
+## Captures
+
+Images prises pendant les essais à deux instances (toutes les preuves : `docs/evidence/`).
+
+| | |
+|---|---|
+| ![Le joueur 2 voit le Link du joueur 1](docs/evidence/2026-11-13_pantin-link_deux-instances_J2-voit-J1.png) | ![Le joueur 2 voit le joueur 1 grimper](docs/evidence/2026-11-13_pantin-link_J2-voit-J1-grimper.png) |
+| L'autre joueur apparaît sous la forme d'un Link animé | … qui grimpe, nage, plane comme le vrai |
+| ![Le joueur 2 voit l'armure et les armes du joueur 1](docs/evidence/2026-11-14_equipement_deux-instances_J2-voit-J1-equipe.png) | ![Alerte : le partenaire est en danger](docs/evidence/2026-11-13_coeurs_alerte-chez-J1.png) |
+| Son armure et ses armes (couleurs de l'armure pas encore justes) | Alerte quand le partenaire n'a presque plus de cœurs |
+| ![Message à l'entrée en jeu](docs/evidence/2026-11-13_bandeau_connecte-a-l-entree-en-jeu.png) | ![Objet ramassé par le joueur 1](docs/evidence/2026-11-11_phaseC_J1-ramasse-le-champignon.png) |
+| Messages dans le bandeau du jeu | Un objet ramassé par l'un disparaît chez l'autre |
 
 ## Jouer à deux
 
@@ -79,4 +93,4 @@ Le mod ne partage que les drapeaux d'une liste générée depuis **votre** copie
 Groupes (réglage `share_groups=` dans `romfs\botw-coop.txt`, par défaut `1,2`) : 1 progression (1 330 drapeaux), 2 objets de carte (31 539), 3 portes logiques des énigmes (485, inactif par défaut). Tant qu'un joueur n'a pas la paravoile, la progression reçue attend (les sanctuaires du plateau donnent les runes).
 
 ## Outils de test
-`tools\run-live.ps1` et `tools\drive.py` lancent une ou deux instances et les pilotent par le réseau (déplacements, boutons, captures d'écran). Ils demandent une build de test (`-Defines '-DCOOP_REMOTE_PAD'`), à ne pas utiliser pour jouer. Options d'essai de l'armure : `-DCOOP_TEST_SPAWN -DCOOP_TEST_GEAR` (Link témoin à 3 m, en tenue hylienne), `-DCOOP_TEST_WEAR` (deux instances : J1 annonce la tenue 001, J2 la tenue 005), `-DCOOP_TEST_GIVE` (ajoute armure hylienne, épée, bouclier et arc à l'inventaire de la copie de test, à équiper par le menu).
+`tools\run-live.ps1` et `tools\drive.py` lancent une ou deux instances et les pilotent par le réseau (déplacements, boutons, captures d'écran). Ils demandent une build de test (`-Defines '-DCOOP_REMOTE_PAD'`), à ne pas utiliser pour jouer. Options d'essai de l'armure : `-DCOOP_TEST_SPAWN -DCOOP_TEST_GEAR` (Link témoin à 3 m, en tenue hylienne), `-DCOOP_TEST_WEAR` (deux instances : J1 annonce la tenue 001, J2 la tenue 005), `-DCOOP_TEST_GIVE` (ajoute armure hylienne, épée, bouclier et arc à l'inventaire de la copie de test, à équiper par le menu). `drive.py <nom> lift` soulève Link de 50 m (essai du sauvetage).

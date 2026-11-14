@@ -278,6 +278,14 @@ namespace coop::gear {
                 p = Piece {};
                 p.m_Crc = want;
                 p.m_Name = want != 0 ? coop::config::GearActorFor(want) : nullptr;
+#if defined(COOP_TEST_REALARMOR) && defined(COOP_TEST_GEAR)
+                /* Essai couleurs (NOTES 5.36) : la vraie piece du jeu au lieu de CoopGear_*. */
+                {
+                    static const char* const real[Slots] = { COOP_TEST_GEAR_SET };
+                    if (want != 0)
+                        p.m_Name = real[s];
+                }
+#endif
                 p.m_State = p.m_Name != nullptr ? PieceState::Idle : PieceState::None;
                 if (want != 0 && p.m_Name == nullptr && s_UnknownLogs++ < 10)
                     Logging.Log("[botw-coop] armure du partenaire : piece %d inconnue (%08x), non montree", s, want);

@@ -18,6 +18,7 @@ Commandes :
   actors [regex]           acteurs proches (nom, position)
   drop                     essai : fait tomber de 40 m le Bokoblin le plus proche (mort reelle)
   hpdown                   essai : vie du joueur pilote mise a 1 coeur
+  lift                     essai : Link souleve de 50 m (chute mortelle, sauvetage par le partenaire)
   days n                   essai : annonce a la session un compteur de jours avance de n
   hour h [lune]            essai : fait avancer l'heure de la session a h (0..360), meme jour ;
                            lune = minuteur de lune de sang annonce (2520 = 7 jours)
@@ -148,6 +149,10 @@ def main():
             # Essai : le plugin met la vie du joueur pilote a 1 coeur (alerte « en danger » chez l'autre).
             p.pad(buttons=1 << 57, ms=300)
             p.log("hpdown : vie locale mise a 1 coeur")
+        elif op == "lift":
+            # Essai : le plugin souleve Link de 50 m ; il retombe (chute mortelle avec peu de cœurs).
+            p.pad(buttons=1 << 56, ms=300)
+            p.log("lift : Link souleve de 50 m")
         elif op == "life":
             # Essai : le plugin journalise les points de vie des ennemis a moins de 200 m.
             p.pad(buttons=1 << 61, ms=300)

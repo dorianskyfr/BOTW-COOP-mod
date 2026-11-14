@@ -12,6 +12,9 @@
  *   relay=192.168.1.20:47800     adresse IPv4 et port du relais
  *   enemy_pos=0                  coupe le partage de la position des ennemis (actif par defaut)
  *   share_groups=1,2             groupes de drapeaux partages (liste blanche, voir plus bas)
+ *   revive=0                     coupe le sauvetage par le partenaire (actif par defaut)
+ *   revive_delay=120             secondes entre deux sauvetages par le partenaire
+ *   revive_range=150             distance maximale du partenaire, en metres
  * Sans fichier : 127.0.0.1:47800.
  *
  * Liste blanche des drapeaux : content:/botw-coop/sync-flags.bin, generee a l'installation
@@ -23,6 +26,13 @@ namespace coop::config {
 
     /* Partage de la position des ennemis (NOTES 5.25) : non essaye en combat reel, d'ou l'interrupteur. */
     inline bool g_EnemyPos = true;
+
+    /* Sauvetage par le partenaire (revive.cpp, NOTES 5.37) : a la mort, si ni fee ni Grace de Mipha
+       ne sauvent Link et que le partenaire est en jeu, vivant et a moins de g_ReviveRangeM, Link
+       repart avec 3 cœurs ; au plus une fois toutes les g_ReviveDelayS secondes. */
+    inline bool g_Revive = true;
+    inline int g_ReviveDelayS = 120;
+    inline int g_ReviveRangeM = 150;
 
     /* Groupes de drapeaux actifs (bit n = groupe n). Par defaut 1 et 2. */
     inline std::uint32_t g_ShareGroups = (1u << 1) | (1u << 2);

@@ -7,6 +7,7 @@
 #include "input_inject.hpp"
 #include "net_probe.hpp"
 #include "notify.hpp"
+#include "revive.hpp"
 #include "saves.hpp"
 
 /*
@@ -39,6 +40,8 @@ extern "C" void exl_main(void* x0, void* x1) {
         coop::anim_state::Install();
         /* Messages dans le bandeau d'information du jeu. */
         coop::notify::Install();
+        /* Sauvetage par le partenaire a la mort de Link. */
+        coop::revive::Install();
     }
 
     /* Thread reseau + sonde d'etat. */

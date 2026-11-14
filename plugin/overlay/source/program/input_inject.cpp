@@ -306,6 +306,16 @@ namespace coop::input_inject {
                         }
                         buttons &= ~(1ull << 57);
                     }
+                    /* Bit 56 : Link souleve de 50 m (essai de chute mortelle et du sauvetage). */
+                    if ((buttons >> 56) & 1) {
+                        static std::uint64_t s_LastLift = 0;
+                        const auto cmd7 = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmd7 != s_LastLift) {
+                            s_LastLift = cmd7;
+                            coop::warp::DebugLift(50.0f);
+                        }
+                        buttons &= ~(1ull << 56);
+                    }
                     /* Bit 59 : decale de 4 m l'ennemi de carte le plus proche. Bit 58 : releve des positions. */
                     if ((buttons >> 58) & 3) {
                         static std::uint64_t s_LastPos = 0;

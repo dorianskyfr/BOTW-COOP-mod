@@ -1,0 +1,32 @@
+﻿# Sauvetage par le partenaire (2026-11-14, essai rv2, deux instances, fenetres reduites, outil drive.py lift = Link souleve de 50 m).
+# Sauvegarde de test : 3 cœurs ; J2 immobile pres de J1.
+
+## J1 (rv2_game.txt)
+00:00:06.937 sauvetage : crochet pose sur main+0xcead24
+00:00:15.870 messages : "Coop : connect?? (joueur 1)"
+00:01:33.706 monde : pret (acteur du joueur actif)
+00:02:09.234 messages : "Joueur 2 a rejoint la partie"
+00:02:41.713 essai chute du joueur : Link souleve de 50 m a (-1024.48, 302.63, 1799.95)
+00:02:41.751 animation locale : sequence "Fall" -> etat 7
+00:02:43.660 sauvetage : Link releve par le partenaire (J2 a 0 m), vie 0 -> 12 quarts (n.1)
+00:02:43.660 messages : "Sauv?? par Joueur 2 ! (prochain dans 120 s)"
+00:02:43.661 animation locale : sequence "LandDamage" -> etat 0
+00:03:02.948 essai chute du joueur : Link souleve de 50 m a (-1026.33, 301.74, 1809.20)
+00:03:02.979 animation locale : sequence "Fall" -> etat 7
+00:03:04.844 sauvetage : refuse (sauvetage trop recent, distance 9 m) -> Game Over
+00:03:04.863 animation locale : sequence "LandDamage" -> etat 0
+00:03:10.794 monde : plus pret (chargement ou ecran-titre)
+00:03:18.147 monde : heure locale 108.14, heure de J0 110.32 (ecart 2.18) -> recalage n.1 demande
+00:03:21.190 monde : drapeau FirstTouchdown (plateau quitte) = 0 ; a 0, le jeu ne declenche aucune lune de sang
+00:03:21.190 monde : minuteur de lune de sang 29.4 -> 32.7 (celui de la session), ajustement n.1
+00:03:27.213 monde : heure locale 110.32, heure de J0 112.60 (ecart 2.27) -> recalage n.2 demande
+
+## pilote (rv2_pilot.log) : deplacement apres le premier sauvetage
+  105.5s position (-1024.48, 252.63, 1799.95) avant acteur (-0.1943, 0.9809)
+  105.5s lift : Link souleve de 50 m
+  115.5s position (-1024.52, 252.63, 1800.04) avant acteur (-0.1943, 0.9809)
+    2.5s push -> deplacement (-1.80, -0.87, 9.08), position (-1026.32, 251.75, 1809.12)
+    3.2s push -> deplacement (-0.02, -0.01, 0.08), position (-1026.34, 251.75, 1809.20)
+    3.2s position (-1026.34, 251.75, 1809.20) avant acteur (-0.1943, 0.9809)
+    3.2s lift : Link souleve de 50 m
+   18.2s position (-1027.58, 251.86, 1809.21) avant acteur (0.2591, -0.6553)

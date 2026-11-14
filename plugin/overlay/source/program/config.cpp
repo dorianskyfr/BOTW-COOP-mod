@@ -43,6 +43,12 @@ namespace coop::config {
             unsigned flag = 0;
             if (std::sscanf(line, "enemy_pos=%u", &flag) == 1)
                 g_EnemyPos = flag != 0;
+            if (std::sscanf(line, "revive=%u", &flag) == 1)
+                g_Revive = flag != 0;
+            if (std::sscanf(line, "revive_delay=%u", &flag) == 1 && flag <= 3600)
+                g_ReviveDelayS = static_cast<int>(flag);
+            if (std::sscanf(line, "revive_range=%u", &flag) == 1 && flag <= 10000)
+                g_ReviveRangeM = static_cast<int>(flag);
             if (std::strncmp(line, "share_groups=", 13) == 0) {
                 std::uint32_t groups = 0;
                 for (const char* p = line + 13; *p != '\0'; p++)

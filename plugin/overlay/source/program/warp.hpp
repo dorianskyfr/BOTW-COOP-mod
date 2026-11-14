@@ -20,4 +20,9 @@ namespace coop::warp {
     /* Fil du jeu, a chaque image. */
     void OnFrame();
 
+#ifdef COOP_REMOTE_PAD
+    /* Essai seulement : Link souleve de height metres, il retombe (chute mortelle, NOTES 5.37). */
+    void DebugLift(float height);
+#endif
+
 }

@@ -221,4 +221,20 @@ namespace coop::warp {
         coop::notify::Post(msg);
     }
 
+#ifdef COOP_REMOTE_PAD
+    void DebugLift(float height) {
+        coop::game::PlayerState st;
+        if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady())
+            return;
+        s_Target[0] = st.m_Pos[0];
+        s_Target[1] = st.m_Pos[1] + height;
+        s_Target[2] = st.m_Pos[2];
+        if (!Place(st, s_Target, true))
+            return;
+        s_HoldLeft = 2; /* tenu 2 images, puis Link tombe de la hauteur de depart posee par Place */
+        Logging.Log("[botw-coop] essai chute du joueur : Link souleve de %.0f m a (%.2f, %.2f, %.2f)", static_cast<double>(height),
+            static_cast<double>(s_Target[0]), static_cast<double>(s_Target[1]), static_cast<double>(s_Target[2]));
+    }
+#endif
+
 }
