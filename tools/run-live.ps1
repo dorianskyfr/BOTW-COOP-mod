@@ -19,6 +19,8 @@ param(
     [string]$Defines = '-DCOOP_REMOTE_PAD',
     # Ecran ou ranger les fenetres de jeu (1 = principal, 0 = ne pas y toucher).
     [int]$Screen = 0,
+    # Options d'essai du relais, par exemple '--lag 150 --jitter 50' ou '--pretend-version 99'.
+    [string]$RelayArgs = '',
     [switch]$Stop
 )
 
@@ -62,7 +64,7 @@ if ($Dir -eq '') { $Dir = "t_$Name" }
 $relayLog = Join-Path $runs "${Name}_relay.log"
 # Memoire du serveur : un fichier par essai, garde d'un lancement a l'autre du meme nom.
 $stateFile = Join-Path $runs "${Name}_state.json"
-$relay = Start-Process $python -ArgumentList ('-u "' + (Join-Path $project 'tools\relay.py') + '" --log "' + $relayLog + '" --state "' + $stateFile + '"') -PassThru -WindowStyle Hidden
+$relay = Start-Process $python -ArgumentList ('-u "' + (Join-Path $project 'tools\relay.py') + '" --log "' + $relayLog + '" --state "' + $stateFile + '" ' + $RelayArgs) -PassThru -WindowStyle Hidden
 Start-Sleep -Seconds 2
 if ($relay.HasExited) { Write-Output 'LE RELAIS NE DEMARRE PAS (port 47800 deja pris ?)'; exit 1 }
 

@@ -742,3 +742,15 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Limites : effets des plats (resistance, vitesse...) non partages ; une hausse de vie avec l'heure figee pour une autre raison (heure bloquee par le jeu en debut de partie, 5.12) serait prise pour un repas ; pas vu a l'image.
 - Relais : `MEAL` retransmis (essai automatique de plus, 45/45).
 - Preuve : `docs/evidence/2026-11-14_repas-partages_ml1.log`.
+
+### 5.40 Refus de version et latence simulee (2026-11-14, essais `vr1`, `vr2`) - [V] par les journaux
+
+- Version du protocole : `coop::protocol::Version` (`plugin/overlay/source/program/protocol.hpp`) et `PROTOCOL_VERSION` (`tools/relay.py`), egales (verifie par `test_relay.py`). A augmenter des que le sens d'un message change.
+- Plugin : envoie `VER <n>` des la connexion, avant tout etat. `HELLO <id> <n>` du relais : version differente ou absente (relais plus ancien) -> liaison coupee, un seul bandeau « Coop : versions différentes (relais X, mod Y) », nouvel essai dans 60 s (au lieu de 3 s). `REFUSE <n>` du relais : meme chose.
+- Relais : version differente, ou etat envoye sans `VER` (plugin d'avant ce controle) -> `REFUSE <n>`, liaison fermee, rien n'est retransmis, aucun `BYE` (le jeu n'est jamais entre dans la session). Un jeu qui n'a pas encore annonce sa version ne recoit rien de la session. Outils de test (`PILOT`, `PAD`) dispenses. Journal des refus limite (3 premiers puis 1 sur 100 par adresse).
+- Correctif au passage : une ligne qui coupe la liaison dans `Receive()` aurait fait deborder `s_RxLen` (taille non signee remise a 0 puis diminuee) ; on sort de la boucle des que `s_Fd < 0`.
+- Essai de latence : `relay.py --lag <ms> --jitter <ms>` retarde chaque ligne envoyee, sans changer l'ordre pour un meme joueur. `run-live.ps1 -RelayArgs '...'` les passe au relais. `--pretend-version <n>` : le relais se presente avec une autre version (essai du refus).
+- [V] `test_relay.py` : 53/53 (7 nouveaux : versions egales, HELLO avec version, refus d'une autre version, jeu sans version isole puis refuse, rien de retransmis ni annonce, retard >= 0,3 s avec `--lag 300`, ordre garde avec `--jitter 200`).
+- [V] `vr1` (une instance, relais `--pretend-version 99`) : plugin `version du relais 99, la notre 1 : liaison refusee, nouvel essai dans 60 s` ; relais `joueur 1 refuse : version 1, relais v99` ; nouvel essai 60 s plus tard (20:54:45 puis 20:55:45), meme refus. Bandeau mis en file (« Coop : versions différentes (relais 99, mod 1) ») ; pas affiche car le jeu est reste a l'ecran titre (le pilote ne peut pas le commander sans liaison) : affichage non verifie.
+- [V] `vr2` (deux instances, `--lag 150 --jitter 50`) : versions acceptees (J1, J2), entree en jeu, etat complet, Link du partenaire cree chez J1, sauvetage de J1 par J2 annonce dans les deux sens. Chez J2, creation de `CoopPlayer` echouee une fois (repli sur le PNJ) : defaut deja vu sous charge (5.36, essai cc1), sans lien avec la version ; a surveiller.
+- Preuves : `docs/evidence/2026-11-14_refus-de-version_vr1.log`, `2026-11-14_latence-simulee_deux-instances_vr2.log`.

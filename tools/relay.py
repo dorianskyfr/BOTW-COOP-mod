@@ -4,14 +4,16 @@ Chaque instance du jeu (plugin) s'y connecte en TCP. Le relais attribue un
 identifiant de joueur et retransmet aux autres joueurs chaque ligne recue.
 
 Protocole (lignes ASCII terminees par \\n) :
-  relais -> client : HELLO <id>            a la connexion
+  relais -> client : HELLO <id> <version>  a la connexion (version du protocole du relais)
+                     REFUSE <version>      jeu d'une autre version : le relais ferme la liaison
                      MTX <id> <12 floats> [etat]  matrice 3x4 de l'acteur d'un autre joueur, etat d'animation
                      TIME <id> <heure> <jours> <meteo> [minuteur de lune de sang]
                      FLAG <id> <hachage hex> 1   drapeau partage a 1 (id 0 = memoire du serveur)
                      FLAGR <id> <hachage hex> 1  idem, drapeau remis a zero par le jeu a la lune de sang
                      STATEEND <n>          fin de l'etat complet demande par STATE
                      BYE <id>              un autre joueur s'est deconnecte
-  client -> relais : MTX <12 floats> [etat] | TIME ... | FLAG <hachage hex> 1
+  client -> relais : VER <version>         premiere ligne d'un jeu : sa version du protocole
+                     MTX <12 floats> [etat] | TIME ... | FLAG <hachage hex> 1
                      FLAGR <hachage hex> 1|0   drapeau « lune de sang » passe a 1 / revenu a 0
                      STATE                 demande l'etat complet (drapeaux connus du serveur)
                      PILOT                 outil de test : rend son identifiant de joueur
@@ -32,15 +34,30 @@ Avec --state fichier.json, cette memoire survit a un redemarrage du serveur.
 Ecoute sur 127.0.0.1 par defaut. Pour jouer en LAN, passer --host avec l'adresse
 LAN du PC hote (jamais d'exposition a Internet : pas de redirection de port).
 
+Version : un jeu doit annoncer VER <n> avant tout etat ; une autre version, ou un etat
+envoye sans VER (plugin plus ancien), est refuse (REFUSE) et la liaison fermee. Les
+outils de test (PILOT, PAD) n'annoncent pas de version.
+
+Essai de latence : --lag <ms> retarde chaque ligne envoyee par le relais (--jitter <ms>
+en plus, au hasard), dans l'ordre d'envoi de chaque joueur.
+
 Usage : python tools/relay.py [--host 127.0.0.1] [--port 47800] [--log fichier] [--state fichier.json]
+                              [--lag ms] [--jitter ms]
 """
 import argparse
+import collections
 import datetime
 import json
 import os
+import random
 import selectors
 import socket
 import sys
+import time
+
+# Version du protocole : a changer en meme temps que coop::protocol::Version
+# (plugin/overlay/source/program/protocol.hpp) ; tools/test_relay.py compare les deux.
+PROTOCOL_VERSION = 1
 
 
 # Messages d'etat retransmis tels quels aux autres joueurs : nom -> nombre de valeurs.
@@ -82,6 +99,8 @@ class Client:
         self.pilot = False  # outil de test (tools/pilot.py), pas un joueur
         self.moon = None    # dernier minuteur de lune de sang annonce
         self.weather = None  # derniere meteo annoncee
+        self.version = None  # version du protocole annoncee par VER
+        self.outbox = collections.deque()  # --lag : (heure d'envoi, texte), dans l'ordre
 
 
 def main():
@@ -90,7 +109,12 @@ def main():
     parser.add_argument("--port", type=int, default=47800)
     parser.add_argument("--log", default=None)
     parser.add_argument("--state", default=None, help="fichier JSON ou garder la memoire du serveur")
+    parser.add_argument("--lag", type=float, default=0.0, help="essai : retard de chaque ligne envoyee (ms)")
+    parser.add_argument("--jitter", type=float, default=0.0, help="essai : retard supplementaire au hasard (ms)")
+    parser.add_argument("--pretend-version", type=int, default=None,
+                        help="essai : se presenter avec une autre version du protocole (refus du jeu)")
     args = parser.parse_args()
+    proto = args.pretend_version if args.pretend_version is not None else PROTOCOL_VERSION
 
     fh = open(args.log, "a", encoding="utf-8") if args.log else None
 
@@ -113,7 +137,10 @@ def main():
     srv.listen(8)
     srv.setblocking(False)
     sel.register(srv, selectors.EVENT_READ, None)
-    log(f"relais en ecoute sur {args.host}:{args.port}")
+    log(f"relais en ecoute sur {args.host}:{args.port}, protocole v{proto}")
+    if args.lag > 0 or args.jitter > 0:
+        log(f"essai de latence : {args.lag:.0f} ms + jusqu'a {args.jitter:.0f} ms au hasard sur chaque ligne envoyee")
+    refusals = {}  # adresse -> nombre de refus de version (journal limite)
 
     clients = {}
     next_pilot_id = 1000
@@ -163,11 +190,45 @@ def main():
         os.replace(tmp, args.state)
         dirty = False
 
-    def send(client, text):
+    def send_now(client, text):
         try:
             client.sock.sendall(text.encode("ascii"))
         except OSError as exc:
             log(f"joueur {client.pid} : erreur d'envoi ({exc})")
+
+    def send(client, text, always=False):
+        # Un jeu qui n'a pas encore annonce sa version ne recoit rien de la session.
+        if not always and not client.pilot and client.version is None:
+            return
+        if args.lag <= 0 and args.jitter <= 0:
+            send_now(client, text)
+            return
+        # Essai de latence : jamais avant la ligne precedente du meme joueur (TCP garde l'ordre).
+        due = time.monotonic() + (args.lag + random.uniform(0.0, args.jitter)) / 1000.0
+        if client.outbox:
+            due = max(due, client.outbox[-1][0])
+        client.outbox.append((due, text))
+
+    def flush_lagged():
+        now = time.monotonic()
+        nxt = None
+        for c in list(clients.values()):
+            while c.outbox and c.outbox[0][0] <= now:
+                send_now(c, c.outbox.popleft()[1])
+            if c.outbox and (nxt is None or c.outbox[0][0] < nxt):
+                nxt = c.outbox[0][0]
+        return nxt
+
+    def refuse(client, version):
+        client.outbox.clear()
+        n = refusals.get(client.peer[0], 0) + 1
+        refusals[client.peer[0]] = n
+        if n <= 3 or n % 100 == 0:
+            got = f"version {version}" if version is not None else "sans version (plugin plus ancien)"
+            log(f"joueur {client.pid} refuse : {got}, relais v{proto} (refus n.{n} depuis {client.peer[0]})")
+        send_now(client, f"REFUSE {proto}\n")
+        client.refused = True
+        drop(client, "version differente", announce=False)
 
     def time_for(recipient, payload):
         # Meteo de la session : celle du joueur de plus petit identifiant (pas celle du
@@ -181,16 +242,19 @@ def main():
         fields[2] = "-1" if authority is None or recipient is authority else str(authority.weather)
         return f"TIME 0 {' '.join(fields)}\n"
 
-    def drop(client, why):
+    def drop(client, why, announce=True):
         nonlocal clock_owner
-        if not client.pilot:
+        if client.sock not in clients:
+            return
+        if not client.pilot and announce:
             log(f"joueur {client.pid} deconnecte ({why}), {client.count} positions recues, derniere {client.last}")
         sel.unregister(client.sock)
         client.sock.close()
         del clients[client.sock]
         if clock_owner is client:
             clock_owner = None
-        if client.pilot:
+        # Un jeu refuse n'est jamais entre dans la session : rien a annoncer aux autres.
+        if client.pilot or not announce or client.version is None:
             return
         for other in clients.values():
             send(other, f"BYE {client.pid}\n")
@@ -206,7 +270,11 @@ def main():
         ticks += 1
         if ticks % 20 == 0:
             save_state()
-        for key, _ in sel.select(timeout=0.25):
+        timeout = 0.25
+        nxt = flush_lagged()
+        if nxt is not None:
+            timeout = min(timeout, max(0.0, nxt - time.monotonic()))
+        for key, _ in sel.select(timeout=timeout):
             if key.data is None:
                 sock, peer = srv.accept()
                 sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
@@ -214,10 +282,12 @@ def main():
                 clients[sock] = client
                 sel.register(sock, selectors.EVENT_READ, client)
                 log(f"joueur {client.pid} connecte depuis {peer[0]}:{peer[1]} ({len(clients)} en ligne)")
-                send(client, f"HELLO {client.pid}\n")
+                send(client, f"HELLO {client.pid} {proto}\n", always=True)
                 continue
 
             client = key.data
+            if client.sock not in clients:
+                continue
             try:
                 chunk = client.sock.recv(4096)
             except OSError as exc:
@@ -228,9 +298,23 @@ def main():
                 continue
 
             client.buf += chunk
-            while b"\n" in client.buf:
+            while b"\n" in client.buf and client.sock in clients:
                 raw, client.buf = client.buf.split(b"\n", 1)
                 parts = raw.decode("ascii", "replace").split()
+                if len(parts) == 2 and parts[0] == "VER":
+                    try:
+                        version = int(parts[1])
+                    except ValueError:
+                        version = -1
+                    if version != proto:
+                        refuse(client, parts[1])
+                        break
+                    client.version = version
+                    continue
+                if not client.pilot and client.version is None and parts and parts[0] != "PILOT" and parts[0] != "PAD":
+                    # Etat envoye sans VER : plugin d'avant le controle de version.
+                    refuse(client, None)
+                    break
                 if len(parts) == 6 and parts[0] == "PAD":
                     # Outil de test : commande de manette d'un pilote vers un joueur precis.
                     #   PAD <id cible> <boutons hex> <stick x> <stick y> <duree ms>

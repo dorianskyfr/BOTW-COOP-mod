@@ -1,0 +1,121 @@
+﻿## relais (--lag 150 --jitter 50)
+20:57:41.908 relais en ecoute sur 127.0.0.1:47800, protocole v1
+20:57:41.908 essai de latence : 150 ms + jusqu'a 50 ms au hasard sur chaque ligne envoyee
+20:58:04.418 joueur 1 connecte depuis 127.0.0.1:54126 (1 en ligne)
+20:58:17.877 joueur 2 connecte depuis 127.0.0.1:54133 (2 en ligne)
+20:58:52.296 joueur 3 connecte depuis 127.0.0.1:18107 (3 en ligne)
+21:00:16.204 joueur 3 connecte depuis 127.0.0.1:18180 (3 en ligne)
+21:00:43.735 joueur 1 : etat n.1 = MTX 0.9809 -0.0000 -0.1943 -1024.481 0.0000 1.0000 -0.0000 252.641 0.1943 0.0000 0.9809 1799.947 0
+21:00:43.890 joueur 1 : armure 00000000 00000000 00000000
+21:00:44.752 joueur 1 : fait avancer l'heure de la session (TIME 85.873 0 0 7.1), changement n.1
+21:00:44.752 joueur 1 : monde n.1 = TIME 85.873 0 0 7.1
+21:00:45.555 joueur 1 : objet porte 0 = 00000000 (position 0.000 0.000 0.000)
+21:00:45.555 joueur 1 : objet porte 1 = 00000000 (position 0.000 0.000 0.000)
+21:00:45.555 joueur 1 : objet porte 2 = 00000000 (position 0.000 0.000 0.000)
+21:00:45.555 joueur 1 : objet porte 3 = 00000000 (position 0.000 0.000 0.000)
+21:00:45.556 joueur 1 : objet porte 4 = 00000000 (position 0.000 0.000 0.000)
+21:00:45.556 joueur 1 : objet porte 5 = 00000000 (position 0.000 0.000 0.000)
+21:00:50.857 joueur 1 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+21:00:51.950 joueur 1 : drapeau nouveau n.1 = c2aa7d7e 1 (1 en memoire, 0 deja connus)
+21:00:57.442 joueur 1 : position d'ennemi n.1 = c51a8ff8 a 129.57 m de lui
+21:00:58.806 joueur 1 : etat n.100 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:00:59.252 joueur 2 : etat n.1 = MTX 0.9809 -0.0000 -0.1943 -1024.481 0.0000 1.0000 -0.0000 252.641 0.1943 0.0000 0.9809 1799.947 0
+21:01:00.305 joueur 2 : objet porte 0 = 00000000 (position 0.000 0.000 0.000)
+21:01:00.305 joueur 2 : objet porte 1 = 00000000 (position 0.000 0.000 0.000)
+21:01:00.305 joueur 2 : objet porte 2 = 00000000 (position 0.000 0.000 0.000)
+21:01:00.305 joueur 2 : objet porte 3 = 00000000 (position 0.000 0.000 0.000)
+21:01:00.306 joueur 2 : objet porte 4 = 00000000 (position 0.000 0.000 0.000)
+21:01:00.307 joueur 2 : objet porte 5 = 00000000 (position 0.000 0.000 0.000)
+21:01:01.373 joueur 2 : armure 00000000 00000000 00000000
+21:01:06.731 joueur 2 : etat complet demande, 1 drapeaux + 0 de lune de sang a envoyer
+21:01:12.674 joueur 1 : etat n.200 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:01:14.238 joueur 2 : etat n.100 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:01:26.539 joueur 1 : etat n.300 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:01:28.059 joueur 2 : etat n.200 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:01:40.371 joueur 1 : etat n.400 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:01:41.894 joueur 2 : etat n.300 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:01:54.208 joueur 1 : etat n.500 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:01:55.725 joueur 2 : etat n.400 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:02:03.617 joueur 1 : position d'ennemi n.200 = 636d844c a 126.31 m de lui
+21:02:05.737 joueur 3 connecte depuis 127.0.0.1:53203 (3 en ligne)
+21:02:08.018 joueur 1 : etat n.600 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 278.146 0.1943 0.0000 0.9809 1799.949 7
+21:02:08.057 joueur 2 : position d'ennemi n.1 = c51a8ff8 a 129.57 m de lui
+21:02:08.633 joueur 1 : releve par son partenaire (0 m)
+21:02:09.575 joueur 2 : etat n.500 = MTX 0.9809 0.0000 -0.1943 -1024.481 0.0000 1.0000 0.0000 252.635 0.1943 0.0000 0.9809 1799.949 0
+21:02:15.315 joueur 1 : monde n.60 = TIME 107.639 0 0 28.9
+21:02:21.821 joueur 1 : etat n.700 = MTX 0.9809 0.0000 -0.1943 -1024.495 0.0000 1.0000 0.0000 252.633 0.1943 0.0000 0.9809 1799.979 0
+## plugin vr2_game.txt
+[botw-coop] messages : crochet pose sur main+0xe84870
+[botw-coop] sauvetage : crochet pose sur main+0xcead24
+[botw-coop] net: nifm::Initialize -> 0x0, socket::Initialize -> 0x0
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+[botw-coop] net: le relais nous attribue l'identifiant J1
+[botw-coop] messages : "Coop : connect?? (joueur 1)"
+[botw-coop] net: etat complet demande au serveur
+[botw-coop] net: etat complet recu du serveur (0 drapeaux en memoire chez lui)
+[botw-coop] messages : bandeau demande (26 caracteres)
+[botw-coop] messages : "Joueur 2 a rejoint la partie"
+[botw-coop] messages : bandeau demande (28 caracteres)
+[botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+[botw-coop] acteur distant : CREE apres 5 images, acteur=66071a2080 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+[botw-coop] acteur distant : sequence "Wait" (avant "-")
+[botw-coop] acteur distant : deplacement par le corps physique -> code -11
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=75 interpolees=232 figees=87 pas max=0.002 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=225 interpolees=377 figees=92 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=375 interpolees=524 figees=95 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=525 interpolees=639 figees=130 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=675 interpolees=757 figees=162 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=825 interpolees=893 figees=176 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=975 interpolees=1022 figees=197 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1125 interpolees=1164 figees=205 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1275 interpolees=1271 figees=248 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1425 interpolees=1382 figees=287 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1575 interpolees=1521 figees=298 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1725 interpolees=1667 figees=302 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] sauvetage : Link releve par le partenaire (J2 a 0 m), vie 0 -> 12 quarts (n.1)
+[botw-coop] messages : "Sauv?? par Joueur 2 ! (prochain dans 120 s)"
+[botw-coop] messages : bandeau demande (42 caracteres)
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1875 interpolees=1812 figees=307 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=2025 interpolees=1958 figees=311 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=2175 interpolees=2106 figees=313 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=2325 interpolees=2252 figees=317 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 252.63, 1799.95) pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=2475 interpolees=2400 figees=319 pas max=0.000 m | deplace par le jeu=0
+## plugin vr2_game2.txt
+[botw-coop] messages : crochet pose sur main+0xe84870
+[botw-coop] sauvetage : crochet pose sur main+0xcead24
+[botw-coop] net: nifm::Initialize -> 0x0, socket::Initialize -> 0x0
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+[botw-coop] net: le relais nous attribue l'identifiant J2
+[botw-coop] messages : "Coop : connect?? (joueur 2)"
+[botw-coop] messages : "Joueur 1 a rejoint la partie"
+[botw-coop] net: etat complet demande au serveur
+[botw-coop] net: etat complet recu du serveur (1 drapeaux en memoire chez lui)
+[botw-coop] messages : bandeau demande (26 caracteres)
+[botw-coop] messages : bandeau demande (28 caracteres)
+[botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images), repli sur le PNJ
+[botw-coop] acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.1)
+[botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1023.28, 252.63, 1799.95)
+[botw-coop] acteur distant : CREE apres 15 images, acteur=6607370820 nom="Npc_Kakariko003" pos=(-1023.29, 252.68, 1799.95)
+[botw-coop] acteur distant : 4 interaction(s) retiree(s) (plus d'invite Parler)
+[botw-coop] acteur distant : deplacement par le corps physique -> code 101
+[botw-coop] acteur distant : vivant etat=1 lu=(-1023.28, 252.65, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=110 interpolees=956 figees=373 pas max=0.000 m | deplace par le jeu=104
+[botw-coop] acteur distant : vivant etat=1 lu=(-1023.28, 252.66, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=260 interpolees=1094 figees=385 pas max=0.000 m | deplace par le jeu=254
+[botw-coop] acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.301)
+[botw-coop] acteur distant : vivant etat=1 lu=(-1023.28, 252.66, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=410 interpolees=1214 figees=415 pas max=0.000 m | deplace par le jeu=404
+[botw-coop] acteur distant : vivant etat=1 lu=(-1023.28, 252.66, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=560 interpolees=1311 figees=468 pas max=0.000 m | deplace par le jeu=554
+[botw-coop] acteur distant : trop pres du joueur local (0.00 m), ecarte a 1.2 m (n.601)
+[botw-coop] acteur distant : vivant etat=1 lu=(-1024.48, 287.28, 1799.95) pos=(-1024.48, 288.15, 1799.95) avant=(-0.19, 0.98) | ecritures=710 interpolees=1390 figees=539 pas max=49.869 m | deplace par le jeu=703
+[botw-coop] messages : "Vous avez sauv?? le joueur 1 !"
+[botw-coop] sauvetage : le joueur 1 a ete releve grace a nous (0 m)
+[botw-coop] messages : bandeau demande (29 caracteres)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1023.28, 252.62, 1799.95)
+[botw-coop] acteur distant : CREE apres 5 images, acteur=660751e2c0 nom="Npc_Kakariko003" pos=(-1023.28, 252.62, 1799.95)
+[botw-coop] acteur distant : 4 interaction(s) retiree(s) (plus d'invite Parler)
+[botw-coop] acteur distant : vivant etat=1 lu=(-1023.28, 252.66, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=853 interpolees=1479 figees=600 pas max=12.741 m | deplace par le jeu=842
+[botw-coop] acteur distant : trop pres du joueur local (0.03 m), ecarte a 1.2 m (n.901)
+[botw-coop] acteur distant : vivant etat=1 lu=(-1023.28, 252.67, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1003 interpolees=1567 figees=662 pas max=0.000 m | deplace par le jeu=992
+[botw-coop] acteur distant : vivant etat=1 lu=(-1023.28, 252.65, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1153 interpolees=1678 figees=701 pas max=0.000 m | deplace par le jeu=1138
+[botw-coop] acteur distant : trop pres du joueur local (0.03 m), ecarte a 1.2 m (n.1201)
+[botw-coop] acteur distant : vivant etat=1 lu=(-1023.28, 252.65, 1799.95) pos=(-1023.28, 252.63, 1799.95) avant=(-0.19, 0.98) | ecritures=1303 interpolees=1753 figees=776 pas max=0.000 m | deplace par le jeu=1288

@@ -18,12 +18,30 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 
+def read_versions():
+    """Version du protocole cote relais et cote plugin (elles doivent etre egales)."""
+    import re
+    with open(os.path.join(HERE, "relay.py"), encoding="utf-8") as f:
+        relay = int(re.search(r"^PROTOCOL_VERSION = (\d+)", f.read(), re.M).group(1))
+    hpp = os.path.join(HERE, "..", "plugin", "overlay", "source", "program", "protocol.hpp")
+    with open(hpp, encoding="utf-8") as f:
+        plugin = int(re.search(r"constexpr int Version = (\d+);", f.read()).group(1))
+    return relay, plugin
+
+
+VERSION = read_versions()[0]
+
+
 class Fake:
-    def __init__(self, port):
+    def __init__(self, port, version=VERSION):
+        """Faux joueur ; version=None : plugin ancien qui n'annonce pas de version."""
         self.sock = socket.create_connection(("127.0.0.1", port), timeout=5)
         self.buf = b""
         self.lines = []
-        self.pid = int(self.expect("HELLO").split()[1])
+        self.hello = self.expect("HELLO")
+        self.pid = int(self.hello.split()[1])
+        if version is not None:
+            self.send(f"VER {version}")
 
     def send(self, text):
         self.sock.sendall((text + "\n").encode("ascii"))
@@ -58,12 +76,31 @@ class Fake:
         self.lines = [l for l in self.lines if not l.startswith(prefix)]
         return got
 
+    def closed(self, seconds=2.0):
+        """Vrai si le relais a ferme la liaison (les lignes recues restent dans self.lines)."""
+        end = time.time() + seconds
+        while time.time() < end:
+            self.sock.settimeout(max(0.01, end - time.time()))
+            try:
+                chunk = self.sock.recv(65536)
+            except socket.timeout:
+                return False
+            except OSError:
+                return True
+            if not chunk:
+                return True
+            self.buf += chunk
+            while b"\n" in self.buf:
+                raw, self.buf = self.buf.split(b"\n", 1)
+                self.lines.append(raw.decode("ascii"))
+        return False
+
     def close(self):
         self.sock.close()
 
 
-def start_relay(port, state):
-    proc = subprocess.Popen([sys.executable, "-u", os.path.join(HERE, "relay.py"), "--port", str(port), "--state", state],
+def start_relay(port, state, *extra):
+    proc = subprocess.Popen([sys.executable, "-u", os.path.join(HERE, "relay.py"), "--port", str(port), "--state", state, *extra],
                             stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
     for _ in range(50):
         try:
@@ -102,6 +139,28 @@ def main():
         a = Fake(port)
         b = Fake(port)
         check("identifiants 1 puis 2", (a.pid, b.pid) == (1, 2), f"{a.pid}, {b.pid}")
+
+        # Version du protocole.
+        relay_v, plugin_v = read_versions()
+        check("meme version du protocole dans relay.py et protocol.hpp", relay_v == plugin_v, f"{relay_v} / {plugin_v}")
+        check("HELLO donne la version du relais", a.hello == f"HELLO 1 {VERSION}", a.hello)
+        bad = Fake(port, version=VERSION + 98)
+        refused = bad.closed()
+        check("jeu d'une autre version refuse et deconnecte", refused and f"REFUSE {VERSION}" in bad.lines, str(bad.lines))
+        bad.close()
+        old = Fake(port, version=None)
+        a.send(MTX)
+        b.expect("MTX")
+        old.pump(0.4)
+        check("jeu sans version : il ne recoit rien de la session", not old.take("MTX"), str(old.lines))
+        old.send(MTX)
+        refused = old.closed()
+        check("... et il est refuse des qu'il envoie un etat", refused and f"REFUSE {VERSION}" in old.lines, str(old.lines))
+        old.close()
+        a.pump(0.4)
+        b.pump(0.1)
+        check("... sans que son etat passe ni que son depart soit annonce", not a.take("MTX") and not a.take("BYE") and not b.take("BYE"),
+              f"{a.lines} {b.lines}")
 
         a.send(MTX)
         line = b.expect("MTX")
@@ -268,6 +327,25 @@ def main():
         d.pump(0.3)
         check("heure de la session relue apres redemarrage", d.take("TIME") == ["TIME 0 4.5 5 -1 500.0"] and end == "STATEEND 1", str(d.lines))
         d.close()
+
+        # Essai de latence : chaque ligne envoyee est retardee, l'ordre est garde.
+        relay.kill()
+        relay.wait()
+        port3 = free_port()
+        relay = start_relay(port3, os.path.join(tmp, "lag.json"), "--lag", "300", "--jitter", "200")
+        time.sleep(0.3)
+        e = Fake(port3)
+        f2 = Fake(port3)
+        t0 = time.time()
+        for i in range(5):
+            e.send(f"MTX 1 0 0 {i} 0 1 0 0 0 0 1 0")
+        got = [f2.expect("MTX", 3.0) for _ in range(5)]
+        delay = time.time() - t0
+        order = [l.split()[5] for l in got]
+        check("--lag 300 : lignes retardees d'au moins 0,3 s", delay >= 0.28, f"{delay:.3f} s")
+        check("... et --jitter ne change pas leur ordre", order == ["0", "1", "2", "3", "4"], str(order))
+        e.close()
+        f2.close()
     finally:
         relay.kill()
 

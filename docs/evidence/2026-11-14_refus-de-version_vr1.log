@@ -1,0 +1,21 @@
+﻿## relais (tools/relay.py --pretend-version 99)
+20:54:22.749 relais en ecoute sur 127.0.0.1:47800, protocole v99
+20:54:45.408 joueur 1 connecte depuis 127.0.0.1:30848 (1 en ligne)
+20:54:45.411 joueur 1 refuse : version 1, relais v99 (refus n.1 depuis 127.0.0.1)
+20:55:45.497 joueur 1 connecte depuis 127.0.0.1:30879 (1 en ligne)
+20:55:45.498 joueur 1 refuse : version 1, relais v99 (refus n.2 depuis 127.0.0.1)
+20:56:45.597 joueur 1 connecte depuis 127.0.0.1:54042 (1 en ligne)
+20:56:45.598 joueur 1 refuse : version 1, relais v99 (refus n.3 depuis 127.0.0.1)
+## plugin (J1)
+[botw-coop] messages : crochet pose sur main+0xe84870
+[botw-coop] net: nifm::Initialize -> 0x0, socket::Initialize -> 0x0
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+[botw-coop] net: version du relais 99, la notre 1 : liaison refusee, nouvel essai dans 60 s
+[botw-coop] messages : "Coop : versions diff??rentes (relais 99, mod 1)"
+[botw-coop] net: liaison fermee (version differente), reconnexion automatique
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+[botw-coop] net: version du relais 99, la notre 1 : liaison refusee, nouvel essai dans 60 s
+[botw-coop] net: liaison fermee (version differente), reconnexion automatique
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+[botw-coop] net: version du relais 99, la notre 1 : liaison refusee, nouvel essai dans 60 s
+[botw-coop] net: liaison fermee (version differente), reconnexion automatique

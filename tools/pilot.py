@@ -161,7 +161,7 @@ class Pilot:
                 elif len(parts) == 5 and parts[0] == "TIME":
                     with self.lock:
                         self.world_time = float(parts[2])
-                elif len(parts) == 2 and parts[0] == "HELLO":
+                elif len(parts) >= 2 and parts[0] == "HELLO":
                     self.my_id = int(parts[1])
         self.alive = False
 

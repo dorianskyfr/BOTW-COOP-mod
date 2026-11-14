@@ -12,6 +12,7 @@
 #include "dynsym.hpp"
 #include "game.hpp"
 #include "session.hpp"
+#include "protocol.hpp"
 
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
@@ -163,7 +164,12 @@ namespace coop::net_probe {
         std::size_t   s_RxLen = 0;
         std::uint64_t s_Sent = 0;
 
-        void Disconnect(const char* why) {
+        /* Relais d'une autre version : on ne retente qu'apres ce delai, sans bandeau. */
+        constexpr std::uint64_t RefusedRetryMs = 60000;
+        std::uint64_t s_RefusedUntilMs = 0;
+        bool          s_RefusedShown = false;
+
+        void Disconnect(const char* why, bool quiet = false) {
             if (s_Fd < 0)
                 return;
             s_Api.m_Close(s_Fd);
@@ -171,7 +177,25 @@ namespace coop::net_probe {
             s_RxLen = 0;
             coop::session::g_Remote.SetInactive();
             Logging.Log("[botw-coop] net: liaison fermee (%s), reconnexion automatique", why);
-            coop::notify::Post("Coop : liaison perdue, reconnexion...");
+            if (!quiet)
+                coop::notify::Post("Coop : liaison perdue, reconnexion...");
+        }
+
+        /* Versions differentes entre ce plugin et le relais : on coupe, un seul bandeau. */
+        void RefuseVersion(int relayVersion) {
+            Logging.Log("[botw-coop] net: version du relais %d, la notre %d : liaison refusee, nouvel essai dans %u s",
+                relayVersion, coop::protocol::Version, static_cast<unsigned>(RefusedRetryMs / 1000));
+            if (!s_RefusedShown) {
+                char msg[96];
+                if (relayVersion > 0)
+                    std::snprintf(msg, sizeof(msg), "Coop : versions différentes (relais %d, mod %d)", relayVersion, coop::protocol::Version);
+                else
+                    std::snprintf(msg, sizeof(msg), "Coop : relais d'une ancienne version (mod %d)", coop::protocol::Version);
+                coop::notify::Post(msg);
+                s_RefusedShown = true;
+            }
+            s_RefusedUntilMs = coop::clock::NowMs() + RefusedRetryMs;
+            Disconnect("version differente", true);
         }
 
         void TryConnect() {
@@ -203,6 +227,12 @@ namespace coop::net_probe {
                 HostIp[0], HostIp[1], HostIp[2], HostIp[3], HostPort, s_ConnectFailures);
             s_ConnectFailures = 0;
             s_Fd = fd;
+
+            /* Premiere ligne : notre version du protocole (le relais refuse une autre version). */
+            char ver[24];
+            const int verLen = std::snprintf(ver, sizeof(ver), "VER %d\n", coop::protocol::Version);
+            if (!SendAll(s_Fd, ver, static_cast<std::size_t>(verLen)))
+                Disconnect("echec d'envoi");
         }
 
         int s_LastRemoteId = 0;
@@ -295,7 +325,15 @@ namespace coop::net_probe {
                 pad.m_UntilMs.store(coop::clock::NowMs() + static_cast<std::uint64_t>(m_ms > 0 ? m_ms : 0), std::memory_order_release);
                 pad.m_Commands.fetch_add(1, std::memory_order_acq_rel);
 #endif
-            } else if (std::sscanf(line, "HELLO %d", &id) == 1) {
+            } else if (int refusedBy = 0; std::sscanf(line, "REFUSE %d", &refusedBy) == 1) {
+                RefuseVersion(refusedBy);
+            } else if (int relayVersion = 0; std::sscanf(line, "HELLO %d %d", &id, &relayVersion) >= 1) {
+                /* Relais sans version (ancien) ou d'une autre version : on n'entre pas dans la session. */
+                if (relayVersion != coop::protocol::Version) {
+                    RefuseVersion(relayVersion);
+                    return;
+                }
+                s_RefusedShown = false;
                 coop::session::g_LocalId = id;
                 Logging.Log("[botw-coop] net: le relais nous attribue l'identifiant J%d", id);
                 char msg[48];
@@ -336,6 +374,8 @@ namespace coop::net_probe {
                         continue;
                     s_Rx[i] = '\0';
                     HandleLine(s_Rx + start);
+                    if (s_Fd < 0)
+                        return; /* liaison coupee par la ligne (version refusee) : tampon deja vide */
                     start = i + 1;
                 }
                 s_RxLen -= start;
@@ -392,7 +432,7 @@ namespace coop::net_probe {
             for (std::uint32_t tick = 0;; tick++) {
                 if (s_Fd < 0) {
                     sinceConnectMs += TickMs;
-                    if (sinceConnectMs >= ReconnectEveryMs) {
+                    if (sinceConnectMs >= ReconnectEveryMs && coop::clock::NowMs() >= s_RefusedUntilMs) {
                         sinceConnectMs = 0;
                         TryConnect();
                     }
