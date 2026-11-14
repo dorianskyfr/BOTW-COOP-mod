@@ -2,6 +2,23 @@
 
 Mod de présence à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 1.9.0 (Switch), chargé comme plugin (`subsdk9`), sans modifier le jeu. Aucun fichier du jeu n'est dans ce dépôt.
 
+![Deux joueurs dans le même monde : le joueur 2 voit le Link du joueur 1 à gauche](docs/evidence/2026-11-13_pantin-link_deux-instances_J2-voit-J1.png)
+
+*Le joueur 2 (au centre) voit le joueur 1 (à gauche) dans son monde.*
+
+## Captures
+
+Images prises pendant les essais à deux instances (toutes les preuves : `docs/evidence/`).
+
+| | |
+|---|---|
+| ![Le joueur 2 voit le joueur 1 grimper](docs/evidence/2026-11-13_pantin-link_J2-voit-J1-grimper.png) | ![Le joueur 2 voit l'armure et les armes du joueur 1](docs/evidence/2026-11-14_equipement_deux-instances_J2-voit-J1-equipe.png) |
+| L'autre joueur est un Link animé : il grimpe, nage, plane comme le vrai | Son armure et ses armes (couleurs de l'armure pas encore justes) |
+| ![Alerte : le partenaire est en danger](docs/evidence/2026-11-13_coeurs_alerte-chez-J1.png) | ![Message à l'entrée en jeu](docs/evidence/2026-11-13_bandeau_connecte-a-l-entree-en-jeu.png) |
+| Alerte quand le partenaire n'a presque plus de cœurs | Messages dans le bandeau du jeu |
+| ![Objet ramassé par le joueur 1](docs/evidence/2026-11-11_phaseC_J1-ramasse-le-champignon.png) | |
+| Un objet ramassé par l'un disparaît chez l'autre | |
+
 État réel, limites et preuves : `PROGRESS.md`. Détails techniques : `NOTES.md`, `ARCHITECTURE.md`. Décisions : `DECISIONS.md`.
 
 ## Ce que fait la version actuelle
@@ -16,19 +33,6 @@ Mod de présence à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 
 - Inventaire, santé et équipement restent individuels.
 
 Testé uniquement avec deux instances de Ryujinx 1.3.3 sur un même PC. Non testé entre deux PC, ni sous Eden.
-
-## Captures
-
-Images prises pendant les essais à deux instances (toutes les preuves : `docs/evidence/`).
-
-| | |
-|---|---|
-| ![Le joueur 2 voit le Link du joueur 1](docs/evidence/2026-11-13_pantin-link_deux-instances_J2-voit-J1.png) | ![Le joueur 2 voit le joueur 1 grimper](docs/evidence/2026-11-13_pantin-link_J2-voit-J1-grimper.png) |
-| L'autre joueur apparaît sous la forme d'un Link animé | … qui grimpe, nage, plane comme le vrai |
-| ![Le joueur 2 voit l'armure et les armes du joueur 1](docs/evidence/2026-11-14_equipement_deux-instances_J2-voit-J1-equipe.png) | ![Alerte : le partenaire est en danger](docs/evidence/2026-11-13_coeurs_alerte-chez-J1.png) |
-| Son armure et ses armes (couleurs de l'armure pas encore justes) | Alerte quand le partenaire n'a presque plus de cœurs |
-| ![Message à l'entrée en jeu](docs/evidence/2026-11-13_bandeau_connecte-a-l-entree-en-jeu.png) | ![Objet ramassé par le joueur 1](docs/evidence/2026-11-11_phaseC_J1-ramasse-le-champignon.png) |
-| Messages dans le bandeau du jeu | Un objet ramassé par l'un disparaît chez l'autre |
 
 ## Jouer à deux
 
