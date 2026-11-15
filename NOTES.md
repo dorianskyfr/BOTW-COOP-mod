@@ -812,6 +812,14 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.60 Verifications a l'image : meteo, carte, coups d'epee du partenaire, sauvetage (2026-11-15, essais `vz1`, `vz2`) - [V] a l'image, deux instances
+
+- **Meteo** (option d'essai `-DCOOP_TEST_WEATHER=2` : J1 force la pluie 40 s, ~37 s apres l'entree en jeu) : captures declenchees par le journal du jeu. Chez les deux joueurs, ciel gris et lumiere sombre au meme moment, contre un ciel bleu juste avant ; J2 « on suit la meteo 2 de la session ». Premier essai (`vz1`) : captures prises apres la fenetre de pluie (horloges du pilote et du jeu differentes), d'ou le second.
+- **Carte** : J2 envoye a ~440 m (voyage du jeu, sanctuaire Keh Namut) ; chez J1, l'ecran de la carte montre un tampon jaune a l'ouest-sud-ouest de Link, la ou est J2 ((-1427, 1988) contre (-1024, 1800)) ; journal « carte : tampon du partenaire deplace, relu en (-1427.5, 337.6, 1988.4) ». A 17 m, le tampon reste cache sous le curseur au zoom par defaut.
+- **Coups d'epee du partenaire de pres** (J1 teleporte pres de J2, epee equipee, puis place a 2 m de l'axe de la camera de J2 : dans l'axe, son Link etait cache par celui de J2) : J2 voit le Link de J1 bras tendu pendant `CutS1`..`CutSF`, puis l'epee a la main droite, lame vers le bas. Pendant le coup lui-meme, la lame n'est pas nette sur ces images.
+- **Sauvetage** (imprevu) : le sanctuaire Keh Namut est dans le froid ; J1, sans vetement chaud, meurt de froid ; « Link releve par le partenaire (J2 a 6 m), vie 0 -> 12 quarts », bandeau « Vous avez sauve le joueur 1 ! » chez J2. Les degats de l'environnement passent donc bien par le meme chemin.
+- Preuves : `2026-11-15_verifications-a-l-image_vz1-vz2.log`, `..._meteo-pluie-chez-les-deux_vz2.png`, `..._carte_tampon-du-partenaire_vz2.png`, `..._coups-epee-du-partenaire-de-pres_vz2.png`, `..._sauvetage-bandeau-mort-de-froid_vz2.png`.
+
 ### 5.59 Attaques, tir, saut, parade et surf joues par le Link du partenaire (2026-11-15, essais `at1`, `at2`, `sp1`) - [V] par les journaux et a l'image
 
 - Sequences du vrai joueur lues dans `Actor/ASList/Player.baslist` (paquet `GameROMPlayer` dans `TitleBG.pack` de la RomFS de l'utilisateur) : `CutS1`, `CutS2`, `CutS3` (enchainement), `CutSF` (coup final), `CutDash`, `CutFall`, `CutJumpSt`, `BowCharge`, `BowShoot`, `Jump`, `GuardJust`. Pour chacune, le clip a une main (epee) : `Sword_Attack_S1/S2/S3/SF/Dash/Fall`, `Sword_Attack_Jump_F_St`, `Bow_Attack_Charge`, `Bow_Attack_Shoot`, `Nml_Move_Run_Jump_FootL`, `Shield_Guard_Just` ; tous presents dans `Model/Player_Animation.sbfres` (verifie).

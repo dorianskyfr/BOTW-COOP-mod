@@ -1,0 +1,66 @@
+# Essais vz1, vz2 (2026-11-15) : meteo, carte, coups d'epee du partenaire, sauvetage, a l'image
+=== vz2_game.txt
+00:00:07.313 sauvetage : crochet pose sur main+0xcead24
+00:02:07.915 carte : tampon du partenaire J2 pose, reserve n.0, icone 34, bits 0x7638, en (-1024.5, 252.6, 1799.9)
+00:02:08.906 carte : tampon du partenaire deplace (n.1), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+00:02:35.708 meteo essai : image 1201, meteo du jeu=0, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:35.741 meteo essai : image 1202, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:02:38.941 carte : tampon du partenaire deplace (n.31), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+00:03:08.939 carte : tampon du partenaire deplace (n.61), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+00:03:30.940 carte : tampon du partenaire deplace (n.83), relu en (-1026.4, 251.7, 1809.5), bits 0x4211
+00:03:33.011 carte : tampon du partenaire deplace (n.85), relu en (-1027.8, 250.6, 1816.5), bits 0x4211
+00:03:39.410 carte : tampon du partenaire deplace (n.91), relu en (-1027.8, 250.6, 1816.5), bits 0x211
+00:04:09.410 carte : tampon du partenaire deplace (n.121), relu en (-1027.8, 250.6, 1816.5), bits 0x211
+00:04:22.504 carte : tampon du partenaire deplace (n.134), relu en (-1427.5, 337.6, 1988.4), bits 0x4211
+00:04:39.651 carte : tampon du partenaire deplace (n.151), relu en (-1427.5, 337.6, 1988.4), bits 0x210
+00:05:09.651 carte : tampon du partenaire deplace (n.181), relu en (-1427.5, 337.6, 1988.4), bits 0x210
+00:05:36.612 voyage : chargement commence (1788 ms apres la demande)
+00:05:46.517 voyage : arrive en (-1427.5, 337.6, 1988.4), a 15.4 m du point vise, 11693 ms apres la demande
+00:05:46.784 carte : tampon du partenaire J2 pose, reserve n.1, icone 34, bits 0x7638, en (-1427.5, 337.6, 1988.4)
+00:05:48.969 carte : tampon du partenaire J2 pose, reserve n.0, icone 34, bits 0x211, en (-1427.5, 337.6, 1988.4)
+00:05:51.954 carte : tampon du partenaire deplace (n.211), relu en (-1427.5, 337.6, 1988.4), bits 0x211
+00:06:22.553 carte : tampon du partenaire deplace (n.241), relu en (-1427.5, 337.6, 1988.4), bits 0x211
+00:06:27.340 meteo essai : image 1201, meteo du jeu=0, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:06:27.372 meteo essai : image 1202, meteo du jeu=2, demande type=2 minuteur=4 demo=0 (demande ecrite)
+00:06:52.841 carte : tampon du partenaire deplace (n.271), relu en (-1427.5, 337.6, 1988.4), bits 0x211
+00:06:54.513 animation locale : action "CutS1" (code 1)
+00:06:55.108 animation locale : action "CutS2" (code 2)
+00:06:55.741 animation locale : action "CutS3" (code 3)
+00:06:56.509 animation locale : action "CutS1" (code 1)
+00:06:57.108 animation locale : action "CutS2" (code 2)
+00:06:57.745 animation locale : action "CutS3" (code 3)
+00:06:58.346 animation locale : action "CutSF" (code 4)
+00:06:59.687 sauvetage : Link releve par le partenaire (J2 a 6 m), vie 0 -> 12 quarts (n.1)
+00:07:23.073 carte : tampon du partenaire deplace (n.301), relu en (-1427.5, 337.6, 1988.4), bits 0x211
+=== vz2_game2.txt
+00:00:08.016 sauvetage : crochet pose sur main+0xcead24
+00:01:50.733 carte : tampon du partenaire J1 pose, reserve n.0, icone 34, bits 0x7638, en (-1024.5, 252.6, 1799.9)
+00:01:51.704 carte : tampon du partenaire deplace (n.1), relu en (-1024.5, 252.6, 1799.9), bits 0x7638
+00:02:17.132 meteo : on suit la meteo 2 de la session (climat ici 0, chez la reference 0)
+00:02:23.594 carte : tampon du partenaire deplace (n.31), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+00:02:32.558 meteo essai : image 1201, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:02:32.593 meteo essai : image 1202, meteo du jeu=2, demande type=2 minuteur=3 demo=0
+00:02:53.595 carte : tampon du partenaire deplace (n.61), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+00:02:56.926 meteo : on suit la meteo 0 de la session (climat ici 0, chez la reference 0)
+00:03:23.899 carte : tampon du partenaire deplace (n.91), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+00:03:53.898 carte : tampon du partenaire deplace (n.121), relu en (-1024.5, 252.6, 1799.9), bits 0x210
+00:04:00.863 acteur distant : 4 interaction(s) retiree(s) (plus d'invite Parler)
+00:04:25.089 carte : tampon du partenaire deplace (n.151), relu en (-1024.5, 252.6, 1799.9), bits 0x211
+00:04:26.255 voyage : aucun chargement en 30018 ms, demande ignoree par le jeu
+00:04:26.255 messages : "Voyage : refus?? par le jeu, r??essayez"
+00:04:55.088 carte : tampon du partenaire deplace (n.181), relu en (-1024.5, 252.6, 1799.9), bits 0x210
+00:05:21.089 carte : tampon du partenaire deplace (n.207), relu en (-1427.5, 337.6, 1988.4), bits 0x4210
+00:05:25.089 carte : tampon du partenaire deplace (n.211), relu en (-1427.5, 337.6, 1988.4), bits 0x211
+00:05:55.087 carte : tampon du partenaire deplace (n.241), relu en (-1427.1, 337.6, 1988.2), bits 0x4211
+00:06:08.592 meteo : on suit la meteo 4 de la session (climat ici 0, chez la reference 0)
+00:06:25.125 carte : tampon du partenaire deplace (n.271), relu en (-1424.4, 337.2, 1987.5), bits 0x211
+00:06:34.592 acteur distant : action "CutS1" (600 ms)
+00:06:35.226 acteur distant : action "CutS2" (600 ms)
+00:06:35.826 acteur distant : action "CutS3" (700 ms)
+00:06:36.592 acteur distant : action "CutS1" (600 ms)
+00:06:37.192 acteur distant : action "CutS2" (600 ms)
+00:06:37.792 acteur distant : action "CutS3" (700 ms)
+00:06:38.426 acteur distant : action "CutSF" (900 ms)
+00:06:39.765 sauvetage : le joueur 1 a ete releve grace a nous (6 m)
+00:06:48.593 meteo : on suit la meteo 0 de la session (climat ici 0, chez la reference 0)
+00:06:55.125 carte : tampon du partenaire deplace (n.301), relu en (-1421.2, 335.9, 1989.5), bits 0x211

@@ -35,7 +35,7 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 - **Sauvetage par le partenaire** : à votre mort, si aucune fée ni la Grâce de Mipha ne vous sauve et que l'autre joueur est en jeu, vivant et à moins de 150 m, vous repartez avec 3 cœurs (au plus une fois toutes les 2 minutes) ; votre partenaire en est averti. Réglages dans `romfs\botw-coop.txt` : `revive=0` pour couper, `revive_delay=<secondes>`, `revive_range=<mètres>`.
 - **Dons d'objets** : lâchez (menu « Lâcher ») ou lancez une arme ou un bouclier que vous portiez près de l'autre joueur ; quand il s'arrête à moins de 3 m de lui, il disparaît de votre monde et arrive dans son inventaire, avec son usure et son bonus (« Attaque + »…). Pour un matériau : menu, « Tenir », fermer le menu, puis le poser (A) près de l'autre joueur ; il le reçoit (un exemplaire par objet posé).
 - **Repas partagés** : ce que vous mangez depuis le menu soigne aussi l'autre joueur, du même nombre de cœurs (`meal=0` pour couper). Les effets des plats ne sont pas partagés.
-- **L'autre joueur sur la carte** : un tampon du jeu marque sa position et le suit ; il disparaît quand il quitte la partie (`map=0` pour couper). Vérifié dans les journaux, pas encore vu sur l'écran de la carte.
+- **L'autre joueur sur la carte** : un tampon du jeu marque sa position et le suit ; il disparaît quand il quitte la partie (`map=0` pour couper). Vu sur l'écran de la carte.
 - **Contrôle de version** : le relais refuse un jeu dont le mod n'a pas la même version que lui (et inversement) ; un message l'indique dans le jeu, qui réessaie toutes les minutes. Mettre à jour le mod et le relais ensemble.
 - Inventaire, santé et équipement restent individuels.
 
