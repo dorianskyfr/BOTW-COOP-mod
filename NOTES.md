@@ -812,14 +812,16 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
-### 5.59 Attaques, tir, saut et parade joues par le Link du partenaire (2026-11-15, essais `at1`, `at2`) - [V] par les journaux ; [?] fidelite a l'image
+### 5.59 Attaques, tir, saut, parade et surf joues par le Link du partenaire (2026-11-15, essais `at1`, `at2`, `sp1`) - [V] par les journaux et a l'image
 
 - Sequences du vrai joueur lues dans `Actor/ASList/Player.baslist` (paquet `GameROMPlayer` dans `TitleBG.pack` de la RomFS de l'utilisateur) : `CutS1`, `CutS2`, `CutS3` (enchainement), `CutSF` (coup final), `CutDash`, `CutFall`, `CutJumpSt`, `BowCharge`, `BowShoot`, `Jump`, `GuardJust`. Pour chacune, le clip a une main (epee) : `Sword_Attack_S1/S2/S3/SF/Dash/Fall`, `Sword_Attack_Jump_F_St`, `Bow_Attack_Charge`, `Bow_Attack_Shoot`, `Nml_Move_Run_Jump_FootL`, `Shield_Guard_Just` ; tous presents dans `Model/Player_Animation.sbfres` (verifie).
 - `tools/build_puppet.py` ajoute ces 11 sequences au pantin (22 en tout). Le plugin (crochet existant, creneau 0 du joueur local) envoie `ACT <code>` a chaque action (relais : `"ACT": "i"`, 73/73) ; le pantin joue la sequence et la tient 0,6 a 2 s (durees choisies) avant de reprendre l'allure.
 - [V] **Cause trouvee d'un refus de creation du pantin** (`at1`) : avec 22 sequences, le jeu refuse `CoopPlayer`, `CoopPlayer2` et `CoopPlayerS` (etat 3), repli sur le PNJ. La taille de la liste de sequences dans la table des tailles etait celle du Link du menu pause (3808 pour un fichier de 740 octets, 10 sequences) ; notre fichier fait 1272 octets. Taille desormais proportionnelle au fichier plus 1024 (7570). [V] `at2` : « CREE apres 1 images, nom="CoopPlayer" ». [S] Le refus du surf (5.28) pourrait avoir la meme cause : a reessayer.
 - [V] `at2` (epee equipee chez J1, coups dans le vide) : J1 « action CutS1 / CutS2 / CutS3 / CutSF », J2 « acteur distant : action ... » dans le meme ordre, au meme rythme. Captures chez J2 : le Link de J1, vu de dos a ~6 m, change de pose (bras leves, bras ecarte).
-- **Non verifie** : que la pose ressemble bien a un coup d'epee vu de pres, et que l'arme est dans sa main pendant le coup ; arc, saut, parade a l'image.
-- Preuves : `2026-11-15_attaques-du-partenaire_at1-at2.log`, `..._vues-par-J2_at2.png`, `..._zoom_at2.png`.
+- [V] **De pres** (essai `sp1`, une instance, `-DCOOP_TEST_SPAWN` : pantin a 3 m qui joue ses 23 sequences 4 s chacune, une capture par seconde sur un cycle) : fentes bras tendu et coup par-dessus la tete (attaques), arc bande (`BowCharge`), bras ecartes (`Jump`), garde accroupie (`GuardJust`), plus vol plane, nage a plat et escalade. Le pantin de test ne porte pas d'arme.
+- [V] **Surf** : le clip `Shield_Board_Go2` est dans `Player_Animation.sbfres` ; la sequence `Surf` est rajoutee (23 sequences, taille 7817) et le pantin est cree du premier coup (`sp1`). Le refus de 5.28 venait donc de la taille de la liste. Surf d'un vrai joueur non essaye a deux (le pilote ne sait pas surfer).
+- **Non verifie** : l'arme dans la main du partenaire pendant un coup (vue de pres a deux instances), arc et parade a deux instances.
+- Preuves : `2026-11-15_attaques-du-partenaire_at1-at2.log`, `..._vues-par-J2_at2.png`, `..._zoom_at2.png`, `..._de-pres_sp1.png`, `2026-11-15_arc-saut-parade-du-partenaire_sp1.png` (rangee du bas ; la rangee du haut est figee par un message du jeu).
 
 ### 5.58 Cinematiques partagees (2026-11-15, essais `cs1`, `cs2`) - [V] a l'image, deux instances ; mode « deux sur ce PC » corrige
 

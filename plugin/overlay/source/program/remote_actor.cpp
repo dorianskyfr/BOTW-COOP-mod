@@ -127,7 +127,8 @@ namespace coop::remote_actor {
 #ifdef COOP_TEST_SPAWN
             /* Essai sans joueur distant : chaque sequence 4 s a tour de role. */
             static const char* const all[] = { "Wait", "Walk", "Run", "Dash", "Fall", "Glide", "Swim", "SwimWait",
-                                               "SwimDash", "Climb", "ClimbWait" };
+                                               "SwimDash", "Climb", "ClimbWait", "Surf", "CutS1", "CutS2", "CutS3", "CutSF",
+                                               "CutDash", "CutFall", "CutJump", "BowCharge", "BowShoot", "Jump", "GuardJust" };
             return all[(s_Frames / 120) % (sizeof(all) / sizeof(all[0]))];
 #else
             coop::session::Sample prev, last;

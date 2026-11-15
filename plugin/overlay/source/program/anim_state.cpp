@@ -134,8 +134,8 @@ namespace coop::anim_state {
             case SwimDash: return "SwimDash";
             case Glide: return "Glide";
             case Fall: return "Fall";
-            /* Surf : pas de sequence dans le pantin (elle empeche sa creation, NOTES 5.28) ; le
-               spectateur prend l'allure d'apres la vitesse. */
+            /* Surf : sequence ajoutee au pantin une fois la taille de sa liste corrigee (NOTES 5.59). */
+            case Surf: return "Surf";
             default: return nullptr;
         }
     }

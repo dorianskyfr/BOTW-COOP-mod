@@ -60,8 +60,9 @@ SEQUENCES = {
     "BowShoot": "Bow_Attack_Shoot",
     "Jump": "Nml_Move_Run_Jump_FootL",
     "GuardJust": "Shield_Guard_Just",
-    # Pas de surf : avec « Surf » -> Shield_Board_Go2 (clip de Player_SurfingSlide), le jeu ne cree
-    # plus l'acteur du tout (essais cp7, cp8 ; sans lui, cpa et cpb le creent). Cause inconnue.
+    # Surf : Shield_Board_Go2 (present dans Player_Animation.sbfres). Son refus en 5.28 (essais cp7, cp8)
+    # venait de la taille de la liste de sequences dans la table des tailles (NOTES 5.59), corrigee.
+    "Surf": "Shield_Board_Go2",
 }
 
 PUPPET_VARIANTS = {"CoopPlayer2": 700000, "CoopPlayerS": 560000}  # nom -> tas (NOTES 5.55)
