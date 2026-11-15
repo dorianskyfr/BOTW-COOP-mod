@@ -57,6 +57,21 @@ namespace coop::objects {
         Victim s_Victims[MaxVictims];
         int s_NumVictims = 0;
 
+        /*
+         * Coffres montres ouverts (NOTES 5.61). La pose OpenWait est redemandee toutes les 2 s pendant
+         * 20 s, au cas ou la logique du coffre remettrait la sienne. Le coffre reste ouvrable (essai co1 :
+         * contenu obtenu une seconde fois) : il est donc retire des que le joueur local passe a moins de
+         * 3 m, avant l'invite « Ouvrir » (~1,5 m). Distances et durees choisies, pas mesurees.
+         */
+        struct OpenChest {
+            std::uintptr_t m_Actor = 0;
+            std::uint64_t  m_UntilFrame = 0;
+            char           m_Name[40] = {};
+        };
+        constexpr std::uint64_t ChestHoldFrames = 600;
+        constexpr float ChestRemoveDistance = 3.0f;
+        OpenChest s_OpenChests[16];
+
         bool OnActor(const coop::game::ActorInfo& info, void*) {
             s_Seen++;
             s_SeenWithId += info.m_HashId != 0;
@@ -121,6 +136,31 @@ namespace coop::objects {
 
     void OnFrame() {
         s_Frames++;
+        if (s_Frames % 3 == 0) {
+            coop::game::PlayerState st;
+            const bool havePlayer = coop::game::ReadPlayer(st) && st.m_PlayerActor != 0;
+            for (OpenChest& c : s_OpenChests) {
+                if (c.m_Actor == 0)
+                    continue;
+                if (!coop::game::IsActorListed(c.m_Actor) || coop::game::GetActorState(c.m_Actor) == 3) {
+                    c = OpenChest {}; /* zone dechargee : au retour, le jeu le cree ouvert (drapeau a 1) */
+                    continue;
+                }
+                float p[3];
+                coop::game::GetActorPos(c.m_Actor, p);
+                const float dx = p[0] - st.m_Pos[0], dy = p[1] - st.m_Pos[1], dz = p[2] - st.m_Pos[2];
+                if (havePlayer && dx * dx + dy * dy + dz * dz < ChestRemoveDistance * ChestRemoveDistance) {
+                    const bool ok = coop::game::DeleteActor(c.m_Actor);
+                    s_Deleted += ok;
+                    Logging.Log("[botw-coop] objet : %s ouvert par l'autre joueur, joueur local a moins de %.0f m -> %s", c.m_Name,
+                        static_cast<double>(ChestRemoveDistance), ok ? "retire (pas de second contenu)" : "destruction refusee par le jeu");
+                    c = OpenChest {};
+                    continue;
+                }
+                if (s_Frames % RetryEveryFrames == 30 && s_Frames <= c.m_UntilFrame)
+                    coop::game::PlayActorSequence(c.m_Actor, "OpenWait");
+            }
+        }
         if (s_NumPending == 0)
             return;
         /* Un parcours tout de suite, puis un toutes les 2 s tant qu'il reste des drapeaux
@@ -142,10 +182,25 @@ namespace coop::objects {
 
         for (int i = 0; i < s_NumVictims; i++) {
             const Victim& v = s_Victims[i];
-            const bool ok = coop::game::DeleteActor(v.m_Actor);
-            s_Deleted += ok;
-            Logging.Log("[botw-coop] objet : %s pris, ouvert ou vaincu par l'autre joueur (drapeau %08x) -> %s",
-                v.m_Name, v.m_Flag, ok ? "retire ici" : "destruction refusee par le jeu");
+            if (std::strncmp(v.m_Name, "TBox_", 5) == 0) {
+                /* Coffre ouvert par l'autre : montre ouvert (sequence OpenWait de sa liste TBox_Field,
+                   NOTES 5.61) au lieu d'etre retire ; son drapeau est deja a 1 ici. */
+                const bool shown = coop::game::PlayActorSequence(v.m_Actor, "OpenWait");
+                Logging.Log("[botw-coop] objet : %s ouvert par l'autre joueur (drapeau %08x) -> %s", v.m_Name, v.m_Flag,
+                    shown ? "montre ouvert ici" : "sequence refusee");
+                for (OpenChest& c : s_OpenChests)
+                    if (c.m_Actor == 0 || c.m_Actor == v.m_Actor) {
+                        c.m_Actor = v.m_Actor;
+                        c.m_UntilFrame = s_Frames + ChestHoldFrames;
+                        std::memcpy(c.m_Name, v.m_Name, sizeof(c.m_Name));
+                        break;
+                    }
+            } else {
+                const bool ok = coop::game::DeleteActor(v.m_Actor);
+                s_Deleted += ok;
+                Logging.Log("[botw-coop] objet : %s pris, ouvert ou vaincu par l'autre joueur (drapeau %08x) -> %s",
+                    v.m_Name, v.m_Flag, ok ? "retire ici" : "destruction refusee par le jeu");
+            }
             /* Ce drapeau est traite : on le sort de la liste. */
             for (int k = 0; k < s_NumPending; k++) {
                 if (s_Pending[k] == v.m_Flag) {

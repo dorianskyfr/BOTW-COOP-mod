@@ -1,0 +1,74 @@
+# Essais co1, co2, co3 (2026-11-15) : coffres montres ouverts, cinematiques (liste, partenaire loin), Game Over rejoue chez l'autre (defaut corrige)
+=== co1_game.txt
+00:00:06.910 sauvetage : crochet pose sur main+0xcead24
+00:00:06.914 cinematiques : crochet pose sur main+0x110d1b8
+00:02:03.147 cinematique : Demo025_0 non annoncee (chargement ou entree en jeu recente)
+00:03:58.868 cinematique : Demo318_0 / Demo318_0 annoncee au partenaire
+00:05:10.083 cinematique : Demo000_0 / Demo000_0 annoncee au partenaire
+00:06:48.577 cinematique de J2 : Demo000_0 deja jouee ici, pas de rejeu
+00:07:16.295 objet : TBox_Field_Stone ouvert par l'autre joueur (drapeau 7eac67bd) -> montre ouvert ici
+00:07:40.626 cinematique : Demo000_0 / Demo000_0 annoncee au partenaire
+=== co1_game2.txt
+00:00:08.584 sauvetage : crochet pose sur main+0xcead24
+00:00:08.588 cinematiques : crochet pose sur main+0x110d1b8
+00:01:59.705 cinematique : Demo025_0 non annoncee (chargement ou entree en jeu recente)
+00:03:40.572 cinematique de J1 : Demo318_0 / Demo318_0 rejouee ici (partenaire a 0 m) -> acceptee, n.1
+00:04:51.765 cinematique de J1 : Demo000_0 / Demo000_0 rejouee ici (partenaire a 0 m) -> acceptee, n.2
+00:05:00.416 objet : TBox_Field_Stone ouvert par l'autre joueur (drapeau 985be8e9) -> montre ouvert ici
+00:06:28.421 cinematique : Demo000_0 / Demo000_0 annoncee au partenaire
+00:07:20.729 cinematique de J1 : Demo000_0 deja jouee ici, pas de rejeu
+=== co2_game.txt
+00:00:06.695 sauvetage : crochet pose sur main+0xcead24
+00:00:06.699 cinematiques : crochet pose sur main+0x110d1b8
+00:02:02.355 cinematique : Demo025_0 non annoncee (chargement ou entree en jeu recente)
+00:03:57.835 cinematique : Demo318_0 / Demo318_0 annoncee au partenaire
+00:04:56.331 cinematique : Demo000_0 / Demo000_0 annoncee au partenaire
+00:06:44.877 cinematique : Demo011_0 / Demo011_0 annoncee au partenaire
+00:06:44.877 essai cinematique : Demo011_0 demandee au jeu local -> acceptee
+00:07:03.164 cinematique de J2 : Demo006_0, partenaire a 344 m : on le rejoint avant de la jouer
+00:07:05.130 voyage : chargement commence (1928 ms apres la demande)
+00:07:16.337 voyage : arrive en (-1427.5, 337.6, 1988.4), a 15.4 m du point vise, 13135 ms apres la demande
+00:07:16.930 cinematique : Demo025_0 non annoncee (chargement ou entree en jeu recente)
+00:07:21.074 cinematique de J2 : Demo006_0 / Demo006_0 rejouee ici (partenaire a 0 m) -> acceptee, n.1
+=== co2_game2.txt
+00:00:07.904 sauvetage : crochet pose sur main+0xcead24
+00:00:07.915 cinematiques : crochet pose sur main+0x110d1b8
+00:02:00.395 cinematique : Demo025_0 non annoncee (chargement ou entree en jeu recente)
+00:03:39.896 cinematique de J1 : Demo318_0 / Demo318_0 rejouee ici (partenaire a 0 m) -> acceptee, n.1
+00:04:38.356 cinematique de J1 : Demo000_0 / Demo000_0 rejouee ici (partenaire a 4 m) -> acceptee, n.2
+00:04:45.753 objet : TBox_Field_Stone ouvert par l'autre joueur (drapeau 985be8e9) -> montre ouvert ici
+00:05:08.050 objet : TBox_Field_Stone ouvert par l'autre joueur, joueur local a moins de 3 m -> retire (pas de second contenu)
+00:05:29.927 voyage : chargement commence (1853 ms apres la demande)
+00:05:39.466 voyage : arrive en (-1427.5, 337.6, 1988.4), a 15.4 m du point vise, 11393 ms apres la demande
+00:05:40.289 cinematique : Demo025_0 non annoncee (chargement ou entree en jeu recente)
+00:06:27.049 cinematique de J1 : Demo011_0, partenaire a 344 m : on le rejoint avant de la jouer
+00:06:41.722 sauvetage : refuse (partenaire trop loin, distance 344 m, vie du partenaire 12 quarts, -1 inconnue) -> Game Over
+00:06:41.731 cinematique : Demo006_0 / Demo006_0 annoncee au partenaire
+00:07:27.206 cinematique de J1 : Demo011_0, partenaire toujours a -1 m apres 60 s : abandon
+00:07:27.206 cinematique de J1 : Demo011_0 / Demo011_0, partenaire a -1 m : bandeau seulement, n.1
+=== co3_game.txt
+00:00:06.612 sauvetage : crochet pose sur main+0xcead24
+00:00:06.614 cinematiques : crochet pose sur main+0x110d1b8
+00:00:15.443 config: 63 cinematiques partageables
+00:02:07.752 cinematique : Demo025_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+00:04:03.116 cinematique : Demo318_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+00:04:52.010 cinematique : Demo000_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+00:05:55.394 cinematique : Demo011_0 / Demo011_0 annoncee au partenaire
+00:05:55.394 essai cinematique : Demo011_0 demandee au jeu local -> acceptee
+=== co3_game2.txt
+00:00:07.646 sauvetage : crochet pose sur main+0xcead24
+00:00:07.650 cinematiques : crochet pose sur main+0x110d1b8
+00:00:16.637 config: 63 cinematiques partageables
+00:02:06.604 cinematique : Demo025_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+00:04:01.690 cinematique : Demo318_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+00:04:40.251 objet : TBox_Field_Stone ouvert par l'autre joueur (drapeau 985be8e9) -> montre ouvert ici
+00:04:47.072 voyage : chargement commence (1781 ms apres la demande)
+00:04:57.423 voyage : arrive en (-666.0, 173.1, 1518.7), a 15.4 m du point vise, 12132 ms apres la demande
+00:04:58.426 cinematique : Demo025_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+00:05:37.165 cinematique de J1 : Demo011_0, partenaire a 585 m : on le rejoint avant de la jouer
+00:05:38.987 voyage : chargement commence (1789 ms apres la demande)
+00:05:49.397 voyage : arrive en (-1427.5, 337.6, 1988.4), a 15.4 m du point vise, 12199 ms apres la demande
+00:05:49.952 cinematique : Demo025_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+00:05:53.732 cinematique de J1 : Demo011_0, impossible de rejoindre le partenaire (344 m)
+00:05:53.732 cinematique de J1 : Demo011_0, partenaire toujours a 344 m apres 60 s : abandon
+00:05:53.732 cinematique de J1 : Demo011_0 / Demo011_0, partenaire a 344 m : bandeau seulement, n.1

@@ -5,6 +5,7 @@
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
 
+#include <atomic>
 #include <cstdio>
 #include <cstring>
 
@@ -56,6 +57,10 @@ namespace coop::config {
                 g_Cutscene = flag != 0;
             if (std::sscanf(line, "cutscene_range=%u", &flag) == 1 && flag <= 1000)
                 g_CutsceneRangeM = static_cast<int>(flag);
+            if (std::sscanf(line, "cutscene_tp=%u", &flag) == 1)
+                g_CutsceneTeleport = flag != 0;
+            if (std::sscanf(line, "partner_range=%u", &flag) == 1 && flag >= 30 && flag <= 2000)
+                g_PartnerRangeM = static_cast<int>(flag);
             if (std::sscanf(line, "meal=%u", &flag) == 1)
                 g_Meal = flag != 0;
             if (std::sscanf(line, "map=%u", &flag) == 1)
@@ -235,6 +240,44 @@ namespace coop::config {
             Logging.Log("[botw-coop] config: %d points de voyage (sanctuaires, tours)", n);
         }
 
+        /* Cinematiques partageables (tools/build_cutscenes.py) : un nom d'evenement par ligne. */
+        constexpr int MaxCutscenes = 256;
+        char s_Cutscenes[MaxCutscenes][16];
+        std::atomic<int> s_CutsceneCount { 0 };
+        char s_CutsceneText[8192];
+
+        void LoadCutscenes() {
+            FileHandle file {};
+            std::uint32_t rc = reinterpret_cast<OpenFn>(s_Open)(&file, "content:/botw-coop/cutscenes.txt", OpenMode_Read);
+            if (rc != 0) {
+                Logging.Log("[botw-coop] config: pas de botw-coop/cutscenes.txt (0x%x) : aucune cinematique partagee", rc);
+                return;
+            }
+            long size = 0;
+            std::size_t got = 0;
+            rc = reinterpret_cast<GetSizeFn>(s_Size)(&size, file);
+            const bool fits = rc == 0 && size > 0 && size < static_cast<long>(sizeof(s_CutsceneText));
+            if (fits)
+                rc = reinterpret_cast<ReadFn>(s_Read)(&got, file, 0, s_CutsceneText, static_cast<std::size_t>(size));
+            reinterpret_cast<CloseFn>(s_Close)(file);
+            if (!fits || rc != 0 || got != static_cast<std::size_t>(size)) {
+                Logging.Log("[botw-coop] config: cutscenes.txt illisible (taille %ld, code 0x%x)", size, rc);
+                return;
+            }
+            s_CutsceneText[got] = '\0';
+            int n = 0;
+            for (char* line = s_CutsceneText; line != nullptr && *line != '\0' && n < MaxCutscenes;) {
+                char* next = std::strchr(line, '\n');
+                if (next != nullptr)
+                    *next++ = '\0';
+                if (std::sscanf(line, "%15s", s_Cutscenes[n]) == 1 && std::strncmp(s_Cutscenes[n], "Demo", 4) == 0)
+                    n++;
+                line = next;
+            }
+            s_CutsceneCount.store(n, std::memory_order_release);
+            Logging.Log("[botw-coop] config: %d cinematiques partageables", n);
+        }
+
         /* Le Link du partenaire est-il installe (RomFS du mod, tools/build_puppet.py) ? */
         void CheckPuppet() {
             FileHandle file {};
@@ -259,6 +302,14 @@ namespace coop::config {
             return nullptr;
         }
 
+    }
+
+    bool IsSharedCutscene(const char* event) {
+        const int n = s_CutsceneCount.load(std::memory_order_acquire);
+        for (int i = 0; i < n; i++)
+            if (std::strcmp(s_Cutscenes[i], event) == 0)
+                return true;
+        return false;
     }
 
     const TravelPoint* GetTravelPoint(int index) {
@@ -299,7 +350,7 @@ namespace coop::config {
         s_Read = readAddr;
         s_Close = closeAddr;
         struct AfterConfig {
-            ~AfterConfig() { LoadSyncFlags(); LoadGearMap(); CheckPuppet(); LoadTravelPoints(); } /* apres la lecture des reglages (share_groups) */
+            ~AfterConfig() { LoadSyncFlags(); LoadGearMap(); CheckPuppet(); LoadTravelPoints(); LoadCutscenes(); } /* apres la lecture des reglages (share_groups) */
         } afterConfig;
 
         /*

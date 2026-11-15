@@ -67,6 +67,7 @@ public sealed class Setup
         "/Actor/Pack/Npc_DungeonPriest001.sbactorpack", "/Actor/Pack/PauseMenuPlayer.sbactorpack",
         "/Actor/Pack/Armor_", "/Actor/Pack/Weapon_", "/Model/Armor_",
         "/Actor/ActorInfo.product.sbyml", "/System/Resource/ResourceSizeTable.product.srsizetable",
+        "/Event/Demo",
     };
 
     readonly Action<string> _log;
@@ -295,6 +296,8 @@ public sealed class Setup
             await RunAsync(python, $"-I \"{Path.Combine(scripts, "build_puppet.py")}\" \"{romfs}\" \"{generated}\"", "Link du partenaire, armures, armes");
             _progress(85);
             await RunAsync(python, $"-I \"{Path.Combine(scripts, "build_item_names.py")}\" \"{romfs}\" EUfr \"{generated}\"", "noms des objets");
+            if (File.Exists(Path.Combine(scripts, "build_cutscenes.py")))
+                await RunAsync(python, $"-I \"{Path.Combine(scripts, "build_cutscenes.py")}\" \"{romfs}\" \"{generated}\"", "liste des cinématiques");
             s.GeneratedKey = key;
         }
         else
@@ -772,7 +775,8 @@ public sealed class Setup
         var args = rootDataDir == null ? $"\"{s.BaseNsp}\"" : $"--root-data-dir \"{Path.GetFullPath(rootDataDir)}\" \"{s.BaseNsp}\"";
         // Journal de Ryujinx (et du mod) dans le dossier de travail : ryujinx.log, ryujinx-joueur2.log...
         var logName = who == null || who == "joueur 1" ? "ryujinx.log" : $"ryujinx-{who.Replace(' ', '-')}.log";
-        var writer = new StreamWriter(Path.Combine(Work, logName), false, new UTF8Encoding(false)) { AutoFlush = true };
+        var writer = new StreamWriter(new FileStream(Path.Combine(Work, logName), FileMode.Create, FileAccess.Write, FileShare.ReadWrite),
+            new UTF8Encoding(false)) { AutoFlush = true };
         var p = new Process
         {
             StartInfo = new ProcessStartInfo(s.RyujinxExe, args)
@@ -799,6 +803,38 @@ public sealed class Setup
         p.BeginOutputReadLine();
         p.BeginErrorReadLine();
         return p;
+    }
+
+    // ---- Journaux a envoyer ----
+
+    /// <summary>
+    /// Regroupe les journaux de la derniere partie dans une archive sur le Bureau : fenetres de jeu
+    /// (Ryujinx et mod), relais, installation, plus un resume (versions, mode). Le mot de passe de la
+    /// partie n'y figure pas. Renvoie le chemin de l'archive.
+    /// </summary>
+    public static string PackLogs(Settings s, string destDir = null)
+    {
+        var desktop = destDir ?? Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+        var dest = Path.Combine(desktop, $"BotwCoop-journaux-{DateTime.Now:yyyy-MM-dd_HH-mm}.zip");
+        using var zip = ZipFile.Open(dest, ZipArchiveMode.Create);
+        foreach (var name in Directory.GetFiles(Work, "*.log"))
+        {
+            // Lecture partagee : le jeu et le relais peuvent encore ecrire dans ces fichiers.
+            using var src = new FileStream(name, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            using var dst = zip.CreateEntry(Path.GetFileName(name), CompressionLevel.Optimal).Open();
+            src.CopyTo(dst);
+        }
+        var info = new StringBuilder();
+        info.AppendLine($"launcher {LauncherVersion.ToString(3)}");
+        info.AppendLine($"mod {s.InstalledVersion}");
+        info.AppendLine($"mode {(s.LocalDuo ? "deux sur ce PC" : s.Host ? "hote" : "invite")}");
+        info.AppendLine($"relais {RelayFor(s)}");
+        info.AppendLine($"mot de passe {(string.IsNullOrEmpty(s.Password) ? "non" : "oui (non copie)")}");
+        info.AppendLine($"Windows {Environment.OSVersion.Version}");
+        var entry = zip.CreateEntry("infos.txt");
+        using (var w = new StreamWriter(entry.Open(), new UTF8Encoding(false)))
+            w.Write(info.ToString());
+        return dest;
     }
 
     // ---- Deux joueurs sur le meme PC ----

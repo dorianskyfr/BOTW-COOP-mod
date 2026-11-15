@@ -20,6 +20,12 @@ namespace coop::warp {
     /* Fil du jeu, a chaque image. */
     void OnFrame();
 
+    /* Fil du jeu : meme effet qu'un maintien du clic du stick (rejoindre le partenaire : teleportation
+       jusqu'a 250 m, voyage du jeu au-dela). Utilise par les cinematiques partagees (NOTES 5.61). */
+    void RequestJoinPartner();
+    /* Teleportation ou voyage en cours ou demande. */
+    bool IsBusy();
+
 #ifdef COOP_REMOTE_PAD
     /* Essai seulement : Link souleve de height metres, il retombe (chute mortelle, NOTES 5.37). */
     void DebugLift(float height);
@@ -27,6 +33,8 @@ namespace coop::warp {
     void DebugTravel();
     /* Essai combat : Link pose a `distance` metres du Bokoblin actif le plus proche, de son cote. */
     void DebugApproachEnemy(float distance);
+    /* Essai coffre : Link pose devant le premier coffre de la sauvegarde de test (NOTES 5.8). */
+    void DebugGoToFirstChest();
 #endif
 
 }

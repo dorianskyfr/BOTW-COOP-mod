@@ -5,6 +5,7 @@
 #include "game.hpp"
 #include "notify.hpp"
 #include "session.hpp"
+#include "warp.hpp"
 
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
@@ -124,7 +125,10 @@ namespace coop::cutscene {
         struct Pending {
             Demo m_Demo;
             std::uint64_t m_DueMs = 0;
+            std::uint64_t m_QueuedMs = 0;     /* reception (pour « deja jouee ici entre-temps ») */
+            std::uint64_t m_JoinUntilMs = 0;  /* on rejoint le partenaire : limite d'attente */
         };
+        constexpr std::uint64_t JoinWaitMs = 60000;
         Pending s_Pending[8] = {};
 
         HOOK_DEFINE_TRAMPOLINE(EventRequestHook) {
@@ -152,9 +156,13 @@ namespace coop::cutscene {
                     RememberLocal(d.m_Event);
                 const auto since = s_InGameSinceMs.load(std::memory_order_relaxed);
                 const bool settled = since != 0 && coop::clock::NowMs() - since >= SettleMs;
-                if (demo && !replay && !settled && !tool && s_Logs.load(std::memory_order_relaxed) < 80)
-                    Logging.Log("[botw-coop] cinematique : %s non annoncee (chargement ou entree en jeu recente)", d.m_Event);
-                if (demo && !replay && coop::config::g_Cutscene && (tool || (settled && !Excluded(d.m_Event)))) {
+                /* Seules les vraies cinematiques (liste tiree du jeu) sont partagees : un Game Over (Demo006_0)
+                   rejoue chez l'autre lui donnait un Game Over (essai co2). */
+                const bool shared = demo && coop::config::IsSharedCutscene(d.m_Event) && !Excluded(d.m_Event);
+                if (demo && !replay && !tool && s_Logs.load(std::memory_order_relaxed) < 80 && (!settled || !shared))
+                    Logging.Log("[botw-coop] cinematique : %s non annoncee (%s)", d.m_Event,
+                        !shared ? "evenement du jeu, pas une cinematique de la liste" : "chargement ou entree en jeu recente");
+                if (demo && !replay && coop::config::g_Cutscene && (tool || (settled && shared))) {
                     while (s_PushLock.test_and_set(std::memory_order_acquire)) { }
                     const bool pushed = g_Outgoing.Push(d);
                     s_PushLock.clear(std::memory_order_release);
@@ -218,6 +226,13 @@ namespace coop::cutscene {
         while (g_Incoming.Pop(in)) {
             if (!coop::config::g_Cutscene || !ready)
                 continue;
+#ifndef COOP_REMOTE_PAD
+            /* Un autre jeu (version plus ancienne) peut annoncer un evenement du jeu : jamais rejoue. */
+            if (!coop::config::IsSharedCutscene(in.m_Event)) {
+                Logging.Log("[botw-coop] cinematique de J%d : %s ignoree (pas une cinematique de la liste)", in.m_From, in.m_Event);
+                continue;
+            }
+#endif
             if (PlayedLocallySince(in.m_Event, now > RecentMs ? now - RecentMs : 0)) {
                 Logging.Log("[botw-coop] cinematique de J%d : %s deja jouee ici, pas de rejeu", in.m_From, in.m_Event);
                 continue;
@@ -234,17 +249,57 @@ namespace coop::cutscene {
             if (p.m_DueMs == 0 || now < p.m_DueMs)
                 continue;
             const Demo d = p.m_Demo;
-            const std::uint64_t queuedMs = p.m_DueMs - ReplayDelayMs;
+            if (p.m_QueuedMs == 0)
+                p.m_QueuedMs = p.m_DueMs - ReplayDelayMs;
+            const std::uint64_t queuedMs = p.m_QueuedMs;
+            const bool joining = p.m_JoinUntilMs != 0;
             p.m_DueMs = 0;
-            if (!ready)
-                continue;
-            if (PlayedLocallySince(d.m_Event, queuedMs)) {
-                Logging.Log("[botw-coop] cinematique de J%d : %s demandee ici entre-temps par le jeu, pas de rejeu", d.m_From, d.m_Event);
+            if (!ready && !joining) {
+                p = Pending {};
                 continue;
             }
-            const int dist = PartnerDistance();
+            if (PlayedLocallySince(d.m_Event, queuedMs)) {
+                Logging.Log("[botw-coop] cinematique de J%d : %s demandee ici entre-temps par le jeu, pas de rejeu", d.m_From, d.m_Event);
+                p = Pending {};
+                continue;
+            }
+            const int dist = ready ? PartnerDistance() : -1;
             char msg[96];
-            if (dist >= 0 && dist <= coop::config::g_CutsceneRangeM) {
+            const bool near = dist >= 0 && dist <= coop::config::g_CutsceneRangeM;
+            /*
+             * Partenaire trop loin : on le rejoint (teleportation jusqu'a 250 m, voyage du jeu au-dela),
+             * puis on rejoue la cinematique a l'arrivee ; au plus 60 s d'attente (choix).
+             */
+            if (!near && coop::config::g_CutsceneTeleport) {
+                if (!joining) {
+                    p.m_JoinUntilMs = now + JoinWaitMs;
+                    p.m_DueMs = now + 1000;
+                    coop::warp::RequestJoinPartner();
+                    Logging.Log("[botw-coop] cinematique de J%d : %s, partenaire a %d m : on le rejoint avant de la jouer", d.m_From, d.m_Event, dist);
+                    std::snprintf(msg, sizeof(msg), "Cinématique du joueur %d : vous le rejoignez", d.m_From);
+                    coop::notify::Post(msg);
+                    continue;
+                }
+                if (now < p.m_JoinUntilMs && coop::warp::IsBusy()) {
+                    p.m_DueMs = now + 500; /* en route (voyage, chargement) : on attend */
+                    continue;
+                }
+                if (now < p.m_JoinUntilMs && ready) {
+                    /* Teleportation refusee (aucun point de voyage ne rapproche, essai co2) : bandeau tout de suite. */
+                    Logging.Log("[botw-coop] cinematique de J%d : %s, impossible de rejoindre le partenaire (%d m)", d.m_From, d.m_Event, dist);
+                } else if (now < p.m_JoinUntilMs) {
+                    p.m_DueMs = now + 500; /* chargement : on attend */
+                    continue;
+                } else {
+                    Logging.Log("[botw-coop] cinematique de J%d : %s, partenaire toujours a %d m apres 60 s : abandon", d.m_From, d.m_Event, dist);
+                }
+            }
+            if (near && joining && coop::warp::IsBusy()) {
+                p.m_DueMs = now + 500; /* arrivee de la teleportation pas encore finie */
+                continue;
+            }
+            p = Pending {};
+            if (near) {
                 const bool ok = PlayLocally(d.m_Event, d.m_Entry, true);
                 s_Played++;
                 Logging.Log("[botw-coop] cinematique de J%d : %s / %s rejouee ici (partenaire a %d m) -> %s, n.%u", d.m_From, d.m_Event,

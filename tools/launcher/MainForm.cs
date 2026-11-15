@@ -41,6 +41,7 @@ public sealed class MainForm : Form
     readonly FlatButton _settingsBtn = new() { Kind = FlatButton.Kinds.Ghost, Text = "⚙  Paramètres" };
     readonly FlatButton _logBtn = new() { Kind = FlatButton.Kinds.Ghost, Text = "☰  Journal" };
     readonly FlatButton _uninstall = new() { Kind = FlatButton.Kinds.DangerGhost, Text = "Désinstaller" };
+    readonly FlatButton _packLogs = new() { Kind = FlatButton.Kinds.Ghost, Text = "⇪  Journaux à envoyer" };
     readonly Label _versionLabel = new() { AutoSize = false, ForeColor = Theme.Muted, TextAlign = ContentAlignment.MiddleRight };
 
     // Parametres
@@ -101,6 +102,7 @@ public sealed class MainForm : Form
         _guestBtn.Click += (_, _) => SetRole(Role.Guest);
         _duoBtn.Click += (_, _) => SetRole(Role.Duo);
         _testBtn.Click += async (_, _) => await TestConnectionAsync();
+        _packLogs.Click += (_, _) => PackLogs();
         _install.Click += async (_, _) => await Busy(InstallAsync);
         _play.Click += async (_, _) => await Busy(PlayAsync);
         _uninstall.Click += (_, _) => Uninstall();
@@ -283,11 +285,12 @@ public sealed class MainForm : Form
         var y = S(612);
         _settingsBtn.SetBounds(S(20), y, S(140), S(34));
         _logBtn.SetBounds(S(164), y, S(120), S(34));
-        _uninstall.SetBounds(S(288), y, S(130), S(34));
-        _versionLabel.SetBounds(S(440), y, S(476), S(34));
+        _packLogs.SetBounds(S(288), y, S(190), S(34));
+        _uninstall.SetBounds(S(482), y, S(120), S(34));
+        _versionLabel.SetBounds(S(606), y, S(310), S(34));
         _versionLabel.Font = Theme.Font(9f);
         _versionLabel.BackColor = Theme.Bg;
-        Controls.AddRange(new Control[] { _settingsBtn, _logBtn, _uninstall, _versionLabel });
+        Controls.AddRange(new Control[] { _settingsBtn, _logBtn, _packLogs, _uninstall, _versionLabel });
     }
 
     // ---- Etat ----
@@ -664,6 +667,23 @@ public sealed class MainForm : Form
         _lastLine.Text = message;
         if (!ok)
             MessageBox.Show(this, message, "BOTW Coop", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+    }
+
+    /// <summary>Archive des journaux sur le Bureau, montree dans l'Explorateur, a envoyer en cas de probleme.</summary>
+    void PackLogs()
+    {
+        try
+        {
+            ReadForm();
+            var path = Setup.PackLogs(_s);
+            Log($"Journaux regroupés : {path}");
+            Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{path}\"") { UseShellExecute = true });
+        }
+        catch (Exception e)
+        {
+            Log("ERREUR : " + e.Message);
+            MessageBox.Show(this, e.Message, "BOTW Coop", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     void Uninstall()

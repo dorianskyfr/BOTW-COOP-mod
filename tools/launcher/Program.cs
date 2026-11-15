@@ -33,6 +33,14 @@ static class Program
                 case "--page": page = Next(); break;
                 case "--relay-test": relayTest = int.Parse(Next()); break;
                 case "--duo-test": duoTest = int.Parse(Next()); break;
+                case "--pack-logs":
+                {
+                    // Essai : archive des journaux dans le dossier donne (au lieu du Bureau).
+                    var dir = Path.GetFullPath(Next());
+                    Directory.CreateDirectory(dir);
+                    Console.WriteLine(Setup.PackLogs(Settings.Load(), dir));
+                    return 0;
+                }
                 case "--test-connection":
                 {
                     // Essai : meme verification que le bouton « Tester » ; resultat dans test-connexion.log.

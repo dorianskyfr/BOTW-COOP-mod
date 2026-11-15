@@ -266,6 +266,14 @@ namespace coop::warp {
         return buttons & ~ButtonStickL;
     }
 
+    void RequestJoinPartner() {
+        s_Requested = true;
+    }
+
+    bool IsBusy() {
+        return s_Requested || s_Travelling || s_HoldLeft > 0;
+    }
+
     void OnFrame() {
         coop::game::PlayerState st;
         const bool ready = coop::game::ReadPlayer(st) && st.m_PlayerActor != 0 && coop::game::IsWorldReady();
@@ -355,6 +363,21 @@ namespace coop::warp {
             return;
         s_HoldLeft = 2; /* tenu 2 images, puis Link tombe de la hauteur de depart posee par Place */
         Logging.Log("[botw-coop] essai chute du joueur : Link souleve de %.0f m a (%.2f, %.2f, %.2f)", static_cast<double>(height),
+            static_cast<double>(s_Target[0]), static_cast<double>(s_Target[1]), static_cast<double>(s_Target[2]));
+    }
+
+    void DebugGoToFirstChest() {
+        /* Position mesuree pour ouvrir le premier coffre de la sauvegarde de test (NOTES 5.8), face au sud. */
+        coop::game::PlayerState st;
+        if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady())
+            return;
+        s_Target[0] = -1112.08f;
+        s_Target[1] = 237.9f;
+        s_Target[2] = 1893.10f;
+        if (!Place(st, s_Target, true))
+            return;
+        s_HoldLeft = 2;
+        Logging.Log("[botw-coop] essai coffre : Link pose devant le premier coffre (%.2f, %.2f, %.2f)",
             static_cast<double>(s_Target[0]), static_cast<double>(s_Target[1]), static_cast<double>(s_Target[2]));
     }
 

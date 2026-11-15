@@ -71,9 +71,8 @@ namespace coop::remote_actor {
         constexpr std::uint64_t InterpDelayMs = 150;
         /* Au-dela, on considere le dernier etat comme fige (pas d'extrapolation). */
         constexpr std::uint64_t StaleAfterMs = 2000;
-        /* Au-dela de cette distance du joueur local, on ne cree pas l'acteur distant
-           (valeur prudente, non mesuree : distance de dechargement des PNJ inconnue). */
-        constexpr float MaxSpawnDistance = 120.0f;
+        /* Au-dela de cette distance du joueur local, on ne cree pas l'acteur distant : reglage
+           partner_range= (250 m par defaut, config.hpp ; 120 m avant le 2026-11-15, NOTES 5.61). */
 
         enum class State {
             WaitingForPlayer, /* le joueur local n'est pas encore en jeu */
@@ -427,7 +426,8 @@ namespace coop::remote_actor {
                 const float ddx = targetPos[0] - local.m_Pos[0];
                 const float ddy = targetPos[1] - local.m_Pos[1];
                 const float ddz = targetPos[2] - local.m_Pos[2];
-                if (ddx * ddx + ddy * ddy + ddz * ddz > MaxSpawnDistance * MaxSpawnDistance)
+                const float maxSpawn = static_cast<float>(coop::config::g_PartnerRangeM);
+                if (ddx * ddx + ddy * ddy + ddz * ddz > maxSpawn * maxSpawn)
                     break;
                 s_RequestPos[0] = targetPos[0];
                 s_RequestPos[1] = targetPos[1];

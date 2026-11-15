@@ -360,6 +360,16 @@ namespace coop::input_inject {
                         }
                         buttons &= ~(1ull << 54);
                     }
+                    /* Bit 51 : Link pose devant le premier coffre de la sauvegarde de test (essai). */
+                    if ((buttons >> 51) & 1) {
+                        static std::uint64_t s_LastChest = 0;
+                        const auto cmd12 = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmd12 != s_LastChest) {
+                            s_LastChest = cmd12;
+                            coop::warp::DebugGoToFirstChest();
+                        }
+                        buttons &= ~(1ull << 51);
+                    }
                     /* Bit 52 : cinematique de lune de sang demandee au jeu local, annoncee au partenaire (essai). */
                     if ((buttons >> 52) & 1) {
                         static std::uint64_t s_LastDemo = 0;

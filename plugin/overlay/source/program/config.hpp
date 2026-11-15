@@ -14,6 +14,8 @@
  *   enemy_pos=0                  coupe le partage de la position des ennemis (actif par defaut)
  *   enemy_anim=0|1|2             animations des ennemis (voir g_EnemyAnim)
  *   cutscene=0                   coupe les cinematiques partagees ; cutscene_range=<metres> (50 par defaut)
+ *   partner_range=<metres>       distance de creation du Link du partenaire (250 par defaut)
+ *   cutscene_tp=0                le partenaire trop loin ne rejoint pas le joueur pour une cinematique
  *   share_groups=1,2             groupes de drapeaux partages (liste blanche, voir plus bas)
  *   revive=0                     coupe le sauvetage par le partenaire (actif par defaut)
  *   revive_delay=120             secondes entre deux sauvetages par le partenaire
@@ -46,7 +48,15 @@ namespace coop::config {
     /* Cinematiques partagees (cutscene.cpp, NOTES 5.58) : rejouees chez le partenaire a moins de
        g_CutsceneRangeM metres (choix, pas une mesure), sinon un bandeau. */
     inline bool g_Cutscene = true;
+
+    /* Distance maximale a laquelle le Link du partenaire est cree (remote_actor.cpp, NOTES 5.61). */
+#ifndef COOP_PARTNER_RANGE
+#define COOP_PARTNER_RANGE 250
+#endif
+    inline int g_PartnerRangeM = COOP_PARTNER_RANGE;
     inline int g_CutsceneRangeM = 50;
+    /* Partenaire trop loin pour une cinematique : il rejoint le joueur (teleportation ou voyage) puis la voit. */
+    inline bool g_CutsceneTeleport = true;
 
     /* Sauvetage par le partenaire (revive.cpp, NOTES 5.37) : a la mort, si ni fee ni Grace de Mipha
        ne sauvent Link et que le partenaire est en jeu, vivant et a moins de g_ReviveRangeM, Link
@@ -98,6 +108,10 @@ namespace coop::config {
     constexpr int MaxTravelPoints = 160;
     inline std::atomic<int> g_TravelPointCount { 0 };
     const TravelPoint* GetTravelPoint(int index);
+
+    /* Vraie cinematique (liste botw-coop/cutscenes.txt, tools/build_cutscenes.py) : seules celles-ci sont
+       partagees ; Game Over, coffre, chargement, aides... restent a chacun (NOTES 5.61). */
+    bool IsSharedCutscene(const char* event);
 
     /* Link du partenaire (content:/Actor/Pack/CoopPlayer.sbactorpack) : -1 pas encore regarde, 0 absent, 1 present. */
     inline std::atomic<int> g_PuppetInstalled { -1 };

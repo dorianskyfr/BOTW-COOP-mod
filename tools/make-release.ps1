@@ -30,7 +30,7 @@ $utf8 = New-Object Text.UTF8Encoding($false)
 $plugin = Join-Path $project 'build\deploy\subsdk9'
 if (-not (Test-Path $plugin)) { throw 'Pas de plugin compile (build\deploy\subsdk9)' }
 Copy-Item $plugin (Join-Path $stage 'subsdk9')
-foreach ($s in 'gamedata_names.py', 'build_sync_flags.py', 'build_travel_points.py', 'build_puppet.py', 'build_item_names.py', 'relay.py') {
+foreach ($s in 'gamedata_names.py', 'build_sync_flags.py', 'build_travel_points.py', 'build_puppet.py', 'build_item_names.py', 'build_cutscenes.py', 'relay.py') {
     Copy-Item (Join-Path $project "tools\$s") (Join-Path $stage "scripts\$s")
 }
 [IO.File]::WriteAllText((Join-Path $stage 'VERSION'), "v$Version", $utf8)
