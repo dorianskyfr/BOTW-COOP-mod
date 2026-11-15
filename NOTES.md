@@ -813,7 +813,10 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Le bilan `perf` (toutes les 900 images) donne maintenant, pour l'intervalle entre images et pour le temps du plugin dans le fil du jeu, la moyenne, la **mediane**, le **P95** et le maximum (900 valeurs gardees, `std::nth_element` une fois par bilan).
 - [V] `pf5` : deux instances en jeu sur le plateau, fenetres reduites, ecran eteint, aucun autre usage du PC (charge processeur 49 %), 5 bilans stables par jeu apres l'entree : 30,0 images/s ; intervalle median 33,3 ms, P95 34,6 a 36,7 ms, max 38 a 55 ms ; plugin moyen 1,01 a 1,07 ms, median 1,00 a 1,04 ms, P95 1,29 a 1,35 ms, max 1,7 a 12 ms (pics isoles, cause non cherchee). Premier bilan du joueur 2 pendant le chargement (24,8 images/s, un intervalle de 1 s) : chargement du jeu, pas le plugin.
 - Le plugin coute ~3 % d'une image a 30 images/s (0,2 a 0,3 ms le 2026-11-11, avant armure, armes, drapeaux par tranches, ennemis, carte, voyage...).
-- Preuve : `docs/evidence/2026-11-15_perf-mediane-p95-pf5.txt`.
+- Detail par module (`pf6`, `-DCOOP_PERF_DETAIL`, memes conditions ; plugin moyen 0,82 a 0,86 ms) : drapeaux ~360 us/image (relecture d'1/15 des 42 031 booleens par image), debut ~245 us (releve des ~690 acteurs), distant ~97 us, ennemis ~68 us, armes ~49 us, le reste < 10 us.
+- Pics : [V] le pic de 11,7 ms tombe dans le module « distant » pendant le bilan ou le Link du partenaire est cree (01:29, `CREE apres 5 images`) : creation unique a l'arrivee du partenaire. Les autres pics (~4 ms) tombent chaque fois dans un module different (debut, drapeaux), sans lien avec ce qu'ils font : probablement le fil du jeu mis en attente par Windows (deux emulateurs sur 6 coeurs) ; je ne peux pas le confirmer.
+- Piste si besoin : relire les drapeaux sur 30 images au lieu de 15 diviserait leur cout par deux (detection en 1 s au lieu de 0,5 s). Non fait : 0,36 ms ne gene pas.
+- Preuves : `docs/evidence/2026-11-15_perf-mediane-p95-pf5.txt`, `docs/evidence/2026-11-15_perf-detail-par-module-pf6.txt`.
 
 ### 5.47 Mot de passe de session (2026-11-15, protocole v4, essais `pw1` a `pw3`) - [V] par les journaux
 
