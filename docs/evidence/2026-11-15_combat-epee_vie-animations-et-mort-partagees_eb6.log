@@ -1,0 +1,72 @@
+# Essai eb6 (2026-11-15) : vrai combat a l'epee, deux instances (build -DCOOP_REMOTE_PAD -DCOOP_TEST_GIVE)
+=== eb6_game.txt (J1)
+00:02:21.176 essai inventaire : Weapon_Sword_001 x2000 (bonus 0/0) -> objets 5 -> 6
+00:02:21.177 essai inventaire : Weapon_Shield_001 x2000 (bonus 0/0) -> objets 6 -> 7
+00:02:21.179 essai inventaire : Weapon_Bow_001 x2000 (bonus 0/0) -> objets 7 -> 8
+00:05:57.214 essai chute : Enemy_Bokoblin_Junior hash=52859ed1 etat=1 deplace de (-1143.06, 256.79, 1771.91) a (-1024.48, 254.13, 1807.95), controleur de personnage rc=1
+00:05:57.875 essai chute : fin du maintien, l'acteur est en (-1024.48, 253.55, 1807.95)
+00:06:00.244 animation ennemi : 52859ed1 creneau 0 banque 0 "Turn" (fait foi)
+00:06:00.708 animation ennemi : 52859ed1 creneau 0 banque 0 "Squat" (fait foi)
+00:06:06.413 animation ennemi : 52859ed1 creneau 0 banque 0 "SmallDamage" (fait foi)
+00:06:06.555 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 13 -> 8 chez nous (max 13), annonce, n.1
+00:06:07.311 animation ennemi : 52859ed1 creneau 0 banque 0 "SmallDamage" (fait foi)
+00:06:07.444 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 8 -> 3 chez nous (max 13), annonce, n.2
+00:06:08.173 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (fait foi)
+00:06:08.962 animation ennemi : 52859ed1 creneau 0 banque 0 "Run" (fait foi)
+00:06:14.843 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 123.6 m, J2 a 22.6 m)
+00:06:14.843 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 110.87 m (rc=1), n.1
+00:06:14.878 position ennemi : Enemy_Bokoblin_Junior 52859ed1, notre copie fait foi (nous a 18.2 m, J2 a 22.6 m)
+00:06:14.977 animation ennemi : 52859ed1 creneau 0 banque 0 "Turn" (fait foi)
+00:06:15.242 animation ennemi : 52859ed1 creneau 0 banque 0 "Squat" (fait foi)
+00:06:31.904 drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1384488657 -> 09ac3cb2 existe, valeur 0, proprietes 0x27
+00:07:03.362 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 25.8 m, J2 a 22.6 m)
+00:07:49.909 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 18.54 m (rc=1), n.2
+00:07:50.006 animation ennemi : 52859ed1 creneau 0 banque 0 "Turn" (copie suivie)
+00:07:50.108 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 0.16 m (rc=1), n.3
+00:07:50.142 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 0.27 m (rc=1), n.4
+00:07:50.175 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 0.39 m (rc=1), n.5
+00:07:50.208 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 0.30 m (rc=1), n.6
+00:07:50.246 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 0.47 m (rc=1), n.7
+00:07:50.282 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 0.62 m (rc=1), n.8
+00:07:50.310 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 0.75 m (rc=1), n.9
+00:07:50.346 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J2, ecart 0.88 m (rc=1), n.10
+00:08:01.810 drapeau recu : n.1640 hachage=09ac3cb2 mis a 1 (octet 1 : categorie 0 gardee)
+00:08:01.813 objet : Enemy_Bokoblin_Junior pris, ouvert ou vaincu par l'autre joueur (drapeau 09ac3cb2) -> retire ici
+=== eb6_game2.txt (J2)
+00:02:08.365 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 121.9 m, J1 a 121.9 m)
+00:02:18.738 essai inventaire : Weapon_Sword_001 x2000 (bonus 0/0) -> objets 5 -> 6
+00:02:18.741 essai inventaire : Weapon_Shield_001 x2000 (bonus 0/0) -> objets 6 -> 7
+00:02:18.743 essai inventaire : Weapon_Bow_001 x2000 (bonus 0/0) -> objets 7 -> 8
+00:05:37.518 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 123.96 m (rc=1), n.1
+00:05:37.693 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.19 m (rc=1), n.2
+00:05:37.718 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.26 m (rc=1), n.3
+00:05:37.757 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.35 m (rc=1), n.4
+00:05:37.792 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.44 m (rc=1), n.5
+00:05:37.818 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.34 m (rc=1), n.6
+00:05:37.855 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.49 m (rc=1), n.7
+00:05:37.886 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.64 m (rc=1), n.8
+00:05:37.918 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.77 m (rc=1), n.9
+00:05:37.952 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.89 m (rc=1), n.10
+00:05:40.553 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Turn" (annonce par J1), n.2
+00:05:40.994 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Squat" (annonce par J1), n.3
+00:05:43.319 animation ennemi : 52859ed1 creneau 0 banque 0 "Dance" (copie suivie)
+00:05:46.967 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "SmallDamage" (annonce par J1), n.4
+00:05:47.116 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 13 -> 8 (annonce par l'autre joueur), n.1
+00:05:47.551 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "SmallDamage" (annonce par J1), n.5
+00:05:47.720 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 8 -> 3 (annonce par l'autre joueur), n.2
+00:05:48.624 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Search" (annonce par J1), n.6
+00:05:49.251 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Run" (annonce par J1), n.7
+00:05:49.820 animation ennemi : 52859ed1 creneau 0 banque 0 "Turn" (copie suivie)
+00:05:54.722 position ennemi : Enemy_Bokoblin_Junior 52859ed1, notre copie fait foi (nous a 22.6 m, J1 a 123.6 m)
+00:05:55.173 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 22.6 m, J1 a 18.2 m)
+00:05:55.350 animation ennemi : 52859ed1 creneau 0 banque 0 "TalkStart" (copie suivie)
+00:05:55.350 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Turn" (annonce par J1), n.8
+00:05:55.483 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Squat" (annonce par J1), n.9
+00:06:14.561 drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1384488657 -> 09ac3cb2 existe, valeur 0, proprietes 0x27
+00:06:43.217 position ennemi : Enemy_Bokoblin_Junior 52859ed1, notre copie fait foi (nous a 22.6 m, J1 a 24.9 m)
+00:07:14.117 drapeau d'acteur : MainField_Enemy_Bokoblin_Junior_1384488657 -> 09ac3cb2 existe, valeur 0, proprietes 0x27
+00:07:29.763 essai chute : Enemy_Bokoblin_Junior hash=52859ed1 etat=1 deplace de (-1041.12, 250.01, 1814.99) a (-1024.48, 254.13, 1807.95), controleur de personnage rc=1
+00:07:30.424 essai chute : fin du maintien, l'acteur est en (-1024.48, 253.55, 1807.95)
+00:07:39.199 animation ennemi : 52859ed1 creneau 0 banque 0 "Die" (fait foi)
+00:07:39.520 vie ennemi : Enemy_Bokoblin_Junior 52859ed1 3 -> 0 chez nous (max 13), annonce, n.1
+00:07:41.715 drapeau change : n.1640 hachage=09ac3cb2 0 -> 1 (envoye, lune de sang)

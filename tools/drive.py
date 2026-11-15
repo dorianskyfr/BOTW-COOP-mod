@@ -13,7 +13,8 @@ Commandes :
   push lx ly s [boutons]   stick (-1..1) pendant s secondes
   adv wx wz [s]            avance dans la direction monde jusqu'a blocage
   press BOUTON [n] [ecart] appuis (A B X Y PLUS ZL L R ZR UP DOWN LEFT RIGHT LS)
-  hold BOUTON s            maintien
+  hold BOUTON s            maintien (BOUTON peut etre une combinaison : ZL+Y)
+  holdpress TENU B n [e]   TENU maintenu (ex. ZL) pendant n appuis de B (ex. Y : coups verrouilles)
   shot etiquette           capture d'ecran -> build/runs/<nom>_<etiquette>.png
   actors [regex]           acteurs proches (nom, position)
   drop                     essai : fait tomber de 40 m le Bokoblin le plus proche (mort reelle)
@@ -39,6 +40,14 @@ BUTTONS = {
     "ZL": 0x100, "ZR": 0x200, "PLUS": 0x400, "MINUS": 0x800,
     "LEFT": 0x1000, "UP": 0x2000, "RIGHT": 0x4000, "DOWN": 0x8000,
 }
+
+
+def combo(name):
+    """Bouton ou combinaison « ZL+Y »."""
+    value = 0
+    for part in name.split("+"):
+        value |= BUTTONS[part]
+    return value
 
 
 def main():
@@ -131,16 +140,31 @@ def main():
         elif op == "press":
             n = int(args[1]) if len(args) > 1 else 1
             gap = float(args[2]) if len(args) > 2 else 1.0
-            p.press(BUTTONS[args[0]], times=n, gap=gap, name=args[0])
+            p.press(combo(args[0]), times=n, gap=gap, name=args[0])
         elif op == "hold":
             s = float(args[1])
             end = time.time() + s
             while time.time() < end:
                 # 600 ms par message, renvoye toutes les 200 ms : un message en retard de plus de
                 # 100 ms coupait le maintien (essai sb1, clic vu relache apres 0,7 a 1,3 s).
-                p.pad(buttons=BUTTONS[args[0]], ms=600)
+                p.pad(buttons=combo(args[0]), ms=600)
                 time.sleep(0.2)
             p.log(f"maintien {args[0]} {s} s -> {p.fmt()}")
+        elif op == "holdpress":
+            # holdpress TENU BOUTON n [ecart] : TENU maintenu (ex. ZL, verrouillage) pendant n appuis de BOUTON.
+            held, b = combo(args[0]), combo(args[1])
+            n = int(args[2]) if len(args) > 2 else 1
+            gap = float(args[3]) if len(args) > 3 else 0.6
+            p.pad(buttons=held, ms=600)
+            time.sleep(0.4)
+            for _ in range(n):
+                p.pad(buttons=held | b, ms=150)
+                time.sleep(0.15)
+                end = time.time() + gap
+                while time.time() < end:
+                    p.pad(buttons=held, ms=600)
+                    time.sleep(0.2)
+            p.log(f"holdpress {args[0]} + {args[1]} x{n} -> {p.fmt()}")
         elif op == "shot":
             p.shot(args[0])
         elif op == "actors":

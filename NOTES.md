@@ -812,7 +812,7 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
-### 5.56 Ennemis : position essayee en combat ; animations annoncees et rejouees (2026-11-15, essais `eb1` a `eb4`) - [V] par les journaux et a l'image, deux instances
+### 5.56 Ennemis : position essayee en combat ; animations annoncees et rejouees ; combat a l'epee (2026-11-15, essais `eb1` a `eb6`) - [V] par les journaux et a l'image, deux instances
 
 Synchro des ennemis reprise a la demande de l'utilisateur (en pause depuis le 2026-11-13).
 
@@ -829,7 +829,11 @@ Synchro des ennemis reprise a la demande de l'utilisateur (en pause depuis le 20
 - [V] `eb3` : J1 fait foi (2 m), J2 suit : `GrabAndShoot` / `BattleWait` annonces par J1, rejoues chez J2 dans le meme ordre ; chez J2 les sequences propres de l'IA (`Search`, `Run`, `Turn`, `Notice`) bloquees (17 rejouees, 17 bloquees). Images : meme Bokoblin, meme pose, meme projectile lance dans les deux mondes (`2026-11-15_ennemi-anime-par-J1_vu-par-J1_eb3.png`, `..._vu-par-J2_eb3.png`).
 - [V] Bascule : J1 s'eloigne a 12,1 m, J2 a 2,8 m fait foi ; J1 passe en « on suit » et rejoue les sequences annoncees par J2 (8 rejouees).
 - [V] `eb4` : coup du joueur qui suit (outil `hurt`, ecriture de la vie, pas un vrai coup) : 13 -> 8 chez J1, appliquee chez J2 (celui qui fait foi). Aucune sequence laissee a l'IA locale : l'ecriture de la vie ne declenche pas de reaction, donc la fenetre de 2 s n'est pas verifiee.
-- **Non verifie** : vrai coup d'arme (la sauvegarde de test n'a aucune arme : seule la tablette Sheikah dans l'inventaire), reaction et mort de la copie suivie, degats faits a un joueur par un ennemi (les cœurs n'ont pas bouge pendant les essais), ennemis autres que les Bokoblin, creneaux autres que 0, plus de deux joueurs.
+- **Vrai combat a l'epee (essai `eb6`, build `-DCOOP_TEST_GIVE`, epee equipee par le menu chez les deux)** : nouvelle commande `drive.py <nom> holdpress ZL Y n` (ZL tenu = verrouillage, n coups de Y). Pres du rocher du camp les coups ne touchent pas (`eb5`) ; dans la prairie de depart, oui.
+  - [V] J1 frappe deux fois : chez J1 « SmallDamage » x2, vie 13 -> 8 -> 3, annoncee ; chez J2 « SmallDamage » rejoue deux fois et vie appliquee 13 -> 8 -> 3. Le Bokoblin s'enfuit (« Search », « Run » rejoues) : position identique dans les deux mondes ((-1041.12, 1814.98) contre (-1041.12, 1814.99)).
+  - [V] J2 l'acheve : chez J2 « Die », vie 3 -> 0, le jeu pose `MainField_Enemy_Bokoblin_Junior_1384488657` (09ac3cb2), envoye ; chez J1 « drapeau recu ... mis a 1 » puis « vaincu par l'autre joueur -> retire ici ». A l'image : le Bokoblin a disparu chez J2, butin au sol.
+  - Defaut d'essai : J1 est tombe de la falaise en marchant vers l'ennemi en fuite (pilote sans image).
+- **Non verifie** : degats faits a un joueur par un ennemi (les cœurs n'ont pas bouge pendant les essais), reaction de la copie suivie a un coup de son propre joueur (fenetre de 2 s), ennemis autres que les Bokoblin, creneaux autres que 0, plus de deux joueurs.
 - [S] Limite connue : la copie suivie n'attaque que par l'animation rejouee ; si son projectile ou son coup touche le joueur local, c'est le jeu local qui decide (non mesure).
 - Preuves : `2026-11-15_ennemis_animations-annoncees-et-rejouees_eb3.log`, `2026-11-15_ennemis_bascule-et-vie-depuis-le-joueur-qui-suit_eb4.log`.
 
