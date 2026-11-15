@@ -266,6 +266,7 @@ namespace coop::gear {
                 p.m_State = PieceState::Idle;
             }
 
+            /* Pas de piece Armor_Default_* posee ici : leur creation fige le jeu (essais go2, ch1, ch2, NOTES 5.50). */
             const std::uint32_t want = g_Remote[s].load();
             if (want != p.m_Crc) {
                 if (p.m_Actor != 0) {
