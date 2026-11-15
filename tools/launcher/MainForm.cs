@@ -77,7 +77,7 @@ public sealed class MainForm : Form
         _guest.CheckedChanged += (_, _) => _relayAddr.Enabled = _guest.Checked;
 
         _install.Click += async (_, _) => await Busy(InstallAsync);
-        _play.Click += (_, _) => Play();
+        _play.Click += async (_, _) => await Busy(PlayAsync);
         _uninstall.Click += (_, _) => Uninstall();
         Shown += async (_, _) => await CheckUpdatesAsync();
         FormClosing += (_, _) => StopRelay();
@@ -209,7 +209,7 @@ public sealed class MainForm : Form
                 return;
             }
             if (!string.IsNullOrEmpty(_s.InstalledVersion) && _s.InstalledVersion != _latest.Tag)
-                Log($"Nouvelle version du mod : {_latest.Tag}. Cliquez sur « Installer / Mettre à jour ».");
+                Log($"Nouvelle version du mod : {_latest.Tag}. Elle sera installée au clic sur « Jouer ».");
         }
         catch (Exception e)
         {
@@ -233,23 +233,26 @@ public sealed class MainForm : Form
         Log("Installation terminée.");
     }
 
-    void Play()
+    /// <summary>
+    /// Jouer : met d'abord le mod a jour s'il existe une version plus recente (les deux joueurs
+    /// doivent avoir la meme), puis lance le relais (hote) et Ryujinx.
+    /// </summary>
+    async Task PlayAsync()
     {
-        try
+        ReadForm();
+        _s.Save();
+        if (string.IsNullOrEmpty(_s.InstalledVersion))
+            throw new InvalidOperationException("Installez d'abord le mod.");
+        var options = new Setup.Options { Settings = _s, DataDirOverride = _dataDirOverride, LocalModZip = _localZip };
+        if (await Task.Run(() => NewSetup().UpdateIfNeededAsync(options)))
         {
-            ReadForm();
-            _s.Save();
-            if (string.IsNullOrEmpty(_s.InstalledVersion))
-                throw new InvalidOperationException("Installez d'abord le mod.");
-            if (_s.Host && (_relay == null || _relay.HasExited))
-                _relay = NewSetup().StartRelay(_s);
-            NewSetup().StartGame(_s);
+            // Le relais en cours vient de l'ancienne version : on le relance.
+            StopRelay();
+            _relay = null;
         }
-        catch (Exception e)
-        {
-            Log("ERREUR : " + e.Message);
-            MessageBox.Show(this, e.Message, "BOTW Coop", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        if (_s.Host && (_relay == null || _relay.HasExited))
+            _relay = NewSetup().StartRelay(_s);
+        NewSetup().StartGame(_s);
     }
 
     void Uninstall()

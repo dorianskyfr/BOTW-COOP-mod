@@ -29,6 +29,11 @@ public sealed class Release
     public string Tag = "";
     public string ModZipUrl = "";
     public string LauncherUrl = "";
+    /// <summary>
+    /// Version de l'executable joint, lue dans l'asset launcher.json ({"version": "a.b.c"}) ; elle ne
+    /// change que si le launcher a change (tools/make-release.ps1). Absente : etiquette de la release.
+    /// </summary>
+    public Version LauncherVersion;
     public Version Version => ParseVersion(Tag);
 
     public static Version ParseVersion(string tag)
@@ -98,6 +103,7 @@ public sealed class Setup
         resp.EnsureSuccessStatusCode();
         var json = JsonNode.Parse(await resp.Content.ReadAsStringAsync());
         var rel = new Release { Tag = (string)json?["tag_name"] ?? "" };
+        string infoUrl = null;
         foreach (var a in json?["assets"]?.AsArray() ?? new JsonArray())
         {
             var name = (string)a?["name"] ?? "";
@@ -108,8 +114,52 @@ public sealed class Setup
                 rel.ModZipUrl = url;
             else if (name.Equals("BotwCoopLauncher.exe", StringComparison.OrdinalIgnoreCase))
                 rel.LauncherUrl = url;
+            else if (name.Equals("launcher.json", StringComparison.OrdinalIgnoreCase))
+                infoUrl = url;
+        }
+        if (infoUrl != null)
+        {
+            try
+            {
+                var info = JsonNode.Parse(await Http.GetStringAsync(infoUrl));
+                rel.LauncherVersion = Release.ParseVersion((string)info?["version"]);
+            }
+            catch (Exception)
+            {
+                // Illisible : on retombe sur l'etiquette de la release.
+            }
         }
         return rel;
+    }
+
+    /// <summary>
+    /// Avant de jouer : installe la derniere version du mod si celle installee est differente
+    /// (le relais refuse deux versions differentes). Renvoie vrai si une mise a jour a ete installee.
+    /// Sans reseau, on garde la version installee.
+    /// </summary>
+    public async Task<bool> UpdateIfNeededAsync(Options o)
+    {
+        if (!string.IsNullOrEmpty(o.LocalModZip))
+            return false;
+        Release rel;
+        try
+        {
+            rel = await GetLatestReleaseAsync();
+        }
+        catch (Exception e)
+        {
+            _log("Vérification de la version du mod impossible (" + e.Message + ") : on garde " + o.Settings.InstalledVersion + ".");
+            return false;
+        }
+        if (rel == null || string.IsNullOrEmpty(rel.ModZipUrl) || rel.Tag == o.Settings.InstalledVersion)
+        {
+            _log($"Mod à jour ({o.Settings.InstalledVersion}).");
+            return false;
+        }
+        _log($"Mise à jour du mod : {o.Settings.InstalledVersion} → {rel.Tag}");
+        o.Release = rel;
+        await InstallAsync(o);
+        return true;
     }
 
     async Task DownloadAsync(string url, string dest)
@@ -127,13 +177,21 @@ public sealed class Setup
     /// <summary>Remplace l'executable du launcher par la version de la release, puis le relance.</summary>
     public async Task<bool> SelfUpdateAsync(Release rel)
     {
-        if (rel == null || string.IsNullOrEmpty(rel.LauncherUrl) || rel.Version <= LauncherVersion)
+        if (rel == null || string.IsNullOrEmpty(rel.LauncherUrl) || (rel.LauncherVersion ?? rel.Version) <= LauncherVersion)
             return false;
         var exe = Environment.ProcessPath;
         if (string.IsNullOrEmpty(exe))
             return false;
         var fresh = exe + ".new";
         await DownloadAsync(rel.LauncherUrl, fresh);
+        // Garde-fou : on ne remplace que par un executable plus recent (evite une boucle de relances).
+        if (Version.TryParse(FileVersionInfo.GetVersionInfo(fresh).FileVersion, out var got) && got <= LauncherVersion)
+        {
+            _log($"Launcher : la version jointe ({got}) n'est pas plus récente, rien à remplacer.");
+            File.Delete(fresh);
+            return false;
+        }
+        _log($"Launcher : mise à jour vers {got?.ToString() ?? (rel.LauncherVersion ?? rel.Version).ToString()}, redémarrage.");
         var old = exe + ".old";
         if (File.Exists(old))
             File.Delete(old);
