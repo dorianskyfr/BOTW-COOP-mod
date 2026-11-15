@@ -118,23 +118,31 @@ namespace coop::config {
 
         /* Pieces d'armure / armes : signature, u32 n, n x u32 CRC32 du nom de piece (tries), n x nom
            d'acteur sur NameLen octets (tools/build_puppet.py). */
-        constexpr int MaxGear = 600;
+        /* Armure : 413 pieces + 3 630 pieces teintes (« piece.kk ») avec la RomFS 1.9.0 (2026-11-15). */
+        constexpr int MaxGear = 4500;
+        constexpr int MaxWeapon = 600;
         constexpr int NameLen = 48;
+        std::uint32_t s_GearHashBuf[MaxGear];
+        char s_GearNameBuf[MaxGear][NameLen];
+        std::uint32_t s_WeaponHashBuf[MaxWeapon];
+        char s_WeaponNameBuf[MaxWeapon][NameLen];
         struct ModelMap {
             const char*   m_Path;
             const char*   m_Magic;
             const char*   m_What;
-            std::uint32_t m_Hashes[MaxGear];
-            char          m_Names[MaxGear][NameLen];
+            std::uint32_t* m_Hashes;
+            char          (*m_Names)[NameLen];
+            int           m_Max;
             std::atomic<int>* m_Count;
         };
-        ModelMap s_GearMap { "content:/botw-coop/gear-map.bin", "CGM1", "pieces d'armure", {}, {}, &g_GearCount };
-        ModelMap s_WeaponMap { "content:/botw-coop/weapon-map.bin", "CWM1", "armes", {}, {}, &g_WeaponCount };
+        ModelMap s_GearMap { "content:/botw-coop/gear-map.bin", "CGM1", "pieces d'armure", s_GearHashBuf, s_GearNameBuf, MaxGear, &g_GearCount };
+        ModelMap s_WeaponMap { "content:/botw-coop/weapon-map.bin", "CWM1", "armes", s_WeaponHashBuf, s_WeaponNameBuf, MaxWeapon, &g_WeaponCount };
 
         void LoadModelMap(ModelMap& map) {
-            auto& s_GearHashes = map.m_Hashes;
-            auto& s_GearNames = map.m_Names;
+            auto* s_GearHashes = map.m_Hashes;
+            auto* s_GearNames = map.m_Names;
             constexpr int GearNameLen = NameLen;
+            const std::uint32_t cap = static_cast<std::uint32_t>(map.m_Max);
             FileHandle file {};
             std::uint32_t rc = reinterpret_cast<OpenFn>(s_Open)(&file, map.m_Path, OpenMode_Read);
             if (rc != 0) {
@@ -149,7 +157,7 @@ namespace coop::config {
             if (rc == 0)
                 rc = reinterpret_cast<ReadFn>(s_Read)(&got, file, 0, header, sizeof(header));
             std::memcpy(&n, header + 4, 4);
-            const bool valid = rc == 0 && got == 8 && std::memcmp(header, map.m_Magic, 4) == 0 && n > 0 && n <= MaxGear
+            const bool valid = rc == 0 && got == 8 && std::memcmp(header, map.m_Magic, 4) == 0 && n > 0 && n <= cap
                 && size == static_cast<long>(8 + (4ull + GearNameLen) * n);
             if (valid) {
                 rc = reinterpret_cast<ReadFn>(s_Read)(&gotHashes, file, 8, s_GearHashes, 4ull * n);

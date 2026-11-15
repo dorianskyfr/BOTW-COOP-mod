@@ -10,6 +10,7 @@ Entrees (RomFS de l'utilisateur, tools/romfs-extract) :
   Actor/Pack/Npc_DungeonPriest001.sbactorpack, Actor/Pack/PauseMenuPlayer.sbactorpack,
   Actor/ActorInfo.product.sbyml, System/Resource/ResourceSizeTable.product.srsizetable
   facultatif : Actor/Pack/Armor_*.sbactorpack (pieces d'armure portees par le partenaire)
+  facultatif : Model/Armor_*.sbfres (animations de teinture : sans elles, pas de pieces teintes)
 Sortie (dossier romfs du mod, hors git) :
   Actor/Pack/CoopPlayer.sbactorpack, Actor/Pack/CoopGear_<modele>.sbactorpack,
   Actor/ActorInfo.product.sbyml (entrees ajoutees), botw-coop/gear-map.bin,
@@ -155,6 +156,57 @@ def model_lists(romfs, prefix):
     return pieces, skipped
 
 
+# Teintures (mesure du 2026-11-15 sur la RomFS 1.9.0 de l'utilisateur, NOTES 5.53) : les modeles
+# teintables ont une animation de materiau <Emplacement>_ftp (Head, Upper, Lower ; 16 textures
+# <...>_Alb.0 a .15) ; l'image k montre <...>_Alb.k pour les 66 materiaux lus. La couleur d'origine
+# est l'image 0 (la texture du materiau) ; la valeur d'une armure dans l'inventaire est sa teinture
+# (1 a 15, icones UI/StockItem/<piece>.01 a .15). Une piece teinte est montree par un acteur
+# CoopGear_<modele>_T<kk> dont la liste de modeles joue cette animation a l'image kk.
+DYES = range(1, 16)
+
+
+def model_anims(romfs, folder):
+    """Noms des animations de materiau (FMAA) de Model/<folder>.sbfres ; vide si le fichier manque."""
+    path = os.path.join(romfs, "Model", f"{folder}.sbfres")
+    if not os.path.exists(path):
+        return None
+    d = open(path, "rb").read()
+    if d[:4] == b"Yaz0":
+        d = bytes(oead.yaz0.decompress(d))
+    names, p = set(), -1
+    while True:
+        p = d.find(b"FMAA", p + 1)
+        if p < 0:
+            return names
+        no = struct.unpack_from("<Q", d, p + 0x10)[0]  # nom (entree de la table de chaines : u16 longueur, texte)
+        if no + 2 <= len(d):
+            n = struct.unpack_from("<H", d, no)[0]
+            names.add(d[no + 2:no + 2 + n].decode("ascii", "replace"))
+
+
+def piece_slot(piece):
+    for tail, slot in (("_Head", "Head"), ("_Head_B", "Head"), ("_Upper", "Upper"), ("_Lower", "Lower")):
+        if piece.endswith(tail):
+            return slot
+    return None
+
+
+def dyed_model_list(data, mat_anim, shader_anim, frame):
+    pio = oead.aamp.ParameterIO.from_binary(data)
+    ci = pio.objects["ControllerInfo"]
+    ci.params["VariationMatAnim"] = oead.aamp.Parameter(oead.FixedSafeString64(mat_anim))
+    ci.params["VariationMatAnimFrame"] = oead.aamp.Parameter(oead.S32(frame))
+    if shader_anim:
+        ci.params["VariationShaderAnim"] = oead.aamp.Parameter(oead.FixedSafeString64(shader_anim))
+        ci.params["VariationShaderAnimFrame"] = oead.aamp.Parameter(oead.S32(frame))
+    return pio.to_binary()
+
+
+def model_folder(model_list):
+    pio = oead.aamp.ParameterIO.from_binary(model_list)
+    return str(pio.lists["ModelData"].lists["ModelData_0"].objects["Base"].params["Folder"].v)
+
+
 def insert_actor(actors, hashes, entry):
     """Insere une entree ActorInfo a sa place (tri par CRC32 du nom)."""
     name = str(entry["name"])
@@ -191,19 +243,40 @@ def main(romfs, out):
     # Pieces d'armure et armes : meme recette, un acteur par liste de modeles.
     pieces_by_kind, skipped_by_kind = {}, {}
     gear_packs = {}
+    dyed_rows = []          # (nom "piece.kk", acteur teint)
+    anims_cache = {}
+    no_model = set()
     for prefix, (actor_prefix, _, _) in KINDS.items():
         pieces, skipped = model_lists(romfs, prefix)
         pieces_by_kind[prefix], skipped_by_kind[prefix] = pieces, skipped
         for piece, (model, data) in sorted(pieces.items()):
             gear = f"{actor_prefix}{model}"
-            if gear in gear_packs:
-                continue
-            if len(gear) >= GEAR_NAME_LEN:
-                raise SystemExit(f"nom trop long : {gear}")
-            gfiles = dict(common)
-            gfiles[f"Actor/ActorLink/{gear}.bxml"] = actor_link(monk_link, gear)
-            gfiles[f"Actor/ModelList/{gear}.bmodellist"] = data
-            gear_packs[gear] = (piece, model, write_pack(out, gear, gfiles))
+            variants = [(gear, data)]
+            slot = piece_slot(piece) if prefix == "Armor_" else None
+            if slot is not None:
+                folder = model_folder(data)
+                if folder not in anims_cache:
+                    anims_cache[folder] = model_anims(romfs, folder)
+                anims = anims_cache[folder]
+                if anims is None:
+                    no_model.add(folder)
+                elif f"{slot}_ftp" in anims:
+                    shader = f"{slot}_fsp" if f"{slot}_fsp" in anims else None
+                    for k in DYES:
+                        dyed = f"{gear}_T{k:02d}"
+                        dyed_rows.append((f"{piece}.{k:02d}", dyed))
+                        variants.append((dyed, dyed_model_list(data, f"{slot}_ftp", shader, k)))
+            for name, mlist in variants:
+                if name in gear_packs:
+                    continue
+                if len(name) >= GEAR_NAME_LEN:
+                    raise SystemExit(f"nom trop long : {name}")
+                gfiles = dict(common)
+                gfiles[f"Actor/ActorLink/{name}.bxml"] = actor_link(monk_link, name)
+                gfiles[f"Actor/ModelList/{name}.bmodellist"] = mlist
+                gear_packs[name] = (piece, model, write_pack(out, name, gfiles))
+    if no_model:
+        print(f"ATTENTION : modeles absents de {romfs}\\Model, pas de teintures pour : {sorted(no_model)}")
 
     # ActorInfo : entree du moine, avec le modele de Link et un tas plus grand ; tri par CRC32 du nom.
     data = open(os.path.join(romfs, "Actor", "ActorInfo.product.sbyml"), "rb").read()
@@ -250,7 +323,13 @@ def main(romfs, out):
     for gear, (piece, model, gpack) in gear_packs.items():
         sizes[f"Actor/Pack/{gear}.bactorpack"] = max(2 * calc.calculate_file_size_with_ext(gpack, False, ".bactorpack"), 65536)
         sizes[f"Actor/ActorLink/{gear}.bxml"] = sizes[f"Actor/ActorLink/{NAME}.bxml"]
-        sizes[f"Actor/ModelList/{gear}.bmodellist"] = table.get_size(f"Actor/ModelList/{model}.bmodellist")
+        base_size = table.get_size(f"Actor/ModelList/{model}.bmodellist")
+        if gear.endswith(tuple(f"_T{k:02d}" for k in DYES)):
+            # Liste teinte : un peu plus longue (noms d'animation) ; on ajoute l'ecart et une marge.
+            grown = len(pieces_by_kind["Armor_"][piece][1])
+            mlist = oead.Sarc(gpack).get_file(f"Actor/ModelList/{gear}.bmodellist").data
+            base_size += max(0, len(mlist) - grown) + 256
+        sizes[f"Actor/ModelList/{gear}.bmodellist"] = base_size
     for name, size in sizes.items():
         if size <= 0:
             raise SystemExit(f"taille inconnue pour {name}")
@@ -264,7 +343,11 @@ def main(romfs, out):
         pieces = pieces_by_kind[prefix]
         if not pieces:
             continue
-        rows = sorted((zlib.crc32(p.encode()), f"{actor_prefix}{m}") for p, (m, _) in pieces.items())
+        rows = [(zlib.crc32(p.encode()), f"{actor_prefix}{m}") for p, (m, _) in pieces.items()]
+        if prefix == "Armor_":
+            # Pieces teintes : cle = CRC32 de "<piece>.<kk>" (le plugin l'envoie a la place de la piece).
+            rows += [(zlib.crc32(key.encode()), actor) for key, actor in dyed_rows]
+        rows.sort()
         if len({c for c, _ in rows}) != len(rows):
             raise SystemExit(f"collision de CRC32 entre deux pieces ({prefix})")
         blob = magic + struct.pack("<I", len(rows))
@@ -279,6 +362,7 @@ def main(romfs, out):
         n_actors = sum(1 for g in gear_packs if g.startswith(actor_prefix))
         print(f"{prefix}* : {len(pieces_by_kind[prefix])} acteurs du jeu, {n_actors} acteurs {actor_prefix}*, "
               f"ecartes {skipped_by_kind[prefix]}")
+    print(f"teintures : {len(dyed_rows)} pieces teintes ({len(dyed_rows) // len(DYES)} pieces teintables)")
     print(f"{len(sizes)} tailles en tout")
     for name, size in list(sizes.items())[:len(SEQUENCES) + 7]:
         print(f"  {size:8} {name}")

@@ -8,6 +8,7 @@
 #include <lib/log/logger_mgr.hpp>
 #include <lib/util/sys/modules.hpp>
 
+#include <cstdio>
 #include <cstring>
 
 namespace coop::gear {
@@ -152,10 +153,14 @@ namespace coop::gear {
                 const char* m_Name;
                 int m_Count;
             };
-            /* Pomme en premier : le dernier objet recu reste l'arc, le menu s'ouvre sur son onglet. */
+            /* Pomme en premier : le dernier objet recu reste l'arc, le menu s'ouvre sur son onglet.
+               Armure : la valeur est la teinture (1 = bleu, 0 = couleur d'origine ; NOTES 5.53). */
+#ifndef COOP_TEST_DYE
+#define COOP_TEST_DYE 1
+#endif
             static const Item items[] = {
                 { "Item_Fruit_A", 5 },
-                { "Armor_001_Head", 1 }, { "Armor_001_Upper", 1 }, { "Armor_001_Lower", 1 },
+                { "Armor_001_Head", COOP_TEST_DYE }, { "Armor_001_Upper", COOP_TEST_DYE }, { "Armor_001_Lower", COOP_TEST_DYE },
                 { "Weapon_Sword_001", 2000 }, { "Weapon_Shield_001", 2000 }, { "Weapon_Bow_001", 2000 },
             };
             for (const Item& it : items) {
@@ -220,6 +225,32 @@ namespace coop::gear {
             }
         }
 #endif
+
+        /* Teinture : valeur de la piece equipee dans l'inventaire (1 a 15 ; 0 = couleur d'origine, essai dy1,
+           NOTES 5.53). Une piece teinte est annoncee sous le CRC32 de "<piece>.<kk>", le nom de ses icones,
+           si notre table la connait (tools/build_puppet.py) ; sinon sous celui de la piece. */
+        if (ctx.m_Found[0] != 0 || ctx.m_Found[1] != 0 || ctx.m_Found[2] != 0) {
+            static coop::game::PouchEntry armor[64];
+            const int n = coop::game::ReadPouch(armor, 64, (1u << 4) | (1u << 5) | (1u << 6));
+            for (int s = 0; s < Slots; s++) {
+                if (ctx.m_Found[s] == 0)
+                    continue;
+                for (int i = 0; i < n; i++) {
+                    if (!armor[i].m_Equipped || std::strcmp(armor[i].m_Name, ctx.m_Names[s]) != 0)
+                        continue;
+                    if (armor[i].m_Value >= 1 && armor[i].m_Value <= 15) {
+                        char key[sizeof(ctx.m_Names[s])];
+                        const int len = std::snprintf(key, sizeof(key), "%s.%02d", ctx.m_Names[s], armor[i].m_Value);
+                        const std::uint32_t dyed = Crc32(key);
+                        if (len > 0 && len < static_cast<int>(sizeof(key)) && coop::config::GearActorFor(dyed) != nullptr) {
+                            ctx.m_Found[s] = dyed;
+                            std::memcpy(ctx.m_Names[s], key, sizeof(key));
+                        }
+                    }
+                    break;
+                }
+            }
+        }
 
         bool changed = false;
         for (int s = 0; s < Slots; s++) {

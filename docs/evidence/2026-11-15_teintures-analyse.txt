@@ -1,0 +1,68 @@
+Teintures d'armure : analyse des fichiers (2026-11-15, NOTES 5.53)
+Source : RomFS 1.9.0 de l'utilisateur extraite dans build/ (hors git). Aucun fichier ni image du jeu ici, seulement des chiffres.
+
+1. Texture du materiau (pointeurs releves dans Model/Armor_001.sbfres) : Armor_001_Hood_Alb.0, Armor_001_Upper_Alb.0 (x3 materiaux), Armor_001_Lower_Alb.0.
+2. Moyennes RGB des extremites de blocs BC1 (Armor_001.Tex.sbfres) :
+   Hood  .0 (34,40,40) gris sombre   .1 (30,54,80) bleu   .2 (93,46,44) rouge   .5 (34,39,40) noir
+   Upper .0 (51,41,38)               .1 (38,43,48)
+   Lower .0 (86,74,53) brun          .1 (41,48,57)
+   Decodage complet (vu, non conserve) : Hood .0 gris sombre a motif clair, .1 bleu ; Upper .0 tunique rouge a parties vertes, .1 bleue.
+3. Courbe de Head_ftp (Armor_001) : images 0..15 (u8), cles s8 f9 fa 01..08 fb..ff 00 + decalage 7
+   -> indices 0,1,8..15,2..7 du tableau trie (.0,.1,.10..15,.2..9) -> image k = _Alb.k.
+4. Icone d'origine Armor_001_Upper.sbitemico : rouge et vert ; Armor_001_Upper.01 : bleue.
+5. Journal wb1 (2026-11-14) : Armor_001_Upper type=5 valeur=1 ; menu de J1 (capture du 2026-11-14) : tenue et icones bleues.
+
+Sortie de tools/check_dyes.py :
+courbes : 66 materiaux ou l'image k montre _Alb.k, 0 autres
+icone Armor_001_Head       : 15 teintures, la plus proche de l'origine .05 (ecart 44.0)
+icone Armor_001_Lower      : 15 teintures, la plus proche de l'origine .13 (ecart 93.5)
+icone Armor_001_Upper      : 15 teintures, la plus proche de l'origine .12 (ecart 98.4)
+icone Armor_005_Head       : 15 teintures, la plus proche de l'origine .07 (ecart 79.3)
+icone Armor_005_Lower      : 15 teintures, la plus proche de l'origine .14 (ecart 131.5)
+icone Armor_005_Upper      : 15 teintures, la plus proche de l'origine .14 (ecart 192.0)
+icone Armor_006_Head       : 15 teintures, la plus proche de l'origine .01 (ecart 147.8)
+icone Armor_006_Lower      : 15 teintures, la plus proche de l'origine .09 (ecart 123.6)
+icone Armor_006_Upper      : 15 teintures, la plus proche de l'origine .01 (ecart 145.6)
+icone Armor_008_Head       : 15 teintures, la plus proche de l'origine .02 (ecart 17.4)
+icone Armor_008_Lower      : 15 teintures, la plus proche de l'origine .02 (ecart 110.8)
+icone Armor_008_Upper      : 15 teintures, la plus proche de l'origine .07 (ecart 62.0)
+icone Armor_009_Head       : 15 teintures, la plus proche de l'origine .12 (ecart 3.7)
+icone Armor_009_Lower      : 15 teintures, la plus proche de l'origine .13 (ecart 88.5)
+icone Armor_009_Upper      : 15 teintures, la plus proche de l'origine .14 (ecart 43.1)
+icone Armor_011_Head       : 15 teintures, la plus proche de l'origine .12 (ecart 8.9)
+icone Armor_011_Lower      : 15 teintures, la plus proche de l'origine .02 (ecart 83.3)
+icone Armor_011_Upper      : 15 teintures, la plus proche de l'origine .02 (ecart 42.5)
+icone Armor_012_Head       : 15 teintures, la plus proche de l'origine .06 (ecart 53.4)
+icone Armor_012_Lower      : 15 teintures, la plus proche de l'origine .06 (ecart 103.7)
+icone Armor_012_Upper      : 15 teintures, la plus proche de l'origine .09 (ecart 87.7)
+icone Armor_014_Head       : 15 teintures, la plus proche de l'origine .12 (ecart 68.6)
+icone Armor_014_Lower      : 15 teintures, la plus proche de l'origine .14 (ecart 98.8)
+icone Armor_014_Upper      : 15 teintures, la plus proche de l'origine .01 (ecart 118.8)
+icone Armor_017_Head       : 15 teintures, la plus proche de l'origine .05 (ecart 127.4)
+icone Armor_017_Lower      : 15 teintures, la plus proche de l'origine .15 (ecart 95.9)
+icone Armor_017_Upper      : 15 teintures, la plus proche de l'origine .06 (ecart 127.1)
+icone Armor_020_Head       : 15 teintures, la plus proche de l'origine .12 (ecart 29.9)
+icone Armor_020_Lower      : 15 teintures, la plus proche de l'origine .09 (ecart 49.7)
+icone Armor_020_Upper      : 15 teintures, la plus proche de l'origine .09 (ecart 30.2)
+icone Armor_021_Head       : 15 teintures, la plus proche de l'origine .05 (ecart 5.8)
+icone Armor_021_Lower      : 15 teintures, la plus proche de l'origine .09 (ecart 61.5)
+icone Armor_021_Upper      : 15 teintures, la plus proche de l'origine .09 (ecart 136.5)
+icone Armor_043_Lower      : 15 teintures, la plus proche de l'origine .15 (ecart 143.7)
+icone Armor_043_Upper      : 15 teintures, la plus proche de l'origine .04 (ecart 174.1)
+icone Armor_044_Upper      : 15 teintures, la plus proche de l'origine .07 (ecart 113.5)
+icone Armor_046_Head       : 15 teintures, la plus proche de l'origine .05 (ecart 14.0)
+icone Armor_046_Lower      : 15 teintures, la plus proche de l'origine .05 (ecart 35.1)
+icone Armor_046_Upper      : 15 teintures, la plus proche de l'origine .05 (ecart 37.7)
+icone Armor_048_Head       : 15 teintures, la plus proche de l'origine .15 (ecart 126.7)
+icone Armor_048_Lower      : 15 teintures, la plus proche de l'origine .06 (ecart 61.0)
+icone Armor_048_Upper      : 15 teintures, la plus proche de l'origine .15 (ecart 48.6)
+icone Armor_049_Lower      : 15 teintures, la plus proche de l'origine .14 (ecart 111.1)
+icone Armor_053_Head       : 15 teintures, la plus proche de l'origine .08 (ecart 73.1)
+icone Armor_053_Lower      : 15 teintures, la plus proche de l'origine .15 (ecart 130.0)
+icone Armor_053_Upper      : 15 teintures, la plus proche de l'origine .08 (ecart 45.3)
+icone Armor_140_Lower      : 15 teintures, la plus proche de l'origine .05 (ecart 150.9)
+icone Armor_141_Lower      : 15 teintures, la plus proche de l'origine .05 (ecart 153.5)
+icone Armor_181_Head       : 15 teintures, la plus proche de l'origine .05 (ecart 2.6)
+icone Armor_182_Head       : 15 teintures, la plus proche de l'origine .05 (ecart 2.1)
+icone Armor_183_Head       : 15 teintures, la plus proche de l'origine .05 (ecart 0.5)
+icone Armor_184_Head       : 15 teintures, la plus proche de l'origine .05 (ecart 18.0)

@@ -703,6 +703,8 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 
 ### 5.36 Couleurs de l'armure du partenaire (2026-11-14, essais `ve1`, `cc1` a `cc7`) - [X] couleurs fausses, cause trouvee, pas de correctif
 
+- **Mise a jour 2026-11-15 (5.53)** : la cause ci-dessous etait mal comprise. Le partenaire montrait la couleur d'origine de la tenue ; c'est la tenue de J1 qui etait teinte (valeur 1 donnee par l'option d'essai). Voir 5.53.
+
 - [V] A l'image, les pieces `CoopGear_*` n'ont pas les couleurs de la piece portee : la tenue hylienne (bleue sur le vrai Link) apparait gris sombre a motif blanc (deja le cas sur les images du 2026-11-13, non remarque alors) ou brun-rouge et vert a contre-jour (`2026-11-14_armure_couleurs-par-defaut_essai-cc7.png`, `..._J2-voit-J1-equipe_agrandi.png`).
 - [V] Cause : dans le pack d'origine, la couleur est appliquee par une sequence. `Armor_001_Upper` a la liste `Upper_Common` : `ColorChange` -> `Upper_Common_ColorChange` (un element, type 83, fichier « Upper ») et `SkinColor` -> `Player_SkinColor`. Nos pieces n'ont que les sequences de mouvement du pantin. Sur les 413 pieces : 141 sans liste de sequences ; les autres ont `Head_ColorChangeOnly`, `Upper_Common`, `Lower_ColorChangeOnly`, `*_SkinColorOnly`, `*_Nocturne`, etc. Le modele `Armor_001.sbfres` contient des animations de materiau `Head_ftp`, `Upper_ftp`, `Lower_ftp` ; `Armor_001.Tex.sbfres` contient 16 textures de couleur par piece (`Armor_001_Upper_Alb.0` a `.15`, une par teinture).
 - [X] Essais sans succes :
@@ -809,6 +811,24 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] `pg3` (2026-11-15, `-DCOOP_TEST_GLIDER_AFTER=120` : le plugin pose lui-meme `IsGet_PlayerStole2` apres 60 s en jeu, `IsGet_PlayerStole2` n'etant pas dans la liste blanche) : trois drapeaux de progression recus -> `mis en attente` ; paravoile posee -> `paravoile obtenue, 6 drapeaux ... mis en attente : etat redemande` -> etat complet -> les trois `mis a 1`, dont `Clear_Dungeon100` avec sa categorie (octet 3 = categorie 1, valeur 1, correctif 5.46).
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
+
+### 5.53 Couleurs de l'armure : la cause etait la teinture (2026-11-15, analyse des fichiers ; essai `dy1` interrompu)
+
+- [V] par lecture des fichiers de la RomFS 1.9.0 de l'utilisateur (`Model/Armor_001.sbfres`, `.Tex.sbfres`, icones `UI/StockItem`, extraits dans `build/`, hors git) :
+  - le materiau de chaque piece pointe sur `<...>_Alb.0` (pointeurs releves dans le modele) ;
+  - textures decodees (BC1, Tegra) : `Armor_001_Hood_Alb.0` gris sombre a motif clair, `Alb.1` bleu ; `Armor_001_Upper_Alb.0` tunique rouge a parties vertes, `Alb.1` bleue. C'est exactement ce que J2 voyait (5.36 : capuche gris sombre a motif, manches brun-rouge et vert) ;
+  - l'animation `<Emplacement>_ftp` (Head, Upper, Lower ; 15 images, 16 textures) montre `_Alb.k` a l'image k : verifie sur les **66 materiaux** des 53 modeles teintables (courbes lues : images u8, cles s8 + decalage) ;
+  - icones : `Armor_001_Upper.sbitemico` (origine) est rouge et vert, `Armor_001_Upper.01` a `.15` sont les 15 teintures, `.01` bleue ;
+  - dans le jeu de J1, la tenue donnee par l'option d'essai (`AddInventoryItem` avec la valeur **1**, journal `wb1` : `Armor_001_Upper type=5 valeur=1`) s'affiche **bleue** avec des icones bleues (capture du menu du 2026-11-14).
+- Conclusion : le partenaire montrait la **couleur d'origine** ; c'est la tenue de J1 qui etait **teinte en bleu** (valeur 1 = teinture 1). Supposé, non vérifié : valeur 0 = couleur d'origine (essai a faire avec `-DCOOP_TEST_DYE=0`, icone attendue rouge et verte).
+- Correctif (non vérifié a l'image) :
+  - `tools/build_puppet.py` : pour chaque piece dont le modele a `<Emplacement>_ftp`, 15 acteurs `CoopGear_<modele>_T01` a `_T15` dont la liste de modeles joue cette animation a l'image k (`VariationMatAnim`, `VariationMatAnimFrame` ; aussi `VariationShaderAnim` si `<Emplacement>_fsp` existe, `Armor_048`). Cle dans `gear-map.bin` : CRC32 de `"<piece>.<kk>"` (nom des icones). Resultat : 911 acteurs `CoopGear_*` (116 + 795), 3 630 pieces teintes pour 242 pieces teintables, `ActorInfo` 1,97 -> 2,17 Mo decompresse (pas d'entree dans la table des tailles).
+  - plugin : `gear.cpp` lit la valeur de la piece equipee (inventaire, types 4 a 6) ; si elle vaut 1 a 15 et que la table connait `"<piece>.<kk>"`, c'est ce CRC32 qui est annonce (message `GEAR` inchange). `config.cpp` : table d'armure portee a 4 500 entrees (armes : 600).
+  - option d'essai `-DCOOP_TEST_DYE=k` : valeur des pieces d'armure donnees par `COOP_TEST_GIVE` (defaut 1, comme avant).
+- Pourquoi `cc5` / `cc7` (5.36) ne montraient rien : `VariationMatAnim` etait joue a l'**image 0**, qui est justement la couleur d'origine.
+- `dy1` (une instance, `COOP_TEST_GIVE` + `COOP_TEST_SPAWN`) : arrete avant l'entree en jeu, fenetre du jeu reduite (PC utilise par l'utilisateur). **A refaire** : le pantin d'essai doit porter la tenue bleue comme J1.
+- Outil : `tools/check_dyes.py` refait la verification des courbes et compare les icones.
+- Preuve : `docs/evidence/2026-11-15_teintures-analyse.txt` (chiffres seulement, aucune image du jeu dans le depot).
 
 ### 5.52 Arme du decor jamais donnee, Link redemande apres un repli, cheveux apres une capuche (2026-11-15, essais `bw5`, `up1`)
 
