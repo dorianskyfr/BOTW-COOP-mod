@@ -808,6 +808,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.48 Mediane et P95 dans le bilan de performance (2026-11-15, essai `pf5`) - [V] par les journaux
+
+- Le bilan `perf` (toutes les 900 images) donne maintenant, pour l'intervalle entre images et pour le temps du plugin dans le fil du jeu, la moyenne, la **mediane**, le **P95** et le maximum (900 valeurs gardees, `std::nth_element` une fois par bilan).
+- [V] `pf5` : deux instances en jeu sur le plateau, fenetres reduites, ecran eteint, aucun autre usage du PC (charge processeur 49 %), 5 bilans stables par jeu apres l'entree : 30,0 images/s ; intervalle median 33,3 ms, P95 34,6 a 36,7 ms, max 38 a 55 ms ; plugin moyen 1,01 a 1,07 ms, median 1,00 a 1,04 ms, P95 1,29 a 1,35 ms, max 1,7 a 12 ms (pics isoles, cause non cherchee). Premier bilan du joueur 2 pendant le chargement (24,8 images/s, un intervalle de 1 s) : chargement du jeu, pas le plugin.
+- Le plugin coute ~3 % d'une image a 30 images/s (0,2 a 0,3 ms le 2026-11-11, avant armure, armes, drapeaux par tranches, ennemis, carte, voyage...).
+- Preuve : `docs/evidence/2026-11-15_perf-mediane-p95-pf5.txt`.
+
 ### 5.47 Mot de passe de session (2026-11-15, protocole v4, essais `pw1` a `pw3`) - [V] par les journaux
 
 - Besoin : le relais ecoute sur le LAN ; sans mot de passe, tout appareil du reseau peut entrer dans la session (et envoyer des drapeaux). botw-coop a des salons a mot de passe (README, annonce) ; chez nous, un relais = une session, donc un mot de passe par relais suffit.

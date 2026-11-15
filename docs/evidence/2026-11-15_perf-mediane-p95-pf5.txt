@@ -1,0 +1,20 @@
+﻿Essai pf5 (2026-11-15) : deux instances en jeu (plateau), fenetres reduites, ecran eteint, PC sans autre usage (charge processeur 49 %). Bilan toutes les 900 images.
+
+=== pf5_game.txt ===
+[botw-coop] perf: 900 images, intervalle moyen 42811 us (23.3 img/s), mediane 33328 us, P95 44536 us, max 8108092 us | plugin moyen 243 us, mediane 298 us, P95 394 us, max 24404 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 40990 us (24.3 img/s), mediane 33345 us, P95 49886 us, max 2071598 us | plugin moyen 632 us, mediane 556 us, P95 1068 us, max 18289 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33337 us (29.9 img/s), mediane 33311 us, P95 36669 us, max 53544 us | plugin moyen 977 us, mediane 940 us, P95 1242 us, max 12003 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), mediane 33351 us, P95 35200 us, max 40030 us | plugin moyen 1049 us, mediane 1031 us, P95 1350 us, max 2179 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), mediane 33349 us, P95 35061 us, max 54880 us | plugin moyen 1065 us, mediane 1034 us, P95 1341 us, max 5971 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), mediane 33301 us, P95 35142 us, max 52436 us | plugin moyen 1063 us, mediane 1033 us, P95 1324 us, max 7020 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), mediane 33356 us, P95 34776 us, max 38497 us | plugin moyen 1018 us, mediane 999 us, P95 1312 us, max 1887 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), mediane 33303 us, P95 34929 us, max 49212 us | plugin moyen 1011 us, mediane 997 us, P95 1290 us, max 1722 us | lectures refusees 293
+=== pf5_game2.txt ===
+[botw-coop] perf: 900 images, intervalle moyen 42244 us (23.6 img/s), mediane 33325 us, P95 36855 us, max 7830960 us | plugin moyen 245 us, mediane 298 us, P95 386 us, max 26892 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 40271 us (24.8 img/s), mediane 33365 us, P95 51075 us, max 1025429 us | plugin moyen 602 us, mediane 411 us, P95 1017 us, max 15512 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), mediane 33341 us, P95 35058 us, max 51264 us | plugin moyen 1044 us, mediane 1011 us, P95 1314 us, max 11234 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), mediane 33352 us, P95 34838 us, max 39658 us | plugin moyen 1064 us, mediane 1040 us, P95 1326 us, max 5316 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33334 us (29.9 img/s), mediane 33376 us, P95 34628 us, max 41747 us | plugin moyen 1065 us, mediane 1031 us, P95 1327 us, max 5212 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33331 us (30.0 img/s), mediane 33351 us, P95 34884 us, max 53775 us | plugin moyen 1057 us, mediane 1036 us, P95 1313 us, max 6852 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), mediane 33314 us, P95 34695 us, max 38624 us | plugin moyen 1041 us, mediane 1013 us, P95 1326 us, max 4649 us | lectures refusees 293
+[botw-coop] perf: 900 images, intervalle moyen 33334 us (29.9 img/s), mediane 33302 us, P95 34814 us, max 39064 us | plugin moyen 1047 us, mediane 1020 us, P95 1326 us, max 5190 us | lectures refusees 293

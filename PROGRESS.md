@@ -80,7 +80,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 
 | Phase | État | Preuve / raison |
 |---|---|---|
-| A. Stabilité : lectures mémoire protégées, mesure du temps par image | **vérifié** sur 5 minutes à deux (30,0 images/s sur les deux jeux, plugin 0,2 à 0,3 ms par image, aucun plantage). L'endurance de 30 minutes n'a pas été refaite, à la demande de l'utilisateur | `2026-11-11_phaseA_endurance-5min_perf.log` |
+| A. Stabilité : lectures mémoire protégées, mesure du temps par image | **vérifié** sur 5 minutes à deux (30,0 images/s sur les deux jeux, plugin 0,2 à 0,3 ms par image, aucun plantage). L'endurance de 30 minutes n'a pas été refaite, à la demande de l'utilisateur. **Mesure du 2026-11-15 (essai pf5, toutes les fonctions actuelles, deux instances, PC libre)** : 30,0 images/s, intervalle médian 33,3 ms, P95 34,6 à 36,7 ms ; plugin médian 1,0 ms, P95 1,3 ms, pics isolés 2 à 12 ms (NOTES §5.48) | `2026-11-11_phaseA_endurance-5min_perf.log`, `2026-11-15_perf-mediane-p95-pf5.txt` |
 | A. Outil de transposition d'adresses 1.5.0 → 1.9.0 | non commencé | pas d'exécutable 1.5.0 |
 | B. Identifiant commun des objets de carte | **vérifié** : identiques sur les deux instances (54 acteurs sur 54) | `2026-11-11_phaseB_hashid-identiques-deux-instances.log` |
 | B. Drapeaux du jeu : lecture et détection des changements | **vérifié** : 42 031 booléens lus, changements détectés, noms retrouvés par CRC32 | `2026-11-11_phaseB_drapeaux-lus-et-changements.log` |

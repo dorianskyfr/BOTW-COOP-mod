@@ -54,7 +54,7 @@ Niveaux : 0 absent · 1 code · 2 compilé · 3 essai simulé · 4 deux vraies i
 | **Messages à l'écran** (P2) | 0 | 4 (bannière d'information du jeu) | utile partout : à faire tôt |
 | **Chevaux, cinématiques, spectateur, 3–4 joueurs, Rivals** (P3) | 0 | partiel / 0 | plus tard |
 | **Eden** (P3) | 0 (Eden absent, Lichii trouvé) | non essayé | test de fumée quand Eden sera installé |
-| **Performance** (P1) | 0,2–0,3 ms/image, 30 FPS à deux (5 min) | non mesuré | garder la mesure à chaque chantier ; médiane et P95 à ajouter |
+| **Performance** (P1) | plugin médian 1,0 ms, P95 1,3 ms par image ; 30 FPS à deux, intervalle P95 ~35 ms (NOTES §5.48) | non mesuré | garder la mesure à chaque chantier ; chercher les pics isolés (jusqu'à 12 ms) |
 
 ## 4. Drapeaux : protocole de classement
 

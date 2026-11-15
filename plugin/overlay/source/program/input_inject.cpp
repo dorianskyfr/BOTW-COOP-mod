@@ -20,6 +20,7 @@
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
 
+#include <algorithm>
 #include <cstdint>
 
 /*
@@ -159,12 +160,18 @@ namespace coop::input_inject {
                  * entre deux images (cadence reelle du jeu). Bilan toutes les 900 images.
                  */
                 static std::uint64_t s_PrevUs = 0, s_SumUs = 0, s_MaxUs = 0, s_SumGapUs = 0, s_MaxGapUs = 0, s_N = 0;
+                /* Valeurs de chaque image du bilan, pour la mediane et le 95e centile (P95). */
+                constexpr std::uint64_t PerfWindow = 900;
+                static std::uint32_t s_SpentUs[PerfWindow], s_GapUs[PerfWindow];
+                static std::uint64_t s_GapN = 0;
                 const std::uint64_t t0 = coop::clock::NowUs();
                 if (s_PrevUs != 0) {
                     const std::uint64_t gap = t0 - s_PrevUs;
                     s_SumGapUs += gap;
                     if (gap > s_MaxGapUs)
                         s_MaxGapUs = gap;
+                    if (s_GapN < PerfWindow)
+                        s_GapUs[s_GapN++] = gap > 0xffffffffu ? 0xffffffffu : static_cast<std::uint32_t>(gap);
                 }
                 s_PrevUs = t0;
 
@@ -223,11 +230,22 @@ namespace coop::input_inject {
                 s_SumUs += spent;
                 if (spent > s_MaxUs)
                     s_MaxUs = spent;
-                if (++s_N >= 900) {
+                s_SpentUs[s_N] = spent > 0xffffffffu ? 0xffffffffu : static_cast<std::uint32_t>(spent);
+                if (++s_N >= PerfWindow) {
                     const std::uint64_t avgGap = s_SumGapUs / s_N;
-                    Logging.Log("[botw-coop] perf: %lu images, intervalle moyen %lu us (%lu.%lu img/s), max %lu us | plugin moyen %lu us, max %lu us | lectures refusees %lu",
-                        s_N, avgGap, avgGap ? 1000000 / avgGap : 0, avgGap ? (10000000 / avgGap) % 10 : 0, s_MaxGapUs,
-                        s_SumUs / s_N, s_MaxUs, coop::game::RefusedReads());
+                    /* Rang k (0 = plus petit) d'un tableau de n valeurs ; le tableau est remis a zero ensuite. */
+                    auto rank = [](std::uint32_t* v, std::uint64_t n, std::uint64_t k) -> unsigned long {
+                        if (n == 0)
+                            return 0;
+                        std::nth_element(v, v + k, v + n);
+                        return v[k];
+                    };
+                    const unsigned long medSpent = rank(s_SpentUs, s_N, s_N / 2), p95Spent = rank(s_SpentUs, s_N, s_N * 95 / 100);
+                    const unsigned long medGap = rank(s_GapUs, s_GapN, s_GapN / 2), p95Gap = rank(s_GapUs, s_GapN, s_GapN * 95 / 100);
+                    Logging.Log("[botw-coop] perf: %lu images, intervalle moyen %lu us (%lu.%lu img/s), mediane %lu us, P95 %lu us, max %lu us | plugin moyen %lu us, mediane %lu us, P95 %lu us, max %lu us | lectures refusees %lu",
+                        s_N, avgGap, avgGap ? 1000000 / avgGap : 0, avgGap ? (10000000 / avgGap) % 10 : 0, medGap, p95Gap, s_MaxGapUs,
+                        s_SumUs / s_N, medSpent, p95Spent, s_MaxUs, coop::game::RefusedReads());
+                    s_GapN = 0;
 #ifdef COOP_PERF_DETAIL
                     Logging.Log("[botw-coop] perf (us/image) : %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu, %s %lu | acteurs %d, svcQueryMemory %lu/image",
                         s_PartNames[0], s_PartUs[0] / s_N, s_PartNames[1], s_PartUs[1] / s_N, s_PartNames[2], s_PartUs[2] / s_N,
