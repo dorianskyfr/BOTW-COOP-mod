@@ -6,6 +6,7 @@
 #include "gear.hpp"
 #include "weapons.hpp"
 #include "config.hpp"
+#include "cutscene.hpp"
 #include "enemy_life.hpp"
 #include "flags.hpp"
 #include "clock.hpp"
@@ -319,6 +320,8 @@ namespace coop::net_probe {
                 coop::enemy_life::g_PosIncoming.Push(pm);
             } else if (coop::enemy_life::SeqMsg sm; std::sscanf(line, "EAS %d %x %47s", &sm.m_FromId, &sm.m_Hash, sm.m_Name) == 3) {
                 coop::enemy_life::g_SeqIncoming.Push(sm);
+            } else if (coop::cutscene::Demo dm; std::sscanf(line, "DEMO %d %47s %47s", &dm.m_From, dm.m_Event, dm.m_Entry) == 3) {
+                coop::cutscene::g_Incoming.Push(dm);
             } else if (unsigned lifeHash = 0; std::sscanf(line, "LIFE %d %x %d", &id, &lifeHash, &m_days) == 3) {
                 if (m_days >= 0)
                     coop::enemy_life::g_Incoming.Push({ lifeHash, static_cast<std::uint32_t>(m_days) });
@@ -655,6 +658,11 @@ namespace coop::net_probe {
                     for (int n = 0; n < 8 && used + 80 < sizeof(posBuf) && coop::enemy_life::g_SeqOutgoing.Pop(sm); n++)
                         used += static_cast<std::size_t>(std::snprintf(posBuf + used, sizeof(posBuf) - used,
                             "EAS %08x %s\n", sm.m_Hash, sm.m_Name));
+                    /* Cinematiques demarrees chez nous (DEMO). */
+                    coop::cutscene::Demo dm;
+                    for (int n = 0; n < 4 && used + 112 < sizeof(posBuf) && coop::cutscene::g_Outgoing.Pop(dm); n++)
+                        used += static_cast<std::size_t>(std::snprintf(posBuf + used, sizeof(posBuf) - used,
+                            "DEMO %s %s\n", dm.m_Event, dm.m_Entry[0] ? dm.m_Entry : dm.m_Event));
                     if (used > 0 && !SendAll(s_Fd, posBuf, used))
                         Disconnect("echec d'envoi");
                 }

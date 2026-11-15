@@ -721,8 +721,38 @@ public sealed class Setup
     public Process StartGame(Settings s, string rootDataDir = null, string who = null)
     {
         _log(who == null ? "Lancement de Ryujinx…" : $"Lancement de Ryujinx ({who})…");
-        var args = rootDataDir == null ? $"\"{s.BaseNsp}\"" : $"--root-data-dir \"{rootDataDir}\" \"{s.BaseNsp}\"";
-        return Process.Start(new ProcessStartInfo(s.RyujinxExe, args) { UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(s.RyujinxExe) });
+        // Chemin complet : Ryujinx part de son propre dossier, et un chemin relatif introuvable le fait
+        // retomber sur le dossier habituel de l'utilisateur (constate a l'essai du 2026-11-15).
+        var args = rootDataDir == null ? $"\"{s.BaseNsp}\"" : $"--root-data-dir \"{Path.GetFullPath(rootDataDir)}\" \"{s.BaseNsp}\"";
+        // Journal de Ryujinx (et du mod) dans le dossier de travail : ryujinx.log, ryujinx-joueur2.log...
+        var logName = who == null || who == "joueur 1" ? "ryujinx.log" : $"ryujinx-{who.Replace(' ', '-')}.log";
+        var writer = new StreamWriter(Path.Combine(Work, logName), false, new UTF8Encoding(false)) { AutoFlush = true };
+        var p = new Process
+        {
+            StartInfo = new ProcessStartInfo(s.RyujinxExe, args)
+            {
+                UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(s.RyujinxExe),
+                RedirectStandardOutput = true, RedirectStandardError = true,
+            },
+            EnableRaisingEvents = true,
+        };
+        var gate = new object();
+        void Write(string line)
+        {
+            if (line == null)
+                return;
+            lock (gate)
+            {
+                try { writer.WriteLine(line); } catch (ObjectDisposedException) { }
+            }
+        }
+        p.OutputDataReceived += (_, e) => Write(e.Data);
+        p.ErrorDataReceived += (_, e) => Write(e.Data);
+        p.Exited += (_, _) => { lock (gate) writer.Dispose(); };
+        p.Start();
+        p.BeginOutputReadLine();
+        p.BeginErrorReadLine();
+        return p;
     }
 
     // ---- Deux joueurs sur le meme PC ----

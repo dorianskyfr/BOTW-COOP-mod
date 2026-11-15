@@ -52,6 +52,10 @@ namespace coop::config {
                 g_EnemyPos = flag != 0;
             if (std::sscanf(line, "enemy_anim=%u", &flag) == 1 && flag <= 2)
                 g_EnemyAnim = flag;
+            if (std::sscanf(line, "cutscene=%u", &flag) == 1)
+                g_Cutscene = flag != 0;
+            if (std::sscanf(line, "cutscene_range=%u", &flag) == 1 && flag <= 1000)
+                g_CutsceneRangeM = static_cast<int>(flag);
             if (std::sscanf(line, "meal=%u", &flag) == 1)
                 g_Meal = flag != 0;
             if (std::sscanf(line, "map=%u", &flag) == 1)

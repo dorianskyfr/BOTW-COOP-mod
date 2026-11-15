@@ -1,0 +1,45 @@
+# Essais cs1, cs2 (2026-11-15) : cinematiques partagees, deux instances
+=== cs1_game.txt
+00:00:07.918 cinematiques : crochet pose sur main+0x110d1b8
+00:02:10.886 evenement demande : Demo025_0 / Demo025_0 -> accepte
+00:02:10.886 cinematique : Demo025_0 / Demo025_0 annoncee au partenaire
+00:02:25.710 evenement demande : Demo025_0 / Demo025_0 -> accepte (rejeu)
+00:02:25.710 cinematique de J2 : Demo025_0 / Demo025_0 rejouee ici (partenaire a 0 m) -> acceptee, n.1
+00:04:06.165 evenement demande : Demo318_0 / Demo318_0 -> accepte
+00:04:06.165 cinematique : Demo318_0 / Demo318_0 annoncee au partenaire
+00:04:55.839 evenement demande : Demo011_0 / Demo011_0 -> accepte
+00:04:55.839 cinematique : Demo011_0 / Demo011_0 annoncee au partenaire
+00:04:55.839 essai cinematique : Demo011_0 demandee au jeu local -> acceptee
+=== cs1_game2.txt
+00:00:08.932 cinematiques : crochet pose sur main+0x110d1b8
+00:02:04.565 evenement demande : Demo025_0 / Demo025_0 -> accepte
+00:02:04.565 cinematique : Demo025_0 / Demo025_0 annoncee au partenaire
+00:03:45.234 evenement demande : Demo318_0 / Demo318_0 -> accepte (rejeu)
+00:03:45.234 cinematique de J1 : Demo318_0 / Demo318_0 rejouee ici (partenaire a 0 m) -> acceptee, n.1
+00:04:34.930 evenement demande : Demo011_0 / Demo011_0 -> accepte (rejeu)
+00:04:34.930 cinematique de J1 : Demo011_0 / Demo011_0 rejouee ici (partenaire a 0 m) -> acceptee, n.2
+=== cs2_game.txt
+00:00:07.867 cinematiques : crochet pose sur main+0x110d1b8
+00:02:10.397 evenement demande : Demo025_0 / Demo025_0 -> accepte
+00:02:10.397 cinematique : Demo025_0 non annoncee (chargement ou entree en jeu recente)
+00:04:05.604 evenement demande : Demo318_0 / Demo318_0 -> accepte
+00:04:05.604 cinematique : Demo318_0 / Demo318_0 annoncee au partenaire
+00:05:36.749 evenement demande : Demo011_0 / Demo011_0 -> accepte
+00:05:36.749 cinematique : Demo011_0 / Demo011_0 annoncee au partenaire
+00:05:36.749 essai cinematique : Demo011_0 demandee au jeu local -> acceptee
+00:07:03.343 evenement demande : Demo011_0 / Demo011_0 -> accepte
+00:07:03.343 cinematique : Demo011_0 / Demo011_0 annoncee au partenaire
+00:07:03.343 essai cinematique : Demo011_0 demandee au jeu local -> acceptee
+=== cs2_game2.txt
+00:00:07.619 cinematiques : crochet pose sur main+0x110d1b8
+00:02:05.597 evenement demande : Demo025_0 / Demo025_0 -> accepte
+00:02:05.597 cinematique : Demo025_0 non annoncee (chargement ou entree en jeu recente)
+00:03:46.621 evenement demande : Demo318_0 / Demo318_0 -> accepte (rejeu)
+00:03:46.621 cinematique de J1 : Demo318_0 / Demo318_0 rejouee ici (partenaire a 0 m) -> acceptee, n.1
+00:05:17.815 evenement demande : Demo011_0 / Demo011_0 -> accepte (rejeu)
+00:05:17.816 cinematique de J1 : Demo011_0 / Demo011_0 rejouee ici (partenaire a 0 m) -> acceptee, n.2
+00:05:45.677 voyage : chargement commence (1998 ms apres la demande)
+00:05:57.183 voyage : arrive en (-666.0, 173.1, 1518.7), a 15.4 m du point vise, 13504 ms apres la demande
+00:05:58.455 evenement demande : Demo025_0 / Demo025_0 -> accepte
+00:05:58.455 cinematique : Demo025_0 non annoncee (chargement ou entree en jeu recente)
+00:06:44.431 cinematique de J1 : Demo011_0 / Demo011_0, partenaire a 462 m : bandeau seulement, n.1

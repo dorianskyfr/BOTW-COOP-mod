@@ -7,6 +7,7 @@
 #include "weapons.hpp"
 
 #include "clock.hpp"
+#include "cutscene.hpp"
 #include "dynsym.hpp"
 #include "enemy_life.hpp"
 #include "flags.hpp"
@@ -221,6 +222,8 @@ namespace coop::input_inject {
                 COOP_PART();
                 coop::enemy_life::OnFrame();
                 COOP_PART();
+                coop::cutscene::OnFrame();
+                COOP_PART();
                 coop::objects::OnFrame();
                 COOP_PART();
                 coop::map_marker::OnFrame();
@@ -356,6 +359,16 @@ namespace coop::input_inject {
                             coop::game::DropNearestEnemy(1.5f, 8.0f);
                         }
                         buttons &= ~(1ull << 54);
+                    }
+                    /* Bit 52 : cinematique de lune de sang demandee au jeu local, annoncee au partenaire (essai). */
+                    if ((buttons >> 52) & 1) {
+                        static std::uint64_t s_LastDemo = 0;
+                        const auto cmd11 = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmd11 != s_LastDemo) {
+                            s_LastDemo = cmd11;
+                            coop::cutscene::DebugPlayDemo();
+                        }
+                        buttons &= ~(1ull << 52);
                     }
                     /* Bit 53 : Link pose a 12 m du Bokoblin actif le plus proche (essai de combat). */
                     if ((buttons >> 53) & 1) {

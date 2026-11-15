@@ -20,6 +20,7 @@ Commandes :
   drop                     essai : fait tomber de 40 m le Bokoblin le plus proche (mort reelle)
   bring                    essai : amene le Bokoblin le plus proche a 8 m du joueur (combat)
   approach                 essai : pose Link a 12 m du Bokoblin actif le plus proche (combat)
+  demo                     essai : cinematique de lune de sang demandee au jeu, annoncee au partenaire
   hpdown                   essai : vie du joueur pilote mise a 1 coeur
   lift                     essai : Link souleve de 50 m (chute mortelle, sauvetage par le partenaire)
   days n                   essai : annonce a la session un compteur de jours avance de n
@@ -189,6 +190,10 @@ def main():
             # Essai combat : le plugin amene le Bokoblin le plus proche a 8 m devant le joueur (en z), au sol.
             p.pad(buttons=1 << 54, ms=300)
             p.log("bring : Bokoblin le plus proche amene a 8 m")
+        elif op == "demo":
+            # Essai : le plugin demande au jeu la cinematique de lune de sang (Demo011_0), annoncee au partenaire.
+            p.pad(buttons=1 << 52, ms=300)
+            p.log("demo : cinematique Demo011_0 demandee")
         elif op == "approach":
             # Essai combat : le plugin pose Link a 12 m du Bokoblin actif le plus proche.
             p.pad(buttons=1 << 53, ms=300)

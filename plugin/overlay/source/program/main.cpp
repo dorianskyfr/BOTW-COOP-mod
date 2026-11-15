@@ -2,6 +2,7 @@
 #include <lib/log/logger_mgr.hpp>
 
 #include "anim_state.hpp"
+#include "cutscene.hpp"
 #include "dynsym.hpp"
 #include "game.hpp"
 #include "input_inject.hpp"
@@ -42,6 +43,8 @@ extern "C" void exl_main(void* x0, void* x1) {
         coop::notify::Install();
         /* Sauvetage par le partenaire a la mort de Link. */
         coop::revive::Install();
+        /* Cinematiques partagees. */
+        coop::cutscene::Install();
     }
 
     /* Thread reseau + sonde d'etat. */

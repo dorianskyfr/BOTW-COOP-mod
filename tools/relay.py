@@ -106,8 +106,10 @@ def auth_digest(challenge, password):
 #   MEAL : soin d'un repas mange par le joueur (quarts de coeur), retransmis tel quel.
 #   EAS : animation demarree par un ennemi de carte chez le joueur qui fait foi (hachage d'objet,
 #         nom de la sequence), retransmise telle quelle ; l'autre la rejoue sur sa copie.
+#   DEMO : cinematique demarree chez un joueur (evenement, point d'entree), retransmise telle quelle ;
+#          l'autre la rejoue s'il est proche, sinon il voit un bandeau.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
-                "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2}
+                "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2}
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur, et une 5e : son climat
 #   (le relais rend aux autres le climat du joueur de reference de la meteo, avec sa meteo).
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
@@ -118,7 +120,7 @@ OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2}
 # n nom d'acteur. Une ligne dont une valeur ne correspond pas est ignoree (jamais retransmise).
 FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi", "FLAGR": "xi", "LIFE": "xi",
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
-               "GIFT": "nixi", "MEAL": "i", "EAS": "xn"}
+               "GIFT": "nixi", "MEAL": "i", "EAS": "xn", "DEMO": "nn"}
 
 
 def valid_fields(kind, values):
@@ -542,6 +544,8 @@ def main():
                         client.emtx = getattr(client, "emtx", 0) + 1
                         if client.emtx == 1 or client.emtx % 200 == 0:
                             log(f"joueur {client.pid} : position d'ennemi n.{client.emtx} = {parts[1]} a {parts[2]} m de lui")
+                    elif parts[0] == "DEMO":
+                        log(f"joueur {client.pid} : cinematique {payload}")
                     elif parts[0] == "EAS":
                         client.eas = getattr(client, "eas", 0) + 1
                         if client.eas <= 20 or client.eas % 200 == 0:
