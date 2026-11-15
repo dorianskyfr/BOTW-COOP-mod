@@ -13,11 +13,11 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 | | |
 |---|---|
 | ![Le joueur 2 voit le joueur 1 grimper](docs/evidence/2026-11-13_pantin-link_J2-voit-J1-grimper.png) | ![Le joueur 2 voit l'armure et les armes du joueur 1](docs/evidence/2026-11-14_equipement_deux-instances_J2-voit-J1-equipe.png) |
-| L'autre joueur est un Link animé : il grimpe, nage, plane comme le vrai | Son armure et ses armes (couleurs de l'armure pas encore justes) |
+| L'autre joueur est un Link animé : il grimpe, nage, plane comme le vrai | Son armure et ses armes |
 | ![Alerte : le partenaire est en danger](docs/evidence/2026-11-13_coeurs_alerte-chez-J1.png) | ![Message à l'entrée en jeu](docs/evidence/2026-11-13_bandeau_connecte-a-l-entree-en-jeu.png) |
 | Alerte quand le partenaire n'a presque plus de cœurs | Messages dans le bandeau du jeu |
-| ![Objet ramassé par le joueur 1](docs/evidence/2026-11-11_phaseC_J1-ramasse-le-champignon.png) | |
-| Un objet ramassé par l'un disparaît chez l'autre | |
+| ![Objet ramassé par le joueur 1](docs/evidence/2026-11-11_phaseC_J1-ramasse-le-champignon.png) | ![Le joueur 2 voit la tenue teinte en bleu du joueur 1](docs/evidence/2026-11-15_teinture-vue-par-J2_zoom_dy5.png) |
+| Un objet ramassé par l'un disparaît chez l'autre | Les teintures de l'armure sont transmises |
 
 État réel, limites et preuves : `PROGRESS.md`. Détails techniques : `NOTES.md`, `ARCHITECTURE.md`. Décisions : `DECISIONS.md`.
 

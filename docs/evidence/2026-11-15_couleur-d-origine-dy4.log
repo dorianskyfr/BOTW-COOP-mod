@@ -1,0 +1,19 @@
+﻿[botw-coop] config: 4043 pieces d'armure montrables sur le partenaire
+[botw-coop] essai inventaire : Item_Fruit_A x5 (bonus 0/0) -> objets 1 -> 2
+[botw-coop] essai inventaire : Armor_001_Head x0 (bonus 0/0) -> objets 2 -> 3
+[botw-coop] essai inventaire : Armor_001_Upper x0 (bonus 0/0) -> objets 3 -> 4
+[botw-coop] essai inventaire : Armor_001_Lower x0 (bonus 0/0) -> objets 4 -> 5
+[botw-coop] essai inventaire : Weapon_Sword_001 x2000 (bonus 0/0) -> objets 5 -> 6
+[botw-coop] essai inventaire : Weapon_Shield_001 x2000 (bonus 0/0) -> objets 6 -> 7
+[botw-coop] essai inventaire : Weapon_Bow_001 x2000 (bonus 0/0) -> objets 7 -> 8
+[botw-coop] essai inventaire (apres les objets d'essai) : 8 objet(s) lu(s)
+[botw-coop] armure du partenaire : creation de "CoopGear_Armor_Default_Head" demandee (piece 0)
+[botw-coop] armure du partenaire : "CoopGear_Armor_Default_Head" CREE apres 5 images (piece 0)
+[botw-coop] armure : portee Armor_001_Head_B (f2b0eb45) / Armor_001_Upper (63162bda) / Armor_001_Lower (03d38f65)
+[botw-coop] armure du partenaire : piece 0 (CoopGear_Armor_Default_Head) retiree
+[botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Head_B" demandee (piece 0)
+[botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Upper" demandee (piece 1)
+[botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Lower" demandee (piece 2)
+[botw-coop] armure du partenaire : "CoopGear_Armor_001_Head_B" CREE apres 5 images (piece 0)
+[botw-coop] armure du partenaire : "CoopGear_Armor_001_Upper" CREE apres 5 images (piece 1)
+[botw-coop] armure du partenaire : "CoopGear_Armor_001_Lower" CREE apres 5 images (piece 2)

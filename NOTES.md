@@ -812,7 +812,16 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
-### 5.53 Couleurs de l'armure : la cause etait la teinture (2026-11-15, analyse des fichiers ; essai `dy1` interrompu)
+### 5.53 Couleurs de l'armure : la cause etait la teinture (2026-11-15, analyse des fichiers ; essais `dy1` a `dy5`) - [V] a l'image
+
+- **Resultat a l'image (ecran 2)** :
+  - `dy2` (une instance, `VariationMatAnim` = `Head_ftp`) : pieces `_T01` creees, couleur **inchangee** (capuche grise). Le nom attendu est **sans le suffixe** : les listes de modeles du jeu ecrivent `Bear_Color` (Animal_Bear_B, image 1) pour l'animation `Bear_Color_ftp` d'`Animal_Bear.sbfres` (242 listes du jeu utilisent ce champ, toutes lues). Corrige : `Head`, `Upper`, `Lower`.
+  - `dy2` aussi : la capuche relevee est portee sous le nom `Armor_001_Head_B` alors que l'inventaire dit `Armor_001_Head` ; la teinture n'etait pas trouvee. Corrige (`_B` retire pour la recherche) ; journal suivant : `portee Armor_001_Head_B.01 / Armor_001_Upper.01 / Armor_001_Lower.01`.
+  - [V] `dy3` (une instance, teinture 1) : le pantin porte capuche et tunique **bleues**, motif identique a celui de J1. Captures `2026-11-15_teinture-bleue-partenaire_dy3.png`, `..._zoom_dy3.png`, journal `2026-11-15_teinture-bleue-dy3.log`.
+  - [V] `dy4` (`-DCOOP_TEST_DYE=0`) : **valeur 0 = couleur d'origine** : menu de J1 avec icones et tenue grise / rouge et verte / beige, pantin identique (acteurs `CoopGear_Armor_001_*` sans `_T`). Captures `2026-11-15_couleur-d-origine-menu_dy4.png`, `..._partenaire_dy4.png`, `..._partenaire_zoom_dy4.png`, journal `..._dy4.log`.
+  - [V] `dy5` (deux instances, teinture 1) : J1 equipe la tenue par le menu ; J2 cree `CoopGear_Armor_001_Head_B_T01`, `_Upper_T01`, `_Lower_T01` et voit J1 en capuche, tunique et pantalon **bleus**. Captures `2026-11-15_teinture-vue-par-J2_dy5.png`, `..._zoom_dy5.png`, journal `2026-11-15_teinture-deux-instances-dy5.log`.
+- **Non verifie** : les 14 autres teintures et les autres armures (meme mecanisme, courbes verifiees dans les fichiers) ; `Armor_048` (animation de parametres `fsp` en plus) ; changement de teinture en cours de partie (teinturerie).
+
 
 - [V] par lecture des fichiers de la RomFS 1.9.0 de l'utilisateur (`Model/Armor_001.sbfres`, `.Tex.sbfres`, icones `UI/StockItem`, extraits dans `build/`, hors git) :
   - le materiau de chaque piece pointe sur `<...>_Alb.0` (pointeurs releves dans le modele) ;
@@ -820,13 +829,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - l'animation `<Emplacement>_ftp` (Head, Upper, Lower ; 15 images, 16 textures) montre `_Alb.k` a l'image k : verifie sur les **66 materiaux** des 53 modeles teintables (courbes lues : images u8, cles s8 + decalage) ;
   - icones : `Armor_001_Upper.sbitemico` (origine) est rouge et vert, `Armor_001_Upper.01` a `.15` sont les 15 teintures, `.01` bleue ;
   - dans le jeu de J1, la tenue donnee par l'option d'essai (`AddInventoryItem` avec la valeur **1**, journal `wb1` : `Armor_001_Upper type=5 valeur=1`) s'affiche **bleue** avec des icones bleues (capture du menu du 2026-11-14).
-- Conclusion : le partenaire montrait la **couleur d'origine** ; c'est la tenue de J1 qui etait **teinte en bleu** (valeur 1 = teinture 1). Supposé, non vérifié : valeur 0 = couleur d'origine (essai a faire avec `-DCOOP_TEST_DYE=0`, icone attendue rouge et verte).
-- Correctif (non vérifié a l'image) :
-  - `tools/build_puppet.py` : pour chaque piece dont le modele a `<Emplacement>_ftp`, 15 acteurs `CoopGear_<modele>_T01` a `_T15` dont la liste de modeles joue cette animation a l'image k (`VariationMatAnim`, `VariationMatAnimFrame` ; aussi `VariationShaderAnim` si `<Emplacement>_fsp` existe, `Armor_048`). Cle dans `gear-map.bin` : CRC32 de `"<piece>.<kk>"` (nom des icones). Resultat : 911 acteurs `CoopGear_*` (116 + 795), 3 630 pieces teintes pour 242 pieces teintables, `ActorInfo` 1,97 -> 2,17 Mo decompresse (pas d'entree dans la table des tailles).
+- Conclusion : le partenaire montrait la **couleur d'origine** ; c'est la tenue de J1 qui etait **teinte en bleu** (valeur 1 = teinture 1). Valeur 0 = couleur d'origine : verifie a l'image (`dy4`).
+- Correctif :
+  - `tools/build_puppet.py` : pour chaque piece dont le modele a `<Emplacement>_ftp`, 15 acteurs `CoopGear_<modele>_T01` a `_T15` dont la liste de modeles joue cette animation a l'image k (`VariationMatAnim` = `<Emplacement>` sans suffixe, `VariationMatAnimFrame` ; aussi `VariationShaderAnim` si `<Emplacement>_fsp` existe, `Armor_048`). Cle dans `gear-map.bin` : CRC32 de `"<piece>.<kk>"` (nom des icones). Resultat : 911 acteurs `CoopGear_*` (116 + 795), 3 630 pieces teintes pour 242 pieces teintables, `ActorInfo` 1,97 -> 2,17 Mo decompresse (pas d'entree dans la table des tailles).
   - plugin : `gear.cpp` lit la valeur de la piece equipee (inventaire, types 4 a 6) ; si elle vaut 1 a 15 et que la table connait `"<piece>.<kk>"`, c'est ce CRC32 qui est annonce (message `GEAR` inchange). `config.cpp` : table d'armure portee a 4 500 entrees (armes : 600).
   - option d'essai `-DCOOP_TEST_DYE=k` : valeur des pieces d'armure donnees par `COOP_TEST_GIVE` (defaut 1, comme avant).
 - Pourquoi `cc5` / `cc7` (5.36) ne montraient rien : `VariationMatAnim` etait joue a l'**image 0**, qui est justement la couleur d'origine.
-- `dy1` (une instance, `COOP_TEST_GIVE` + `COOP_TEST_SPAWN`) : arrete avant l'entree en jeu, fenetre du jeu reduite (PC utilise par l'utilisateur). **A refaire** : le pantin d'essai doit porter la tenue bleue comme J1.
+- `dy1` (une instance, `COOP_TEST_GIVE` + `COOP_TEST_SPAWN`) : arrete une premiere fois (fenetre reduite, PC utilise), puis refait sur l'ecran 2 : pieces `_T01` de la tunique et du pantalon creees, partenaire cache par l'herbe.
 - Outil : `tools/check_dyes.py` refait la verification des courbes et compare les icones.
 - Preuve : `docs/evidence/2026-11-15_teintures-analyse.txt` (chiffres seulement, aucune image du jeu dans le depot).
 

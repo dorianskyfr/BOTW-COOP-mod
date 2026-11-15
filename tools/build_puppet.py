@@ -261,11 +261,14 @@ def main(romfs, out):
                 if anims is None:
                     no_model.add(folder)
                 elif f"{slot}_ftp" in anims:
-                    shader = f"{slot}_fsp" if f"{slot}_fsp" in anims else None
+                    # Nom sans le suffixe de type : les listes de modeles du jeu ecrivent « Bear_Color » pour
+                    # l'animation Bear_Color_ftp d'Animal_Bear.sbfres (Animal_Bear_B, image 1). Avec « Head_ftp »,
+                    # rien ne changeait a l'image (essai dy2).
+                    shader = slot if f"{slot}_fsp" in anims else None
                     for k in DYES:
                         dyed = f"{gear}_T{k:02d}"
                         dyed_rows.append((f"{piece}.{k:02d}", dyed))
-                        variants.append((dyed, dyed_model_list(data, f"{slot}_ftp", shader, k)))
+                        variants.append((dyed, dyed_model_list(data, slot, shader, k)))
             for name, mlist in variants:
                 if name in gear_packs:
                     continue

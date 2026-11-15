@@ -235,8 +235,13 @@ namespace coop::gear {
             for (int s = 0; s < Slots; s++) {
                 if (ctx.m_Found[s] == 0)
                     continue;
+                /* Capuche relevee : l'acteur porte s'appelle "<piece>_B" (essai dy1 : Armor_001_Head_B porte,
+                   Armor_001_Head dans l'inventaire). */
+                std::size_t len = strnlen(ctx.m_Names[s], sizeof(ctx.m_Names[s]));
+                if (len > 2 && std::strcmp(ctx.m_Names[s] + len - 2, "_B") == 0)
+                    len -= 2;
                 for (int i = 0; i < n; i++) {
-                    if (!armor[i].m_Equipped || std::strcmp(armor[i].m_Name, ctx.m_Names[s]) != 0)
+                    if (!armor[i].m_Equipped || std::strncmp(armor[i].m_Name, ctx.m_Names[s], len) != 0 || armor[i].m_Name[len] != '\0')
                         continue;
                     if (armor[i].m_Value >= 1 && armor[i].m_Value <= 15) {
                         char key[sizeof(ctx.m_Names[s])];
