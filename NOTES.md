@@ -721,7 +721,8 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] `rv2` (3 cœurs, J2 a cote) : 1re chute -> `sauvetage : Link releve par le partenaire (J2 a 0 m), vie 0 -> 12 quarts`, sequence `LandDamage`, pas de Game Over ; Link marche ensuite (9 m au stick). 2e chute 20 s plus tard -> `refuse (sauvetage trop recent)` -> Game Over, le monde se recharge.
 - Fenetres de jeu reduites pendant tout l'essai : les deux jeux tournent et se pilotent normalement ainsi.
 - Partenaire prevenu : message `SAVED <distance>` (relais : retransmis, essai automatique de plus, 43/43) ; le partenaire affiche « Vous avez sauvé le joueur N ! ». [V] `rv3` : J1 releve, J2 affiche le message, le relais le journalise. [V] `rv3`, jeu de J2 ferme : J1 retombe -> `refuse (pas de partenaire en jeu)` -> Game Over.
-- **Non verifie** : a l'image (relevement, bandeau) ; refus quand le partenaire est mort ou trop loin (code ecrit, pas essaye) ; mort par un coup d'ennemi, noyade, lave. Pas d'etat « a terre » a relever : le sauvetage est immediat.
+- [V] `rv5` (2026-11-14) : partenaire trop loin -> refuse. [V] `rv8` (2026-11-15) : **partenaire mort** : J1 sauve, retombe (trop recent -> Game Over) ; J2 tombe 2,5 s apres -> `refuse (partenaire sans vie connue ou mort, ..., vie du partenaire 0 quarts)` -> Game Over. La vie annoncee par J1 (message `HP`, une fois par seconde) etait bien 0 : pas un partenaire « inconnu ». Le refus journalise desormais cette vie. Preuve : `docs/evidence/2026-11-15_sauvetage-partenaire-mort-rv8.txt`.
+- **Non verifie** : a l'image (relevement, bandeau) ; mort par un coup d'ennemi, noyade, lave. Pas d'etat « a terre » a relever : le sauvetage est immediat.
 - Preuve : `docs/evidence/2026-11-14_sauvetage-par-le-partenaire_rv2.log`, `2026-11-14_sauvetage_partenaire-prevenu-et-absent_rv3.log`.
 - [V] `gf2` : chute reelle (J1 tombe d'une falaise en marchant) -> releve, partenaire a 47 m (`2026-11-14_dons-d-armes_gf2-gf3.log`).
 

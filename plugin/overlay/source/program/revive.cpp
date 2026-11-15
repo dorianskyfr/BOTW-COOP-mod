@@ -78,7 +78,8 @@ namespace coop::revive {
                 int life = -1, maxLife = -1;
                 std::uintptr_t lifePtr = 0;
                 if (!PartnerCanSave(dist, why) || !coop::game::GetPlayerLife(life, maxLife, lifePtr) || lifePtr == 0) {
-                    Logging.Log("[botw-coop] sauvetage : refuse (%s, distance %d m) -> Game Over", why, dist);
+                    Logging.Log("[botw-coop] sauvetage : refuse (%s, distance %d m, vie du partenaire %d quarts, -1 inconnue) -> Game Over",
+                        why, dist, coop::status::g_RemoteLife.load());
                     return false;
                 }
                 const int restored = maxLife > 0 && maxLife < ReviveLife ? maxLife : ReviveLife;
