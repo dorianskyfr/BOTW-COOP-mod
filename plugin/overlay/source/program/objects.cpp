@@ -58,7 +58,8 @@ namespace coop::objects {
         int s_NumVictims = 0;
 
         /*
-         * Coffres montres ouverts (NOTES 5.61). La pose OpenWait est redemandee toutes les 2 s pendant
+         * Coffres montres ouverts (NOTES 5.61), seulement si le groupe 4 (coffres) est partage : par
+         * defaut chaque joueur ouvre son propre coffre (NOTES 5.62). La pose OpenWait est redemandee toutes les 2 s pendant
          * 20 s, au cas ou la logique du coffre remettrait la sienne. Le coffre reste ouvrable (essai co1 :
          * contenu obtenu une seconde fois) : il est donc retire des que le joueur local passe a moins de
          * 3 m, avant l'invite « Ouvrir » (~1,5 m). Distances et durees choisies, pas mesurees.

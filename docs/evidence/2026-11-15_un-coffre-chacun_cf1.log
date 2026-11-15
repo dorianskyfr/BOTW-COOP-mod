@@ -1,0 +1,8 @@
+﻿cf1_game.txt 00:00:19.518 config: liste blanche lue : 33350 drapeaux (progression 1330, objets de carte 29927, portes logiques 485, coffres 1608), groupes actifs 0x6
+cf1_game.txt 00:00:19.827 net: le relais nous attribue l'identifiant J1, reponse au defi envoyee
+cf1_game.txt 00:09:14.519 drapeau change : n.25144 hachage=985be8e9 0 -> 1
+cf1_game.txt 00:09:17.487 drapeau change : n.23594 hachage=8f5495fe 0 -> 1
+cf1_game2.txt 00:00:18.132 config: liste blanche lue : 33350 drapeaux (progression 1330, objets de carte 29927, portes logiques 485, coffres 1608), groupes actifs 0x6
+cf1_game2.txt 00:00:18.590 net: le relais nous attribue l'identifiant J2, reponse au defi envoyee
+cf1_game2.txt 00:08:38.800 drapeau change : n.25144 hachage=985be8e9 0 -> 1
+cf1_game2.txt 00:08:41.829 drapeau change : n.23594 hachage=8f5495fe 0 -> 1

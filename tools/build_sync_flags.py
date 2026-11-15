@@ -15,6 +15,9 @@ Groupes :
                   Sans les PNJ ni les portes logiques LinkTag*.
   3 portes logiques LinkTag* des cartes (etat d'enigmes et d'evenements) : classees, non actives
                   par defaut, a essayer sanctuaire par sanctuaire.
+  4 coffres (TBox_*) des cartes : non actifs par defaut, chaque joueur ouvre son propre coffre et
+                  en recoit le contenu (demande de l'utilisateur, 2026-11-15). share_groups=1,2,4 pour
+                  qu'un coffre ouvert par l'un le soit aussi chez l'autre.
 
 Format de sortie (petit-boutiste) : "CSF1", u32 nombre, nombre x u32 hachage trie, nombre x u8 groupe.
 Usage : python -I tools\\build_sync_flags.py build\\gamedata\\flags.tsv build\\deploy\\romfs\\botw-coop\\sync-flags.bin
@@ -33,6 +36,7 @@ RULES = [
     (1, re.compile(r"^MapTower_\d+$")),
     (1, re.compile(r"^MainField_Npc_HiddenKorok[A-Za-z]*_\d+$")),
     (3, re.compile(r"^" + MAPS + r"_LinkTag[A-Za-z]*_\d+$")),
+    (4, re.compile(r"^" + MAPS + r"_TBox_[A-Za-z0-9_]*_\d+$")),
     (2, re.compile(r"^" + MAPS + r"_(?!Npc_)(?!LinkTag)[A-Za-z][A-Za-z0-9_]*_\d+$")),
 ]
 

@@ -16,7 +16,8 @@
  *   cutscene=0                   coupe les cinematiques partagees ; cutscene_range=<metres> (50 par defaut)
  *   partner_range=<metres>       distance de creation du Link du partenaire (250 par defaut)
  *   cutscene_tp=0                le partenaire trop loin ne rejoint pas le joueur pour une cinematique
- *   share_groups=1,2             groupes de drapeaux partages (liste blanche, voir plus bas)
+ *   share_groups=1,2             groupes de drapeaux partages (liste blanche, voir plus bas) ;
+ *                                4 = coffres (inactif : un coffre chacun)
  *   revive=0                     coupe le sauvetage par le partenaire (actif par defaut)
  *   revive_delay=120             secondes entre deux sauvetages par le partenaire
  *   revive_range=150             distance maximale du partenaire, en metres

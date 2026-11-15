@@ -812,6 +812,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.62 Un coffre chacun (2026-11-15, essai `cf1`) - [V] par les journaux, deux instances
+
+- Demande de l'utilisateur : chaque joueur ouvre son propre coffre. `tools/build_sync_flags.py` range les drapeaux `<carte>_TBox_*_<HashId>` (1 608, cartes MainField, CDungeon, AocField, MainFieldDungeon) dans un **groupe 4 « coffres », inactif par defaut** ; ils sortaient du groupe 2 (29 931 au lieu de 31 539). Le plugin ne les envoie ni ne les applique ; le code « coffre montre ouvert, retire a 3 m » (5.61) ne sert plus que si `share_groups` contient 4.
+- [V] `cf1` (fenetres reduites, verification par les journaux) : `liste blanche lue : ... coffres 1608, groupes actifs 0x6`. J2 ouvre le coffre du plateau : `MainField_TBox_Field_Stone_1122331722` (985be8e9) 0 -> 1 puis `IsPlayed_Demo000_0` (ouverture). Rien n'arrive chez J1 (aucun « ouvert par l'autre joueur »). 36 s plus tard, J1 ouvre **le meme coffre** chez lui : meme drapeau 0 -> 1 et sa propre ouverture `Demo000_0`.
+- Non vu a l'image : l'objet recu (ecran occupe par l'utilisateur). Une partie coop deja jouee garde les coffres partages avant ce changement.
+- Preuve : `docs/evidence/2026-11-15_un-coffre-chacun_cf1.log`.
+
 ### 5.61 Limites corrigees : coffres, cinematiques sures et partenaire loin, distance du partenaire, journaux (2026-11-15, essais `co1` a `co3`)
 
 - **Coffre ouvert par l'autre** (`objects.cpp`) : au lieu d'etre retire, il joue la sequence `OpenWait` de sa liste `TBox_Field` (sequences `Open`, `OpenWait`, `Close`, `CloseWait`, `FrontOpen`, lues dans `TBox_Field_Stone.sbactorpack`). [V] `co1` : coffre ouvert par J2 vu ouvert chez J1 (« montre ouvert ici »). **Mais** il reste ouvrable : [V] J1 l'ouvre et recoit la Vieille chemise une seconde fois. Corrige : retire des que le joueur local passe a moins de 3 m (avant l'invite, ~1,5 m). [V] `co2` : J2 a 3 m -> « retire (pas de second contenu) », A ne donne rien. Donc : vu ouvert de loin, disparait de pres.
