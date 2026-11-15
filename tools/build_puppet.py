@@ -50,6 +50,7 @@ SEQUENCES = {
     # plus l'acteur du tout (essais cp7, cp8 ; sans lui, cpa et cpb le creent). Cause inconnue.
 }
 
+PUPPET_VARIANTS = {"CoopPlayer2": 700000, "CoopPlayerS": 560000}  # nom -> tas (NOTES 5.55)
 INST_SIZE = 700000  # tas de l'acteur ; Link du menu pause : 557256 (ActorInfo 1.9.0). 1200000 ne changeait rien a l'echec du surf (cp8)
 
 
@@ -239,6 +240,15 @@ def main(romfs, out):
     files[f"Actor/ActorLink/{NAME}.bxml"] = actor_link(monk_link, NAME)
     files[f"Actor/ModelList/{NAME}.bmodellist"] = link_files["Actor/ModelList/PauseMenuPlayer.bmodellist"]
     pack = write_pack(out, NAME, files)
+    # Copies du pantin (NOTES 5.55) : quand le jeu refuse CoopPlayer pour toute la session (etat 3
+    # des la 1re image), le plugin essaie ces noms avant le PNJ. Meme contenu, liste de modeles a
+    # leur nom ; CoopPlayerS avec un tas plus petit.
+    variant_packs = {}
+    for variant in PUPPET_VARIANTS:
+        vfiles = dict(common)
+        vfiles[f"Actor/ActorLink/{variant}.bxml"] = actor_link(monk_link, variant)
+        vfiles[f"Actor/ModelList/{variant}.bmodellist"] = link_files["Actor/ModelList/PauseMenuPlayer.bmodellist"]
+        variant_packs[variant] = write_pack(out, variant, vfiles)
 
     # Pieces d'armure et armes : meme recette, un acteur par liste de modeles.
     pieces_by_kind, skipped_by_kind = {}, {}
@@ -297,6 +307,11 @@ def main(romfs, out):
     entry["name"] = NAME
     entry["instSize"] = oead.S32(INST_SIZE)
     pos, crc = insert_actor(actors, hashes, entry)
+    for variant, inst in PUPPET_VARIANTS.items():
+        ventry = oead.byml.Hash({k: v for k, v in entry.items()})
+        ventry["name"] = variant
+        ventry["instSize"] = oead.S32(inst)
+        insert_actor(actors, hashes, ventry)
     # Pieces d'armure et armes : meme entree, avec l'archive de modeles et le modele principal de la piece.
     for gear, (piece, model, _) in gear_packs.items():
         gentry = oead.byml.Hash({k: v for k, v in entry.items()})
@@ -320,6 +335,10 @@ def main(romfs, out):
         f"Actor/ModelList/{NAME}.bmodellist": table.get_size("Actor/ModelList/PauseMenuPlayer.bmodellist"),
         f"Actor/ASList/{NAME}.baslist": table.get_size("Actor/ASList/PauseMenuPlayer.baslist"),
     }
+    for variant, vpack in variant_packs.items():
+        sizes[f"Actor/Pack/{variant}.bactorpack"] = max(2 * calc.calculate_file_size_with_ext(vpack, False, ".bactorpack"), 65536)
+        sizes[f"Actor/ActorLink/{variant}.bxml"] = sizes[f"Actor/ActorLink/{NAME}.bxml"]
+        sizes[f"Actor/ModelList/{variant}.bmodellist"] = sizes[f"Actor/ModelList/{NAME}.bmodellist"]
     one_as = table.get_size("Actor/AS/PauseMenuPlayer_Lift.bas")
     for seq in SEQUENCES:
         sizes[f"Actor/AS/{NAME}_{seq}.bas"] = one_as

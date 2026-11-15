@@ -148,6 +148,13 @@ namespace coop::game {
     /* Etat de l'unite de creation (ksys::act::BaseProcUnit::Status), -1 si pas d'unite. */
     int GetHandleStatus(const ActorHandle& handle);
 
+    /*
+     * Acteur cree avec une poignee et pret (etat 2) : le jeu le detache de la poignee et le
+     * reveille (BaseProcHandle::releaseAndWakeProc). Renvoie l'acteur, 0 si pas pret. Ensuite la
+     * poignee est vide (m_Unit = 0) et l'acteur vit comme un acteur cree sans poignee. Fil du jeu.
+     */
+    std::uintptr_t ReleaseAndWakeActor(ActorHandle& handle);
+
     /* Lecture / ecriture de la translation de la matrice d'un acteur (Actor::mMtx). */
     void GetActorPos(std::uintptr_t actor, float out[3]);
     void SetActorPos(std::uintptr_t actor, const float pos[3]);

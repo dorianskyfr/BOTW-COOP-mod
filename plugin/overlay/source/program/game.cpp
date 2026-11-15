@@ -55,6 +55,17 @@ namespace coop::game {
              * +0x78, deux appels a mName.cstr(), puis BaseProcMgr).
              */
             std::uintptr_t m_BaseProc_DeleteLater;
+            /*
+             * ksys::act::BaseProcHandle::releaseAndWakeProc(). 1.9.0 (NOTES 5.55) : les chaines de
+             * debogage de BaseProcUnit::setProc / cleanUp / reset (actBaseProcHandle.cpp) sont
+             * referencees vers main+0x1516cf8..0x1516f7c ; juste avant, deux fonctions identiques
+             * testent mUnit->mStatus == 2 (isProcReady) puis appellent une routine commune avec
+             * 0 ou 1 ; celle-ci echange la poignee contre gDummyProcHandle, prend le BaseProc
+             * (+0x10) puis, avec 1, appelle une fonction (proc, 0) = wakeUp(SleepWakeReason::_0),
+             * et met mUnit a 0 au retour. Avec 1 : main+0x1516b74. L'unite y appelle aussi
+             * deleteLater (main+0x1514bac) depuis BaseProcUnit::deleteProc, comme la decomp.
+             */
+            std::uintptr_t m_BaseProcHandle_ReleaseAndWakeProc;
         };
 
         constexpr Offsets s_Known[] = {
@@ -68,6 +79,7 @@ namespace coop::game {
                 0x1535b10,
                 0x1e57580,
                 0x1514bac,
+                0x1516b74,
             },
         };
 
@@ -635,6 +647,14 @@ namespace coop::game {
         if (handle.m_Unit == 0)
             return -1;
         return static_cast<int>(*reinterpret_cast<const std::uint32_t*>(handle.m_Unit + Unit_Status));
+    }
+
+    std::uintptr_t ReleaseAndWakeActor(ActorHandle& handle) {
+        if (s_Offsets == nullptr || handle.m_Unit == 0 || GetHandleStatus(handle) != UnitStatus_Ready)
+            return 0;
+        /* BaseProcHandle {mUnit, mFailed} = ActorHandle (NOTES 1 septies). Fil du jeu. */
+        using ReleaseFn = std::uintptr_t (*)(ActorHandle* handle);
+        return reinterpret_cast<ReleaseFn>(MainBase() + s_Offsets->m_BaseProcHandle_ReleaseAndWakeProc)(&handle);
     }
 
     std::uintptr_t GetReadyActor(const ActorHandle& handle) {

@@ -28,7 +28,17 @@ namespace coop::remote_actor {
          */
         constexpr const char* PuppetName = "CoopPlayer";
         constexpr const char* FallbackName = "Npc_Kakariko003";
+        /* Copies du Link (tools/build_puppet.py, NOTES 5.55), essayees a tour de role quand le jeu
+           refuse un nom : il peut refuser CoopPlayer pour toute la session (etat 3 des la 1re image). */
+        constexpr const char* PuppetNames[] = { PuppetName, "CoopPlayer2", "CoopPlayerS" };
+        constexpr int PuppetVariants = sizeof(PuppetNames) / sizeof(PuppetNames[0]);
+        int s_PuppetVariant = 0;
         const char* ActorName = PuppetName;
+        bool IsPuppet() { return ActorName != FallbackName; }
+        const char* NextPuppetName() {
+            s_PuppetVariant = (s_PuppetVariant + 1) % PuppetVariants;
+            return PuppetNames[s_PuppetVariant];
+        }
         /* CoopPlayer installe mais pas apparu (vu sous forte charge, essais cc1 et vr2) : on le
            redemande ; repli sur le PNJ seulement apres ce nombre d'echecs de suite. */
         constexpr int PuppetRetries = 4;
@@ -46,7 +56,7 @@ namespace coop::remote_actor {
            on redonne sa chance au Link s'il est installe. */
         void RetryPuppet() {
             if (ActorName == FallbackName && coop::config::g_PuppetInstalled.load(std::memory_order_acquire) == 1) {
-                ActorName = PuppetName;
+                ActorName = PuppetNames[s_PuppetVariant];
                 s_PuppetFailures = 0;
             }
             s_UpgradeFrame = 0;
@@ -82,6 +92,14 @@ namespace coop::remote_actor {
         std::uint64_t s_InGameFrames = 0;
         std::uint64_t s_RequestFrame = 0;
         bool s_LayoutLogged = false;
+        /*
+         * Creation avec poignee (NOTES 5.55) : sans poignee, le Link n'apparaissait souvent jamais
+         * (52 journaux sur 181) sans que rien ne le signale ; avec, l'etat de l'unite de creation se
+         * lit (BaseProcUnit::Status de la decomp : 1 en cours, 2 pret, 3 pas d'acteur, 5 annule) et
+         * l'acteur pret est reveille par releaseAndWakeProc (le jeu endort un acteur a poignee).
+         */
+        coop::game::ActorHandle s_Handle;
+        int s_HandleStatus = -2;
 
         /* Mesures pour le log. */
         float s_LastWritten[3] = { 0, 0, 0 };
@@ -348,7 +366,7 @@ namespace coop::remote_actor {
          * joueurs, charges au meme point, reculaient jusqu'a tomber de la falaise).
          * On ne le pose donc jamais a moins de MinSeparation du joueur local (a plat).
          */
-        if (hasTarget && ActorName != PuppetName) { /* CoopPlayer n'a pas de corps : rien a pousser */
+        if (hasTarget && !IsPuppet()) { /* CoopPlayer n'a pas de corps : rien a pousser */
             constexpr float MinSeparation = 1.2f;
             float sx = target[3] - local.m_Pos[0];
             float sz = target[11] - local.m_Pos[2];
@@ -390,11 +408,13 @@ namespace coop::remote_actor {
                 s_RequestPos[1] = targetPos[1];
                 s_RequestPos[2] = targetPos[2];
                 /* Fichier du Link absent de la RomFS du mod : directement le PNJ. */
-                if (ActorName == PuppetName && coop::config::g_PuppetInstalled.load(std::memory_order_acquire) == 0) {
+                if (IsPuppet() && coop::config::g_PuppetInstalled.load(std::memory_order_acquire) == 0) {
                     Logging.Log("[botw-coop] acteur distant : CoopPlayer non installe, PNJ \"%s\" a la place", FallbackName);
                     ActorName = FallbackName;
                 }
-                if (coop::game::RequestCreateActorAwake(ActorName, targetPos)) {
+                s_Handle = coop::game::ActorHandle {};
+                s_HandleStatus = -2;
+                if (coop::game::RequestCreateActor(ActorName, targetPos, s_Handle)) {
                     s_State = State::Requested;
                     s_RequestFrame = s_Frames;
                     Logging.Log("[botw-coop] acteur distant : creation de \"%s\" demandee en (%.2f, %.2f, %.2f)",
@@ -413,16 +433,27 @@ namespace coop::remote_actor {
                 /* Cree sans poignee : on le retrouve par son nom pres du point de creation. */
 #ifdef COOP_TEST_PUPPET_FAIL
                 /* Essai : pour les N premieres demandes du Link, on fait comme s'il n'apparaissait pas. */
-                const bool simulateFail = ActorName == PuppetName && s_PuppetFailures < COOP_TEST_PUPPET_FAIL;
+                const bool simulateFail = IsPuppet() && s_PuppetFailures < COOP_TEST_PUPPET_FAIL;
 #else
                 constexpr bool simulateFail = false;
 #endif
-                const auto actor = !simulateFail && (s_Frames - s_RequestFrame) % 5 == 0
-                    ? coop::game::FindActor(ActorName, s_RequestPos, 8.0f) : 0;
+                const int status = coop::game::GetHandleStatus(s_Handle);
+                if (status != s_HandleStatus) {
+                    if (status != 1 && status != 2)
+                        Logging.Log("[botw-coop] acteur distant : creation de \"%s\" : etat de l'unite %d -> %d (echec poignee %d) apres %lu images",
+                            ActorName, s_HandleStatus, status, s_Handle.m_Failed ? 1 : 0, s_Frames - s_RequestFrame);
+                    s_HandleStatus = status;
+                }
+                /* Pret : le jeu le detache de la poignee et le reveille. */
+                std::uintptr_t actor = 0;
+                if (!simulateFail && status == 2)
+                    actor = coop::game::ReleaseAndWakeActor(s_Handle);
+                /* Echec signale par le jeu (pas d'acteur, annule, poignee en echec) : inutile d'attendre. */
+                const bool reportedFailure = !simulateFail && actor == 0 && (s_Handle.m_Failed || status == 3 || status == 5);
                 if (actor != 0) {
                     s_Actor = actor;
                     s_State = State::Alive;
-                    if (ActorName == PuppetName)
+                    if (IsPuppet())
                         s_PuppetFailures = 0;
                     s_HasWritten = false;
                     s_LastAttentionRc = 0;
@@ -435,7 +466,7 @@ namespace coop::remote_actor {
                     Logging.Log("[botw-coop] acteur distant : CREE apres %lu images, acteur=%lx nom=\"%s\" pos=(%.2f, %.2f, %.2f)",
                         s_Frames - s_RequestFrame, actor, coop::game::GetActorName(actor),
                         static_cast<double>(pos[0]), static_cast<double>(pos[1]), static_cast<double>(pos[2]));
-                } else if (s_Frames - s_RequestFrame > (ActorName == PuppetName ? 600u : 1800u)) {
+                } else if (reportedFailure || s_Frames - s_RequestFrame > (IsPuppet() ? 600u : 1800u)) {
                     /* Pas apparu : on redemandera (le jeu a pu annuler la creation). CoopPlayer
                        installe : nouvel essai, repli sur le PNJ apres PuppetRetries echecs de suite
                        (ou tout de suite si on ne sait pas s'il est installe). */
@@ -447,7 +478,7 @@ namespace coop::remote_actor {
                             orphan == 0 ? "absent" : coop::game::DeleteActor(orphan) ? "ignore puis retire" : "ignore, non retire");
                     }
                     bool fallback = false;
-                    if (ActorName == PuppetName) {
+                    if (IsPuppet()) {
                         s_PuppetFailures++;
                         fallback = coop::config::g_PuppetInstalled.load(std::memory_order_acquire) != 1
                                    || s_PuppetFailures >= PuppetRetries;
@@ -456,6 +487,8 @@ namespace coop::remote_actor {
                         ActorName, s_Frames - s_RequestFrame, s_PuppetFailures, fallback ? "repli sur le PNJ" : "nouvel essai");
                     if (fallback)
                         ActorName = FallbackName;
+                    else if (IsPuppet())
+                        ActorName = NextPuppetName(); /* nom suivant : le jeu peut refuser un nom pour la session */
                 }
                 break;
             }
@@ -491,18 +524,25 @@ namespace coop::remote_actor {
                     if (s_UpgradeFrame == 0 && s_Frames - s_UpgradeLast > UpgradeEvery) {
                         s_UpgradeLast = s_Frames;
                         coop::game::GetActorPos(s_Actor, s_UpgradePos);
-                        if (coop::game::RequestCreateActorAwake(PuppetName, s_UpgradePos)) {
+                        s_Handle = coop::game::ActorHandle {};
+                        const char* name = NextPuppetName();
+                        if (coop::game::RequestCreateActor(name, s_UpgradePos, s_Handle)) {
                             s_UpgradeFrame = s_Frames;
-                            Logging.Log("[botw-coop] acteur distant : PNJ de repli en place, nouvel essai du Link (\"%s\")", PuppetName);
+                            Logging.Log("[botw-coop] acteur distant : PNJ de repli en place, nouvel essai du Link (\"%s\")", name);
                         }
-                    } else if (s_UpgradeFrame != 0 && (s_Frames - s_UpgradeFrame) % 5 == 0) {
-                        const auto link = coop::game::FindActor(PuppetName, s_UpgradePos, 8.0f);
-                        if (link != 0) {
+                    } else if (s_UpgradeFrame != 0) {
+                        const int status = coop::game::GetHandleStatus(s_Handle);
+                        const auto link = status == 2 ? coop::game::ReleaseAndWakeActor(s_Handle) : 0;
+                        if (link == 0 && (s_Handle.m_Failed || status == 3 || status == 5)) {
+                            Logging.Log("[botw-coop] acteur distant : nouvel essai du Link refuse par le jeu (etat %d, echec poignee %d), PNJ garde",
+                                status, s_Handle.m_Failed ? 1 : 0);
+                            s_UpgradeFrame = 0;
+                        } else if (link != 0) {
                             const bool ok = coop::game::DeleteActor(s_Actor);
                             Logging.Log("[botw-coop] acteur distant : Link apparu apres %lu images, il remplace le PNJ (%s)",
                                 s_Frames - s_UpgradeFrame, ok ? "PNJ retire" : "PNJ non retire");
                             s_Actor = link;
-                            ActorName = PuppetName;
+                            ActorName = PuppetNames[s_PuppetVariant];
                             s_PuppetFailures = 0;
                             s_HasWritten = false;
                             s_LastAttentionRc = 0;
@@ -510,8 +550,7 @@ namespace coop::remote_actor {
                             s_Candidate = nullptr;
                             s_UpgradeFrame = 0;
                             break;
-                        }
-                        if (s_Frames - s_UpgradeFrame > 600) {
+                        } else if (s_Frames - s_UpgradeFrame > 600) {
                             Logging.Log("[botw-coop] acteur distant : Link toujours introuvable apres %lu images, PNJ garde", s_Frames - s_UpgradeFrame);
                             s_UpgradeFrame = 0;
                         }
@@ -536,12 +575,12 @@ namespace coop::remote_actor {
                 if (s_Writes == 120 || s_Writes == 3000)
                     coop::game::LogAttention(s_Actor);
 #endif
-                const bool sequencePlayed = ActorName == PuppetName && UpdateSequence(s_Actor);
+                const bool sequencePlayed = IsPuppet() && UpdateSequence(s_Actor);
 
                 /* Le personnage du joueur distant n'est pas un PNJ a qui parler : on retire
                    ses interactions (invite « Parler », verrouillage). Refait a chaque image,
                    au cas ou le jeu les retablirait. CoopPlayer n'en a pas (AttentionUser Dummy). */
-                if (ActorName != PuppetName) {
+                if (!IsPuppet()) {
                     const int n = coop::game::DisableActorAttention(s_Actor);
                     if (n != 0 && n != s_LastAttentionRc) {
                         s_LastAttentionRc = n;
@@ -584,11 +623,11 @@ namespace coop::remote_actor {
 
                     /* Armure du partenaire, posee sur le pantin (gear.hpp). Une piece qui apparait
                        fait relancer la sequence du pantin : corps et armure repartent ensemble. */
-                    if (ActorName == PuppetName && coop::gear::OnFramePuppet(s_Actor, target, s_Sequence, sequencePlayed)
+                    if (IsPuppet() && coop::gear::OnFramePuppet(s_Actor, target, s_Sequence, sequencePlayed)
                         && s_Sequence != nullptr)
                         coop::game::PlayActorSequence(s_Actor, s_Sequence);
                     /* Armes, bouclier, arc : poses dans le repere du pantin (weapons.hpp). */
-                    if (ActorName == PuppetName)
+                    if (IsPuppet())
                         coop::weapons::OnFramePuppet(target);
                 }
 

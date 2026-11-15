@@ -1,0 +1,87 @@
+﻿== ph1_game.txt
+00:02:00.050 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:02:00.084 [botw-coop] diagnostic Link : unite a38e140 etat -2 -> 2 (echec poignee 0, acteur de l'unite 6607288470) apres 1 images
+00:02:00.220 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607288470 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+== ph1_game2.txt
+00:01:58.059 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:58.092 [botw-coop] diagnostic Link : unite a38d580 etat -2 -> 1 (echec poignee 0, acteur de l'unite 0) apres 1 images
+00:01:58.124 [botw-coop] diagnostic Link : unite a38d580 etat 1 -> 2 (echec poignee 0, acteur de l'unite 6607253cd0) apres 2 images
+00:01:58.225 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607253cd0 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+== ph2_game.txt
+00:01:59.756 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:01:59.788 [botw-coop] diagnostic Link : unite a38c3e0 etat -2 -> 2 (echec poignee 0, acteur de l'unite 66071afa58) apres 1 images
+00:01:59.925 [botw-coop] acteur distant : CREE apres 5 images, acteur=66071afa58 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+== ph2_game2.txt
+00:01:57.414 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:57.448 [botw-coop] diagnostic Link : unite a38c6d0 etat -2 -> 2 (echec poignee 0, acteur de l'unite 660739ae00) apres 1 images
+00:01:57.582 [botw-coop] acteur distant : CREE apres 5 images, acteur=660739ae00 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+== ph3_game.txt
+00:02:00.432 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:02:00.464 [botw-coop] diagnostic Link : unite a38e140 etat -2 -> 1 (echec poignee 0, acteur de l'unite 0) apres 1 images
+00:02:00.500 [botw-coop] diagnostic Link : unite a38e140 etat 1 -> 2 (echec poignee 0, acteur de l'unite 6607310d10) apres 2 images
+00:02:00.591 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607310d10 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+== ph3_game2.txt
+00:01:58.184 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:58.215 [botw-coop] diagnostic Link : unite a38d290 etat -2 -> 2 (echec poignee 0, acteur de l'unite 6607172250) apres 1 images
+00:01:58.348 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607172250 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+== hw1_game.txt
+00:02:04.293 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:02:04.327 [botw-coop] acteur distant : creation de "CoopPlayer" : etat de l'unite -2 -> 3 (echec poignee 0) apres 1 images
+00:02:04.327 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 1 images, echec 1), nouvel essai
+00:02:04.358 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:02:04.391 [botw-coop] acteur distant : creation de "CoopPlayer" : etat de l'unite -2 -> 3 (echec poignee 0) apres 1 images
+00:02:04.391 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 1 images, echec 2), nouvel essai
+00:02:04.425 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:02:04.462 [botw-coop] acteur distant : creation de "CoopPlayer" : etat de l'unite -2 -> 3 (echec poignee 0) apres 1 images
+00:02:04.462 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 1 images, echec 3), nouvel essai
+00:02:04.496 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:02:04.531 [botw-coop] acteur distant : creation de "CoopPlayer" : etat de l'unite -2 -> 3 (echec poignee 0) apres 1 images
+00:02:04.531 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 1 images, echec 4), repli sur le PNJ
+00:02:04.570 [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1023.28, 252.63, 1799.95)
+00:02:04.998 [botw-coop] acteur distant : CREE apres 13 images, acteur=66072e5068 nom="Npc_Kakariko003" pos=(-1023.28, 252.63, 1799.95)
+00:03:35.393 [botw-coop] acteur distant : nouvel essai du Link refuse par le jeu (etat 3, echec poignee 0), PNJ garde
+== hw1_game2.txt
+00:01:57.650 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:57.682 [botw-coop] acteur distant : CREE apres 1 images, acteur=660717f8b8 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+== hw2_game.txt
+00:02:00.383 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:02:00.437 [botw-coop] acteur distant : CREE apres 2 images, acteur=6607309cb0 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+== hw2_game2.txt
+00:01:57.349 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:57.382 [botw-coop] acteur distant : CREE apres 1 images, acteur=6607266af0 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+== hw3_game.txt
+00:01:59.854 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:01:59.889 [botw-coop] acteur distant : CREE apres 1 images, acteur=66072b66d0 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+== hw3_game2.txt
+00:01:57.412 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:57.444 [botw-coop] acteur distant : CREE apres 1 images, acteur=660730a290 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+== pv1_game.txt
+00:01:59.560 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:01:59.632 [botw-coop] acteur distant : CREE apres 2 images, acteur=66071f3580 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+== pv1_game2.txt
+00:01:57.268 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:57.333 [botw-coop] acteur distant : CREE apres 2 images, acteur=66071df220 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+== pv2_game.txt
+00:02:03.019 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:02:03.053 [botw-coop] acteur distant : CREE apres 1 images, acteur=66071f5370 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+== pv2_game2.txt
+00:01:59.145 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:59.206 [botw-coop] acteur distant : CREE apres 2 images, acteur=6607131560 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+== pv3_game.txt
+00:01:59.488 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:01:59.524 [botw-coop] acteur distant : CREE apres 1 images, acteur=66072c26e0 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+== pv3_game2.txt
+00:01:56.681 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:56.714 [botw-coop] acteur distant : creation de "CoopPlayer" : etat de l'unite -2 -> 3 (echec poignee 0) apres 1 images
+00:01:56.715 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 1 images, echec 1), nouvel essai
+00:01:56.747 [botw-coop] acteur distant : creation de "CoopPlayer2" demandee en (-1024.48, 252.63, 1799.95)
+00:01:56.779 [botw-coop] acteur distant : CREE apres 1 images, acteur=6607248d78 nom="CoopPlayer2" pos=(-1024.48, 252.63, 1799.95)
+== pv4_game.txt
+00:02:02.828 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:02:02.864 [botw-coop] acteur distant : creation de "CoopPlayer" : etat de l'unite 1 -> 3 (echec poignee 0) apres 2 images
+00:02:02.864 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 2 images, echec 1), nouvel essai
+00:02:02.895 [botw-coop] acteur distant : creation de "CoopPlayer2" demandee en (-1024.48, 252.64, 1799.95)
+00:02:02.929 [botw-coop] acteur distant : CREE apres 1 images, acteur=66072bd0d8 nom="CoopPlayer2" pos=(-1024.48, 252.64, 1799.95)
+== pv4_game2.txt
+00:01:58.446 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:01:58.478 [botw-coop] acteur distant : CREE apres 1 images, acteur=66073b6878 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
