@@ -22,7 +22,7 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 État réel, limites et preuves : `PROGRESS.md`. Détails techniques : `NOTES.md`, `ARCHITECTURE.md`. Décisions : `DECISIONS.md`.
 
 ## Ce que fait la version actuelle
-- Chaque joueur voit l'autre dans son monde sous la forme d'un Link animé (attente, marche, course, sprint, escalade, nage, vol plané, chute), avec son armure (tête, torse, jambes ; couleurs pas encore justes : les pièces gardent leur teinte par défaut) et ses armes, bouclier, arc et carquois.
+- Chaque joueur voit l'autre dans son monde sous la forme d'un Link animé (attente, marche, course, sprint, escalade, nage, vol plané, chute), avec son armure (tête, torse, jambes, teintures comprises) et ses armes, bouclier, arc et carquois.
 - Heure de la session (elle ne recule jamais ; un joueur en pause ne retient pas l'autre), jours, minuteur de lune de sang, météo (quand les deux joueurs sont dans le même climat).
 - Drapeaux de la liste blanche : progression (sanctuaires, tours, Créatures divines, Koroks) et objets de carte (ramassés, coffres, ennemis tués). Les étapes de quête, l'inventaire et le Compendium restent à chacun.
 - Points de vie et position des ennemis (première version).
@@ -38,7 +38,18 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 
 Testé uniquement avec deux instances de Ryujinx 1.3.3 sur un même PC. Non testé entre deux PC, ni sous Eden.
 
-## Jouer à deux
+## Installation simple : le launcher
+
+`BotwCoopLauncher.exe` (onglet Releases du dépôt) installe, met à jour et lance le mod :
+
+1. Indiquer `Ryujinx.exe`, le jeu de base (`.nsp`) et la mise à jour 1.9.0 (`.nsp`). Ryujinx doit déjà avoir vos clés (`prod.keys`).
+2. Choisir « J'héberge la partie » ou « Je rejoins un ami » (avec son adresse, affichée dans son launcher), et un mot de passe si vous voulez.
+3. **Installer / Mettre à jour** : le launcher télécharge la dernière version du mod, lit dans votre jeu les fichiers dont il a besoin (lecture seule), fabrique le Link de l'autre joueur, la liste des drapeaux partagés, etc. (Python portable de python.org et paquets `oead`, `rstb` de PyPI, dans `%LOCALAPPDATA%\BotwCoop`), puis copie le tout dans le dossier des mods de Ryujinx. Il active « Ignorer les services manquants » et sélectionne la mise à jour 1.9.0 dans Ryujinx (copies de sécurité `*.avant-botw-coop`). Environ une minute la première fois.
+4. **Jouer** : lance le relais (pour l'hôte, sur le réseau local uniquement) puis Ryujinx.
+
+Au démarrage, le launcher vérifie s'il existe une nouvelle version (du mod et de lui-même) et se met à jour. Aucun fichier du jeu n'est distribué : tout est fabriqué sur votre PC, à partir de votre copie. Préparer une release : `tools\make-release.ps1 -Version a.b.c` (fichiers dans `build\release`, à publier comme release `va.b.c` du dépôt public).
+
+## Jouer à deux (à la main)
 
 Il faut, sur chaque PC : BOTW avec la mise à jour 1.9.0, Ryujinx, et ce dépôt compilé (voir plus bas).
 

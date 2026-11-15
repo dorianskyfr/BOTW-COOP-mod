@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Launcher BOTW Coop : installe, met a jour et lance le mod en un clic.
+       Dependances : Ryujinx.LibHac (flux NuGet officiel du projet Ryujinx, voir nuget.config),
+       comme tools/romfs-extract. Aucun fichier du jeu n'est livre : tout est genere sur le PC
+       du joueur, depuis sa propre copie du jeu. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>BotwCoopLauncher</AssemblyName>
+    <RootNamespace>BotwCoopLauncher</RootNamespace>
+    <Version>0.95.0</Version>
+    <AssemblyTitle>BOTW Coop</AssemblyTitle>
+    <Product>BOTW Coop</Product>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ryujinx.LibHac" Version="0.21.0-alpha.133" />
+  </ItemGroup>
+
+</Project>
