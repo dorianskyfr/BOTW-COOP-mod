@@ -162,6 +162,29 @@ public sealed class Setup
         return true;
     }
 
+    /// <summary>
+    /// Capture d'ecran du depot public (docs/evidence, deja publiee dans le README), telechargee une
+    /// fois puis gardee dans le cache. ref = etiquette de release (ou "main"). null si indisponible.
+    /// </summary>
+    public static async Task<string> CachedRepoImageAsync(string file, string gitRef)
+    {
+        var dest = Path.Combine(Work, "cache", "captures", file);
+        if (File.Exists(dest))
+            return dest;
+        try
+        {
+            var url = $"https://raw.githubusercontent.com/{Repo}/{Uri.EscapeDataString(gitRef)}/docs/evidence/{Uri.EscapeDataString(file)}";
+            var data = await Http.GetByteArrayAsync(url);
+            Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
+            await File.WriteAllBytesAsync(dest, data);
+            return dest;
+        }
+        catch (Exception)
+        {
+            return null; // hors ligne : le carrousel reste vide
+        }
+    }
+
     async Task DownloadAsync(string url, string dest)
     {
         _log($"Téléchargement : {url}");
@@ -425,6 +448,14 @@ public sealed class Setup
         _log("Ryujinx : mise à jour 1.9.0 sélectionnée pour le jeu.");
     }
 
+    /// <summary>Recrit la configuration de la partie (relais, mot de passe) dans le mod deja installe.</summary>
+    public void ApplyPartySettings(Settings s, string dataDirOverride)
+    {
+        var target = ModTarget(s.RyujinxDataDir(dataDirOverride));
+        if (Directory.Exists(Path.Combine(target, "romfs")))
+            WriteModConfig(target, s);
+    }
+
     public void Uninstall(Settings s, string dataDirOverride)
     {
         var target = ModTarget(s.RyujinxDataDir(dataDirOverride));
@@ -554,7 +585,46 @@ public sealed class Setup
         _log($"   {count} fichiers lus ({total / (1024 * 1024)} Mo)");
     }
 
-    static Nca ProgramNca(IStorage nspStorage, KeySet keys, string name)
+    /// <summary>
+    /// Icone du jeu (JPEG du contenu « Control » du .nsp de l'utilisateur : fichiers icon_*.dat),
+    /// pour l'affichage du launcher. Gardee dans le dossier de travail ; rien n'est distribue.
+    /// Renvoie le chemin du JPEG, ou null.
+    /// </summary>
+    public static string EnsureGameIcon(string keysPath, string nsp)
+    {
+        var dest = Path.Combine(Work, "cache", "game-icon.jpg");
+        if (File.Exists(dest))
+            return dest;
+        if (!File.Exists(keysPath) || !File.Exists(nsp))
+            return null;
+        var keys = new KeySet();
+        ExternalKeyReader.ReadKeyFile(keys, keysPath, null, null, null, null);
+        using var file = new LocalStorage(nsp, FileAccess.Read, FileMode.Open);
+        var control = ContentNca(file, keys, nsp, NcaContentType.Control);
+        using var fs = control.OpenFileSystem(NcaSectionType.Data, IntegrityCheckLevel.None);
+        string best = null;
+        foreach (DirectoryEntryEx e in fs.EnumerateEntries("/", "icon_*.dat"))
+        {
+            // Francais de preference, sinon la premiere langue trouvee.
+            if (best == null || e.Name.Contains("French", StringComparison.OrdinalIgnoreCase))
+                best = e.FullPath;
+        }
+        if (best == null)
+            return null;
+        using var f = new UniqueRef<IFile>();
+        fs.OpenFile(ref f.Ref, best.ToU8Span(), OpenMode.Read).ThrowIfFailure();
+        f.Get.GetSize(out long size).ThrowIfFailure();
+        var data = new byte[size];
+        f.Get.Read(out long got, 0, data).ThrowIfFailure();
+        Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
+        File.WriteAllBytes(dest, data.AsSpan(0, (int)got).ToArray());
+        return dest;
+    }
+
+    static Nca ProgramNca(IStorage nspStorage, KeySet keys, string name) =>
+        ContentNca(nspStorage, keys, name, NcaContentType.Program);
+
+    static Nca ContentNca(IStorage nspStorage, KeySet keys, string name, NcaContentType type)
     {
         var pfs = new PartitionFileSystem();
         pfs.Initialize(nspStorage).ThrowIfFailure();
@@ -573,7 +643,7 @@ public sealed class Setup
             var f = new UniqueRef<IFile>();
             pfs.OpenFile(ref f.Ref, e.FullPath.ToU8Span(), OpenMode.Read).ThrowIfFailure();
             var nca = new Nca(keys, f.Release().AsStorage());
-            if (nca.Header.ContentType == NcaContentType.Program)
+            if (nca.Header.ContentType == type)
                 return nca;
         }
         throw new InvalidOperationException($"Pas de programme dans {Path.GetFileName(name)} (un fichier .nsp de BOTW est attendu).");

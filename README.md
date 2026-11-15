@@ -42,12 +42,12 @@ Testé uniquement avec deux instances de Ryujinx 1.3.3 sur un même PC. Non test
 
 ## Installation simple : le launcher
 
-`BotwCoopLauncher.exe` (onglet Releases du dépôt) installe, met à jour et lance le mod :
+`BotwCoopLauncher.exe` (onglet Releases du dépôt) installe, met à jour et lance le mod. Interface sombre : l'image du jeu affichée en haut est lue dans **votre** `.nsp` (icône du jeu), et les captures du carrousel viennent de ce dépôt ; aucune image du jeu n'est livrée dans l'exe.
 
-1. Indiquer `Ryujinx.exe`, le jeu de base (`.nsp`) et la mise à jour 1.9.0 (`.nsp`). Ryujinx doit déjà avoir vos clés (`prod.keys`).
-2. Choisir « J'héberge la partie » ou « Je rejoins un ami » (avec son adresse, affichée dans son launcher), et un mot de passe si vous voulez.
+1. **Paramètres** (ouverts d'office au premier lancement) : `Ryujinx.exe`, le jeu de base (`.nsp`) et la mise à jour 1.9.0 (`.nsp`). Ryujinx doit déjà avoir vos clés (`prod.keys`).
+2. Choisir « J'héberge » (votre adresse s'affiche, à donner à l'autre joueur) ou « Je rejoins un ami » (avec son adresse), et un mot de passe si vous voulez.
 3. **Installer / Mettre à jour** : le launcher télécharge la dernière version du mod, lit dans votre jeu les fichiers dont il a besoin (lecture seule), fabrique le Link de l'autre joueur, la liste des drapeaux partagés, etc. (Python portable de python.org et paquets `oead`, `rstb` de PyPI, dans `%LOCALAPPDATA%\BotwCoop`), puis copie le tout dans le dossier des mods de Ryujinx. Il active « Ignorer les services manquants » et sélectionne la mise à jour 1.9.0 dans Ryujinx (copies de sécurité `*.avant-botw-coop`). Environ une minute la première fois.
-4. **Jouer** : installe d'abord la dernière version du mod si elle a changé (les deux joueurs doivent avoir la même, le relais refuse deux versions différentes), puis lance le relais (pour l'hôte, sur le réseau local uniquement) et Ryujinx.
+4. **Jouer** : installe le mod s'il ne l'est pas encore, ou la dernière version si elle a changé (les deux joueurs doivent avoir la même, le relais refuse deux versions différentes), puis lance le relais (pour l'hôte, sur le réseau local uniquement) et Ryujinx.
 
 Au démarrage, le launcher se remplace lui-même s'il existe un launcher plus récent : il compare sa version à `launcher.json` de la dernière release, qui ne change que si le launcher a changé (sinon pas de nouveau téléchargement de 52 Mo). Aucun fichier du jeu n'est distribué : tout est fabriqué sur votre PC, à partir de votre copie. Préparer une release : `tools\make-release.ps1 -Version a.b.c` (trois fichiers dans `build\release` : `botw-coop-mod.zip`, `BotwCoopLauncher.exe`, `launcher.json`, à publier comme release `va.b.c` du dépôt public ; la version du launcher est gardée dans `tools\launcher\RELEASED`).
 
