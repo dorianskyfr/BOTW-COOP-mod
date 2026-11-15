@@ -15,7 +15,7 @@ namespace coop::gear {
     namespace {
 
         /* CRC32 standard (polynome 0xEDB88320), celui de tools/build_puppet.py (zlib.crc32). */
-        std::uint32_t Crc32(const char* text) {
+        constexpr std::uint32_t Crc32(const char* text) {
             std::uint32_t crc = 0xFFFFFFFFu;
             for (; *text != '\0'; text++) {
                 crc ^= static_cast<std::uint8_t>(*text);
@@ -266,8 +266,13 @@ namespace coop::gear {
                 p.m_State = PieceState::Idle;
             }
 
-            /* Pas de piece Armor_Default_* posee ici : leur creation fige le jeu (essais go2, ch1, ch2, NOTES 5.50). */
-            const std::uint32_t want = g_Remote[s].load();
+            /* Tete nue : le jeu pose alors sur Link la piece Armor_Default_Head (les cheveux), que SlotOf ecarte
+               du releve local ; sans elle, le partenaire etait chauve (essai mk1). constexpr obligatoire : une
+               variable static calculee au premier appel figeait le jeu (essais go2, ch1, ch2, ch4, NOTES 5.50). */
+            static constexpr std::uint32_t DefaultHead = Crc32("Armor_Default_Head");
+            std::uint32_t want = g_Remote[s].load();
+            if (s == 0 && want == 0)
+                want = DefaultHead;
             if (want != p.m_Crc) {
                 if (p.m_Actor != 0) {
                     coop::game::DeleteActor(p.m_Actor);

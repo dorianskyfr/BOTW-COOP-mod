@@ -107,7 +107,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 - Fenêtre du pare-feu Windows : lancer le relais sur l'adresse LAN fait apparaître la demande d'autorisation pour Python. Elle n'a pas été validée par Claude (réglage de sécurité, à la main de l'utilisateur). Sans autorisation, un second PC ne pourra pas joindre le relais.
 
 ## Point de reprise
-**2026-11-15 (fin)** — à l'image : partenaire sur la carte, Link partenaire et bandeau vus ; Game Over avec partenaire débloqué (NOTES §5.50). **Ouvert : le Link du partenaire est chauve** (quatre essais sans succès, §5.50). Reste à l'image : couleurs de l'armure, don d'arc, bandeau du sauveteur.
+**2026-11-15 (fin)** — à l'image : partenaire sur la carte, Link partenaire et bandeau vus ; Game Over avec partenaire débloqué (NOTES §5.50). **Cheveux du Link partenaire corrigés** (essai `ch5`, vus à l'image chez J1) : les gels venaient d'une variable `static` calculée au premier appel, pas du modèle (§5.50). Reste à l'image : couleurs de l'armure, don d'arc, bandeau du sauveteur, cheveux après retrait d'un casque.
 
 **2026-11-15** — fait : sauvegarde automatique dans la copie coop (§5.44 bis), garde de la paravoile (§5.44 ter), défaut des drapeaux à catégorie corrigé (§5.46 : sanctuaires, Koroks, Compendium, boss de nouveau partagés), mot de passe de session (§5.47, protocole v4). Ensuite, à l'image (écran nécessaire) : couleurs de l'armure, don d'arc, tampon du partenaire sur la carte, bandeaux ; en jouant : Korok ou sanctuaire obtenu puis partagé. Sans écran : perte de paquets simulée, mesure de performance sur PC libre.
 

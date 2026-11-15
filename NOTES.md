@@ -820,7 +820,11 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - `go2` (trois pieces par defaut) et `ch1` (tete seule) via `CoopGear_Armor_Default_*` : **les deux jeux se figent** a la premiere demande de creation (aucune exception dans le journal de Ryujinx).
   - `ch2` : meme chose avec une copie de l'archive sous un autre nom (`Model/CoopArmor_Default.sbfres`, tiree de `TitleBG.pack`) : fige aussi.
   - `ch3` : les cheveux en second modele de `CoopPlayer` (`ModelData_1` : `Armor_Default` / `Armor_Default_Head`) : pas de gel, mais `CoopPlayer` n'est plus jamais cree (3 echecs).
-  - Conclusion provisoire : un acteur a nous ne sait pas charger ce modele ; je ne peux pas confirmer pourquoi (piste : textures des cheveux prises dans celles de Link). Tout est retire ; le partenaire reste chauve.
+  - Conclusion provisoire (fausse, voir plus bas) : un acteur a nous ne sait pas charger ce modele.
+- **Cheveux du partenaire : resolu.** Vraie cause des gels `go2`, `ch1`, `ch2` et `ch4` (`ch4` : tete seule, archive d'origine, gel aussi) : le nom de la piece etait calcule dans une variable `static const` locale, initialisee au premier appel par `Crc32(...)` (fonction non `constexpr`) ; le premier passage figeait le jeu (sans doute la garde d'initialisation `__cxa_guard` dans le plugin, je ne peux pas confirmer le mecanisme exact). Correctif (`gear.cpp`) : `Crc32` est `constexpr`, la valeur est calculee a la compilation. Tete nue chez le partenaire (aucune piece de tete annoncee) -> on pose `CoopGear_Armor_Default_Head` (archive d'origine `Model/Armor_Default.sbfres`, rien de copie).
+  - [V] `ch5` : aucun gel ; `CoopPlayer` et `CoopGear_Armor_Default_Head` crees des deux cotes, a la position du partenaire (`drive.py ... actors`). A l'image chez J1 : le Link du partenaire a ses cheveux et sa queue de cheval, a la bonne place sur la tete. Captures `2026-11-15_cheveux-partenaire_ch5.png` et `..._zoom_ch5.png`. Chez J2 : piece presente (liste des acteurs), non vue a l'image (camera de J2 mal placee pendant l'essai).
+  - Non verifie : cheveux quand le partenaire porte une piece de tete puis la retire en jeu (le code remet alors la piece par defaut).
+  - Fichiers generes de `ch2` (`build/deploy/romfs/Model/CoopArmor_Default*.sbfres`) inutiles, gardes en attendant l'accord de l'utilisateur pour les supprimer (hors depot, `build/`).
 - Preuves : `docs/evidence/2026-11-15_game-over-recharge-go1-go3.txt`, `2026-11-15_apres-game-over_go3.png`.
 
 ### 5.49 Relais protege contre les lignes invalides (2026-11-15, essai `rl1`) - [V]
