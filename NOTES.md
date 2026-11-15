@@ -829,8 +829,9 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] `pw1` : mot de passe de 61 caracteres (defi + mot de passe = 77 octets : SHA-256 sur deux blocs) -> J1 `entree dans la session acceptee`, puis en jeu par `drive.py` ; J2 avec un mauvais mot de passe -> `mot de passe de session refuse`, nouvel essai 60 s plus tard, refuse encore (relais : refus n.1 a 10:42:27, n.2 a 10:43:27).
 - [V] `pw2` : mot de passe court (un bloc) juste des deux cotes -> les deux en jeu, chacun voit l'autre (`distant actif=1`).
 - [V] `pw3` : relais sans mot de passe -> J1 sans mot de passe et J2 avec un mot de passe acceptes, les deux en jeu et se voient.
+- [V] `pw4` : reconnexion en jeu avec mot de passe : les deux en jeu, relais arrete 10 s puis relance (meme memoire `--state`) -> J1 et J2 reconnectes en 0,01 et 3 s, `mot de passe accepte`, etat complet redemande, partenaire de nouveau `actif=1` des deux cotes.
 - Non verifie : le bandeau a l'image ; deux PC differents sur le LAN.
-- Preuve : `docs/evidence/2026-11-15_mot-de-passe-pw1-pw3.txt`.
+- Preuve : `docs/evidence/2026-11-15_mot-de-passe-pw1-pw3.txt` (pw4 a la fin).
 
 ### 5.46 Defaut corrige : l'octet de valeur des drapeaux porte aussi la categorie (2026-11-15, essais `fv1`, `fv2`) - [V] par les journaux
 

@@ -64,3 +64,48 @@
 [botw-coop] net: entree dans la session acceptee (J2)
 [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
 [botw-coop] net: liaison fermee (echec d'envoi), reconnexion automatique
+
+=== pw4 : reconnexion en jeu (relais coupe a 11:09:54, relance a 11:10:04, --password k7) : relais ===
+11:08:04.018 relais en ecoute sur 127.0.0.1:47800, protocole v4, mot de passe de session demande
+11:08:24.904 joueur 1 connecte depuis 127.0.0.1:41570 (1 en ligne)
+11:08:25.066 client 1 : mot de passe accepte
+11:08:37.743 joueur 2 connecte depuis 127.0.0.1:1526 (2 en ligne)
+11:08:37.786 client 2 : mot de passe accepte
+11:08:49.204 joueur 3 connecte depuis 127.0.0.1:1530 (3 en ligne)
+11:08:49.205 client 3 : mot de passe accepte
+11:09:22.714 joueur 1 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+11:09:38.312 joueur 2 : etat complet demande, 1 drapeaux + 0 de lune de sang a envoyer
+11:10:04.371 relais en ecoute sur 127.0.0.1:47800, protocole v4, mot de passe de session demande
+11:10:04.378 memoire relue : 1 drapeaux, 0 de lune de sang (build\runs\pw4_state.json)
+11:10:04.381 joueur 1 connecte depuis 127.0.0.1:47469 (1 en ligne)
+11:10:04.533 client 1 : mot de passe accepte
+11:10:04.835 joueur 1 : etat complet demande, 1 drapeaux + 0 de lune de sang a envoyer
+11:10:07.355 joueur 2 connecte depuis 127.0.0.1:47472 (2 en ligne)
+11:10:07.506 client 2 : mot de passe accepte
+11:10:07.809 joueur 2 : etat complet demande, 1 drapeaux + 0 de lune de sang a envoyer
+=== pw4 : pw4_game.txt ===
+00:01:54.623 [botw-coop] net: le relais nous attribue l'identifiant J1, reponse au defi envoyee
+00:01:54.773 [botw-coop] net: entree dans la session acceptee (J1)
+00:01:54.925 [botw-coop] net: etat complet demande au serveur
+00:01:54.927 [botw-coop] net: etat complet recu du serveur (1 drapeaux en memoire chez lui)
+00:01:57.691 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=267 | distant=J2 actif=0 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=145
+00:02:05.245 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=317 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=194
+00:02:12.808 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=367 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=244
+00:02:20.360 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=417 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=294
+00:02:27.915 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=467 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=344
+00:02:35.473 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=517 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=394
+00:02:43.047 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=567 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=444
+00:02:50.616 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=617 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=494
+=== pw4 : pw4_game2.txt ===
+00:01:45.179 [botw-coop] net: le relais nous attribue l'identifiant J2, reponse au defi envoyee
+00:01:45.330 [botw-coop] net: entree dans la session acceptee (J2)
+00:01:45.483 [botw-coop] net: etat complet demande au serveur
+00:01:45.486 [botw-coop] net: etat complet recu du serveur (1 drapeaux en memoire chez lui)
+00:01:48.410 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=165 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=268
+00:01:55.970 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=215 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=318
+00:02:03.524 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=265 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=368
+00:02:11.076 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=315 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=418
+00:02:18.628 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=365 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=468
+00:02:26.185 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=415 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=518
+00:02:33.740 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=465 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=568
+00:02:41.306 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=515 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=618
