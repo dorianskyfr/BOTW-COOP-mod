@@ -1,0 +1,54 @@
+﻿bw5 J2 00:01:16.524 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-649.38, 171.47, 1504.38)
+bw5 J2 00:01:16.694 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : CREE apres 5 images, acteur=660c322d18 nom="CoopPlayer" pos=(-649.38, 171.47, 1504.38)
+bw5 J2 00:02:28.815 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : monde en chargement, personnage absent
+bw5 J2 00:02:38.722 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] voyage : arrive en (-455.9, 180.0, 1990.2), a 15.4 m du point vise, 11688 ms apres la demande
+bw5 J2 00:02:58.923 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-467.16, 177.97, 1971.67)
+bw5 J2 00:03:18.958 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 1), nouvel essai
+bw5 J2 00:03:18.992 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-467.16, 177.97, 1971.67)
+bw5 J2 00:03:39.026 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 2), nouvel essai
+bw5 J2 00:03:39.062 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-466.03, 177.73, 1975.93)
+bw5 J2 00:03:59.096 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 3), nouvel essai
+bw5 J2 00:03:59.127 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-463.58, 177.73, 1975.05)
+bw5 J2 00:04:19.155 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 4), repli sur le PNJ
+bw5 J2 00:04:19.188 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-464.16, 177.73, 1976.84)
+bw5 J2 00:04:19.615 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : CREE apres 10 images, acteur=660bf288a8 nom="Npc_Kakariko003" pos=(-464.16, 177.73, 1976.84)
+up1 up1_game.txt 00:01:16.773 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-455.89, 180.03, 1990.18)
+up1 up1_game.txt 00:01:36.808 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+up1 up1_game.txt 00:01:36.808 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 1), nouvel essai
+up1 up1_game.txt 00:01:36.840 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-455.89, 180.03, 1990.18)
+up1 up1_game.txt 00:01:56.879 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+up1 up1_game.txt 00:01:56.880 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 2), nouvel essai
+up1 up1_game.txt 00:01:56.914 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-455.89, 180.03, 1990.18)
+up1 up1_game.txt 00:02:16.946 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+up1 up1_game.txt 00:02:16.946 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 3), nouvel essai
+up1 up1_game.txt 00:02:16.982 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-455.89, 180.03, 1990.18)
+up1 up1_game.txt 00:02:37.013 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+up1 up1_game.txt 00:02:37.013 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 4), repli sur le PNJ
+up1 up1_game.txt 00:02:37.046 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-455.89, 180.03, 1990.18)
+up1 up1_game.txt 00:02:37.420 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : CREE apres 10 images, acteur=660be8ff80 nom="Npc_Kakariko003" pos=(-455.89, 180.03, 1990.18)
+up1 up1_game.txt 00:04:07.482 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : PNJ de repli en place, nouvel essai du Link ("CoopPlayer")
+up1 up1_game.txt 00:04:07.647 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] acteur distant : Link apparu apres 5 images, il remplace le PNJ (PNJ retire)
+up1 up1_game.txt 00:04:07.685 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] armure du partenaire : creation de "CoopGear_Armor_Default_Head" demandee (piece 0)
+up1 up1_game.txt 00:04:07.846 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] armure du partenaire : "CoopGear_Armor_Default_Head" CREE apres 5 images (piece 0)
+up1 up1_game2.txt 00:01:13.072 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-463.83, 177.73, 1981.88)
+up1 up1_game2.txt 00:01:33.139 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : essai, echec simule (acteur absent)
+up1 up1_game2.txt 00:01:33.139 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 1), nouvel essai
+up1 up1_game2.txt 00:01:33.172 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-463.83, 177.73, 1981.88)
+up1 up1_game2.txt 00:01:53.205 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+up1 up1_game2.txt 00:01:53.205 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 2), nouvel essai
+up1 up1_game2.txt 00:01:53.238 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-463.83, 177.73, 1981.88)
+up1 up1_game2.txt 00:02:13.271 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+up1 up1_game2.txt 00:02:13.271 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 3), nouvel essai
+up1 up1_game2.txt 00:02:13.305 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-463.83, 177.73, 1981.88)
+up1 up1_game2.txt 00:02:33.338 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : essai, echec simule (acteur ignore puis retire)
+up1 up1_game2.txt 00:02:33.338 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 4), repli sur le PNJ
+up1 up1_game2.txt 00:02:33.371 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-463.83, 177.73, 1981.88)
+up1 up1_game2.txt 00:02:33.799 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : CREE apres 10 images, acteur=660bd420e0 nom="Npc_Kakariko003" pos=(-463.83, 177.73, 1981.88)
+up1 up1_game2.txt 00:04:03.771 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : PNJ de repli en place, nouvel essai du Link ("CoopPlayer")
+up1 up1_game2.txt 00:04:03.938 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] acteur distant : Link apparu apres 5 images, il remplace le PNJ (PNJ retire)
+up1 up1_game2.txt 00:04:03.992 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] armure du partenaire : creation de "CoopGear_Armor_001_Head" demandee (piece 0)
+up1 up1_game2.txt 00:04:04.138 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] armure du partenaire : "CoopGear_Armor_001_Head" CREE apres 5 images (piece 0)
+up1 up1_game2.txt 00:06:11.837 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] armure du partenaire : piece 0 (CoopGear_Armor_001_Head) retiree
+up1 up1_game2.txt 00:06:11.837 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] armure du partenaire : creation de "CoopGear_Armor_Default_Head" demandee (piece 0)
+up1 up1_game2.txt 00:06:12.004 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] armure du partenaire : "CoopGear_Armor_Default_Head" CREE apres 5 images (piece 0)
+up1 up1_game2.txt 00:07:37.717 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] armure du partenaire : piece 0 (CoopGear_Armor_Default_Head) retiree

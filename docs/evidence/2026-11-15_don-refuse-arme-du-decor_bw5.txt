@@ -1,0 +1,26 @@
+﻿bw5_game.txt 00:00:59.066 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 1 arme(s)
+bw5_game.txt 00:02:26.996 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_500 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:02:27.099 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_500 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:06:35.607 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_500 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:06:36.908 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_019 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:06:48.308 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_019 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:07:31.031 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_001 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:07:33.263 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] dons : Weapon_Sword_001 sorti de l'inventaire (bonus 0/0)
+bw5_game.txt 00:07:34.442 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_001 (valeur 2000, bonus 0/0) donne au joueur 2, a 1.6 m de lui
+bw5_game.txt 00:07:34.442 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] messages : "Vous avez donn?? une arme au joueur 2"
+bw5_game.txt 00:08:01.661 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_019 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:08:11.760 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_500 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:08:34.277 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_019 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:08:34.879 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_019 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:08:38.677 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_019 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game.txt 00:08:47.276 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_019 a quitte Link, surveillee 10 s (bonus 0/0)
+bw5_game2.txt 00:00:55.239 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 0 arme(s)
+bw5_game2.txt 00:02:43.081 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] teleportation : arrivee, position (-467.16, 178.18, 1971.67)
+bw5_game2.txt 00:03:57.925 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] teleportation : arrivee, position (-463.58, 177.94, 1975.05)
+bw5_game2.txt 00:05:05.207 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] teleportation : arrivee, position (-467.97, 184.15, 1988.84)
+bw5_game2.txt 00:06:47.904 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] teleportation : arrivee, position (-461.67, 177.94, 1979.88)
+bw5_game2.txt 00:07:15.560 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_001 (valeur 2000, bonus 0/0) recu du joueur 1 -> inventaire ok, objets 8 -> 9
+bw5_game2.txt 00:07:15.560 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Weapon_Sword_001 valeur=2000 bonus=0/0
+bw5_game2.txt 00:07:15.560 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Weapon_Sword_001 valeur=2000 bonus=0/0
+bw5_game2.txt 00:07:15.560 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : "Joueur 1 vous a donn?? une arme"
+bw5_game2.txt 00:08:22.977 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] teleportation : arrivee, position (-463.20, 177.94, 1987.68)

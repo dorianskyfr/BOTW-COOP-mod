@@ -131,6 +131,7 @@ namespace coop::weapons {
             float m_Pos[3] = {};
             int m_Still = 0;
             coop::game::WeaponBonus m_Bonus;
+            bool m_FromPouch = false;   /* sortie de l'inventaire constatee (arme) */
         };
         LetGo s_LetGo[Slots];
         int s_GiftLogs = 0;
@@ -196,8 +197,9 @@ namespace coop::weapons {
             s_PouchPrevN = now;
         }
 
-        /* Bonus de l'arme `name` sortie de l'inventaire dans les 15 dernieres secondes (aucun sinon). */
-        coop::game::WeaponBonus BonusOfRemoved(const char* name) {
+        /* Prend la sortie d'inventaire la plus recente de l'arme `name` (15 dernieres secondes, pas
+           encore servie) : true et son bonus si elle existe. */
+        bool TakeRemoved(const char* name, coop::game::WeaponBonus& bonus) {
             RefreshPouch(true);
             Removed* best = nullptr;
             for (Removed& r : s_Removed)
@@ -205,9 +207,10 @@ namespace coop::weapons {
                     && (best == nullptr || r.m_Scan > best->m_Scan))
                     best = &r;
             if (best == nullptr)
-                return {};
+                return false;
             best->m_Used = true;
-            return best->m_Bonus;
+            bonus = best->m_Bonus;
+            return true;
         }
 
         /* Une arme de ce nom est sortie de l'inventaire dans les 15 dernieres secondes et n'a pas encore servi. */
@@ -287,6 +290,14 @@ namespace coop::weapons {
                 lg.m_Pos[0] = m[3];
                 lg.m_Pos[1] = m[7];
                 lg.m_Pos[2] = m[11];
+                /* Une arme n'est donnee que si l'inventaire l'a perdue : une arme du decor qui traverse la
+                   zone « portee » quand Link passe pres d'elle n'est pas a lui (essai bw4,
+                   Weapon_Sword_019 « a quitte Link »). La sortie est vue jusqu'a ~2 s apres le lacher. */
+                if (!lg.m_FromPouch && std::strncmp(lg.m_Name, "Weapon_", 7) == 0) {
+                    if (!RecentlyRemoved(lg.m_Name))
+                        continue;
+                    lg.m_FromPouch = TakeRemoved(lg.m_Name, lg.m_Bonus);
+                }
                 if (!partner || lg.m_Still < StillScans)
                     continue;
                 const float dx = m[3] - last.m_Mtx[3], dy = m[7] - last.m_Mtx[7], dz = m[11] - last.m_Mtx[11];
@@ -410,7 +421,7 @@ namespace coop::weapons {
                             lg = LetGo {};
                             lg.m_Actor = near.m_Actors[i];
                             std::strncpy(lg.m_Name, ground, sizeof(lg.m_Name) - 1);
-                            lg.m_Bonus = BonusOfRemoved(lg.m_Name);
+                            lg.m_FromPouch = TakeRemoved(lg.m_Name, lg.m_Bonus);
                             if (s_GiftLogs++ < 20)
                                 Logging.Log("[botw-coop] don : %s au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus %x/%d)",
                                     lg.m_Name, lg.m_Bonus.m_Flags, lg.m_Bonus.m_Value);
@@ -442,7 +453,8 @@ namespace coop::weapons {
                     lg.m_Actor = s_PrevWorn[k].m_Actor;
                     std::memcpy(lg.m_Name, s_PrevWorn[k].m_Name, sizeof(lg.m_Name));
                     lg.m_Scans = 0;
-                    lg.m_Bonus = BonusOfRemoved(lg.m_Name);
+                    lg.m_Bonus = {};
+                    lg.m_FromPouch = TakeRemoved(lg.m_Name, lg.m_Bonus);
                     if (s_GiftLogs++ < 20)
                         Logging.Log("[botw-coop] don : %s a quitte Link, surveillee 10 s (bonus %x/%d)", lg.m_Name,
                             lg.m_Bonus.m_Flags, lg.m_Bonus.m_Value);

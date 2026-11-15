@@ -34,6 +34,14 @@ namespace coop::remote_actor {
         constexpr int PuppetRetries = 4;
         int s_PuppetFailures = 0;
 
+        /* PNJ de repli en place : le Link est redemande a cote toutes les UpgradeEvery images ; s'il
+           apparait, il remplace le PNJ (essai bw5 : 4 echecs de suite juste apres un voyage, puis le
+           PNJ restait pour toute la session). */
+        constexpr std::uint64_t UpgradeEvery = 2700;   /* 90 s a 30 images/s */
+        std::uint64_t s_UpgradeFrame = 0;              /* demande en cours (0 : aucune) */
+        std::uint64_t s_UpgradeLast = 0;
+        float s_UpgradePos[3] = {};
+
         /* Le PNJ de repli disparait (partenaire parti, acteur detruit) : a la prochaine creation,
            on redonne sa chance au Link s'il est installe. */
         void RetryPuppet() {
@@ -41,6 +49,7 @@ namespace coop::remote_actor {
                 ActorName = PuppetName;
                 s_PuppetFailures = 0;
             }
+            s_UpgradeFrame = 0;
         }
 
         /*
@@ -419,6 +428,8 @@ namespace coop::remote_actor {
                     s_LastAttentionRc = 0;
                     s_Sequence = nullptr;
                     s_Candidate = nullptr;
+                    s_UpgradeFrame = 0;
+                    s_UpgradeLast = s_Frames;
                     float pos[3];
                     coop::game::GetActorPos(actor, pos);
                     Logging.Log("[botw-coop] acteur distant : CREE apres %lu images, acteur=%lx nom=\"%s\" pos=(%.2f, %.2f, %.2f)",
@@ -475,6 +486,37 @@ namespace coop::remote_actor {
                     break;
                 }
 #endif
+
+                if (ActorName == FallbackName && coop::config::g_PuppetInstalled.load(std::memory_order_acquire) == 1) {
+                    if (s_UpgradeFrame == 0 && s_Frames - s_UpgradeLast > UpgradeEvery) {
+                        s_UpgradeLast = s_Frames;
+                        coop::game::GetActorPos(s_Actor, s_UpgradePos);
+                        if (coop::game::RequestCreateActorAwake(PuppetName, s_UpgradePos)) {
+                            s_UpgradeFrame = s_Frames;
+                            Logging.Log("[botw-coop] acteur distant : PNJ de repli en place, nouvel essai du Link (\"%s\")", PuppetName);
+                        }
+                    } else if (s_UpgradeFrame != 0 && (s_Frames - s_UpgradeFrame) % 5 == 0) {
+                        const auto link = coop::game::FindActor(PuppetName, s_UpgradePos, 8.0f);
+                        if (link != 0) {
+                            const bool ok = coop::game::DeleteActor(s_Actor);
+                            Logging.Log("[botw-coop] acteur distant : Link apparu apres %lu images, il remplace le PNJ (%s)",
+                                s_Frames - s_UpgradeFrame, ok ? "PNJ retire" : "PNJ non retire");
+                            s_Actor = link;
+                            ActorName = PuppetName;
+                            s_PuppetFailures = 0;
+                            s_HasWritten = false;
+                            s_LastAttentionRc = 0;
+                            s_Sequence = nullptr;
+                            s_Candidate = nullptr;
+                            s_UpgradeFrame = 0;
+                            break;
+                        }
+                        if (s_Frames - s_UpgradeFrame > 600) {
+                            Logging.Log("[botw-coop] acteur distant : Link toujours introuvable apres %lu images, PNJ garde", s_Frames - s_UpgradeFrame);
+                            s_UpgradeFrame = 0;
+                        }
+                    }
+                }
 
                 /*
                  * Avant d'ecrire, on relit : si la position differe de ce qu'on avait
