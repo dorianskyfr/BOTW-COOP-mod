@@ -21,6 +21,10 @@ param(
     [int]$Screen = 0,
     # Options d'essai du relais, par exemple '--lag 150 --jitter 50' ou '--pretend-version 99'.
     [string]$RelayArgs = '',
+    # Mot de passe de session ecrit dans la configuration du mod de chaque joueur (password=) ;
+    # -Password2 : celui du second joueur, s'il doit differer. Le relais le recoit par -RelayArgs '--password ...'.
+    [string]$Password = '',
+    [string]$Password2 = $null,
     [switch]$Stop
 )
 
@@ -88,6 +92,19 @@ foreach ($d in @($Dir, $Dir2)) {
         $romfsDst = Join-Path (Split-Path $modDir -Parent) 'romfs'
         New-Item -ItemType Directory -Force $romfsDst | Out-Null
         Copy-Item (Join-Path $romfsSrc '*') $romfsDst -Recurse -Force
+    }
+    # Mot de passe de session : remplace la ligne password= de la configuration du mod (aucune si vide).
+    $pw = if ($n -eq 2 -and $PSBoundParameters.ContainsKey('Password2')) { $Password2 } else { $Password }
+    $cfgDir = Join-Path (Split-Path $modDir -Parent) 'romfs'
+    $cfg = Join-Path $cfgDir 'botw-coop.txt'
+    $lines = @()
+    if (Test-Path $cfg) { $lines = @(Get-Content $cfg | Where-Object { $_ -notmatch '^password=' }) }
+    if ($pw -ne '') { $lines += "password=$pw" }
+    if ($lines.Count -gt 0) {
+        New-Item -ItemType Directory -Force $cfgDir | Out-Null
+        $lines | Set-Content $cfg -Encoding ascii
+    } elseif (Test-Path $cfg) {
+        Clear-Content $cfg
     }
     $suffix = if ($n -eq 1) { '' } else { "$n" }
     $gameOut = Join-Path $runs "${Name}_game$suffix.txt"

@@ -36,7 +36,7 @@ Niveaux : 0 absent · 1 code · 2 compilé · 3 essai simulé · 4 deux vraies i
 
 | Bloc (priorité) | Nous | botw-coop (annoncé) | À reprendre / à faire chez nous |
 |---|---|---|---|
-| **Connexion, relais, reconnexion** (P1) | 4 (reconnexion, mémoire d'état, refus de version, latence simulée `--lag`/`--jitter`, 53 essais auto) | 4 (+ salons à mot de passe, refus de version, relève d'hôte, lag simulé) | salons à mot de passe ; perte de paquets simulée |
+| **Connexion, relais, reconnexion** (P1) | 4 (reconnexion, mémoire d'état, refus de version, latence simulée `--lag`/`--jitter`, mot de passe de session par défi SHA-256 (NOTES §5.47), 66 essais auto) | 4 (+ salons à mot de passe, refus de version, relève d'hôte, lag simulé) | plusieurs salons par relais (inutile pour l'instant : un relais = une session) ; perte de paquets simulée |
 | **Personnage distant** (P1) | 4, mais PNJ `Npc_Kakariko003` sans animation | 4 : `CoopPlayer`, Link animé, actif sans physique | **chantier 1** : acteur Link construit depuis la RomFS de l'utilisateur (méthode RE § « The Link puppet ») |
 | **Animations du distant** (P1) | 0 | 4 (états de déplacement, attaques, arc, bouclier) | lecture des séquences du joueur (`ASList`, RE § « Player animation sequences ») |
 | **Armure, armes portées** (P2) | armure 4 (tenues annoncées par option d'essai ; vraie pièce portée non relevée) ; armes 4 par positions, pas à l'image (position relative à Link envoyée à 10 Hz ; la liaison aux os a échoué chez nous) | 4 (acteurs `CoopGear_*`, `CoopWeapon_*` attachés aux os) | vérifier à l'image (NOTES §5.33, §5.34) |

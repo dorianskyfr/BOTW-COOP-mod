@@ -4,7 +4,10 @@ Chaque instance du jeu (plugin) s'y connecte en TCP. Le relais attribue un
 identifiant de joueur et retransmet aux autres joueurs chaque ligne recue.
 
 Protocole (lignes ASCII terminees par \\n) :
-  relais -> client : HELLO <id> <version>  a la connexion (version du protocole du relais)
+  relais -> client : HELLO <id> <version> <defi>  a la connexion (version du protocole du relais,
+                                           defi de 16 caracteres hexadecimaux tire au hasard)
+                     WELCOME               reponse au defi acceptee : le jeu entre dans la session
+                     DENY                  mauvais mot de passe : le relais ferme la liaison
                      REFUSE <version>      jeu d'une autre version : le relais ferme la liaison
                      MTX <id> <12 floats> [etat]  matrice 3x4 de l'acteur d'un autre joueur, etat d'animation
                      TIME <id> <heure> <jours> <meteo> [minuteur de lune de sang]
@@ -13,10 +16,12 @@ Protocole (lignes ASCII terminees par \\n) :
                      STATEEND <n>          fin de l'etat complet demande par STATE
                      BYE <id>              un autre joueur s'est deconnecte
   client -> relais : VER <version>         premiere ligne d'un jeu : sa version du protocole
+                     AUTH <empreinte>      apres HELLO : SHA-256 hexadecimal de (defi + mot de passe)
                      MTX <12 floats> [etat] | TIME ... | FLAG <hachage hex> 1
                      FLAGR <hachage hex> 1|0   drapeau « lune de sang » passe a 1 / revenu a 0
                      STATE                 demande l'etat complet (drapeaux connus du serveur)
                      PILOT                 outil de test : rend son identifiant de joueur
+                                           (avec un mot de passe : apres AUTH, voir plus bas)
 
 Identifiants : le plus petit libre (1, 2, ...) ; un joueur qui revient retrouve
 en general le sien. Essais automatiques : tools/test_relay.py.
@@ -38,18 +43,27 @@ Version : un jeu doit annoncer VER <n> avant tout etat ; une autre version, ou u
 envoye sans VER (plugin plus ancien), est refuse (REFUSE) et la liaison fermee. Les
 outils de test (PILOT, PAD) n'annoncent pas de version.
 
+Mot de passe de session : --password <texte> (ou la variable d'environnement COOP_PASSWORD).
+Le mot de passe ne passe jamais sur le reseau : chaque client recoit un defi neuf dans HELLO
+et repond AUTH SHA-256(defi + mot de passe). Avec un mot de passe, tout client (jeu ou outil
+de test) doit repondre juste avant toute autre ligne que VER, sinon DENY et liaison fermee.
+Sans mot de passe, AUTH est accepte quelle que soit l'empreinte, et facultatif.
+
 Essai de latence : --lag <ms> retarde chaque ligne envoyee par le relais (--jitter <ms>
 en plus, au hasard), dans l'ordre d'envoi de chaque joueur.
 
 Usage : python tools/relay.py [--host 127.0.0.1] [--port 47800] [--log fichier] [--state fichier.json]
-                              [--lag ms] [--jitter ms]
+                              [--password texte] [--lag ms] [--jitter ms]
 """
 import argparse
 import collections
 import datetime
+import hashlib
+import hmac
 import json
 import os
 import random
+import secrets
 import selectors
 import socket
 import sys
@@ -57,7 +71,13 @@ import time
 
 # Version du protocole : a changer en meme temps que coop::protocol::Version
 # (plugin/overlay/source/program/protocol.hpp) ; tools/test_relay.py compare les deux.
-PROTOCOL_VERSION = 3   # 2 : GIFT porte le bonus de l'arme ; 3 : TIME porte le climat
+# 2 : GIFT porte le bonus de l'arme ; 3 : TIME porte le climat ; 4 : defi et mot de passe (AUTH, WELCOME, DENY)
+PROTOCOL_VERSION = 4
+
+
+def auth_digest(challenge, password):
+    """Reponse attendue au defi : SHA-256 hexadecimal de (defi + mot de passe), en UTF-8."""
+    return hashlib.sha256((challenge + password).encode("utf-8")).hexdigest()
 
 
 # Messages d'etat retransmis tels quels aux autres joueurs : nom -> nombre de valeurs.
@@ -103,6 +123,8 @@ class Client:
         self.weather = None  # derniere meteo annoncee
         self.climate = None  # dernier climat annonce (TIME, 5e valeur)
         self.version = None  # version du protocole annoncee par VER
+        self.challenge = secrets.token_hex(8)  # defi de HELLO, neuf a chaque connexion
+        self.authed = False  # reponse au defi acceptee (AUTH)
         self.outbox = collections.deque()  # --lag : (heure d'envoi, texte), dans l'ordre
 
 
@@ -116,8 +138,13 @@ def main():
     parser.add_argument("--jitter", type=float, default=0.0, help="essai : retard supplementaire au hasard (ms)")
     parser.add_argument("--pretend-version", type=int, default=None,
                         help="essai : se presenter avec une autre version du protocole (refus du jeu)")
+    parser.add_argument("--password", default=None,
+                        help="mot de passe de la session (sinon variable d'environnement COOP_PASSWORD ; vide = aucun)")
     args = parser.parse_args()
     proto = args.pretend_version if args.pretend_version is not None else PROTOCOL_VERSION
+    password = args.password if args.password is not None else os.environ.get("COOP_PASSWORD")
+    if not password:
+        password = None
 
     fh = open(args.log, "a", encoding="utf-8") if args.log else None
 
@@ -140,7 +167,8 @@ def main():
     srv.listen(8)
     srv.setblocking(False)
     sel.register(srv, selectors.EVENT_READ, None)
-    log(f"relais en ecoute sur {args.host}:{args.port}, protocole v{proto}")
+    log(f"relais en ecoute sur {args.host}:{args.port}, protocole v{proto}, "
+        f"{'mot de passe de session demande' if password else 'sans mot de passe'}")
     if args.lag > 0 or args.jitter > 0:
         log(f"essai de latence : {args.lag:.0f} ms + jusqu'a {args.jitter:.0f} ms au hasard sur chaque ligne envoyee")
     refusals = {}  # adresse -> nombre de refus de version (journal limite)
@@ -203,6 +231,9 @@ def main():
         # Un jeu qui n'a pas encore annonce sa version ne recoit rien de la session.
         if not always and not client.pilot and client.version is None:
             return
+        # Avec un mot de passe, rien de la session avant une reponse juste au defi.
+        if not always and password and not client.authed:
+            return
         if args.lag <= 0 and args.jitter <= 0:
             send_now(client, text)
             return
@@ -232,6 +263,17 @@ def main():
         send_now(client, f"REFUSE {proto}\n")
         client.refused = True
         drop(client, "version differente", announce=False)
+
+    denials = {}  # adresse -> nombre de mots de passe refuses (journal limite)
+
+    def deny(client, why):
+        client.outbox.clear()
+        n = denials.get(client.peer[0], 0) + 1
+        denials[client.peer[0]] = n
+        if n <= 3 or n % 100 == 0:
+            log(f"joueur {client.pid} refuse : {why} (refus n.{n} depuis {client.peer[0]})")
+        send_now(client, "DENY\n")
+        drop(client, "mot de passe refuse", announce=False)
 
     def time_for(recipient, payload):
         # Meteo de la session : celle du joueur de plus petit identifiant (pas celle du
@@ -290,7 +332,7 @@ def main():
                 clients[sock] = client
                 sel.register(sock, selectors.EVENT_READ, client)
                 log(f"joueur {client.pid} connecte depuis {peer[0]}:{peer[1]} ({len(clients)} en ligne)")
-                send(client, f"HELLO {client.pid} {proto}\n", always=True)
+                send(client, f"HELLO {client.pid} {proto} {client.challenge}\n", always=True)
                 continue
 
             client = key.data
@@ -319,6 +361,23 @@ def main():
                         break
                     client.version = version
                     continue
+                if len(parts) == 2 and parts[0] == "AUTH":
+                    # Reponse au defi de HELLO. Sans mot de passe, toute reponse est acceptee.
+                    if password and not hmac.compare_digest(parts[1].lower().encode("utf-8", "replace"),
+                                                            auth_digest(client.challenge, password).encode("ascii")):
+                        deny(client, "mauvais mot de passe")
+                        break
+                    if not client.authed:
+                        client.authed = True
+                        if password:
+                            # Client et non joueur : un outil de test repond au defi avant d'envoyer PILOT.
+                            log(f"client {client.pid} : mot de passe accepte")
+                        send(client, "WELCOME\n", always=True)
+                    continue
+                if password and not client.authed:
+                    # Avec un mot de passe, rien d'autre que VER et AUTH avant une reponse juste.
+                    deny(client, f"pas de reponse au defi avant {parts[0] if parts else 'une ligne vide'}")
+                    break
                 if not client.pilot and client.version is None and parts and parts[0] != "PILOT" and parts[0] != "PAD":
                     # Etat envoye sans VER : plugin d'avant le controle de version.
                     refuse(client, None)

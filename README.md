@@ -44,14 +44,16 @@ Il faut, sur chaque PC : BOTW avec la mise à jour 1.9.0, Ryujinx, et ce dépôt
 
 1. **Sur le PC hôte, lancer le relais** :
    ```
-   python tools\relay.py --host <adresse LAN du PC hôte>
+   python tools\relay.py --host <adresse LAN du PC hôte> --password <mot de passe>
    ```
    Sans `--host`, le relais n'écoute que sur 127.0.0.1 (deux instances sur le même PC). Windows demandera d'autoriser Python dans le pare-feu : c'est nécessaire pour qu'un autre PC se connecte. Ne pas rediriger de port vers Internet.
+   `--password` est conseillé sur un réseau partagé : seuls les jeux qui ont le même mot de passe entrent dans la partie. Il ne passe jamais en clair sur le réseau (défi + SHA-256). Sans `--password`, tout jeu du réseau peut entrer.
 2. **Générer les fichiers du mod tirés de votre jeu** (une fois, sur chaque PC ; voir « Liste blanche » plus bas) : liste blanche des drapeaux et Link de l'autre joueur. Sans eux, rien n'est partagé à part la présence, l'heure et les ennemis, et l'autre joueur est un villageois.
 3. **Installer le mod dans Ryujinx**, sur chaque PC :
    ```
-   powershell -ExecutionPolicy Bypass -File tools\install-mod.ps1 -DataDir "<dossier de données Ryujinx>" -Relay <adresse LAN du PC hôte>:47800
+   powershell -ExecutionPolicy Bypass -File tools\install-mod.ps1 -DataDir "<dossier de données Ryujinx>" -Relay <adresse LAN du PC hôte>:47800 -Password <mot de passe>
    ```
+   (`-Password` : le même que celui du relais ; 63 caractères au plus, sans espace ni accent.)
    Le dossier de données est celui qui contient `mods`, `bis`, `system` (installation standard : `%APPDATA%\Ryujinx`). Dans la configuration de Ryujinx, « Ignorer les services manquants » doit être activé (sinon le jeu 1.9.0 s'arrête après environ 2 minutes).
 4. Lancer le jeu sur les deux PC et charger une partie. Le personnage de l'autre joueur apparaît une vingtaine de secondes après l'entrée en jeu, s'il est à moins de 120 m.
 

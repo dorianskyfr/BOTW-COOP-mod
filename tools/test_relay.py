@@ -32,16 +32,25 @@ def read_versions():
 VERSION = read_versions()[0]
 
 
+def digest(challenge, password):
+    import hashlib
+    return hashlib.sha256((challenge + password).encode("utf-8")).hexdigest()
+
+
 class Fake:
-    def __init__(self, port, version=VERSION):
-        """Faux joueur ; version=None : plugin ancien qui n'annonce pas de version."""
+    def __init__(self, port, version=VERSION, password=None):
+        """Faux joueur ; version=None : plugin ancien qui n'annonce pas de version.
+        password : repond au defi de HELLO avec ce mot de passe (None : ne repond pas)."""
         self.sock = socket.create_connection(("127.0.0.1", port), timeout=5)
         self.buf = b""
         self.lines = []
         self.hello = self.expect("HELLO")
         self.pid = int(self.hello.split()[1])
+        self.challenge = self.hello.split()[3] if len(self.hello.split()) > 3 else ""
         if version is not None:
             self.send(f"VER {version}")
+        if password is not None:
+            self.send(f"AUTH {digest(self.challenge, password)}")
 
     def send(self, text):
         self.sock.sendall((text + "\n").encode("ascii"))
@@ -143,7 +152,13 @@ def main():
         # Version du protocole.
         relay_v, plugin_v = read_versions()
         check("meme version du protocole dans relay.py et protocol.hpp", relay_v == plugin_v, f"{relay_v} / {plugin_v}")
-        check("HELLO donne la version du relais", a.hello == f"HELLO 1 {VERSION}", a.hello)
+        hp = a.hello.split()
+        check("HELLO donne la version du relais et un defi de 16 caracteres hexadecimaux",
+              hp[:3] == ["HELLO", "1", str(VERSION)] and len(hp) == 4 and len(hp[3]) == 16 and all(ch in "0123456789abcdef" for ch in hp[3]),
+              a.hello)
+        check("... un defi neuf a chaque connexion", a.challenge != b.challenge, f"{a.challenge} / {b.challenge}")
+        a.send("AUTH 0000")
+        check("sans mot de passe, toute reponse au defi est acceptee (WELCOME)", a.expect("WELCOME") == "WELCOME")
         bad = Fake(port, version=VERSION + 98)
         refused = bad.closed()
         check("jeu d'une autre version refuse et deconnecte", refused and f"REFUSE {VERSION}" in bad.lines, str(bad.lines))
@@ -357,6 +372,56 @@ def main():
         check("... et --jitter ne change pas leur ordre", order == ["0", "1", "2", "3", "4"], str(order))
         e.close()
         f2.close()
+
+        # Mot de passe de session (protocole v4) : defi + SHA-256, jamais le mot de passe en clair.
+        relay.kill()
+        relay.wait()
+        port4 = free_port()
+        pw = "sel-de-test-" + "x" * 50   # plus de 55 octets avec le defi : empreinte sur deux blocs
+        relay = start_relay(port4, os.path.join(tmp, "pw.json"), "--password", pw)
+        time.sleep(0.3)
+        g = Fake(port4, password=pw)
+        check("mot de passe juste : WELCOME", g.expect("WELCOME") == "WELCOME")
+        h = Fake(port4)
+        g.send(MTX)
+        h.pump(0.5)
+        check("... un jeu qui n'a pas encore repondu au defi ne recoit rien de la session", not h.take("MTX"), str(h.lines))
+        h.send(f"AUTH {digest(h.challenge, pw)}")
+        h.expect("WELCOME")
+        g.send(MTX)
+        line = h.expect("MTX")
+        check("... puis recoit la session une fois entre", line == "MTX 1 " + MTX[4:], line)
+        bad = Fake(port4, password="mauvais")
+        refused = bad.closed()
+        check("mauvais mot de passe : DENY et liaison fermee", refused and "DENY" in bad.lines and "WELCOME" not in bad.lines, str(bad.lines))
+        bad.close()
+        replay = Fake(port4)
+        replay.send(f"AUTH {digest(g.challenge, pw)}")   # reponse valable pour un autre defi
+        refused = replay.closed()
+        check("reponse rejouee d'une autre connexion refusee (DENY)", refused and "DENY" in replay.lines, str(replay.lines))
+        replay.close()
+        sneak = Fake(port4)
+        sneak.send(MTX)
+        refused = sneak.closed()
+        g.pump(0.4)
+        h.pump(0.1)
+        check("etat envoye sans repondre au defi : DENY, rien ne passe",
+              refused and "DENY" in sneak.lines and not g.take("MTX") and not h.take("MTX") and not g.take("BYE"), f"{sneak.lines} {g.lines}")
+        sneak.close()
+        pil = Fake(port4, version=None)
+        pil.send("PILOT")
+        check("outil de test sans reponse au defi refuse aussi", pil.closed() and "DENY" in pil.lines, str(pil.lines))
+        pil.close()
+        pil = Fake(port4, version=None, password=pw)
+        pil.expect("WELCOME")
+        pil.send("PILOT")
+        time.sleep(0.2)
+        pil.send(f"PAD {h.pid} 1 0 0 200")
+        line = h.expect("PAD")
+        check("outil de test avec le mot de passe : ses commandes passent", line.split()[2:] == ["1", "0", "0", "200"], line)
+        pil.close()
+        g.close()
+        h.close()
     finally:
         relay.kill()
 

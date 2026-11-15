@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <cstddef>
 #include <cstdint>
 
 /*
@@ -16,6 +17,8 @@
  *   revive_delay=120             secondes entre deux sauvetages par le partenaire
  *   revive_range=150             distance maximale du partenaire, en metres
  *   meal=0                       coupe les repas partages (actifs par defaut)
+ *   password=texte               mot de passe de la session, le meme que relay.py --password
+ *                                (63 caracteres au plus, sans espace)
  * Sans fichier : 127.0.0.1:47800.
  *
  * Liste blanche des drapeaux : content:/botw-coop/sync-flags.bin, generee a l'installation
@@ -80,6 +83,10 @@ namespace coop::config {
 
     inline std::uint8_t  g_HostIp[4] = { 127, 0, 0, 1 };
     inline std::uint16_t g_HostPort  = 47800;
+
+    /* Mot de passe de la session (protocole v4) : jamais envoye en clair ; vide = aucun. */
+    constexpr std::size_t MaxPassword = 63;
+    inline char g_Password[MaxPassword + 1] = {};
 
     /* A appeler une fois, hors du fil principal du jeu (acces fichier bloquant). */
     void Load();

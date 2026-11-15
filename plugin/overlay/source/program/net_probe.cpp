@@ -13,6 +13,7 @@
 #include "game.hpp"
 #include "session.hpp"
 #include "protocol.hpp"
+#include "sha256.hpp"
 
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
@@ -168,12 +169,19 @@ namespace coop::net_probe {
         constexpr std::uint64_t RefusedRetryMs = 60000;
         std::uint64_t s_RefusedUntilMs = 0;
         bool          s_RefusedShown = false;
+        bool          s_DeniedShown = false;
+
+        /* Entre dans la session (WELCOME du relais, protocole v4) : avant, on n'envoie que VER et AUTH. */
+        bool s_Joined = false;
+
+        bool Live() { return s_Fd >= 0 && s_Joined; }
 
         void Disconnect(const char* why, bool quiet = false) {
             if (s_Fd < 0)
                 return;
             s_Api.m_Close(s_Fd);
             s_Fd = -1;
+            s_Joined = false;
             s_RxLen = 0;
             coop::session::g_Remote.SetInactive();
             Logging.Log("[botw-coop] net: liaison fermee (%s), reconnexion automatique", why);
@@ -336,18 +344,50 @@ namespace coop::net_probe {
 #endif
             } else if (int refusedBy = 0; std::sscanf(line, "REFUSE %d", &refusedBy) == 1) {
                 RefuseVersion(refusedBy);
+            } else if (std::strcmp(line, "WELCOME") == 0) {
+                /* Mot de passe accepte (ou relais sans mot de passe) : on entre dans la session. */
+                s_Joined = true;
+                s_RefusedShown = false;
+                s_DeniedShown = false;
+                Logging.Log("[botw-coop] net: entree dans la session acceptee (J%d)", coop::session::g_LocalId);
+                char msg[48];
+                std::snprintf(msg, sizeof(msg), "Coop : connecté (joueur %d)", coop::session::g_LocalId);
+                coop::notify::Post(msg);
+            } else if (std::strcmp(line, "DENY") == 0) {
+                /* Mauvais mot de passe : on ne retente qu'apres le meme delai qu'un refus de version. */
+                Logging.Log("[botw-coop] net: mot de passe de session refuse par le relais (mot de passe %s), nouvel essai dans %u s",
+                    coop::config::g_Password[0] != '\0' ? "configure" : "absent", static_cast<unsigned>(RefusedRetryMs / 1000));
+                if (!s_DeniedShown) {
+                    coop::notify::Post(coop::config::g_Password[0] != '\0' ? "Coop : mot de passe refusé par le relais"
+                                                                           : "Coop : le relais demande un mot de passe");
+                    s_DeniedShown = true;
+                }
+                s_RefusedUntilMs = coop::clock::NowMs() + RefusedRetryMs;
+                Disconnect("mot de passe refuse", true);
             } else if (int relayVersion = 0; std::sscanf(line, "HELLO %d %d", &id, &relayVersion) >= 1) {
                 /* Relais sans version (ancien) ou d'une autre version : on n'entre pas dans la session. */
                 if (relayVersion != coop::protocol::Version) {
                     RefuseVersion(relayVersion);
                     return;
                 }
-                s_RefusedShown = false;
+                char challenge[33] = {};
+                if (std::sscanf(line, "HELLO %*d %*d %32s", challenge) != 1) {
+                    Logging.Log("[botw-coop] net: HELLO sans defi, liaison refusee");
+                    RefuseVersion(relayVersion);
+                    return;
+                }
                 coop::session::g_LocalId = id;
-                Logging.Log("[botw-coop] net: le relais nous attribue l'identifiant J%d", id);
-                char msg[48];
-                std::snprintf(msg, sizeof(msg), "Coop : connecté (joueur %d)", id);
-                coop::notify::Post(msg);
+                Logging.Log("[botw-coop] net: le relais nous attribue l'identifiant J%d, reponse au defi envoyee", id);
+                /* Reponse : SHA-256(defi + mot de passe), le mot de passe ne passe jamais sur le reseau. */
+                coop::sha256::Hasher h;
+                h.Update(challenge, std::strlen(challenge));
+                h.Update(coop::config::g_Password, std::strlen(coop::config::g_Password));
+                char auth[6 + 64 + 2] = "AUTH ";
+                h.FinishHex(auth + 5);
+                auth[69] = '\n';
+                auth[70] = '\0';
+                if (!SendAll(s_Fd, auth, 70))
+                    Disconnect("echec d'envoi");
             } else if (std::sscanf(line, "BYE %d", &id) == 1) {
                 if (coop::session::g_Remote.Id() == id && coop::session::g_Remote.IsActive()) {
                     coop::session::g_Remote.SetInactive();
@@ -462,7 +502,7 @@ namespace coop::net_probe {
                 if (inGame && st.m_PlayerActor != 0)
                     coop::game::GetActorMtx(st.m_PlayerActor, mtx);
 
-                if (inGame && st.m_PlayerActor != 0 && s_Fd >= 0) {
+                if (inGame && st.m_PlayerActor != 0 && Live()) {
                     char line[256];
                     const int len = std::snprintf(line, sizeof(line),
                         "MTX %.4f %.4f %.4f %.3f %.4f %.4f %.4f %.3f %.4f %.4f %.4f %.3f %u\n",
@@ -477,7 +517,7 @@ namespace coop::net_probe {
                 }
 
                 /* Cœurs du joueur : une fois par seconde (status.hpp). */
-                if (inGame && s_Fd >= 0 && tick % 10 == 5) {
+                if (inGame && Live() && tick % 10 == 5) {
                     const int life = coop::status::g_LocalLife.load(), maxLife = coop::status::g_LocalMax.load();
                     if (life >= 0 && maxLife > 0) {
                         char hp[48];
@@ -488,7 +528,7 @@ namespace coop::net_probe {
                 }
 
                 /* Dons d'armes (weapons.hpp). */
-                for (coop::weapons::Gift gift; s_Fd >= 0 && coop::weapons::g_GiftOut.Pop(gift);) {
+                for (coop::weapons::Gift gift; Live() && coop::weapons::g_GiftOut.Pop(gift);) {
                     char msg[96];
                     const int len = std::snprintf(msg, sizeof(msg), "GIFT %s %d %x %d\n", gift.m_Name, gift.m_Value,
                         static_cast<unsigned>(gift.m_BonusFlags), static_cast<int>(gift.m_BonusValue));
@@ -497,7 +537,7 @@ namespace coop::net_probe {
                 }
 
                 /* Repas partages (status.hpp). */
-                if (const int meal = coop::status::g_PendingMealOut.exchange(0); meal > 0 && s_Fd >= 0) {
+                if (const int meal = coop::status::g_PendingMealOut.exchange(0); meal > 0 && Live()) {
                     char msg[32];
                     const int len = std::snprintf(msg, sizeof(msg), "MEAL %d\n", meal);
                     if (len > 0 && !SendAll(s_Fd, msg, static_cast<std::size_t>(len)))
@@ -505,7 +545,7 @@ namespace coop::net_probe {
                 }
 
                 /* Sauvetage par le partenaire : annonce une fois (revive.cpp). */
-                if (const int saved = coop::revive::g_PendingSaved.exchange(-1); saved >= 0 && s_Fd >= 0) {
+                if (const int saved = coop::revive::g_PendingSaved.exchange(-1); saved >= 0 && Live()) {
                     char msg[32];
                     const int len = std::snprintf(msg, sizeof(msg), "SAVED %d\n", saved);
                     if (len > 0 && !SendAll(s_Fd, msg, static_cast<std::size_t>(len)))
@@ -513,7 +553,7 @@ namespace coop::net_probe {
                 }
 
                 /* Armure portee : une fois par seconde, meme sans changement (partenaire arrive apres coup). */
-                if (inGame && s_Fd >= 0 && tick % 10 == 7) {
+                if (inGame && Live() && tick % 10 == 7) {
                     char gear[64];
                     const int len = std::snprintf(gear, sizeof(gear), "GEAR %08x %08x %08x\n", coop::gear::g_Local[0].load(),
                         coop::gear::g_Local[1].load(), coop::gear::g_Local[2].load());
@@ -523,8 +563,8 @@ namespace coop::net_probe {
 
                 /* Armes, bouclier, arc portes (weapons.hpp) : les emplacements occupes a chaque envoi
                    (10 par seconde, ils bougent avec Link), les vides une fois par seconde. */
-                if (inGame && s_Fd >= 0) {
-                    for (int k = 0; k < coop::weapons::Slots && s_Fd >= 0; k++) {
+                if (inGame && Live()) {
+                    for (int k = 0; k < coop::weapons::Slots && Live(); k++) {
                         const coop::weapons::Pose p = coop::weapons::g_Local[k].Read();
                         if (p.m_Crc == 0 && tick % 10 != 3)
                             continue;
@@ -543,7 +583,7 @@ namespace coop::net_probe {
                 /* Etat du monde : une fois par seconde (heure, jours, meteo). */
                 coop::game::WorldState world {};
                 const bool hasWorld = coop::game::ReadWorld(world);
-                if (inGame && hasWorld && s_Fd >= 0 && tick % 10 == 0) {
+                if (inGame && hasWorld && Live() && tick % 10 == 0) {
                     char line[96];
                     /* 5e valeur : notre climat (la meteo n'est suivie que dans le meme climat, protocole v3). */
                     const int len = std::snprintf(line, sizeof(line), "TIME %.3f %d %d %.1f %d\n",
@@ -566,10 +606,10 @@ namespace coop::net_probe {
                    alors redemande une fois le monde recharge. */
                 const bool worldReady = inGame && coop::game::IsWorldReady();
                 inGameTicks = worldReady ? inGameTicks + 1 : 0;
-                if (!worldReady || s_Fd < 0)
+                if (!worldReady || !Live())
                     stateFd = -1;
-                const bool again = worldReady && s_Fd >= 0 && stateFd == s_Fd && coop::flags::g_StateRequested.exchange(false);
-                if (again || (worldReady && s_Fd >= 0 && stateFd != s_Fd && inGameTicks >= 30 && coop::session::g_LocalId != 0)) {
+                const bool again = worldReady && Live() && stateFd == s_Fd && coop::flags::g_StateRequested.exchange(false);
+                if (again || (worldReady && Live() && stateFd != s_Fd && inGameTicks >= 30 && coop::session::g_LocalId != 0)) {
                     stateFd = s_Fd;
                     if (SendAll(s_Fd, "STATE\n", 6)) {
                         coop::flags::g_ResyncRequested.store(true);
@@ -580,7 +620,7 @@ namespace coop::net_probe {
                 }
 
                 /* Drapeaux changes chez nous : jusqu'a 64 par tick, en un seul envoi. */
-                if (s_Fd >= 0) {
+                if (Live()) {
                     static char flagBuf[64 * 24];
                     std::size_t used = 0;
                     coop::flags::Change c {};
@@ -595,7 +635,7 @@ namespace coop::net_probe {
                     if (used > 0 && !SendAll(s_Fd, flagBuf, used))
                         Disconnect("echec d'envoi");
                 }
-                if (s_Fd >= 0) {
+                if (Live()) {
                     /* Positions d'ennemis : au plus 12 par passe (~200 octets chacune). */
                     static char posBuf[12 * 256];
                     std::size_t used = 0;
@@ -637,7 +677,7 @@ namespace coop::net_probe {
                     const auto& remote = coop::session::g_Remote;
                     const auto& rm = remote.LastUnsafe().m_Mtx;
                     Logging.Log("[botw-coop] coop: moi=J%d %s %s pos=(%.2f, %.2f, %.2f) avant=(%.2f, %.2f) envois=%lu | distant=J%d actif=%d pos=(%.2f, %.2f, %.2f) avant=(%.2f, %.2f) recus=%lu",
-                        coop::session::g_LocalId, s_Fd >= 0 ? "connecte" : "hors ligne", inGame ? "en jeu" : "hors jeu",
+                        coop::session::g_LocalId, Live() ? "connecte" : s_Fd >= 0 ? "en attente" : "hors ligne", inGame ? "en jeu" : "hors jeu",
                         static_cast<double>(st.m_Pos[0]), static_cast<double>(st.m_Pos[1]), static_cast<double>(st.m_Pos[2]),
                         static_cast<double>(mtx[2]), static_cast<double>(mtx[10]), s_Sent,
                         remote.Id(), remote.IsActive() ? 1 : 0,

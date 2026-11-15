@@ -1,0 +1,66 @@
+﻿Essais pw1-pw3 (2026-11-15) : mot de passe de session, protocole v4. Extraits des journaux.
+
+=== pw1 : relais ===
+10:41:36.101 relais en ecoute sur 127.0.0.1:47800, protocole v4, mot de passe de session demande
+10:42:10.663 joueur 1 connecte depuis 127.0.0.1:5906 (1 en ligne)
+10:42:10.699 joueur 1 : mot de passe accepte
+10:42:27.269 joueur 2 connecte depuis 127.0.0.1:5918 (2 en ligne)
+10:42:27.318 joueur 2 refuse : mauvais mot de passe (refus n.1 depuis 127.0.0.1)
+10:43:02.112 joueur 2 connecte depuis 127.0.0.1:5974 (2 en ligne)
+10:43:02.112 joueur 2 : mot de passe accepte
+10:43:27.381 joueur 2 connecte depuis 127.0.0.1:5986 (3 en ligne)
+10:43:27.532 joueur 2 refuse : mauvais mot de passe (refus n.2 depuis 127.0.0.1)
+10:43:28.599 joueur 1 : etat n.1 = MTX 0.9809 -0.0000 -0.1943 -1024.481 0.0000 1.0000 -0.0000 252.641 0.1943 0.0000 0.9809 1799.947 0
+=== pw1 : pw1_game.txt ===
+[botw-coop] config: fichier lu (72 octets), relais = 127.0.0.1:47800, mot de passe de session : oui
+[botw-coop] net: le relais nous attribue l'identifiant J1, reponse au defi envoyee
+[botw-coop] net: entree dans la session acceptee (J1)
+[botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+[botw-coop] net: liaison fermee (echec d'envoi), reconnexion automatique
+=== pw1 : pw1_game2.txt ===
+[botw-coop] config: fichier lu (18 octets), relais = 127.0.0.1:47800, mot de passe de session : oui
+[botw-coop] net: le relais nous attribue l'identifiant J2, reponse au defi envoyee
+[botw-coop] net: mot de passe de session refuse par le relais (mot de passe configure), nouvel essai dans 60 s
+[botw-coop] net: liaison fermee (mot de passe refuse), reconnexion automatique
+[botw-coop] coop: moi=J2 hors ligne hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+=== pw2 : relais ===
+10:44:18.885 relais en ecoute sur 127.0.0.1:47800, protocole v4, mot de passe de session demande
+10:44:39.845 joueur 1 connecte depuis 127.0.0.1:41726 (1 en ligne)
+10:44:39.891 client 1 : mot de passe accepte
+10:44:53.258 joueur 2 connecte depuis 127.0.0.1:41734 (2 en ligne)
+10:44:53.283 client 2 : mot de passe accepte
+10:45:05.800 joueur 3 connecte depuis 127.0.0.1:41739 (3 en ligne)
+10:45:05.801 client 3 : mot de passe accepte
+10:45:31.755 joueur 1 : etat n.1 = MTX 0.9809 -0.0000 -0.1943 -1024.481 0.0000 1.0000 -0.0000 252.641 0.1943 0.0000 0.9809 1799.947 0
+10:45:47.026 joueur 2 : etat n.1 = MTX 0.9809 -0.0000 -0.1943 -1024.481 0.0000 1.0000 -0.0000 252.641 0.1943 0.0000 0.9809 1799.947 0
+=== pw2 : pw2_game.txt ===
+[botw-coop] config: fichier lu (13 octets), relais = 127.0.0.1:47800, mot de passe de session : oui
+[botw-coop] net: le relais nous attribue l'identifiant J1, reponse au defi envoyee
+[botw-coop] net: entree dans la session acceptee (J1)
+[botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+[botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=268 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=166
+=== pw2 : pw2_game2.txt ===
+[botw-coop] config: fichier lu (13 octets), relais = 127.0.0.1:47800, mot de passe de session : oui
+[botw-coop] net: le relais nous attribue l'identifiant J2, reponse au defi envoyee
+[botw-coop] net: entree dans la session acceptee (J2)
+[botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+[botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=204 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=305
+=== pw3 : relais ===
+10:46:27.020 relais en ecoute sur 127.0.0.1:47800, protocole v4, sans mot de passe
+10:46:47.896 joueur 1 connecte depuis 127.0.0.1:59990 (1 en ligne)
+10:47:01.032 joueur 2 connecte depuis 127.0.0.1:59997 (2 en ligne)
+10:47:14.638 joueur 3 connecte depuis 127.0.0.1:60003 (3 en ligne)
+10:47:40.781 joueur 1 : etat n.1 = MTX 0.9809 -0.0000 -0.1943 -1024.481 0.0000 1.0000 -0.0000 252.641 0.1943 0.0000 0.9809 1799.947 0
+10:47:56.420 joueur 2 : etat n.1 = MTX 0.9809 -0.0000 -0.1943 -1024.481 0.0000 1.0000 -0.0000 252.641 0.1943 0.0000 0.9809 1799.947 0
+=== pw3 : pw3_game.txt ===
+[botw-coop] net: le relais nous attribue l'identifiant J1, reponse au defi envoyee
+[botw-coop] net: entree dans la session acceptee (J1)
+[botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+[botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+[botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) envois=264 | distant=J2 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=159
+=== pw3 : pw3_game2.txt ===
+[botw-coop] config: fichier lu (13 octets), relais = 127.0.0.1:47800, mot de passe de session : oui
+[botw-coop] net: le relais nous attribue l'identifiant J2, reponse au defi envoyee
+[botw-coop] net: entree dans la session acceptee (J2)
+[botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+[botw-coop] net: liaison fermee (echec d'envoi), reconnexion automatique

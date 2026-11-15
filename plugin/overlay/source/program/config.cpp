@@ -40,6 +40,13 @@ namespace coop::config {
                 g_HostIp[3] = static_cast<std::uint8_t>(d);
                 g_HostPort = static_cast<std::uint16_t>(port);
             }
+            if (std::strncmp(line, "password=", 9) == 0) {
+                /* Mot de passe : jusqu'au premier espace, 63 caracteres au plus ; jamais journalise. */
+                std::size_t n = 0;
+                for (const char* p = line + 9; *p > ' ' && n < MaxPassword; p++)
+                    g_Password[n++] = *p;
+                g_Password[n] = '\0';
+            }
             unsigned flag = 0;
             if (std::sscanf(line, "enemy_pos=%u", &flag) == 1)
                 g_EnemyPos = flag != 0;
@@ -310,8 +317,8 @@ namespace coop::config {
             line = end;
         }
 
-        Logging.Log("[botw-coop] config: fichier lu (%lu octets), relais = %u.%u.%u.%u:%u",
-            got, g_HostIp[0], g_HostIp[1], g_HostIp[2], g_HostIp[3], g_HostPort);
+        Logging.Log("[botw-coop] config: fichier lu (%lu octets), relais = %u.%u.%u.%u:%u, mot de passe de session : %s",
+            got, g_HostIp[0], g_HostIp[1], g_HostIp[2], g_HostIp[3], g_HostPort, g_Password[0] != '\0' ? "oui" : "non");
     }
 
 }

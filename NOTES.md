@@ -807,6 +807,20 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Non essaye : obtention de la paravoile puis application des drapeaux en attente.
 - Preuve : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`.
 
+### 5.47 Mot de passe de session (2026-11-15, protocole v4, essais `pw1` a `pw3`) - [V] par les journaux
+
+- Besoin : le relais ecoute sur le LAN ; sans mot de passe, tout appareil du reseau peut entrer dans la session (et envoyer des drapeaux). botw-coop a des salons a mot de passe (README, annonce) ; chez nous, un relais = une session, donc un mot de passe par relais suffit.
+- Protocole v4 : `HELLO <id> <version> <defi>` (16 caracteres hexadecimaux, `secrets.token_hex(8)`, neuf a chaque connexion) ; le jeu repond `AUTH <SHA-256 hexadecimal(defi + mot de passe)>` ; le relais rend `WELCOME` ou `DENY` (liaison fermee). Le mot de passe ne passe jamais sur le reseau, et une reponse rejouee ne vaut pas pour un autre defi. Comparaison a temps constant (`hmac.compare_digest`).
+- Avec mot de passe, tout client (jeu ou outil de test) doit repondre juste avant toute autre ligne que `VER` ; rien de la session ne lui est envoye avant. Sans mot de passe, toute reponse est acceptee et `AUTH` reste facultatif (outils de test inchanges).
+- Plugin : SHA-256 ecrit par nous (`sha256.cpp`, FIPS 180-4) ; reglage `password=` (63 caracteres au plus, jamais journalise) ; le jeu n'envoie son etat qu'apres `WELCOME` (`Live()` remplace `s_Fd >= 0` dans tous les envois) ; `DENY` -> bandeau une fois, nouvel essai dans 60 s comme un refus de version.
+- Outils : `relay.py --password` (ou `COOP_PASSWORD`), `install-mod.ps1 -Password`, `run-live.ps1 -Password/-Password2`, `pilot.py`/`drive.py` repondent au defi si `COOP_PASSWORD` est defini.
+- [V] `test_relay.py` 66/66 (10 nouveaux : defi, defi neuf, mot de passe juste/faux, reponse rejouee, etat sans reponse, outil de test avec/sans mot de passe, rien recu avant l'entree).
+- [V] `pw1` : mot de passe de 61 caracteres (defi + mot de passe = 77 octets : SHA-256 sur deux blocs) -> J1 `entree dans la session acceptee`, puis en jeu par `drive.py` ; J2 avec un mauvais mot de passe -> `mot de passe de session refuse`, nouvel essai 60 s plus tard, refuse encore (relais : refus n.1 a 10:42:27, n.2 a 10:43:27).
+- [V] `pw2` : mot de passe court (un bloc) juste des deux cotes -> les deux en jeu, chacun voit l'autre (`distant actif=1`).
+- [V] `pw3` : relais sans mot de passe -> J1 sans mot de passe et J2 avec un mot de passe acceptes, les deux en jeu et se voient.
+- Non verifie : le bandeau a l'image ; deux PC differents sur le LAN.
+- Preuve : `docs/evidence/2026-11-15_mot-de-passe-pw1-pw3.txt`.
+
 ### 5.46 Defaut corrige : l'octet de valeur des drapeaux porte aussi la categorie (2026-11-15, essais `fv1`, `fv2`) - [V] par les journaux
 
 - Mesure `fv1` (`-DCOOP_TEST_FLAGVALUES`, histogramme de l'octet +0xb des 41 900 drapeaux booleens, sauvegarde du plateau) : 0 -> 40 200, 1 -> 308, puis seulement des valeurs **paires** (2, 4, ..., 22 ; 22 -> 900 drapeaux). Pour les 9 drapeaux relus, **octet >> 1 = colonne Category du catalogue** (Clear_Dungeon012/112 -> 1, Koroks -> 11, Compendium -> 2, 4, 5, 7, boss vaincus -> 8, 10). Donc octet = (categorie << 1) | valeur.

@@ -9,12 +9,15 @@ format), a partir de la derniere build (build\deploy\subsdk9).
            standard de Ryujinx : %APPDATA%\Ryujinx).
 -Relay   : adresse IPv4:port du relais (tools\relay.py). Sans cette option le mod
            se connecte a 127.0.0.1:47800 (relais sur le meme PC).
+-Password : mot de passe de la session, le meme que celui du relais (relay.py --password) ;
+           63 caracteres au plus, sans espace. Il n'est jamais envoye en clair sur le reseau.
 
 Le script n'ecrit que dans <DataDir>\mods\contents\01007ef00011e000\botw-coop.
 #>
 param(
     [Parameter(Mandatory = $true)][string]$DataDir,
     [string]$Relay = '',
+    [string]$Password = '',
     [switch]$Uninstall
 )
 
@@ -35,6 +38,7 @@ if ($Uninstall) {
 $src = Join-Path $project 'build\deploy\subsdk9'
 if (-not (Test-Path $src)) { throw "Pas de build : lancer d'abord plugin\build.sh (voir README.md)" }
 if ($Relay -ne '' -and $Relay -notmatch '^\d{1,3}(\.\d{1,3}){3}:\d{1,5}$') { throw "Adresse de relais invalide : $Relay (attendu a.b.c.d:port)" }
+if ($Password -ne '' -and $Password -notmatch '^[!-~]{1,63}$') { throw 'Mot de passe invalide : 1 a 63 caracteres ASCII visibles, sans espace ni accent' }
 
 New-Item -ItemType Directory -Force (Join-Path $mod 'exefs') | Out-Null
 Copy-Item $src (Join-Path $mod 'exefs\subsdk9') -Force
@@ -52,10 +56,14 @@ if (Test-Path (Join-Path $romfsSrc 'botw-coop\sync-flags.bin')) {
 }
 
 $cfg = Join-Path $mod 'romfs\botw-coop.txt'
-if ($Relay -ne '') {
+$lines = @()
+if ($Relay -ne '') { $lines += "relay=$Relay" }
+if ($Password -ne '') { $lines += "password=$Password" }
+if ($lines.Count -gt 0) {
     New-Item -ItemType Directory -Force (Join-Path $mod 'romfs') | Out-Null
-    "relay=$Relay" | Set-Content $cfg -Encoding ascii
-    Write-Output "relais : $Relay ($cfg)"
+    $lines | Set-Content $cfg -Encoding ascii
+    $where = if ($Relay -ne '') { $Relay } else { '127.0.0.1:47800' }
+    Write-Output "relais : $where, mot de passe : $(if ($Password -ne '') { 'oui' } else { 'non' }) ($cfg)"
 } elseif (Test-Path $cfg) {
     Remove-Item $cfg -Confirm:$false
     Write-Output 'relais : 127.0.0.1:47800 (ancien fichier de configuration retire)'

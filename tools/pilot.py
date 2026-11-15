@@ -6,6 +6,7 @@ recues (messages PAD). Le pilote se guide sur la position du joueur, qu'il
 recoit par les messages MTX relayes. Il ne voit pas l'image.
 
 Usage : python tools/pilot.py --plan <nom> --log <fichier> [--host 127.0.0.1] [--port 47800]
+Relais a mot de passe : variable d'environnement COOP_PASSWORD (meme valeur que relay.py --password).
 
 Reperes : x et z sont les coordonnees horizontales du monde, y la hauteur.
 Le stick est relatif a la camera ; le pilote estime l'orientation de la camera
@@ -13,6 +14,7 @@ a partir des deplacements observes.
 """
 import argparse
 import cmath
+import hashlib
 import math
 import os
 import socket
@@ -33,6 +35,22 @@ class Pilot:
         self.log_file = open(log_path, "w", encoding="utf-8")
         self.t0 = time.time()
         self.sock = socket.create_connection((host, port), timeout=10)
+        self.my_id = None
+        password = os.environ.get("COOP_PASSWORD")
+        if password:
+            # Relais a mot de passe (protocole v4) : repondre au defi de HELLO avant toute autre ligne.
+            hello = b""
+            while not hello.endswith(b"\n"):
+                byte = self.sock.recv(1)
+                if not byte:
+                    raise ConnectionError("le relais a ferme la liaison avant HELLO")
+                hello += byte
+            parts = hello.decode("ascii", "replace").split()
+            if len(parts) < 4 or parts[0] != "HELLO":
+                raise ConnectionError(f"HELLO sans defi : {hello!r}")
+            self.my_id = int(parts[1])
+            digest = hashlib.sha256((parts[3] + password).encode("utf-8")).hexdigest()
+            self.sock.sendall(f"AUTH {digest}\n".encode("ascii"))
         self.sock.settimeout(None)
         # Le pilote n'est pas un joueur : il rend tout de suite son identifiant au relais.
         self.sock.sendall(b"PILOT\n")
@@ -42,7 +60,6 @@ class Pilot:
         self.pos_time = 0.0
         self.states = 0
         self.world_time = None
-        self.my_id = None
         self.cam_forward = None  # complexe unite : direction monde de "stick vers le haut"
         self.handed = 1          # +1 ou -1 : sens de "stick a droite" par rapport a l'avant
         self.alive = True
