@@ -1,0 +1,55 @@
+﻿Essai pf7 (2026-11-15) : releve des drapeaux sur 30 images au lieu de 15 ; -DCOOP_PERF_DETAIL, Korok pose par J1 (-DCOOP_TEST_SETLOCAL), deux instances, PC libre.
+
+=== pf7_game.txt ===
+00:00:46.119 [botw-coop] perf: 900 images, intervalle moyen 42654 us (23.4 img/s), mediane 33329 us, P95 41571 us, max 7968648 us | plugin moyen 152 us, mediane 166 us, P95 214 us, max 26634 us | lectures refusees 293
+00:00:46.122 [botw-coop] perf (us/image) : debut 5, anim 0, notify 2, warp 3, status 3, armure 1, armes 3, distant 3, monde 5, drapeaux 113, ennemis 2, objets 2 | acteurs 62, svcQueryMemory 0/image
+00:00:46.122 [botw-coop] perf (max us) : debut 2871, armure 1190, armes 1831, distant 1566, drapeaux 2182, ennemis 1198, objets 1728
+00:01:23.096 [botw-coop] perf: 900 images, intervalle moyen 41084 us (24.3 img/s), mediane 33347 us, P95 50326 us, max 2189930 us | plugin moyen 470 us, mediane 410 us, P95 845 us, max 12850 us | lectures refusees 293
+00:01:23.096 [botw-coop] perf (us/image) : debut 172, anim 1, notify 3, warp 0, status 3, armure 2, armes 26, distant 4, monde 1, drapeaux 207, ennemis 35, objets 0 | acteurs 635, svcQueryMemory 0/image
+00:01:23.096 [botw-coop] perf (max us) : debut 12677, armure 1215, armes 9022, distant 1506, drapeaux 5815, ennemis 3455, objets 34
+00:01:53.093 [botw-coop] perf: 900 images, intervalle moyen 33331 us (30.0 img/s), mediane 33356 us, P95 35522 us, max 55379 us | plugin moyen 861 us, mediane 821 us, P95 1102 us, max 12779 us | lectures refusees 293
+00:01:53.093 [botw-coop] perf (us/image) : debut 288, anim 1, notify 1, warp 1, status 1, armure 5, armes 65, distant 146, monde 2, drapeaux 235, ennemis 107, objets 1 | acteurs 665, svcQueryMemory 3/image
+00:01:53.093 [botw-coop] perf (max us) : debut 576, armure 242, armes 1664, distant 11941, drapeaux 626, ennemis 1078, objets 20
+00:02:23.093 [botw-coop] perf: 900 images, intervalle moyen 33334 us (29.9 img/s), mediane 33343 us, P95 34957 us, max 54746 us | plugin moyen 871 us, mediane 841 us, P95 1129 us, max 4917 us | lectures refusees 293
+00:02:23.093 [botw-coop] perf (us/image) : debut 291, anim 1, notify 1, warp 1, status 2, armure 6, armes 65, distant 150, monde 2, drapeaux 236, ennemis 108, objets 1 | acteurs 678, svcQueryMemory 3/image
+00:02:23.093 [botw-coop] perf (max us) : debut 637, armure 417, armes 509, distant 645, drapeaux 574, ennemis 4223, objets 184
+00:02:27.593 [botw-coop] essai drapeau local : hachage=71e8a107 index 18860, octet 22 -> 23
+00:02:28.526 [botw-coop] drapeau change : n.18860 hachage=71e8a107 0 -> 1 (envoye)
+00:02:53.093 [botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), mediane 33306 us, P95 35045 us, max 40486 us | plugin moyen 868 us, mediane 844 us, P95 1121 us, max 1457 us | lectures refusees 293
+00:02:53.093 [botw-coop] perf (us/image) : debut 293, anim 1, notify 1, warp 1, status 1, armure 6, armes 64, distant 149, monde 1, drapeaux 238, ennemis 103, objets 1 | acteurs 686, svcQueryMemory 3/image
+00:02:53.093 [botw-coop] perf (max us) : debut 619, armure 401, armes 420, distant 550, drapeaux 574, ennemis 353, objets 52
+00:03:23.093 [botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), mediane 33349 us, P95 35214 us, max 60626 us | plugin moyen 867 us, mediane 828 us, P95 1108 us, max 9030 us | lectures refusees 293
+00:03:23.093 [botw-coop] perf (us/image) : debut 294, anim 1, notify 2, warp 1, status 1, armure 5, armes 63, distant 142, monde 11, drapeaux 236, ennemis 102, objets 1 | acteurs 694, svcQueryMemory 3/image
+00:03:23.093 [botw-coop] perf (max us) : debut 814, armure 225, armes 418, distant 460, drapeaux 5534, ennemis 3976, objets 100
+00:03:53.092 [botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), mediane 33357 us, P95 34953 us, max 40116 us | plugin moyen 822 us, mediane 807 us, P95 1067 us, max 1406 us | lectures refusees 293
+00:03:53.092 [botw-coop] perf (us/image) : debut 290, anim 1, notify 1, warp 1, status 1, armure 5, armes 61, distant 136, monde 2, drapeaux 225, ennemis 91, objets 1 | acteurs 694, svcQueryMemory 3/image
+00:03:53.092 [botw-coop] perf (max us) : debut 619, armure 264, armes 396, distant 436, drapeaux 477, ennemis 283, objets 20
+00:04:23.097 [botw-coop] perf: 900 images, intervalle moyen 33338 us (29.9 img/s), mediane 33339 us, P95 34908 us, max 50132 us | plugin moyen 823 us, mediane 806 us, P95 1060 us, max 5133 us | lectures refusees 293
+00:04:23.097 [botw-coop] perf (us/image) : debut 289, anim 1, notify 1, warp 1, status 1, armure 5, armes 64, distant 135, monde 1, drapeaux 223, ennemis 92, objets 1 | acteurs 694, svcQueryMemory 3/image
+00:04:23.097 [botw-coop] perf (max us) : debut 686, armure 184, armes 4191, distant 478, drapeaux 457, ennemis 228, objets 180
+=== pf7_game2.txt ===
+00:00:46.341 [botw-coop] perf: 900 images, intervalle moyen 42220 us (23.6 img/s), mediane 33327 us, P95 37595 us, max 7885079 us | plugin moyen 156 us, mediane 168 us, P95 215 us, max 25311 us | lectures refusees 293
+00:00:46.345 [botw-coop] perf (us/image) : debut 5, anim 0, notify 2, warp 3, status 3, armure 1, armes 3, distant 2, monde 5, drapeaux 119, ennemis 2, objets 2 | acteurs 62, svcQueryMemory 0/image
+00:00:46.345 [botw-coop] perf (max us) : debut 2701, armure 1094, armes 1731, distant 1499, drapeaux 4086, ennemis 1112, objets 1579
+00:01:24.150 [botw-coop] perf: 900 images, intervalle moyen 42010 us (23.8 img/s), mediane 33339 us, P95 52277 us, max 2522315 us | plugin moyen 424 us, mediane 244 us, P95 707 us, max 17655 us | lectures refusees 293
+00:01:24.150 [botw-coop] perf (us/image) : debut 140, anim 0, notify 3, warp 1, status 3, armure 1, armes 12, distant 3, monde 12, drapeaux 214, ennemis 19, objets 1 | acteurs 637, svcQueryMemory 0/image
+00:01:24.150 [botw-coop] perf (max us) : debut 17485, armure 888, armes 2916, distant 1123, drapeaux 8192, ennemis 2392, objets 16
+00:01:54.149 [botw-coop] perf: 900 images, intervalle moyen 33339 us (29.9 img/s), mediane 33359 us, P95 34975 us, max 38960 us | plugin moyen 665 us, mediane 617 us, P95 870 us, max 9991 us | lectures refusees 293
+00:01:54.149 [botw-coop] perf (us/image) : debut 246, anim 1, notify 1, warp 1, status 1, armure 4, armes 50, distant 33, monde 6, drapeaux 206, ennemis 110, objets 1 | acteurs 664, svcQueryMemory 3/image
+00:01:54.149 [botw-coop] perf (max us) : debut 4393, armure 151, armes 281, distant 9326, drapeaux 4281, ennemis 6216, objets 34
+00:02:16.649 [botw-coop] drapeau recu : n.18860 hachage=71e8a107 mis a 1 (octet 23 : categorie 11 gardee)
+00:02:24.149 [botw-coop] perf: 900 images, intervalle moyen 33332 us (30.0 img/s), mediane 33309 us, P95 34757 us, max 39596 us | plugin moyen 686 us, mediane 657 us, P95 912 us, max 2633 us | lectures refusees 293
+00:02:24.149 [botw-coop] perf (us/image) : debut 241, anim 1, notify 1, warp 1, status 1, armure 4, armes 50, distant 100, monde 6, drapeaux 197, ennemis 72, objets 6 | acteurs 689, svcQueryMemory 3/image
+00:02:24.149 [botw-coop] perf (max us) : debut 451, armure 170, armes 270, distant 351, drapeaux 455, ennemis 220, objets 1636
+00:02:54.148 [botw-coop] perf: 900 images, intervalle moyen 33333 us (30.0 img/s), mediane 33360 us, P95 34788 us, max 40108 us | plugin moyen 709 us, mediane 663 us, P95 974 us, max 4727 us | lectures refusees 293
+00:02:54.148 [botw-coop] perf (us/image) : debut 252, anim 1, notify 1, warp 1, status 1, armure 5, armes 51, distant 102, monde 6, drapeaux 198, ennemis 75, objets 11 | acteurs 702, svcQueryMemory 3/image
+00:02:54.148 [botw-coop] perf (max us) : debut 4288, armure 200, armes 269, distant 352, drapeaux 454, ennemis 3545, objets 672
+00:03:24.151 [botw-coop] perf: 900 images, intervalle moyen 33337 us (29.9 img/s), mediane 33321 us, P95 34844 us, max 52508 us | plugin moyen 705 us, mediane 657 us, P95 964 us, max 4650 us | lectures refusees 293
+00:03:24.151 [botw-coop] perf (us/image) : debut 251, anim 1, notify 1, warp 1, status 1, armure 4, armes 51, distant 103, monde 6, drapeaux 201, ennemis 69, objets 9 | acteurs 707, svcQueryMemory 3/image
+00:03:24.151 [botw-coop] perf (max us) : debut 644, armure 172, armes 306, distant 3087, drapeaux 4045, ennemis 352, objets 890
+00:03:54.147 [botw-coop] perf: 900 images, intervalle moyen 33328 us (30.0 img/s), mediane 33335 us, P95 34802 us, max 38438 us | plugin moyen 686 us, mediane 653 us, P95 901 us, max 4381 us | lectures refusees 293
+00:03:54.147 [botw-coop] perf (us/image) : debut 252, anim 1, notify 1, warp 1, status 1, armure 5, armes 50, distant 102, monde 6, drapeaux 195, ennemis 67, objets 1 | acteurs 707, svcQueryMemory 3/image
+00:03:54.147 [botw-coop] perf (max us) : debut 717, armure 160, armes 249, distant 3799, drapeaux 604, ennemis 212, objets 9
+00:04:24.148 [botw-coop] perf: 900 images, intervalle moyen 33334 us (29.9 img/s), mediane 33321 us, P95 34940 us, max 43843 us | plugin moyen 691 us, mediane 660 us, P95 948 us, max 1302 us | lectures refusees 293
+00:04:24.148 [botw-coop] perf (us/image) : debut 255, anim 1, notify 1, warp 1, status 1, armure 5, armes 50, distant 100, monde 6, drapeaux 196, ennemis 69, objets 1 | acteurs 707, svcQueryMemory 3/image
+00:04:24.148 [botw-coop] perf (max us) : debut 456, armure 180, armes 436, distant 264, drapeaux 380, ennemis 227, objets 29

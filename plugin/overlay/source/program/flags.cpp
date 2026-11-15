@@ -518,8 +518,8 @@ namespace coop::flags {
     void OnFrame() {
         s_Frames++;
         /* Echanges (drapeaux recus, resynchronisation) toutes les 15 images (2 fois par seconde a
-           30 img/s). La relecture des booleens est etalee sur ces 15 images, 1/15 de la liste par
-           image : relue d'un bloc, elle faisait des pics de 13 a 46 ms (mesure du 2026-11-14). */
+           30 img/s). La relecture des booleens est etalee sur 30 images (ScanFrames, plus bas),
+           1/30 de la liste par image : relue d'un bloc, elle faisait des pics de 13 a 46 ms (mesure du 2026-11-14). */
         const bool exchange = s_Frames % 15 == 0;
 
         const auto base = exl::util::GetMainModuleInfo().m_Total.m_Start;
@@ -719,7 +719,10 @@ namespace coop::flags {
             }
         }
 
-        const int chunk = (bools.m_Num + 14) / 15;
+        /* Relecture complete en 30 images (1 s a 30 img/s) : ~0,18 ms par image au lieu de ~0,36 en 15 images
+           (mesure pf6, NOTES 5.48) ; un drapeau pose part en 1 s au plus. */
+        constexpr int ScanFrames = 30;
+        const int chunk = (bools.m_Num + ScanFrames - 1) / ScanFrames;
         const int from = s_ScanPos < bools.m_Num ? s_ScanPos : 0;
         const int to = from + chunk < bools.m_Num ? from + chunk : bools.m_Num;
         int& changed = s_PassChanged;
