@@ -330,6 +330,30 @@ def main():
         check("... et oubliee apres une lune de sang", not c.take("LIFE"), str(c.lines))
         c.take("FLAG"); c.take("TIME"); c.take("FLAGR")
 
+        # Lignes invalides : le relais ne tombe pas et continue de servir les autres.
+        z = Fake(port)
+        junk = [b"\xff\xfe\x00garbage", b"MTX a b c d e f g h i j k l", b"TIME x y z", b"TIME 1 2", b"FLAG zz 1",
+                b"FLAGR 1", b"LIFE q 3", b"WPN 1", b"PAD", b"PAD 1 2 3 4 5 6 7", b"GIFT", b"VERX", b"AUTH",
+                b"TIME 1e999 1 0 nan inf", b"EMTX " + b"1 " * 14, b" ", b""]
+        z.sock.sendall(b"\n".join(junk) + b"\n")
+        time.sleep(0.3)
+        b.send(MTX)
+        line = c.expect("MTX")
+        check("lignes invalides ou binaires : le relais continue de servir", line.startswith("MTX 2 "), line)
+        z.close()
+        y = Fake(port)
+        try:
+            y.sock.sendall(b"X" * 200000)
+        except OSError:
+            pass
+        cut = y.closed(3.0)
+        check("plus de 64 Ko sans fin de ligne : liaison fermee", cut, str(y.lines[:3]))
+        y.close()
+        b.send(MTX)
+        line = c.expect("MTX")
+        check("... et le relais tourne toujours", line.startswith("MTX 2 "), line)
+        c.take("BYE"); b.take("BYE"); c.take("TIME"); b.take("TIME")
+
         # Un joueur qui revient reprend le plus petit identifiant libre.
         a2 = Fake(port)
         check("identifiant libere repris (1)", a2.pid == 1, str(a2.pid))

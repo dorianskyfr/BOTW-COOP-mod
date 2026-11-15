@@ -808,6 +808,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.49 Relais protege contre les lignes invalides (2026-11-15, essai `rl1`) - [V]
+
+- Chaque valeur d'un message d'etat est verifiee avant retransmission (`FIELD_KINDS` : nombre fini, entier, hexadecimal de 8 chiffres au plus, nom d'acteur `[A-Za-z0-9_]` de 47 caracteres au plus) ; une ligne non conforme est ignoree et journalisee. Avant : un `MTX` aux valeurs non numeriques etait retransmis tel quel (le plugin l'aurait ignore, `sscanf`).
+- Un client qui envoie plus de 64 Ko sans fin de ligne est deconnecte (la memoire du relais ne grossit plus sans limite).
+- [V] `test_relay.py` 69/69 (3 nouveaux : 17 lignes invalides ou binaires, dont `nan`/`inf` ; 200 Ko sans fin de ligne ; relais toujours en service). [V] `rl1` (deux instances en jeu) : 0 ligne ignoree ; position, heure, armure, objets portes, drapeaux, ennemis retransmis, partenaire `actif=1` des deux cotes.
+
 ### 5.48 Mediane et P95 dans le bilan de performance (2026-11-15, essai `pf5`) - [V] par les journaux
 
 - Le bilan `perf` (toutes les 900 images) donne maintenant, pour l'intervalle entre images et pour le temps du plugin dans le fil du jeu, la moyenne, la **mediane**, le **P95** et le maximum (900 valeurs gardees, `std::nth_element` une fois par bilan).

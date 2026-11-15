@@ -75,6 +75,11 @@ import time
 PROTOCOL_VERSION = 4
 
 
+# Octets recus sans fin de ligne au-dela desquels un client est deconnecte (la plus longue ligne
+# du protocole, EMTX, fait ~200 octets ; un paquet de drapeaux arrive en plusieurs lignes).
+MAX_PENDING = 64 * 1024
+
+
 def auth_digest(challenge, password):
     """Reponse attendue au defi : SHA-256 hexadecimal de (defi + mot de passe), en UTF-8."""
     return hashlib.sha256((challenge + password).encode("utf-8")).hexdigest()
@@ -106,6 +111,31 @@ STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
 # GIFT peut porter 2 valeurs de plus : le bonus de l'arme (bits WeaponModifier en hexadecimal, valeur).
 OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2}
+
+# Nature de chaque valeur, valeurs facultatives comprises : f nombre fini, i entier, x hexadecimal,
+# n nom d'acteur. Une ligne dont une valeur ne correspond pas est ignoree (jamais retransmise).
+FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi", "FLAGR": "xi", "LIFE": "xi",
+               "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
+               "GIFT": "nixi", "MEAL": "i"}
+
+
+def valid_fields(kind, values):
+    import math
+    for spec, v in zip(FIELD_KINDS[kind], values):
+        try:
+            if spec == "f" and not math.isfinite(float(v)):
+                return False
+            if spec == "i":
+                int(v)
+            if spec == "x":
+                if len(v) > 8:
+                    return False
+                int(v, 16)
+            if spec == "n" and not (0 < len(v) <= 47 and all(ch.isascii() and (ch.isalnum() or ch == "_") for ch in v)):
+                return False
+        except ValueError:
+            return False
+    return True
 
 
 class Client:
@@ -348,6 +378,12 @@ def main():
                 continue
 
             client.buf += chunk
+            if len(client.buf) > MAX_PENDING and b"\n" not in client.buf[-MAX_PENDING:]:
+                # Aucune ligne du protocole ne depasse quelques centaines d'octets : un client qui envoie
+                # sans fin de ligne ferait grossir la memoire du relais sans limite.
+                log(f"joueur {client.pid} : plus de {MAX_PENDING} octets sans fin de ligne, liaison fermee")
+                drop(client, "ligne trop longue")
+                continue
             while b"\n" in client.buf and client.sock in clients:
                 raw, client.buf = client.buf.split(b"\n", 1)
                 parts = raw.decode("ascii", "replace").split()
@@ -404,7 +440,8 @@ def main():
                         client.pending.append(time_for(client, last_time))
                     client.pending.append(f"STATEEND {len(flags) + len(moon_flags)}\n")
                     log(f"joueur {client.pid} : etat complet demande, {len(flags)} drapeaux + {len(moon_flags)} de lune de sang a envoyer")
-                elif parts and parts[0] in STATE_FIELDS and 0 <= len(parts) - 1 - STATE_FIELDS[parts[0]] <= OPTIONAL_EXTRA.get(parts[0], 0):
+                elif (parts and parts[0] in STATE_FIELDS and 0 <= len(parts) - 1 - STATE_FIELDS[parts[0]] <= OPTIONAL_EXTRA.get(parts[0], 0)
+                      and valid_fields(parts[0], parts[1:])):
                     payload = " ".join(parts[1:])
                     if parts[0] == "FLAG":
                         # Drapeau partage passe a 1 chez ce joueur. Le serveur le retient et ne
