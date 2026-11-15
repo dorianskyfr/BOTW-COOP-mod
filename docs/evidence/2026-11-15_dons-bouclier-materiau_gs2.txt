@@ -1,0 +1,18 @@
+﻿gs2_game.txt 00:00:56.269 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 3 arme(s)
+gs2_game.txt 00:03:09.222 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] dons : Weapon_Shield_001 sorti de l'inventaire (bonus 0/0)
+gs2_game.txt 00:03:09.222 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Shield_001 au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus 0/0)
+gs2_game.txt 00:03:10.428 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Shield_001 (valeur 2000, bonus 0/0) donne au joueur 2, a 1.4 m de lui
+gs2_game.txt 00:03:10.428 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : "Vous avez donn?? un bouclier au joueur 2"
+gs2_game.txt 00:05:16.408 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Item_Fruit_A tenu par Link (1.28 m au-dessus de ses pieds)
+gs2_game.txt 00:05:22.910 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Item_Fruit_A pose ou lance, surveille 10 s
+gs2_game.txt 00:05:25.117 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] don : Item_Fruit_A (valeur 1, bonus 0/0) donne au joueur 2, a 3.0 m de lui
+gs2_game.txt 00:05:25.117 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] messages : "Vous avez donn?? un objet au joueur 2"
+gs2_game2.txt 00:00:53.769 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 3 arme(s)
+gs2_game2.txt 00:02:52.059 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Shield_001 (valeur 2000, bonus 0/0) recu du joueur 1 -> inventaire ok, objets 14 -> 15
+gs2_game2.txt 00:02:52.059 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Weapon_Shield_001 valeur=2000 bonus=0/0
+gs2_game2.txt 00:02:52.059 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Weapon_Shield_001 valeur=2000 bonus=0/0
+gs2_game2.txt 00:02:52.059 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Weapon_Shield_001 valeur=2000 bonus=0/0
+gs2_game2.txt 00:02:52.059 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : "Joueur 1 vous a donn?? un bouclier"
+gs2_game2.txt 00:05:06.732 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Item_Fruit_A (valeur 1, bonus 0/0) recu du joueur 1 -> inventaire ok, objets 15 -> 15
+gs2_game2.txt 00:05:06.732 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Item_Fruit_A valeur=11 bonus=0/0
+gs2_game2.txt 00:05:06.732 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] messages : "Joueur 1 vous a donn?? un objet"
