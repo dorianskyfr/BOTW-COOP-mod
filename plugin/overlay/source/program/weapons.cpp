@@ -210,6 +210,27 @@ namespace coop::weapons {
             return best->m_Bonus;
         }
 
+        /* Une arme de ce nom est sortie de l'inventaire dans les 15 dernieres secondes et n'a pas encore servi. */
+        bool RecentlyRemoved(const char* name) {
+            for (const Removed& r : s_Removed)
+                if (!r.m_Used && s_PouchScans - r.m_Scan <= RemovedKeepScans && std::strcmp(r.m_Name, name) == 0)
+                    return true;
+            return false;
+        }
+
+        /* Libelle d'un don pour les bandeaux, d'apres le nom d'acteur (noms releves : Weapon_Sword_001,
+           Weapon_Bow_001, Weapon_Shield_001, Weapon_Spear_001, Item_Fruit_A). Les noms du jeu en clair ne
+           sont pas dans la RomFS extraite ; avant, le bandeau montrait le nom interne (essai bw1). */
+        const char* GiftLabel(const char* name) {
+            if (std::strncmp(name, "Weapon_Bow_", 11) == 0)
+                return "un arc";
+            if (std::strncmp(name, "Weapon_Shield_", 14) == 0)
+                return "un bouclier";
+            if (std::strncmp(name, "Weapon_", 7) == 0)
+                return "une arme";
+            return "un objet";
+        }
+
         bool IsWornRel(const float* rel) {
             const float x = rel[3], y = rel[7], z = rel[11];
             return y >= 0.30f && y <= 2.2f && x * x + z * z <= 0.9f * 0.9f;
@@ -235,7 +256,7 @@ namespace coop::weapons {
                             s_MatRead[i].m_Value, s_MatRead[i].m_Bonus.m_Flags, s_MatRead[i].m_Bonus.m_Value);
 #endif
                 char msg[80];
-                std::snprintf(msg, sizeof(msg), "Joueur %d vous a donné : %s", g.m_From, g.m_Name);
+                std::snprintf(msg, sizeof(msg), "Joueur %d vous a donné %s", g.m_From, GiftLabel(g.m_Name));
                 coop::notify::Post(msg);
             }
         }
@@ -284,7 +305,7 @@ namespace coop::weapons {
                 Logging.Log("[botw-coop] don : %s (valeur %d, bonus %x/%d) donne au joueur %d, a %.1f m de lui", g.m_Name, g.m_Value,
                     g.m_BonusFlags, g.m_BonusValue, coop::session::g_Remote.Id(), static_cast<double>(std::sqrt(dx * dx + dy * dy + dz * dz)));
                 char msg[80];
-                std::snprintf(msg, sizeof(msg), "Donné au joueur %d : %s", coop::session::g_Remote.Id(), g.m_Name);
+                std::snprintf(msg, sizeof(msg), "Vous avez donné %s au joueur %d", GiftLabel(g.m_Name), coop::session::g_Remote.Id());
                 coop::notify::Post(msg);
                 lg = LetGo {};
             }
@@ -375,8 +396,29 @@ namespace coop::weapons {
             Pose p;
             Relative(link, m, p.m_Rel);
             const float x = p.m_Rel[3], y = p.m_Rel[7], z = p.m_Rel[11];
-            if (y < MinHeight || y > MaxHeight || x * x + z * z > MaxFlat * MaxFlat)
+            if (y < MinHeight || y > MaxHeight || x * x + z * z > MaxFlat * MaxFlat) {
+                /* Lachee depuis le menu, l'arme peut tomber entre deux releves sans jamais etre vue
+                   portee (essai bw3 : arc pose a 2,3 m du partenaire, aucun don). Une arme au sol a
+                   moins de 3 m dont l'inventaire vient de perdre un exemplaire est donc surveillee aussi. */
+                const char* ground = coop::game::GetActorName(near.m_Actors[i]);
+                if (RecentlyRemoved(ground)) {
+                    bool known = false;
+                    for (const LetGo& lg : s_LetGo)
+                        known |= lg.m_Actor == near.m_Actors[i];
+                    for (LetGo& lg : s_LetGo)
+                        if (!known && lg.m_Actor == 0) {
+                            lg = LetGo {};
+                            lg.m_Actor = near.m_Actors[i];
+                            std::strncpy(lg.m_Name, ground, sizeof(lg.m_Name) - 1);
+                            lg.m_Bonus = BonusOfRemoved(lg.m_Name);
+                            if (s_GiftLogs++ < 20)
+                                Logging.Log("[botw-coop] don : %s au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus %x/%d)",
+                                    lg.m_Name, lg.m_Bonus.m_Flags, lg.m_Bonus.m_Value);
+                            break;
+                        }
+                }
                 continue; /* pas porte : au sol, lance, ou ailleurs */
+            }
             const char* name = coop::game::GetActorName(near.m_Actors[i]);
             p.m_Crc = Crc32(name);
             found[n] = p;

@@ -712,6 +712,7 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Remarque : la creation d'un acteur echoue parfois une fois sous forte charge (`cc1` : `CoopPlayer` introuvable apres 601 images, repli sur le PNJ ; `cc4` : une piece), puis reussit au nouvel essai.
 - Pistes non essayees : un acteur genere avec l'IA et le profil d'une armure (`Armor`, `ArmorUpper`) plutot que ceux du PNJ ; ecrire directement le choix de texture dans le materiau a l'execution. Teintures : de toute facon non transmises.
 - `ra1` (option d'essai `-DCOOP_TEST_REALARMOR` avec `COOP_TEST_SPAWN` + `COOP_TEST_GEAR`) : les **vraies** pieces du jeu (`Armor_001_Head/Upper/Lower`) creees a la place des `CoopGear_*` : creees en 5 images et posees sur le pantin (positions identiques), pas sur le Link local. **Couleurs et animation non vues** : ecran 2 occupe par l'utilisateur, et la capture interne de Ryujinx (F8) ne repond pas sans le focus.
+- [X] `ra2` (2026-11-15, meme option, a l'image) : les vraies pieces `Armor_001_*` creees en 5 images ont **les memes couleurs fausses** (capuche et tunique gris sombre a motif, manches brun-rouge et vert) et **ne suivent pas le squelette** du pantin (tunique en croix, bras tendus, pendant que le pantin bouge). Captures `2026-11-15_vraies-pieces-armure-couleurs_ra2.png`, `..._zoom_ra2.png`. Conclusion : la couleur ne vient pas de nos fichiers generes ; une piece seule, hors du Link joueur, n'est pas coloree par le jeu. Piste abandonnee (pire : plus d'animation).
 
 ### 5.37 Sauvetage par le partenaire (2026-11-14, essai `rv2`) - [V] par les journaux, deux instances
 
@@ -809,6 +810,17 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.51 Dons a l'image, bandeaux lisibles, bandeau retenu pendant une pause du jeu (2026-11-15, essais `bw1` a `bw4`)
+
+- [V] `bw1` (deux instances, `-DCOOP_TEST_GIVE`, a l'image) : **don d'arc** : J1 lache l'arc du voyageur par le menu (« Drop ») a cote de J2 ; donne a 2,7 m ; chez J2, l'aide du jeu « Change Bow » s'ouvre (second arc obtenu) et l'inventaire montre deux arcs du voyageur, le nouveau marque. Captures `2026-11-15_don-d-arc-menu-J1_bw1.png`, `..._inventaire-J2_bw1.png`.
+- Defauts vus et corriges :
+  - Bandeaux avec le nom interne (« Joueur 1 vous a donné : Weapon_Bow_001 »). Les noms du jeu en clair ne sont pas dans la RomFS extraite (`build/romfs-1.9.0` : `Actor`, `Model`, `Pack`, `System`, sans `Bootup_*`) : le bandeau donne la categorie, d'apres le debut du nom d'acteur (`Weapon_Bow_` arc, `Weapon_Shield_` bouclier, autre `Weapon_` arme, sinon objet). Sens donneur : « Vous avez donné une arme au joueur 2 ».
+  - `bw2` : un don recu pendant une aide du jeu (« Change Bow », « Change Weapon ») n'etait jamais vu. `notify.cpp` attend maintenant que le jeu reprenne : la pause est reperee au minuteur de lune de sang, qui avance en jeu et reste fige en pause (journal de `bw2` : 205,6 fige pendant l'aide). Au plus 120 s d'attente.
+  - `bw3` : arc lache par le menu, pose a 2,3 m du partenaire, **aucun don** : l'arme tombe entre deux releves (toutes les 3 images) sans etre vue portee, alors que la surveillance ne partait que d'une arme vue portee puis plus. Ajout : une arme au sol a moins de 3 m de Link dont l'inventaire vient de perdre un exemplaire du meme nom (15 s) est surveillee aussi.
+- [V] `bw4` (a l'image, deux instances) : arc lache -> `au sol pres de Link, sortie de l'inventaire, surveillee` (nouveau chemin) ; tombe a 3,2 m de J2, au-dela de la portee (3 m) : pas de don, comme prevu. Epee lachee a 1,9 m : donnee ; chez J1 « Vous avez donné une arme au joueur 2 » ; chez J2 l'aide « Change Weapon » s'ouvre, le bandeau attend (`bandeau indisponible`... puis `bandeau demande` a la fermeture de l'aide) et s'affiche : « Joueur 1 vous a donné une arme ». Captures `2026-11-15_bandeaux-de-don_bw4.png`, `..._bandeau-don-apres-aide-du-jeu_bw4.png` ; journaux `2026-11-15_dons-bandeaux-bw1-bw4.txt`.
+- Vu en passant (`bw4`, non corrige) : J1 passant pres d'armes posees au sol (ruines du plateau) : `Weapon_Sword_019 a quitte Link, surveillee 10 s` ; une arme du decor a traverse la zone « portee ». Partenaire loin : rien donne. Avec un partenaire a moins de 3 m, une arme du decor pourrait lui etre donnee (non essaye).
+- Non verifie : bandeau en attente quand le minuteur de lune de sang est remis a zero (lune de sang) ; don de bouclier et de materiau a l'image.
+
 ### 5.50 Essais a l'image (2026-11-15, essais `mk1`, `go1` a `go3`) et defaut du Game Over corrige
 
 - [V] a l'image, deux jeux cote a cote sur l'ecran 1 (`run-live.ps1 -Screen 1`) :
@@ -825,6 +837,8 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - [V] `ch5` : aucun gel ; `CoopPlayer` et `CoopGear_Armor_Default_Head` crees des deux cotes, a la position du partenaire (`drive.py ... actors`). A l'image chez J1 : le Link du partenaire a ses cheveux et sa queue de cheval, a la bonne place sur la tete. Captures `2026-11-15_cheveux-partenaire_ch5.png` et `..._zoom_ch5.png`. Chez J2 : piece presente (liste des acteurs), non vue a l'image (camera de J2 mal placee pendant l'essai).
   - Non verifie : cheveux quand le partenaire porte une piece de tete puis la retire en jeu (le code remet alors la piece par defaut).
   - Fichiers generes de `ch2` (`build/deploy/romfs/Model/CoopArmor_Default*.sbfres`) inutiles, gardes en attendant l'accord de l'utilisateur pour les supprimer (hors depot, `build/`).
+- **Bandeau du sauveteur : [V] a l'image** (essai `sb1`, deux instances, partenaires a 22 m, chute de 50 m de J2 par `drive.py ... lift`, deux fois) : chez J1, « Vous avez sauvé le joueur 2 ! », accents justes, visible environ 2 a 4 s (sur 2 des 7 captures prises toutes les 1,8 s). Chez J2 : releve, vie 0 -> 12 quarts, « Sauvé par Joueur 1 ! ». Preuves `2026-11-15_bandeau-du-sauveteur_sb1.png` et `.txt`.
+- Outil : `drive.py ... hold` envoyait des appuis de 300 ms toutes les 200 ms ; sous la charge de deux jeux, un message en retard coupait le maintien (clic vu relache apres 0,7 a 1,3 s, teleportation jamais declenchee). Appuis de 600 ms : maintien reconnu (essai `sb1`, « partenaire trop loin (484 m) » affiche au lieu de rien).
 - Preuves : `docs/evidence/2026-11-15_game-over-recharge-go1-go3.txt`, `2026-11-15_apres-game-over_go3.png`.
 
 ### 5.49 Relais protege contre les lignes invalides (2026-11-15, essai `rl1`) - [V]

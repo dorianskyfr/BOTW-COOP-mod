@@ -134,7 +134,9 @@ def main():
             s = float(args[1])
             end = time.time() + s
             while time.time() < end:
-                p.pad(buttons=BUTTONS[args[0]], ms=300)
+                # 600 ms par message, renvoye toutes les 200 ms : un message en retard de plus de
+                # 100 ms coupait le maintien (essai sb1, clic vu relache apres 0,7 a 1,3 s).
+                p.pad(buttons=BUTTONS[args[0]], ms=600)
                 time.sleep(0.2)
             p.log(f"maintien {args[0]} {s} s -> {p.fmt()}")
         elif op == "shot":

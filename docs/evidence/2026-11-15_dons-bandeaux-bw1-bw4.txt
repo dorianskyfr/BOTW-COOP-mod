@@ -1,0 +1,37 @@
+﻿== bw1 ==
+bw1_game.txt 00:01:06.375 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 0 arme(s)
+bw1_game.txt 00:03:22.924 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Bow_001 a quitte Link, surveillee 10 s (bonus 0/0)
+bw1_game.txt 00:03:23.926 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Bow_001 (valeur 2000, bonus 0/0) donne au joueur 2, a 2.7 m de lui
+bw1_game.txt 00:03:25.103 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] dons : Weapon_Bow_001 sorti de l'inventaire (bonus 0/0)
+bw1_game2.txt 00:01:02.412 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 0 arme(s)
+bw1_game2.txt 00:03:03.884 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Bow_001 (valeur 2000, bonus 0/0) recu du joueur 1 -> inventaire ok, objets 8 -> 9
+bw1_game2.txt 00:03:03.884 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Weapon_Bow_001 valeur=2000 bonus=0/0
+bw1_game2.txt 00:03:03.884 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Weapon_Bow_001 valeur=2000 bonus=0/0
+bw1_game2.txt 00:03:03.884 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : "Joueur 1 vous a donn?? : Weapon_Bow_001"
+== bw3 (arc lache depuis le menu, jamais vu porte : pas de don) ==
+bw3 bw3_game.txt 00:00:57.336 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 0 arme(s)
+bw3 bw3_game.txt 00:03:01.212 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] dons : Weapon_Bow_001 sorti de l'inventaire (bonus 0/0)
+bw3 bw3_game2.txt 00:00:54.954 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 0 arme(s)
+== bw4 (correctifs) ==
+bw4 bw4_game.txt 00:00:57.721 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 0 arme(s)
+bw4 bw4_game.txt 00:01:09.524 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : bandeau demande (26 caracteres)
+bw4 bw4_game.txt 00:01:13.057 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] messages : bandeau demande (28 caracteres)
+bw4 bw4_game.txt 00:01:16.627 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : bandeau demande (38 caracteres)
+bw4 bw4_game.txt 00:02:35.974 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_019 a quitte Link, surveillee 10 s (bonus 0/0)
+bw4 bw4_game.txt 00:03:56.404 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] dons : Weapon_Bow_001 sorti de l'inventaire (bonus 0/0)
+bw4 bw4_game.txt 00:03:56.405 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Bow_001 au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus 0/0)
+bw4 bw4_game.txt 00:06:48.903 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_019 a quitte Link, surveillee 10 s (bonus 0/0)
+bw4 bw4_game.txt 00:07:42.345 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_001 a quitte Link, surveillee 10 s (bonus 0/0)
+bw4 bw4_game.txt 00:07:43.347 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_001 (valeur 2000, bonus 0/0) donne au joueur 2, a 1.9 m de lui
+bw4 bw4_game.txt 00:07:43.347 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] messages : "Vous avez donn?? une arme au joueur 2"
+bw4 bw4_game.txt 00:07:44.496 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : bandeau demande (36 caracteres)
+bw4 bw4_game.txt 00:07:44.530 |W| HLE.GuestThread.55 KernelSvc OutputDebugString: [botw-coop] dons : Weapon_Sword_001 sorti de l'inventaire (bonus 0/0)
+bw4 bw4_game2.txt 00:00:55.548 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] dons : inventaire lu, 0 arme(s)
+bw4 bw4_game2.txt 00:01:07.347 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] messages : bandeau demande (26 caracteres)
+bw4 bw4_game2.txt 00:01:10.910 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : bandeau demande (28 caracteres)
+bw4 bw4_game2.txt 00:07:24.882 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : Weapon_Sword_001 (valeur 2000, bonus 0/0) recu du joueur 1 -> inventaire ok, objets 8 -> 9
+bw4 bw4_game2.txt 00:07:24.882 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Weapon_Sword_001 valeur=2000 bonus=0/0
+bw4 bw4_game2.txt 00:07:24.882 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] don : relu dans l'inventaire Weapon_Sword_001 valeur=2000 bonus=0/0
+bw4 bw4_game2.txt 00:07:24.882 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] messages : "Joueur 1 vous a donn?? une arme"
+bw4 bw4_game2.txt 00:07:38.345 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] messages : bandeau indisponible pour l'instant, nouvel essai (n.1)
+bw4 bw4_game2.txt 00:07:38.381 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : bandeau demande (30 caracteres)

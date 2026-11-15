@@ -130,6 +130,29 @@ namespace coop::notify {
         const int tail = s_Tail.load(std::memory_order_relaxed);
         if (tail == s_Head.load(std::memory_order_acquire))
             return;
+        /* Jeu en pause (aide du jeu, menu) : le bandeau demande alors n'apparait pas (essai bw2 : don
+           recu pendant l'aide « Change Bow », rien vu ensuite). Pause reperee au minuteur de lune de
+           sang, qui avance en jeu et s'arrete en pause (journal de bw2 : 205,6 fige pendant l'aide).
+           Au plus 120 s d'attente, au cas ou il ne bougerait plus pour une autre raison. */
+        static float s_Moon = -1.0f;
+        static std::uint64_t s_MoonMoved = 0, s_WaitSince = 0, s_MoonRead = 0;
+        if (coop::game::WorldState w; coop::game::ReadWorld(w)) {
+            /* Relu seulement quand un message attend : une valeur ancienne ne prouve rien. */
+            if (now - s_MoonRead > 200)
+                s_Moon = -1.0f, s_MoonMoved = 0;
+            s_MoonRead = now;
+            if (s_Moon < 0.0f)
+                s_Moon = w.m_BloodMoonTimer;
+            else if (w.m_BloodMoonTimer != s_Moon) {
+                s_Moon = w.m_BloodMoonTimer;
+                s_MoonMoved = now;
+            }
+            if (s_WaitSince == 0)
+                s_WaitSince = now;
+            if (now - s_MoonMoved > 300 && now - s_WaitSince < 120000)
+                return;
+        }
+        s_WaitSince = 0;
         const auto base = exl::util::GetMainModuleInfo().m_Total.m_Start;
         if (!BannerAvailable(base)) {
             static std::uint64_t s_Busy = 0;

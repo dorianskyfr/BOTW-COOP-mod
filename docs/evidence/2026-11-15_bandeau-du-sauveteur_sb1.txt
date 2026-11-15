@@ -1,0 +1,9 @@
+﻿J1 00:06:11.966 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] messages : "Vous avez sauv?? le joueur 2 !"
+J1 00:06:11.966 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] sauvetage : le joueur 2 a ete releve grace a nous (22 m)
+J1 00:08:25.626 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] messages : "Vous avez sauv?? le joueur 2 !"
+J1 00:08:25.626 |W| HLE.GuestThread.49 KernelSvc OutputDebugString: [botw-coop] sauvetage : le joueur 2 a ete releve grace a nous (22 m)
+J2 00:00:08.570 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] sauvetage : crochet pose sur main+0xcead24
+J2 00:05:52.913 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] sauvetage : Link releve par le partenaire (J1 a 22 m), vie 0 -> 12 quarts (n.1)
+J2 00:05:52.913 |W| HLE.GuestThread.46 KernelSvc OutputDebugString: [botw-coop] messages : "Sauv?? par Joueur 1 ! (prochain dans 120 s)"
+J2 00:08:06.575 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] sauvetage : Link releve par le partenaire (J1 a 22 m), vie 0 -> 12 quarts (n.2)
+J2 00:08:06.575 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] messages : "Sauv?? par Joueur 1 ! (prochain dans 120 s)"
