@@ -616,6 +616,20 @@ namespace coop::flags {
             const int gliderIdx = FindByHash(bools, ParagliderHash, glider);
             if (gliderIdx < 0 || !ReadBoolValue(glider, hasGlider))
                 hasGlider = 0;
+#ifdef COOP_TEST_GLIDER_AFTER
+            /* Essai : la paravoile est posee ici apres N echanges en jeu (comme si le joueur l'avait recue),
+               pour verifier que la progression mise en attente est ensuite appliquee. */
+            {
+                static int s_GliderCountdown = COOP_TEST_GLIDER_AFTER;
+                if (gliderIdx >= 0 && hasGlider == 0 && inGame && s_HaveSnapshot && --s_GliderCountdown == 0) {
+                    SetBoolValue(glider);
+                    ReadBoolValue(glider, hasGlider);
+                    std::uint8_t raw = 0;
+                    Read(glider + s_ValueOffset, raw);
+                    Logging.Log("[botw-coop] essai paravoile : IsGet_PlayerStole2 pose (octet %d), %d drapeaux en attente", raw, s_HeldProgress);
+                }
+            }
+#endif
             if (hasGlider == 1 && s_HeldProgress > 0 && inGame && s_HaveSnapshot) {
                 Logging.Log("[botw-coop] drapeaux : paravoile obtenue, %d drapeaux de progression mis en attente : etat redemande", s_HeldProgress);
                 s_HeldProgress = 0;

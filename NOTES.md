@@ -804,8 +804,9 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - [V] `pg2` : `Enter_Dungeon100` -> `mis en attente (pas de paravoile)` ; champignon -> `mis a 1`. La garde de 5.26 fonctionne.
 - Observation : `Clear_Dungeon100` est ignore avant la garde : sa valeur lue sur cette sauvegarde est **2** (proprietes 0x1f, pas une bascule). Cause inconnue (je ne peux pas confirmer comment le jeu range ces drapeaux) ; un drapeau a une autre valeur que 0 n'est jamais ecrit, donc rien n'est abime. A regarder avant de compter sur le partage des sanctuaires termines.
 - Ajout : un drapeau recu ignore est journalise (20 premiers) avec la raison (index, valeur, groupe, proprietes, bascule).
-- Non essaye : obtention de la paravoile puis application des drapeaux en attente.
-- Preuve : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`.
+- [V] `pg3` (2026-11-15, `-DCOOP_TEST_GLIDER_AFTER=120` : le plugin pose lui-meme `IsGet_PlayerStole2` apres 60 s en jeu, `IsGet_PlayerStole2` n'etant pas dans la liste blanche) : trois drapeaux de progression recus -> `mis en attente` ; paravoile posee -> `paravoile obtenue, 6 drapeaux ... mis en attente : etat redemande` -> etat complet -> les trois `mis a 1`, dont `Clear_Dungeon100` avec sa categorie (octet 3 = categorie 1, valeur 1, correctif 5.46).
+- Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
+- Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
 ### 5.47 Mot de passe de session (2026-11-15, protocole v4, essais `pw1` a `pw3`) - [V] par les journaux
 

@@ -1,0 +1,25 @@
+﻿Essai pg3 (2026-11-15) : -DCOOP_TEST_GLIDER_AFTER=120, une instance, sauvegarde du plateau sans paravoile. Trois drapeaux de progression annonces par un outil de test (Enter_Dungeon100 3678c8aa, Clear_Dungeon100 f66ba753, Open_Dungeon100 78b761e4).
+=== jeu ===
+[botw-coop] drapeaux : instantane de 42031 booleens pris (288 a 1, 0 ni 0 ni 1) ; drapeau 0 : 000000000a227a20 0002fc0400840700 0000000000000000
+[botw-coop] drapeau recu : hachage=3678c8aa mis en attente (pas de paravoile)
+[botw-coop] drapeau recu : hachage=f66ba753 mis en attente (pas de paravoile)
+[botw-coop] drapeau recu : hachage=78b761e4 mis en attente (pas de paravoile)
+[botw-coop] net: etat complet demande au serveur
+[botw-coop] net: etat complet recu du serveur (3 drapeaux en memoire chez lui)
+[botw-coop] drapeau recu : hachage=3678c8aa mis en attente (pas de paravoile)
+[botw-coop] drapeau recu : hachage=78b761e4 mis en attente (pas de paravoile)
+[botw-coop] essai paravoile : IsGet_PlayerStole2 pose (octet 1), 6 drapeaux en attente
+[botw-coop] drapeaux : paravoile obtenue, 6 drapeaux de progression mis en attente : etat redemande
+[botw-coop] net: etat complet demande au serveur
+[botw-coop] net: etat complet recu du serveur (4 drapeaux en memoire chez lui)
+[botw-coop] drapeau recu : n.9008 hachage=3678c8aa mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] drapeau recu : n.19976 hachage=78b761e4 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] drapeau recu : hachage=c2aa7d7e ignore (index 32023, valeur ici 1, groupe 2, proprietes 0x17, bascule 0)
+[botw-coop] drapeau recu : n.40530 hachage=f66ba753 mis a 1 (octet 3 : categorie 1 gardee)
+=== relais ===
+10:52:43.909 joueur 1001 : drapeau nouveau n.1 = 3678c8aa 1 (1 en memoire, 0 deja connus)
+10:52:43.909 joueur 1001 : drapeau nouveau n.2 = f66ba753 1 (2 en memoire, 0 deja connus)
+10:52:43.909 joueur 1001 : drapeau nouveau n.3 = 78b761e4 1 (3 en memoire, 0 deja connus)
+10:52:48.528 joueur 1 : etat complet demande, 3 drapeaux + 0 de lune de sang a envoyer
+10:52:49.212 joueur 1 : drapeau nouveau n.1 = c2aa7d7e 1 (4 en memoire, 0 deja connus)
+10:53:45.099 joueur 1 : etat complet demande, 4 drapeaux + 0 de lune de sang a envoyer
