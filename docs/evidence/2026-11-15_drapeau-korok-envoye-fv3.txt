@@ -1,0 +1,26 @@
+﻿Essai fv3 (2026-11-15) : deux instances, -DCOOP_TEST_GLIDER_AFTER=60 (paravoile posee chez les deux), -DCOOP_TEST_SETLOCAL=0x71e8a107 (MainField_Npc_HiddenKorokFly_611457876, categorie 11, pose par J1 apres 80 s).
+=== relais ===
+11:13:37.946 joueur 1 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+11:13:39.282 joueur 1 : drapeau nouveau n.1 = c2aa7d7e 1 (1 en memoire, 0 deja connus)
+11:13:53.619 joueur 2 : etat complet demande, 1 drapeaux + 0 de lune de sang a envoyer
+11:14:55.277 joueur 1 : drapeau nouveau n.2 = 71e8a107 1 (2 en memoire, 0 deja connus)
+=== fv3_game.txt ===
+00:01:12.706 [botw-coop] drapeau change : n.18258 hachage=6e263cbb 0 -> 1
+00:01:13.829 [botw-coop] drapeau change : n.5897 hachage=23969f9e 0 -> 1
+00:01:24.653 [botw-coop] drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+00:01:37.850 [botw-coop] essai paravoile : IsGet_PlayerStole2 pose (octet 1), 0 drapeaux en attente
+00:01:38.316 [botw-coop] drapeau change : n.41774 hachage=fe4d1501 0 -> 1
+00:02:24.617 [botw-coop] drapeau change : n.23040 hachage=8c013684 0 -> 1
+00:02:24.883 [botw-coop] drapeau change : n.3577 hachage=1508673e 1 -> 0
+00:02:27.849 [botw-coop] essai drapeau local : hachage=71e8a107 index 18860, octet 22 -> 23
+00:02:28.050 [botw-coop] drapeau change : n.18860 hachage=71e8a107 0 -> 1 (envoye)
+=== fv3_game2.txt ===
+00:01:12.958 [botw-coop] drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+00:01:14.701 [botw-coop] drapeau recu : hachage=c2aa7d7e ignore (index 32023, valeur ici 1, groupe 2, proprietes 0x17, bascule 0)
+00:01:15.443 [botw-coop] drapeau change : n.18258 hachage=6e263cbb 0 -> 1
+00:01:17.248 [botw-coop] drapeau change : n.5897 hachage=23969f9e 0 -> 1
+00:01:40.709 [botw-coop] essai paravoile : IsGet_PlayerStole2 pose (octet 1), 0 drapeaux en attente
+00:01:41.175 [botw-coop] drapeau change : n.41774 hachage=fe4d1501 0 -> 1
+00:02:15.242 [botw-coop] drapeau change : n.3577 hachage=1508673e 1 -> 0
+00:02:15.475 [botw-coop] drapeau change : n.23040 hachage=8c013684 0 -> 1
+00:02:15.709 [botw-coop] drapeau recu : n.18860 hachage=71e8a107 mis a 1 (octet 23 : categorie 11 gardee)

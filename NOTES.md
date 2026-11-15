@@ -839,7 +839,8 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Consequence de l'ancien code (qui lisait l'octet entier) : un drapeau a categorie (sanctuaires termines, Koroks, Compendium, boss vaincus) n'etait **jamais** applique quand il etait recu (valeur lue != 0), ni envoye quand le joueur le posait (22 -> 23 n'est pas « 0 -> 1 ») ; et une ecriture `= 1` aurait efface la categorie. C'etait le `Clear_Dungeon100` « a 2 » de 5.44 ter.
 - Correctif : valeur = bit 0 (`ReadBoolValue`), mise a 1 = `octet | 1` (`SetBoolValue`), partout dans flags.cpp.
 - [V] `fv2` : `Clear_Dungeon100` -> `mis en attente (pas de paravoile)` ; Hinox vaincu (`MainField_IsDefeat_Enemy_Giant_Bone_...`, categorie 8, groupe 2) -> `mis a 1 (octet 17 : categorie 8 gardee)` ; champignon -> octet 1.
-- Non verifie : envoi d'un drapeau a categorie pose en jouant (Korok trouve, sanctuaire termine) ; a l'image (Compendium, carte).
+- [V] `fv3` (envoi, deux instances, `-DCOOP_TEST_SETLOCAL=0x71e8a107` + `-DCOOP_TEST_GLIDER_AFTER=60`) : J1 pose lui-meme le Korok `MainField_Npc_HiddenKorokFly_611457876` (categorie 11) : octet 22 -> 23 ; releve `0 -> 1 (envoye)` ; relais `drapeau nouveau` ; J2 (paravoile posee) `mis a 1 (octet 23 : categorie 11 gardee)`.
+- Non verifie : le meme drapeau pose par le jeu lui-meme (Korok trouve en jouant : le plugin pose `octet | 1`, le jeu fait-il pareil ? supposé, puisque l'octet garde la categorie) ; a l'image (Compendium, carte, compteur de Koroks).
 - Preuve : `docs/evidence/2026-11-15_drapeaux-octet-categorie-et-valeur_fv1-fv2.log`.
 
 ### 5.45 Meteo suivie seulement dans le meme climat (2026-11-14, essais `cl1` a `cl4`) - [V] par les journaux

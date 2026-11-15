@@ -1,6 +1,9 @@
 #include "flags.hpp"
 #include "config.hpp"
 #include "objects.hpp"
+#ifdef COOP_TEST_SETLOCAL
+#include "session.hpp"
+#endif
 
 #include "game.hpp"
 
@@ -627,6 +630,25 @@ namespace coop::flags {
                     std::uint8_t raw = 0;
                     Read(glider + s_ValueOffset, raw);
                     Logging.Log("[botw-coop] essai paravoile : IsGet_PlayerStole2 pose (octet %d), %d drapeaux en attente", raw, s_HeldProgress);
+                }
+            }
+#endif
+#ifdef COOP_TEST_SETLOCAL
+            /* Essai : le joueur 1 pose lui-meme ce drapeau (hachage) apres 80 s en jeu, comme le jeu le ferait,
+               pour verifier que le releve des changements l'envoie (drapeau a categorie : octet pair -> impair). */
+            {
+                static int s_SetCountdown = 160;
+                if (inGame && s_HaveSnapshot && coop::session::g_LocalId == 1 && s_SetCountdown > 0 && --s_SetCountdown == 0) {
+                    std::uintptr_t f = 0;
+                    const int i = FindByHash(bools, static_cast<std::uint32_t>(COOP_TEST_SETLOCAL), f);
+                    std::uint8_t before = 0xff, after = 0xff;
+                    if (i >= 0) {
+                        Read(f + s_ValueOffset, before);
+                        SetBoolValue(f);
+                        Read(f + s_ValueOffset, after);
+                    }
+                    Logging.Log("[botw-coop] essai drapeau local : hachage=%08x index %d, octet %d -> %d",
+                        static_cast<unsigned>(COOP_TEST_SETLOCAL), i, before, after);
                 }
             }
 #endif
