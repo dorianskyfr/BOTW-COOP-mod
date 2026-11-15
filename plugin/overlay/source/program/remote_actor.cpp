@@ -158,8 +158,32 @@ namespace coop::remote_actor {
 #endif
         }
 
+        /* Action ponctuelle du partenaire (attaque, tir, saut, parade ; NOTES 5.59) en cours de lecture. */
+        std::uint32_t s_ActionSeen = 0;
+        std::uint64_t s_ActionUntilMs = 0;
+        std::uint32_t s_ActionsPlayed = 0;
+
         /* true si une sequence a ete (re)lancee a cette image. */
         bool UpdateSequence(std::uintptr_t actor) {
+            const auto actions = coop::anim_state::g_RemoteActions.load(std::memory_order_acquire);
+            if (actions != s_ActionSeen) {
+                s_ActionSeen = actions;
+                int holdMs = 0;
+                const char* a = coop::anim_state::ActionSequence(coop::anim_state::g_RemoteAction.load(), holdMs);
+                if (a != nullptr && IsPuppet()) {
+                    s_ActionUntilMs = coop::clock::NowMs() + static_cast<std::uint64_t>(holdMs);
+                    s_Sequence = a;
+                    s_Candidate = a;
+                    s_SequenceRetries = 3; /* pas de relance : l'action ne se joue qu'une fois */
+                    s_SequenceFrame = s_Frames;
+                    const bool ok = coop::game::PlayActorSequence(actor, a);
+                    if (s_ActionsPlayed++ < 40)
+                        Logging.Log("[botw-coop] acteur distant : action \"%s\" (%d ms)%s", a, holdMs, ok ? "" : " NON DEMARREE");
+                    return true;
+                }
+            }
+            if (coop::clock::NowMs() < s_ActionUntilMs)
+                return false; /* l'action se termine avant de reprendre l'allure */
             const char* want = WantedSequence();
             /* Un changement doit tenir 3 images (pas de clignotement entre deux allures). */
             if (want != s_Candidate) {

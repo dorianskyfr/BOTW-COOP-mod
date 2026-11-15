@@ -42,4 +42,17 @@ namespace coop::anim_state {
     /* Etat annonce par le joueur distant (fil reseau -> fil du jeu). */
     inline std::atomic<std::uint8_t> g_Remote { Ground };
 
+    /*
+     * Actions ponctuelles du joueur (attaques, tir, saut, parade ; NOTES 5.59) : code 1..N, message
+     * ACT <code>. Le pantin joue la sequence correspondante (ASList de CoopPlayer) pendant holdMs.
+     */
+    const char* ActionSequence(std::uint8_t code, int& holdMs);
+
+    /* Derniere action locale et compteur (fil du jeu -> fil reseau). */
+    inline std::atomic<std::uint8_t> g_LocalAction { 0 };
+    inline std::atomic<std::uint32_t> g_LocalActions { 0 };
+    /* Derniere action du joueur distant et compteur (fil reseau -> fil du jeu). */
+    inline std::atomic<std::uint8_t> g_RemoteAction { 0 };
+    inline std::atomic<std::uint32_t> g_RemoteActions { 0 };
+
 }

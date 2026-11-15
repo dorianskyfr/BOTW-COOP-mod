@@ -51,6 +51,24 @@ namespace coop::anim_state {
             return Ground;
         }
 
+        /*
+         * Actions : sequence du vrai joueur (ASList « Player ») -> sequence du pantin, et duree de tenue
+         * (choix, d'apres la longueur approximative des clips ; pas une mesure). Code = indice + 1.
+         */
+        struct Action {
+            const char* m_Player;
+            const char* m_Puppet;
+            int m_HoldMs;
+        };
+        constexpr Action Actions[] = {
+            { "CutS1", "CutS1", 600 },       { "CutS2", "CutS2", 600 },       { "CutS3", "CutS3", 700 },
+            { "CutSF", "CutSF", 900 },       { "CutDash", "CutDash", 800 },   { "CutFall", "CutFall", 900 },
+            { "CutJumpSt", "CutJump", 900 }, { "BowCharge", "BowCharge", 2000 }, { "BowShoot", "BowShoot", 600 },
+            { "Jump", "Jump", 700 },         { "GuardJust", "GuardJust", 600 },
+        };
+        constexpr int ActionCount = sizeof(Actions) / sizeof(Actions[0]);
+        std::atomic<std::uint32_t> s_ActionLogs { 0 };
+
         HOOK_DEFINE_TRAMPOLINE(StartSequenceHook) {
             static void Callback(std::uintptr_t list, float a, float b, const SafeString* name, int slot, int bank, bool flag) {
                 if (slot == 0 && list != 0 && list == s_PlayerList.load(std::memory_order_relaxed) && name != nullptr
@@ -60,6 +78,14 @@ namespace coop::anim_state {
                     for (; i < sizeof(buf) - 1 && name->m_Str[i] != '\0'; i++)
                         buf[i] = name->m_Str[i];
                     buf[i] = '\0';
+                    for (int a = 0; a < ActionCount; a++)
+                        if (std::strcmp(buf, Actions[a].m_Player) == 0) {
+                            g_LocalAction.store(static_cast<std::uint8_t>(a + 1), std::memory_order_relaxed);
+                            g_LocalActions.fetch_add(1, std::memory_order_release);
+                            if (s_ActionLogs.fetch_add(1, std::memory_order_relaxed) < 40)
+                                Logging.Log("[botw-coop] animation locale : action \"%s\" (code %d)", buf, a + 1);
+                            break;
+                        }
                     const std::uint8_t c = Classify(buf);
                     const std::uint8_t old = s_Local.exchange(c, std::memory_order_relaxed);
                     if (c != old && s_Seen.fetch_add(1, std::memory_order_relaxed) < 40)
@@ -90,6 +116,13 @@ namespace coop::anim_state {
 
     std::uint8_t Local() {
         return s_Local.load(std::memory_order_relaxed);
+    }
+
+    const char* ActionSequence(std::uint8_t code, int& holdMs) {
+        if (code == 0 || code > ActionCount)
+            return nullptr;
+        holdMs = Actions[code - 1].m_HoldMs;
+        return Actions[code - 1].m_Puppet;
     }
 
     const char* PuppetSequence(std::uint8_t c) {

@@ -46,6 +46,20 @@ SEQUENCES = {
     "Climb": "Climb_Wall_Move_U",
     "ClimbWait": "Climb_Wall_Wait_FootL",
     "SwimDash": "Swim_Move_Dash",
+    # Attaques et sauts (NOTES 5.59) : sequences CutS1.., CutDash, CutFall, CutJumpSt, BowCharge, BowShoot,
+    # Jump, GuardJust du vrai joueur ; clip a une main (epee) de chacune, present dans
+    # Player_Animation.sbfres de la RomFS 1.9.0 de l'utilisateur (verifie le 2026-11-15).
+    "CutS1": "Sword_Attack_S1",
+    "CutS2": "Sword_Attack_S2",
+    "CutS3": "Sword_Attack_S3",
+    "CutSF": "Sword_Attack_SF",
+    "CutDash": "Sword_Attack_Dash",
+    "CutFall": "Sword_Attack_Fall",
+    "CutJump": "Sword_Attack_Jump_F_St",
+    "BowCharge": "Bow_Attack_Charge",
+    "BowShoot": "Bow_Attack_Shoot",
+    "Jump": "Nml_Move_Run_Jump_FootL",
+    "GuardJust": "Shield_Guard_Just",
     # Pas de surf : avec « Surf » -> Shield_Board_Go2 (clip de Player_SurfingSlide), le jeu ne cree
     # plus l'acteur du tout (essais cp7, cp8 ; sans lui, cpa et cpb le creent). Cause inconnue.
 }
@@ -93,6 +107,20 @@ def as_list():
     pio.lists["AddReses"] = add
     pio.lists["ASDefines"] = defines
     return pio.to_binary()
+
+
+def aslist_size(romfs, table, ours_len):
+    """
+    Taille de la liste de sequences dans la table des tailles. Celle du Link du menu pause (3808 pour un
+    fichier de 740 octets, 10 sequences) ne suffit plus a 22 sequences (1272 octets) : le jeu refusait
+    alors de creer l'acteur (essai at1, NOTES 5.59). On garde la meme proportion, plus une marge.
+    """
+    base = table.get_size("Actor/ASList/PauseMenuPlayer.baslist")
+    pack = open(os.path.join(romfs, "Actor", "Pack", "PauseMenuPlayer.sbactorpack"), "rb").read()
+    if pack[:4] == b"Yaz0":
+        pack = oead.yaz0.decompress(pack)
+    pause_len = len(oead.Sarc(pack).get_file("Actor/ASList/PauseMenuPlayer.baslist").data)
+    return max(base, -(-base * ours_len // pause_len) + 1024)
 
 
 def actor_link(template, model_user):
@@ -333,7 +361,7 @@ def main(romfs, out):
         f"Actor/Pack/{NAME}.bactorpack": max(2 * calc.calculate_file_size_with_ext(pack, False, ".bactorpack"), 65536),
         f"Actor/ActorLink/{NAME}.bxml": table.get_size("Actor/ActorLink/Npc_DungeonPriest001.bxml"),
         f"Actor/ModelList/{NAME}.bmodellist": table.get_size("Actor/ModelList/PauseMenuPlayer.bmodellist"),
-        f"Actor/ASList/{NAME}.baslist": table.get_size("Actor/ASList/PauseMenuPlayer.baslist"),
+        f"Actor/ASList/{NAME}.baslist": aslist_size(romfs, table, len(common[f"Actor/ASList/{NAME}.baslist"])),
     }
     for variant, vpack in variant_packs.items():
         sizes[f"Actor/Pack/{variant}.bactorpack"] = max(2 * calc.calculate_file_size_with_ext(vpack, False, ".bactorpack"), 65536)

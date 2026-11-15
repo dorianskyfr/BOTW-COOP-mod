@@ -1,0 +1,45 @@
+# Essais at1, at2 (2026-11-15) : attaques jouees par le Link du partenaire
+=== at1_game2.txt
+00:02:21.317 acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:02:21.351 acteur distant : creation de "CoopPlayer" : etat de l'unite -2 -> 3 (echec poignee 0) apres 1 images
+00:02:21.385 acteur distant : creation de "CoopPlayer2" demandee en (-1024.48, 252.63, 1799.95)
+00:02:21.426 acteur distant : creation de "CoopPlayer2" : etat de l'unite -2 -> 3 (echec poignee 0) apres 1 images
+00:02:21.450 acteur distant : creation de "CoopPlayerS" demandee en (-1024.48, 252.63, 1799.95)
+00:02:21.484 acteur distant : creation de "CoopPlayerS" : etat de l'unite -2 -> 3 (echec poignee 0) apres 1 images
+00:02:21.516 acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:02:21.549 acteur distant : creation de "CoopPlayer" : etat de l'unite -2 -> 3 (echec poignee 0) apres 1 images
+00:02:21.585 acteur distant : creation de "Npc_Kakariko003" demandee en (-1023.28, 252.63, 1799.95)
+00:02:21.983 acteur distant : CREE apres 12 images, acteur=66071767a8 nom="Npc_Kakariko003" pos=(-1023.28, 252.63, 1799.95)
+00:02:22.029 acteur distant : 4 interaction(s) retiree(s) (plus d'invite Parler)
+=== at2_game.txt
+00:02:16.201 acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.64, 1799.95)
+00:02:16.269 acteur distant : CREE apres 3 images, acteur=6607254df8 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+00:05:40.258 animation locale : action "CutS1" (code 1)
+00:05:40.861 animation locale : action "CutS2" (code 2)
+00:05:41.457 animation locale : action "CutS3" (code 3)
+00:05:42.221 animation locale : action "CutS1" (code 1)
+00:05:42.823 animation locale : action "CutS2" (code 2)
+00:05:43.459 animation locale : action "CutS3" (code 3)
+00:05:44.055 animation locale : action "CutSF" (code 4)
+00:05:45.427 animation locale : action "CutS1" (code 1)
+00:05:46.056 animation locale : action "CutS2" (code 2)
+00:05:46.657 animation locale : action "CutS3" (code 3)
+00:05:47.430 animation locale : action "CutS1" (code 1)
+00:05:48.024 animation locale : action "CutS2" (code 2)
+00:05:48.626 animation locale : action "CutS3" (code 3)
+=== at2_game2.txt
+00:02:13.196 acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+00:02:13.228 acteur distant : CREE apres 1 images, acteur=66072dec80 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+00:05:20.697 acteur distant : action "CutS1" (600 ms)
+00:05:21.329 acteur distant : action "CutS2" (600 ms)
+00:05:21.930 acteur distant : action "CutS3" (700 ms)
+00:05:22.695 acteur distant : action "CutS1" (600 ms)
+00:05:23.296 acteur distant : action "CutS2" (600 ms)
+00:05:23.895 acteur distant : action "CutS3" (700 ms)
+00:05:24.502 acteur distant : action "CutSF" (900 ms)
+00:05:25.862 acteur distant : action "CutS1" (600 ms)
+00:05:26.497 acteur distant : action "CutS2" (600 ms)
+00:05:27.096 acteur distant : action "CutS3" (700 ms)
+00:05:27.863 acteur distant : action "CutS1" (600 ms)
+00:05:28.462 acteur distant : action "CutS2" (600 ms)
+00:05:29.064 acteur distant : action "CutS3" (700 ms)

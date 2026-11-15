@@ -812,6 +812,15 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.59 Attaques, tir, saut et parade joues par le Link du partenaire (2026-11-15, essais `at1`, `at2`) - [V] par les journaux ; [?] fidelite a l'image
+
+- Sequences du vrai joueur lues dans `Actor/ASList/Player.baslist` (paquet `GameROMPlayer` dans `TitleBG.pack` de la RomFS de l'utilisateur) : `CutS1`, `CutS2`, `CutS3` (enchainement), `CutSF` (coup final), `CutDash`, `CutFall`, `CutJumpSt`, `BowCharge`, `BowShoot`, `Jump`, `GuardJust`. Pour chacune, le clip a une main (epee) : `Sword_Attack_S1/S2/S3/SF/Dash/Fall`, `Sword_Attack_Jump_F_St`, `Bow_Attack_Charge`, `Bow_Attack_Shoot`, `Nml_Move_Run_Jump_FootL`, `Shield_Guard_Just` ; tous presents dans `Model/Player_Animation.sbfres` (verifie).
+- `tools/build_puppet.py` ajoute ces 11 sequences au pantin (22 en tout). Le plugin (crochet existant, creneau 0 du joueur local) envoie `ACT <code>` a chaque action (relais : `"ACT": "i"`, 73/73) ; le pantin joue la sequence et la tient 0,6 a 2 s (durees choisies) avant de reprendre l'allure.
+- [V] **Cause trouvee d'un refus de creation du pantin** (`at1`) : avec 22 sequences, le jeu refuse `CoopPlayer`, `CoopPlayer2` et `CoopPlayerS` (etat 3), repli sur le PNJ. La taille de la liste de sequences dans la table des tailles etait celle du Link du menu pause (3808 pour un fichier de 740 octets, 10 sequences) ; notre fichier fait 1272 octets. Taille desormais proportionnelle au fichier plus 1024 (7570). [V] `at2` : « CREE apres 1 images, nom="CoopPlayer" ». [S] Le refus du surf (5.28) pourrait avoir la meme cause : a reessayer.
+- [V] `at2` (epee equipee chez J1, coups dans le vide) : J1 « action CutS1 / CutS2 / CutS3 / CutSF », J2 « acteur distant : action ... » dans le meme ordre, au meme rythme. Captures chez J2 : le Link de J1, vu de dos a ~6 m, change de pose (bras leves, bras ecarte).
+- **Non verifie** : que la pose ressemble bien a un coup d'epee vu de pres, et que l'arme est dans sa main pendant le coup ; arc, saut, parade a l'image.
+- Preuves : `2026-11-15_attaques-du-partenaire_at1-at2.log`, `..._vues-par-J2_at2.png`, `..._zoom_at2.png`.
+
 ### 5.58 Cinematiques partagees (2026-11-15, essais `cs1`, `cs2`) - [V] a l'image, deux instances ; mode « deux sur ce PC » corrige
 
 **Source** : decompilation zeldaret/botw (1.5.0) : `evt::Manager::callEvent(const Metadata&, Actor* = nullptr, void* = nullptr)` ; `Metadata(const char* event, const char* entry_point, const char* type = "")` (0x158 octets) ; `TimeMgr::callBloodMoonDemo` fait `callEvent(evt::Metadata("Demo011_0"))`.

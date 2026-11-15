@@ -320,6 +320,9 @@ namespace coop::net_probe {
                 coop::enemy_life::g_PosIncoming.Push(pm);
             } else if (coop::enemy_life::SeqMsg sm; std::sscanf(line, "EAS %d %x %47s", &sm.m_FromId, &sm.m_Hash, sm.m_Name) == 3) {
                 coop::enemy_life::g_SeqIncoming.Push(sm);
+            } else if (unsigned actCode = 0; std::sscanf(line, "ACT %d %u", &id, &actCode) == 2) {
+                coop::anim_state::g_RemoteAction.store(static_cast<std::uint8_t>(actCode));
+                coop::anim_state::g_RemoteActions.fetch_add(1, std::memory_order_release);
             } else if (coop::cutscene::Demo dm; std::sscanf(line, "DEMO %d %47s %47s", &dm.m_From, dm.m_Event, dm.m_Entry) == 3) {
                 coop::cutscene::g_Incoming.Push(dm);
             } else if (unsigned lifeHash = 0; std::sscanf(line, "LIFE %d %x %d", &id, &lifeHash, &m_days) == 3) {
@@ -519,6 +522,19 @@ namespace coop::net_probe {
                         s_Sent++;
                     else
                         Disconnect("echec d'envoi");
+                }
+
+                /* Action ponctuelle du joueur (attaque, tir, saut, parade) : ACT <code>, des qu'elle change. */
+                {
+                    static std::uint32_t s_ActSent = 0;
+                    const auto acts = coop::anim_state::g_LocalActions.load(std::memory_order_acquire);
+                    if (acts != s_ActSent && inGame && Live()) {
+                        s_ActSent = acts;
+                        char act[24];
+                        const int len = std::snprintf(act, sizeof(act), "ACT %u\n", static_cast<unsigned>(coop::anim_state::g_LocalAction.load()));
+                        if (len > 0 && !SendAll(s_Fd, act, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
                 }
 
                 /* Cœurs du joueur : une fois par seconde (status.hpp). */
