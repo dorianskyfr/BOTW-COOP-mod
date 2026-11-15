@@ -12,6 +12,7 @@
  * Une ligne par reglage, "cle=valeur". Reglage reconnu :
  *   relay=192.168.1.20:47800     adresse IPv4 et port du relais
  *   enemy_pos=0                  coupe le partage de la position des ennemis (actif par defaut)
+ *   enemy_anim=0|1|2             animations des ennemis (voir g_EnemyAnim)
  *   share_groups=1,2             groupes de drapeaux partages (liste blanche, voir plus bas)
  *   revive=0                     coupe le sauvetage par le partenaire (actif par defaut)
  *   revive_delay=120             secondes entre deux sauvetages par le partenaire
@@ -30,6 +31,16 @@ namespace coop::config {
 
     /* Partage de la position des ennemis (NOTES 5.25) : non essaye en combat reel, d'ou l'interrupteur. */
     inline bool g_EnemyPos = true;
+
+    /*
+     * Animations des ennemis (message EAS, NOTES 5.56) : 0 = rien ; 1 = celui qui fait foi annonce
+     * chaque animation demarree par son ennemi, l'autre la rejoue sur sa copie ; 2 = idem, et l'autre
+     * empeche sa propre IA de lancer des animations sur cette copie. Valeur par defaut : COOP_ENEMY_ANIM.
+     */
+#ifndef COOP_ENEMY_ANIM
+#define COOP_ENEMY_ANIM 2
+#endif
+    inline unsigned g_EnemyAnim = COOP_ENEMY_ANIM;
 
     /* Sauvetage par le partenaire (revive.cpp, NOTES 5.37) : a la mort, si ni fee ni Grace de Mipha
        ne sauvent Link et que le partenaire est en jeu, vivant et a moins de g_ReviveRangeM, Link

@@ -66,6 +66,52 @@ namespace coop::enemy_life {
     inline PosQueue g_PosOutgoing;
     inline PosQueue g_PosIncoming;
 
+    /*
+     * Animations des ennemis (message EAS <hachage> <sequence>, config::g_EnemyAnim). Celui qui fait
+     * foi annonce chaque sequence demarree sur le creneau 0 de son ennemi ; l'autre la rejoue sur sa copie.
+     */
+    struct SeqMsg {
+        std::uint32_t m_Hash = 0;
+        int           m_FromId = 0;
+        char          m_Name[48] = {};
+    };
+
+    class SeqQueue {
+    public:
+        bool Push(const SeqMsg& c) {
+            const auto head = m_Head.load(std::memory_order_relaxed);
+            const auto next = (head + 1) % Capacity;
+            if (next == m_Tail.load(std::memory_order_acquire))
+                return false;
+            m_Items[head] = c;
+            m_Head.store(next, std::memory_order_release);
+            return true;
+        }
+        bool Pop(SeqMsg& out) {
+            const auto tail = m_Tail.load(std::memory_order_relaxed);
+            if (tail == m_Head.load(std::memory_order_acquire))
+                return false;
+            out = m_Items[tail];
+            m_Tail.store((tail + 1) % Capacity, std::memory_order_release);
+            return true;
+        }
+
+    private:
+        static constexpr std::uint32_t Capacity = 128;
+        SeqMsg m_Items[Capacity];
+        std::atomic<std::uint32_t> m_Head { 0 };
+        std::atomic<std::uint32_t> m_Tail { 0 };
+    };
+
+    inline SeqQueue g_SeqOutgoing;
+    inline SeqQueue g_SeqIncoming;
+
+    /*
+     * Appele par le crochet des sequences (anim_state.cpp), sur n'importe quel fil, avant que la
+     * sequence demarre. Renvoie false si elle doit etre ignoree (copie suivie, mode 2).
+     */
+    bool OnSequenceStart(std::uintptr_t list, const char* name, int slot, int bank);
+
     /* Outil de test : decale de 4 m l'ennemi de carte actif le plus proche. */
     void DebugNudgeNearest();
     /* Outil de test : journalise la position des ennemis de carte actifs. */

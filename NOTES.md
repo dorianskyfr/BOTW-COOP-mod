@@ -812,6 +812,27 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.56 Ennemis : position essayee en combat ; animations annoncees et rejouees (2026-11-15, essais `eb1` a `eb4`) - [V] par les journaux et a l'image, deux instances
+
+Synchro des ennemis reprise a la demande de l'utilisateur (en pause depuis le 2026-11-13).
+
+**Outils d'essai** (build `-DCOOP_REMOTE_PAD`) : `drive.py <nom> approach` (bit 53, `warp::DebugApproachEnemy`) pose Link a 12 m du Bokoblin **actif** le plus proche, de son cote ; `drive.py <nom> bring` (bit 54) amene ce Bokoblin a 8 m devant le joueur, au sol (meme fonction que `drop`, 1,5 m de haut). Remarque : avec PowerShell, separer les commandes de `drive.py` par `/` ; la virgule est avalee par PowerShell (la commande ne faisait rien, sans erreur).
+
+**Position en combat (essais `eb1`, `eb2`)** :
+- [V] `eb1` : un Bokoblin amene a 120 m de son camp s'anime (baton leve, accroupi) mais ne se deplace plus et ne touche jamais Link ; [S] l'IA est perturbee par l'eloignement du camp. Essai sans valeur pour le combat ; ce cas n'arrive pas en jeu normal.
+- [V] `eb2` : Bokoblin amene pres de son camp : il vient vers Link (8 m en 3 s) ; chez J2, la copie est au meme endroit (ecart < 0,3 m apres 10 corrections) et sur l'image dans la meme pose. Le pilote ne sait pas contourner le rocher du camp : vues souvent masquees.
+
+**Animations (essais `eb3`, `eb4`)** :
+- Crochet existant sur le demarrage des sequences (`main+0x149f24c`, `anim_state.cpp`, NOTES 5.28) : pour chaque ennemi de carte actif a moins de 150 m, la liste de sequences (`Actor+0x560`) est inscrite dans une table de 32 cases (lue par le crochet, tous fils).
+- [V] Les Bokoblin utilisent le creneau 0, banque 0 (`BattleWait`, `Search`, `Run`, `Turn`, `Notice`, `GrabAndShoot`, `Squat`, `Talk`, `Dance`, `ListenStart` vus dans les journaux).
+- Celui qui fait foi (le plus proche, regle de 5.25) annonce chaque sequence demarree sur le creneau 0 : `EAS <hachage> <nom>` (relais : `"EAS": "xn"`, 71/71 essais automatiques). L'autre la rejoue sur sa copie (`PlayActorSequence`, creneau 0) ; en mode 2 (par defaut, `enemy_anim=` dans `botw-coop.txt`, 0 = rien, 1 = rejeu sans blocage), il **bloque les sequences que sa propre IA lance sur cette copie**, sauf pendant 2 s apres un coup porte par son joueur (vie baissee chez lui) ou si elle est morte chez lui (choix, pas une mesure).
+- [V] `eb3` : J1 fait foi (2 m), J2 suit : `GrabAndShoot` / `BattleWait` annonces par J1, rejoues chez J2 dans le meme ordre ; chez J2 les sequences propres de l'IA (`Search`, `Run`, `Turn`, `Notice`) bloquees (17 rejouees, 17 bloquees). Images : meme Bokoblin, meme pose, meme projectile lance dans les deux mondes (`2026-11-15_ennemi-anime-par-J1_vu-par-J1_eb3.png`, `..._vu-par-J2_eb3.png`).
+- [V] Bascule : J1 s'eloigne a 12,1 m, J2 a 2,8 m fait foi ; J1 passe en « on suit » et rejoue les sequences annoncees par J2 (8 rejouees).
+- [V] `eb4` : coup du joueur qui suit (outil `hurt`, ecriture de la vie, pas un vrai coup) : 13 -> 8 chez J1, appliquee chez J2 (celui qui fait foi). Aucune sequence laissee a l'IA locale : l'ecriture de la vie ne declenche pas de reaction, donc la fenetre de 2 s n'est pas verifiee.
+- **Non verifie** : vrai coup d'arme (la sauvegarde de test n'a aucune arme : seule la tablette Sheikah dans l'inventaire), reaction et mort de la copie suivie, degats faits a un joueur par un ennemi (les cœurs n'ont pas bouge pendant les essais), ennemis autres que les Bokoblin, creneaux autres que 0, plus de deux joueurs.
+- [S] Limite connue : la copie suivie n'attaque que par l'animation rejouee ; si son projectile ou son coup touche le joueur local, c'est le jeu local qui decide (non mesure).
+- Preuves : `2026-11-15_ennemis_animations-annoncees-et-rejouees_eb3.log`, `2026-11-15_ennemis_bascule-et-vie-depuis-le-joueur-qui-suit_eb4.log`.
+
 ### 5.55 Le Link du partenaire qui n'apparaissait pas : cause et correctif (2026-11-15, essais `ph1`-`ph3`, `hw1`-`hw3`, `pv1`-`pv4`) - [V] par les journaux et a l'image
 
 - Decompilation (`actBaseProcInitializer.cpp`, `TaskMgr.cpp`, `actBaseProcCreateTask.cpp`, `actBaseProcHandle.cpp`) : sans poignee, la demande prend une tache libre et son echec n'est jamais signale ; avec une poignee, l'unite de creation (`BaseProcUnit`, pool de 256) donne l'etat : 1 en cours, 2 pret, 3 pas d'acteur (`onBaseProcCreationFailed` avec acteur nul : la fabrique n'a rien produit), 5 annule.

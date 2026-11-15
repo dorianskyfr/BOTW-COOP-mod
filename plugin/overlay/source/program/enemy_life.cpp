@@ -7,6 +7,7 @@
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
 
+#include <atomic>
 #include <cmath>
 #include <cstring>
 
@@ -27,7 +28,83 @@ namespace coop::enemy_life {
             float         m_SentPos[3] = {};
             std::uint64_t m_SentFrame = 0;
             bool          m_Following = false;
+
+            /* Animations : derniere sequence annoncee par l'autre joueur, et celle rejouee ici. */
+            char          m_RemoteSeq[48] = {};
+            std::uint32_t m_RemoteSeqCount = 0;
+            std::uint32_t m_PlayedSeqCount = 0;
         };
+
+        /*
+         * Ennemis suivis pour les animations : lus par le crochet des sequences (n'importe quel
+         * fil), ecrits a chaque image par OnActorPos (fil du jeu). Une case par ennemi actif proche.
+         */
+        struct Tracked {
+            std::atomic<std::uintptr_t> m_List { 0 };      /* ASList de l'acteur (+0x560) */
+            std::atomic<std::uint32_t>  m_Hash { 0 };
+            std::atomic<bool>           m_Following { false };
+            std::atomic<std::uint64_t>  m_SeenFrame { 0 };
+            std::atomic<std::uint32_t>  m_SeqCount { 0 };  /* sequences demarrees par notre copie (fait foi) */
+            std::atomic<std::uint64_t>  m_HurtFrame { 0 }; /* derniere baisse de vie due a notre joueur */
+            std::uint32_t               m_SeqSent = 0;     /* fil du jeu seulement */
+            char                        m_Seq[48] = {};
+        };
+        constexpr int MaxTracked = 32;
+        Tracked s_Tracked[MaxTracked];
+        /* Liste de sequences de la copie qu'on fait jouer nous-memes (le crochet la laisse passer). */
+        std::atomic<std::uintptr_t> s_ReplayList { 0 };
+        std::atomic<std::uint32_t> s_SeqLogs { 0 }, s_SeqBlocked { 0 }, s_SeqHurtPass { 0 };
+        /* Numero d'image courant, lisible depuis le crochet. */
+        std::atomic<std::uint64_t> s_FrameNow { 0 };
+        /*
+         * Apres un coup porte par notre joueur a une copie suivie, son IA garde la main ~2 s (60 images) :
+         * reactions au coup, chute, mort. Choix, pas une mesure.
+         */
+        constexpr std::uint64_t HurtPassFrames = 60;
+
+        Tracked* TrackedByHash(std::uint32_t hash) {
+            for (auto& t : s_Tracked)
+                if (t.m_Hash.load(std::memory_order_relaxed) == hash)
+                    return &t;
+            return nullptr;
+        }
+        std::uint64_t s_SeqSent = 0, s_SeqPlayed = 0;
+
+        Tracked* TrackedFor(std::uintptr_t list) {
+            if (list == 0)
+                return nullptr;
+            for (auto& t : s_Tracked)
+                if (t.m_List.load(std::memory_order_acquire) == list)
+                    return &t;
+            return nullptr;
+        }
+
+        /* Fil du jeu : inscrit (ou rafraichit) un ennemi actif proche. */
+        Tracked* Track(std::uint32_t hash, std::uintptr_t list, bool following, std::uint64_t frame) {
+            Tracked* freeSlot = nullptr;
+            Tracked* oldest = &s_Tracked[0];
+            for (auto& t : s_Tracked) {
+                if (t.m_Hash.load(std::memory_order_relaxed) == hash) {
+                    t.m_List.store(list, std::memory_order_release);
+                    t.m_Following.store(following, std::memory_order_release);
+                    t.m_SeenFrame.store(frame, std::memory_order_relaxed);
+                    return &t;
+                }
+                const auto seen = t.m_SeenFrame.load(std::memory_order_relaxed);
+                if (freeSlot == nullptr && (t.m_Hash.load(std::memory_order_relaxed) == 0 || frame - seen > 30))
+                    freeSlot = &t;
+                if (seen < oldest->m_SeenFrame.load(std::memory_order_relaxed))
+                    oldest = &t;
+            }
+            Tracked* t = freeSlot != nullptr ? freeSlot : oldest;
+            t->m_List.store(0, std::memory_order_release);
+            t->m_Hash.store(hash, std::memory_order_relaxed);
+            t->m_Following.store(following, std::memory_order_relaxed);
+            t->m_SeenFrame.store(frame, std::memory_order_relaxed);
+            t->m_SeqSent = t->m_SeqCount.load(std::memory_order_relaxed);
+            t->m_List.store(list, std::memory_order_release);
+            return t;
+        }
 
         /* Position des ennemis : reglages (choix, pas des mesures). */
         constexpr float         PosRadius = 150.0f;      /* on ne s'occupe que des ennemis a moins de 150 m */
@@ -74,6 +151,9 @@ namespace coop::enemy_life {
             if (!coop::game::GetEnemyLife(info.m_Actor, life, maxLife, lifePtr))
                 return false;
             Entry* e = Find(info.m_HashId, true);
+            if (life <= 0)
+                if (Tracked* t = TrackedByHash(info.m_HashId))
+                    t->m_HurtFrame.store(s_Frames, std::memory_order_release); /* mort chez nous : son IA joue la fin */
 
             if (e->m_Pending >= 0) {
                 const int wanted = e->m_Pending < 1 ? 1 : e->m_Pending;
@@ -90,6 +170,8 @@ namespace coop::enemy_life {
             }
 
             if (e->m_LastLife >= 0 && life < e->m_LastLife) {
+                if (Tracked* t = TrackedByHash(info.m_HashId))
+                    t->m_HurtFrame.store(s_Frames, std::memory_order_release);
                 const bool pushed = g_Outgoing.Push({ info.m_HashId, static_cast<std::uint32_t>(life < 0 ? 0 : life) });
                 s_Sent += pushed;
                 if (s_Sent <= 40 || s_Sent % 50 == 0)
@@ -115,6 +197,32 @@ namespace coop::enemy_life {
             /* L'autre fait foi s'il est nettement plus pres de l'ennemi ; a egalite, le plus petit identifiant. */
             const bool follow = fresh && (e->m_RemoteDist < dist - PosHysteresis
                 || (e->m_RemoteDist <= dist + PosHysteresis && e->m_RemoteFrom < localId));
+            if (coop::config::g_EnemyAnim != 0) {
+                Tracked* t = Track(info.m_HashId, coop::game::GetActorASList(info.m_Actor), follow, s_Frames);
+                if (!follow) {
+                    /* Notre copie fait foi : annoncer la derniere sequence demarree, s'il y en a une nouvelle. */
+                    const auto count = t->m_SeqCount.load(std::memory_order_acquire);
+                    if (count != t->m_SeqSent) {
+                        SeqMsg m;
+                        m.m_Hash = info.m_HashId;
+                        std::memcpy(m.m_Name, t->m_Seq, sizeof(m.m_Name));
+                        m.m_Name[sizeof(m.m_Name) - 1] = '\0';
+                        if (m.m_Name[0] != '\0' && g_SeqOutgoing.Push(m))
+                            s_SeqSent++;
+                        t->m_SeqSent = count;
+                    }
+                } else if (e->m_RemoteSeqCount != e->m_PlayedSeqCount && e->m_RemoteSeq[0] != '\0') {
+                    /* Copie suivie : rejouer la sequence annoncee par celui qui fait foi. */
+                    e->m_PlayedSeqCount = e->m_RemoteSeqCount;
+                    s_ReplayList.store(t->m_List.load(std::memory_order_relaxed), std::memory_order_release);
+                    const bool ok = coop::game::PlayActorSequence(info.m_Actor, e->m_RemoteSeq);
+                    s_ReplayList.store(0, std::memory_order_release);
+                    s_SeqPlayed++;
+                    if (s_SeqPlayed <= 40 || s_SeqPlayed % 100 == 0)
+                        Logging.Log("[botw-coop] animation ennemi : %s %08x rejoue \"%s\" (annonce par J%d)%s, n.%lu",
+                            info.m_Name, info.m_HashId, e->m_RemoteSeq, e->m_RemoteFrom, ok ? "" : " REFUSE", s_SeqPlayed);
+                }
+            }
             if (follow != e->m_Following) {
                 e->m_Following = follow;
                 if (s_PosLogs++ < 60)
@@ -165,6 +273,7 @@ namespace coop::enemy_life {
 
     void OnFrame() {
         s_Frames++;
+        s_FrameNow.store(s_Frames, std::memory_order_relaxed);
         const bool ready = coop::game::IsWorldReady();
 
         /* Positions : a chaque image. */
@@ -177,6 +286,15 @@ namespace coop::enemy_life {
             e->m_RemoteDist = pm.m_Dist;
             e->m_RemoteFrom = pm.m_FromId;
             e->m_RemoteFrame = s_Frames;
+        }
+        SeqMsg sm;
+        for (int n = 0; n < 64 && g_SeqIncoming.Pop(sm); n++) {
+            if (!ready)
+                continue;
+            Entry* e = Find(sm.m_Hash, true);
+            std::memcpy(e->m_RemoteSeq, sm.m_Name, sizeof(e->m_RemoteSeq));
+            e->m_RemoteSeq[sizeof(e->m_RemoteSeq) - 1] = '\0';
+            e->m_RemoteSeqCount++;
         }
         coop::game::PlayerState player;
         s_HavePlayer = ready && coop::game::ReadPlayer(player);
@@ -263,7 +381,45 @@ namespace coop::enemy_life {
 
     void DebugLogPositions() {
         coop::game::ForEachListedActor(OnActorLogPos, nullptr);
-        Logging.Log("[botw-coop] position ennemi : %lu envois, %lu corrections au total", s_PosSent, s_PosApplied);
+        Logging.Log("[botw-coop] position ennemi : %lu envois, %lu corrections au total ; animations : %lu annoncees, %lu rejouees, %u bloquees (mode %u)",
+            s_PosSent, s_PosApplied, s_SeqSent, s_SeqPlayed, s_SeqBlocked.load(), coop::config::g_EnemyAnim);
+    }
+
+    bool OnSequenceStart(std::uintptr_t list, const char* name, int slot, int bank) {
+        if (coop::config::g_EnemyAnim == 0 || name == nullptr)
+            return true;
+        Tracked* t = TrackedFor(list);
+        if (t == nullptr)
+            return true;
+        if (list == s_ReplayList.load(std::memory_order_acquire))
+            return true; /* notre propre demande de rejeu */
+        const bool following = t->m_Following.load(std::memory_order_acquire);
+        if (s_SeqLogs.fetch_add(1, std::memory_order_relaxed) < 80)
+            Logging.Log("[botw-coop] animation ennemi : %08x creneau %d banque %d \"%s\" (%s)", t->m_Hash.load(std::memory_order_relaxed),
+                slot, bank, name, following ? "copie suivie" : "fait foi");
+        if (slot != 0)
+            return true;
+        if (!following) {
+            std::size_t i = 0;
+            for (; i < sizeof(t->m_Seq) - 1 && name[i] != '\0'; i++)
+                t->m_Seq[i] = name[i];
+            t->m_Seq[i] = '\0';
+            t->m_SeqCount.fetch_add(1, std::memory_order_release);
+            return true;
+        }
+        if (coop::config::g_EnemyAnim == 2) {
+            const auto hurt = t->m_HurtFrame.load(std::memory_order_acquire);
+            if (hurt != 0 && s_FrameNow.load(std::memory_order_relaxed) - hurt < HurtPassFrames) {
+                /* Notre joueur vient de la frapper : sa reaction au coup passe. */
+                if (s_SeqHurtPass.fetch_add(1, std::memory_order_relaxed) < 40)
+                    Logging.Log("[botw-coop] animation ennemi : %08x \"%s\" laissee a notre IA (coup recu chez nous)",
+                        t->m_Hash.load(std::memory_order_relaxed), name);
+                return true;
+            }
+            s_SeqBlocked.fetch_add(1, std::memory_order_relaxed);
+            return false;
+        }
+        return true;
     }
 
     void DebugHurtNearest(int amount) {

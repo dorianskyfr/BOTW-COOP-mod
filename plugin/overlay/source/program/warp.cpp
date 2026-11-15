@@ -357,6 +357,35 @@ namespace coop::warp {
         Logging.Log("[botw-coop] essai chute du joueur : Link souleve de %.0f m a (%.2f, %.2f, %.2f)", static_cast<double>(height),
             static_cast<double>(s_Target[0]), static_cast<double>(s_Target[1]), static_cast<double>(s_Target[2]));
     }
+
+    void DebugApproachEnemy(float distance) {
+        coop::game::PlayerState st;
+        float e[3];
+        if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady()
+            || !coop::game::NearestBokoblinPos(e)) {
+            Logging.Log("[botw-coop] essai approche : pas de Bokoblin actif dans la liste");
+            return;
+        }
+        /* De l'ennemi vers le joueur, a plat ; Link pose a `distance` m de l'ennemi, 1 m au-dessus. */
+        float dx = st.m_Pos[0] - e[0], dz = st.m_Pos[2] - e[2];
+        const float len = std::sqrt(dx * dx + dz * dz);
+        if (len < 0.01f) {
+            dx = 1.0f;
+            dz = 0.0f;
+        } else {
+            dx /= len;
+            dz /= len;
+        }
+        s_Target[0] = e[0] + dx * distance;
+        s_Target[1] = e[1] + 1.0f;
+        s_Target[2] = e[2] + dz * distance;
+        if (!Place(st, s_Target, true))
+            return;
+        s_HoldLeft = 2;
+        Logging.Log("[botw-coop] essai approche : Bokoblin en (%.2f, %.2f, %.2f), Link pose a (%.2f, %.2f, %.2f)",
+            static_cast<double>(e[0]), static_cast<double>(e[1]), static_cast<double>(e[2]),
+            static_cast<double>(s_Target[0]), static_cast<double>(s_Target[1]), static_cast<double>(s_Target[2]));
+    }
 #endif
 
 }

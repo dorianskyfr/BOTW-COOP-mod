@@ -17,6 +17,8 @@ Commandes :
   shot etiquette           capture d'ecran -> build/runs/<nom>_<etiquette>.png
   actors [regex]           acteurs proches (nom, position)
   drop                     essai : fait tomber de 40 m le Bokoblin le plus proche (mort reelle)
+  bring                    essai : amene le Bokoblin le plus proche a 8 m du joueur (combat)
+  approach                 essai : pose Link a 12 m du Bokoblin actif le plus proche (combat)
   hpdown                   essai : vie du joueur pilote mise a 1 coeur
   lift                     essai : Link souleve de 50 m (chute mortelle, sauvetage par le partenaire)
   days n                   essai : annonce a la session un compteur de jours avance de n
@@ -159,6 +161,14 @@ def main():
             # Essai : voyage du jeu vers le sanctuaire ou la tour le plus proche a plus de 300 m.
             p.pad(buttons=1 << 55, ms=300)
             p.log("travel : voyage vers un point a plus de 300 m demande")
+        elif op == "bring":
+            # Essai combat : le plugin amene le Bokoblin le plus proche a 8 m devant le joueur (en z), au sol.
+            p.pad(buttons=1 << 54, ms=300)
+            p.log("bring : Bokoblin le plus proche amene a 8 m")
+        elif op == "approach":
+            # Essai combat : le plugin pose Link a 12 m du Bokoblin actif le plus proche.
+            p.pad(buttons=1 << 53, ms=300)
+            p.log("approach : Link pose a 12 m du Bokoblin le plus proche")
         elif op == "life":
             # Essai : le plugin journalise les points de vie des ennemis a moins de 200 m.
             p.pad(buttons=1 << 61, ms=300)

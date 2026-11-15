@@ -346,6 +346,27 @@ namespace coop::input_inject {
                         }
                         buttons &= ~(1ull << 55);
                     }
+                    /* Bit 54 : amene le Bokoblin de carte le plus proche a 8 m devant le joueur, au sol
+                       (essai de combat : l'ennemi attaque au lieu que le pilote doive marcher jusqu'a lui). */
+                    if ((buttons >> 54) & 1) {
+                        static std::uint64_t s_LastBring = 0;
+                        const auto cmd9 = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmd9 != s_LastBring) {
+                            s_LastBring = cmd9;
+                            coop::game::DropNearestEnemy(1.5f, 8.0f);
+                        }
+                        buttons &= ~(1ull << 54);
+                    }
+                    /* Bit 53 : Link pose a 12 m du Bokoblin actif le plus proche (essai de combat). */
+                    if ((buttons >> 53) & 1) {
+                        static std::uint64_t s_LastApproach = 0;
+                        const auto cmd10 = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmd10 != s_LastApproach) {
+                            s_LastApproach = cmd10;
+                            coop::warp::DebugApproachEnemy(12.0f);
+                        }
+                        buttons &= ~(1ull << 53);
+                    }
                     /* Bit 59 : decale de 4 m l'ennemi de carte le plus proche. Bit 58 : releve des positions. */
                     if ((buttons >> 58) & 3) {
                         static std::uint64_t s_LastPos = 0;

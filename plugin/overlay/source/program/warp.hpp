@@ -25,6 +25,8 @@ namespace coop::warp {
     void DebugLift(float height);
     /* Essai : voyage du jeu vers le point de voyage le plus proche a plus de 300 m. */
     void DebugTravel();
+    /* Essai combat : Link pose a `distance` metres du Bokoblin actif le plus proche, de son cote. */
+    void DebugApproachEnemy(float distance);
 #endif
 
 }

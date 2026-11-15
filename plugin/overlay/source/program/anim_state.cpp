@@ -1,5 +1,6 @@
 #include "anim_state.hpp"
 
+#include "enemy_life.hpp"
 #include "game.hpp"
 
 #include "lib.hpp"
@@ -63,6 +64,10 @@ namespace coop::anim_state {
                     const std::uint8_t old = s_Local.exchange(c, std::memory_order_relaxed);
                     if (c != old && s_Seen.fetch_add(1, std::memory_order_relaxed) < 40)
                         Logging.Log("[botw-coop] animation locale : sequence \"%s\" -> etat %u", buf, c);
+                } else if (list != 0 && name != nullptr && name->m_Str != nullptr
+                           && !coop::enemy_life::OnSequenceStart(list, name->m_Str, slot, bank)) {
+                    /* Copie d'ennemi suivie : seule l'animation annoncee par l'autre joueur est jouee. */
+                    return;
                 }
                 Orig(list, a, b, name, slot, bank, flag);
             }

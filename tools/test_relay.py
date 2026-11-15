@@ -209,6 +209,12 @@ def main():
         a.send("MEAL 8")
         line = b.expect("MEAL")
         check("repas partage retransmis avec l'identifiant", line == "MEAL 1 8", line)
+        a.send("EAS 52859ed1 Attack_Swing_01")
+        line = b.expect("EAS")
+        check("animation d'ennemi retransmise avec l'identifiant", line == "EAS 1 52859ed1 Attack_Swing_01", line)
+        a.send("EAS 52859ed1 nom;invalide")
+        a.pump(0.6)
+        check("animation d'ennemi au nom invalide non retransmise", not b.take("EAS"), str(b.lines))
 
         # Drapeaux : premiere annonce retransmise, doublon ignore, valeur 0 ignoree.
         a.send("FLAG 6ca64187 1")

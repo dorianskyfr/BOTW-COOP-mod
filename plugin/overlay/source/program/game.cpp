@@ -1259,6 +1259,39 @@ namespace coop::game {
         return rc;
     }
 
+    std::uintptr_t GetActorASList(std::uintptr_t actor) {
+        if (actor == 0)
+            return 0;
+        const auto list = Peek<std::uintptr_t>(actor + 0x560);
+        return LooksLikeHeapPtr(list) ? list : 0;
+    }
+
+    bool NearestBokoblinPos(float out[3]) {
+        PlayerState st;
+        if (!ReadPlayer(st) || st.m_PlayerActor == 0 || s_ActorNameOffset == 0)
+            return false;
+        float bestD2 = 1.0e12f;
+        bool found = false;
+        ForEachActor([&](std::uintptr_t actor) {
+            const char* name = reinterpret_cast<const char*>(actor + s_ActorNameOffset);
+            /* Actif seulement (etat 1, +0x64) : un ennemi deja vaincu reste dans la liste a l'etat 0. */
+            if (std::strncmp(name, "Enemy_Bokoblin", 14) != 0 || Peek<std::uint32_t>(actor + 0x640) == 0
+                || Peek<std::uint8_t>(actor + 0x64) != 1)
+                return false;
+            float p[3];
+            GetActorPos(actor, p);
+            const float dx = p[0] - st.m_Pos[0], dy = p[1] - st.m_Pos[1], dz = p[2] - st.m_Pos[2];
+            const float d2 = dx * dx + dy * dy + dz * dz;
+            if (d2 < bestD2) {
+                bestD2 = d2;
+                std::memcpy(out, p, sizeof(p));
+                found = true;
+            }
+            return false;
+        });
+        return found;
+    }
+
     const char* GetActorName(std::uintptr_t actor) {
         if (s_ActorNameOffset == 0 || actor == 0)
             return "";

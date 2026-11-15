@@ -18,6 +18,8 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 | Alerte quand le partenaire n'a presque plus de cœurs | Messages dans le bandeau du jeu |
 | ![Objet ramassé par le joueur 1](docs/evidence/2026-11-11_phaseC_J1-ramasse-le-champignon.png) | ![Le joueur 2 voit la tenue teinte en bleu du joueur 1](docs/evidence/2026-11-15_teinture-vue-par-J2_zoom_dy5.png) |
 | Un objet ramassé par l'un disparaît chez l'autre | Les teintures de l'armure sont transmises |
+| ![Le Bokoblin vu par le joueur 1](docs/evidence/2026-11-15_ennemi-anime-par-J1_vu-par-J1_eb3.png) | ![Le même Bokoblin vu par le joueur 2](docs/evidence/2026-11-15_ennemi-anime-par-J1_vu-par-J2_eb3.png) |
+| Un Bokoblin attaque : vu par le joueur 1… | … et par le joueur 2, même place, même animation |
 
 État réel, limites et preuves : `PROGRESS.md`. Détails techniques : `NOTES.md`, `ARCHITECTURE.md`. Décisions : `DECISIONS.md`.
 
@@ -25,7 +27,7 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 - Chaque joueur voit l'autre dans son monde sous la forme d'un Link animé (attente, marche, course, sprint, escalade, nage, vol plané, chute), avec son armure (tête, torse, jambes, teintures comprises) et ses armes, bouclier, arc et carquois.
 - Heure de la session (elle ne recule jamais ; un joueur en pause ne retient pas l'autre), jours, minuteur de lune de sang, météo (quand les deux joueurs sont dans le même climat).
 - Drapeaux de la liste blanche : progression (sanctuaires, tours, Créatures divines, Koroks) et objets de carte (ramassés, coffres, ennemis tués). Les étapes de quête, l'inventaire et le Compendium restent à chacun.
-- Points de vie et position des ennemis (première version).
+- Ennemis : points de vie, position et animations (le joueur le plus proche de l'ennemi fait foi, l'autre voit la même chose ; vérifié sur des Bokoblin, pas encore avec un vrai coup d'arme). `enemy_pos=0` et `enemy_anim=0` dans `romfs\botw-coop.txt` coupent ces partages.
 - Messages dans le bandeau du jeu quand l'autre joueur arrive ou part, et à la connexion.
 - **Téléportation vers l'autre joueur** : maintenir le clic du stick gauche 1,5 s. Jusqu'à 250 m, Link arrive à côté de lui ; plus loin, le jeu fait un voyage (chargement) vers le sanctuaire ou la tour le plus proche de lui, puis Link le rejoint. Un clic court accroupit Link comme d'habitude.
 - **Sauvegardes coop séparées** : au premier lancement avec le mod, vos sauvegardes sont copiées dans un dossier `coop` des données de sauvegarde du jeu (les originales sont seulement lues) ; ensuite le jeu ne lit et n'écrit que cette copie. Retirer le mod rend vos sauvegardes normales, inchangées.

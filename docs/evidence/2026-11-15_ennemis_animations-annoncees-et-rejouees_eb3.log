@@ -1,0 +1,293 @@
+# Essai eb3 (2026-11-15) : animations des ennemis annoncees (EAS) et rejouees, deux instances, mode 2
+=== eb3_game.txt (J1)
+00:02:16.348 animation ennemi : c51a8ff8 creneau 0 banque 0 "TalkStart" (fait foi)
+00:04:47.012 essai approche : Bokoblin en (-1143.06, 256.79, 1771.91), Link pose a (-1131.38, 257.79, 1774.68)
+00:04:47.132 teleportation : arrivee, position (-1131.38, 257.76, 1774.68)
+00:04:48.181 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (fait foi)
+00:04:48.319 animation ennemi : c51a8ff8 creneau 0 banque 0 "TalkStart" (fait foi)
+00:04:51.228 essai chute : Enemy_Bokoblin_Junior hash=52859ed1 etat=1 deplace de (-1143.06, 256.79, 1771.91) a (-1131.37, 258.41, 1782.71), controleur de personnage rc=1
+00:04:51.645 animation ennemi : 52859ed1 creneau 0 banque 0 "Notice" (fait foi)
+00:04:51.700 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (fait foi)
+00:04:51.793 animation ennemi : c51a8ff8 creneau 0 banque 0 "Talk" (fait foi)
+00:04:51.894 essai chute : fin du maintien, l'acteur est en (-1131.37, 257.83, 1782.71)
+00:04:52.390 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:04:53.491 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (fait foi)
+00:04:53.566 animation ennemi : 52859ed1 creneau 0 banque 0 "Run" (fait foi)
+00:04:54.447 animation ennemi : 52859ed1 creneau 0 banque 0 "Turn" (fait foi)
+00:04:54.890 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:04:55.427 animation ennemi : 636d844c creneau 0 banque 0 "ListenStart" (fait foi)
+00:04:58.328 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (fait foi)
+00:05:00.423 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:01.188 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (fait foi)
+00:05:03.221 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:05.154 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (fait foi)
+00:05:06.791 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (fait foi)
+00:05:08.822 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:09.990 position ennemi : 564 envois, 0 corrections au total ; animations : 19 annoncees, 0 rejouees, 0 bloquees (mode 2)
+00:05:11.258 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (fait foi)
+00:05:11.754 animation ennemi : c51a8ff8 creneau 0 banque 0 "Dance" (fait foi)
+00:05:13.289 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:13.391 animation ennemi : 636d844c creneau 0 banque 0 "Squat" (fait foi)
+00:05:15.593 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (fait foi)
+00:05:17.625 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:21.088 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (fait foi)
+00:05:23.123 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:25.290 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (fait foi)
+00:05:25.555 animation ennemi : c51a8ff8 creneau 0 banque 0 "DanceEnd" (fait foi)
+00:05:27.321 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:31.091 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (fait foi)
+00:05:31.656 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (fait foi)
+00:05:32.220 essai approche : Bokoblin en (-1129.46, 256.93, 1776.78), Link pose a (-1137.60, 257.93, 1767.97)
+00:05:32.292 teleportation : arrivee, position (-1137.60, 257.90, 1767.97)
+00:05:32.478 animation ennemi : c51a8ff8 creneau 0 banque 0 "Notice" (fait foi)
+00:05:32.514 animation ennemi : 636d844c creneau 0 banque 0 "Notice" (fait foi)
+00:05:33.157 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:33.192 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (fait foi)
+00:05:33.195 animation ennemi : 636d844c creneau 0 banque 0 "BattleWalk" (fait foi)
+00:05:33.227 animation ennemi : 636d844c creneau 0 banque 0 "Run" (fait foi)
+00:05:33.321 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.1
+00:05:33.321 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 12.1 m, J2 a 2.8 m)
+00:05:33.655 animation ennemi : c51a8ff8 creneau 0 banque 0 "Turn" (fait foi)
+00:05:34.044 animation ennemi : 636d844c creneau 0 banque 0 "Catch" (fait foi)
+00:05:34.309 animation ennemi : c51a8ff8 creneau 0 banque 0 "Run" (fait foi)
+00:05:34.412 animation ennemi : c51a8ff8 creneau 0 banque 0 "Turn" (fait foi)
+00:05:34.578 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (fait foi)
+00:05:34.940 animation ennemi : 636d844c creneau 0 banque 0 "Turn" (fait foi)
+00:05:35.772 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.2
+00:05:36.243 animation ennemi : 636d844c creneau 0 banque 0 "Search" (fait foi)
+00:05:37.738 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.3
+00:05:40.012 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.4
+00:05:42.007 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.5
+00:05:42.807 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+00:05:44.141 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.6
+00:05:44.206 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (copie suivie)
+00:05:44.405 animation ennemi : c51a8ff8 creneau 0 banque 0 "Turn" (fait foi)
+00:05:44.706 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (fait foi)
+00:05:44.943 animation ennemi : c51a8ff8 creneau 0 banque 0 "Run" (fait foi)
+00:05:45.139 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (fait foi)
+00:05:45.772 animation ennemi : 636d844c creneau 0 banque 0 "Notice" (fait foi)
+00:05:46.108 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.7
+00:05:46.641 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+00:05:47.876 animation ennemi : 636d844c creneau 0 banque 0 "BattleWalk" (fait foi)
+00:05:47.972 animation ennemi : 636d844c creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:48.173 animation ennemi : 636d844c creneau 0 banque 0 "Run" (fait foi)
+00:05:49.743 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.8
+00:05:49.908 position ennemi : 736 envois, 0 corrections au total ; animations : 53 annoncees, 8 rejouees, 3 bloquees (mode 2)
+00:05:50.207 animation ennemi : 636d844c creneau 0 banque 0 "Search" (fait foi)
+00:05:50.272 animation ennemi : c51a8ff8 creneau 0 banque 0 "Notice" (fait foi)
+00:05:51.674 animation ennemi : c51a8ff8 creneau 0 banque 0 "BattleWalk" (fait foi)
+00:05:51.740 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.9
+00:05:51.805 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (fait foi)
+00:05:52.640 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.10
+00:05:53.612 animation ennemi : 636d844c creneau 0 banque 0 "Run" (fait foi)
+00:05:53.645 animation ennemi : 636d844c creneau 0 banque 0 "Notice" (fait foi)
+00:05:54.340 animation ennemi : 636d844c creneau 0 banque 0 "Run" (fait foi)
+00:05:54.675 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (copie suivie)
+00:05:54.774 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.11
+00:05:55.406 animation ennemi : 636d844c creneau 0 banque 0 "Turn" (fait foi)
+00:05:55.707 animation ennemi : 636d844c creneau 0 banque 0 "Burnward" (fait foi)
+00:05:57.043 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.12
+00:05:57.675 animation ennemi : 636d844c creneau 0 banque 0 "Wait" (fait foi)
+00:05:58.073 animation ennemi : c51a8ff8 creneau 0 banque 0 "Turn" (fait foi)
+00:05:58.174 animation ennemi : 636d844c creneau 0 banque 0 "Turn" (fait foi)
+00:05:58.375 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+00:05:58.473 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (fait foi)
+00:05:58.606 animation ennemi : c51a8ff8 creneau 0 banque 0 "Run" (fait foi)
+00:05:58.677 animation ennemi : 636d844c creneau 0 banque 0 "Run" (fait foi)
+00:05:58.739 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (fait foi)
+00:05:59.008 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.13
+00:05:59.049 animation ennemi : 636d844c creneau 0 banque 0 "Turn" (fait foi)
+00:05:59.439 animation ennemi : 636d844c creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:59.775 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.14
+00:06:01.145 animation ennemi : 636d844c creneau 0 banque 0 "Run" (fait foi)
+00:06:01.741 animation ennemi : 636d844c creneau 0 banque 0 "Turn" (fait foi)
+00:06:01.774 animation ennemi : 636d844c creneau 0 banque 0 "Attack" (fait foi)
+00:06:01.775 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (copie suivie)
+00:06:01.906 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.15
+00:06:04.191 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.16
+00:06:06.355 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.17
+00:06:10.189 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.18
+00:06:12.255 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.19
+00:06:14.391 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.20
+00:06:16.391 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.21
+00:06:17.296 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.22
+00:06:19.454 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J2), n.23
+00:06:21.554 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J2), n.24
+=== eb3_game2.txt (J2)
+00:02:09.895 position ennemi : Enemy_Bokoblin_Junior c51a8ff8, on suit la copie de l'autre joueur (nous a 129.6 m, J1 a 129.6 m)
+00:02:09.895 position ennemi : Enemy_Bokoblin_Junior 636d844c, on suit la copie de l'autre joueur (nous a 126.3 m, J1 a 126.3 m)
+00:02:09.895 position ennemi : Enemy_Bokoblin_Junior 52859ed1, on suit la copie de l'autre joueur (nous a 121.9 m, J1 a 121.9 m)
+00:04:28.674 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Squat" (annonce par J1), n.1
+00:04:28.828 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "TalkStart" (annonce par J1), n.2
+00:04:31.539 animation ennemi : 52859ed1 creneau 0 banque 0 "Squat" (copie suivie)
+00:04:31.640 animation ennemi : c51a8ff8 creneau 0 banque 0 "TalkStart" (copie suivie)
+00:04:31.706 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 15.99 m (rc=1), n.1
+00:04:31.907 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.16 m (rc=1), n.2
+00:04:31.944 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.27 m (rc=1), n.3
+00:04:31.974 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.39 m (rc=1), n.4
+00:04:32.006 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.50 m (rc=1), n.5
+00:04:32.038 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.34 m (rc=1), n.6
+00:04:32.073 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.27 m (rc=1), n.7
+00:04:32.110 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.25 m (rc=1), n.8
+00:04:32.139 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.28 m (rc=1), n.9
+00:04:32.174 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Squat" (annonce par J1), n.3
+00:04:32.174 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Notice" (annonce par J1), n.4
+00:04:32.192 animation ennemi : 52859ed1 creneau 0 banque 0 "Notice" (copie suivie)
+00:04:32.219 position ennemi : Enemy_Bokoblin_Junior 52859ed1 ramene vers la copie de J1, ecart 0.29 m (rc=1), n.10
+00:04:32.338 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Talk" (annonce par J1), n.5
+00:04:32.916 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:32.922 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:33.031 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:33.032 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J1), n.6
+00:04:33.055 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:33.097 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:34.004 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Run" (annonce par J1), n.7
+00:04:34.909 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Turn" (annonce par J1), n.8
+00:04:35.372 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J1), n.9
+00:04:35.805 animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "ListenStart" (annonce par J1), n.10
+00:04:36.606 teleportation : de (-1024.48, 252.63, 1799.95) vers J1 (-1131.37, 257.41, 1774.71), 109.9 m
+00:04:36.609 position ennemi : Enemy_Golem_Junior d72f6746, on suit la copie de l'autre joueur (nous a 143.1 m, J1 a 142.8 m)
+00:04:37.077 teleportation : arrivee, position (-1131.37, 257.12, 1774.71)
+00:04:37.816 animation ennemi : 636d844c creneau 0 banque 0 "Notice" (copie suivie)
+00:04:38.759 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J1), n.11
+00:04:40.775 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:40.782 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:40.806 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:40.823 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:40.890 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J1), n.12
+00:04:40.893 animation ennemi : 52859ed1 creneau 0 banque 0 "Notice" (copie suivie)
+00:04:41.656 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J1), n.13
+00:04:43.623 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J1), n.14
+00:04:45.590 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Squat" (annonce par J1), n.15
+00:04:47.257 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J1), n.16
+00:04:49.257 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J1), n.17
+00:04:50.342 animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (copie suivie)
+00:04:50.392 animation ennemi : 52859ed1 creneau 0 banque 0 "Run" (copie suivie)
+00:04:50.498 animation ennemi : 52859ed1 creneau 0 banque 0 "Turn" (copie suivie)
+00:04:50.759 position ennemi : 0 envois, 42 corrections au total ; animations : 0 annoncees, 17 rejouees, 17 bloquees (mode 2)
+00:04:51.689 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J1), n.18
+00:04:52.124 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Dance" (annonce par J1), n.19
+00:04:52.859 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+00:04:53.660 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J1), n.20
+00:04:53.789 animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "Squat" (annonce par J1), n.21
+00:04:55.923 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J1), n.22
+00:04:57.958 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (copie suivie)
+00:04:58.090 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J1), n.23
+00:05:01.590 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J1), n.24
+00:05:01.757 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+00:05:03.555 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J1), n.25
+00:05:04.392 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+00:05:05.691 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J1), n.26
+00:05:05.964 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "DanceEnd" (annonce par J1), n.27
+00:05:07.656 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "BattleWait" (annonce par J1), n.28
+00:05:08.258 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+00:05:11.458 animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "GrabAndShoot" (annonce par J1), n.29
+00:05:12.057 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (copie suivie)
+00:05:12.057 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Squat" (annonce par J1), n.30
+00:05:12.827 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Notice" (annonce par J1), n.31
+00:05:12.890 animation ennemi : c51a8ff8 creneau 0 banque 0 "Notice" (copie suivie)
+00:05:12.958 animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "Notice" (annonce par J1), n.32
+00:05:13.290 position ennemi : Enemy_Bokoblin_Junior 52859ed1, notre copie fait foi (nous a 2.8 m, J1 a 12.1 m)
+00:05:13.493 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:13.521 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.522 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.563 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.593 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.626 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.660 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.663 animation ennemi : 636d844c creneau 0 banque 0 "Turn" (copie suivie)
+00:05:13.691 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (copie suivie)
+00:05:13.692 animation ennemi : 636d844c creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.692 animation ennemi : 636d844c creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.749 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.749 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.749 animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "Run" (annonce par J1), n.33
+00:05:13.749 animation ennemi : 636d844c creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.763 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.789 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.823 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.823 animation ennemi : 636d844c creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.858 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.887 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (copie suivie)
+00:05:13.924 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.924 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.955 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:13.986 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:14.022 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:14.056 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:14.088 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (copie suivie)
+00:05:14.122 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:14.123 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:14.156 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:14.189 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:14.189 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Turn" (annonce par J1), n.34
+00:05:14.220 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:14.254 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:14.295 animation ennemi : 636d844c creneau 0 banque 0 "Notice" (copie suivie)
+00:05:14.656 animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "Catch" (annonce par J1), n.35
+00:05:14.789 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Run" (annonce par J1), n.36
+00:05:14.954 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Turn" (annonce par J1), n.37
+00:05:15.088 animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Search" (annonce par J1), n.38
+00:05:15.388 animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "Turn" (annonce par J1), n.39
+00:05:15.827 animation ennemi : 52859ed1 creneau 0 banque 0 "GrabAndShoot" (fait foi)
+00:05:16.755 animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "Search" (annonce par J1), n.40
+00:05:17.857 animation ennemi : 52859ed1 creneau 0 banque 0 "BattleWait" (fait foi)
+00:05:18.488 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (copie suivie)
+00:05:18.520 animation ennemi : c51a8ff8 creneau 0 banque 0 "Notice" (copie suivie)
+00:05:18.557 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.558 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.589 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.621 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.654 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.695 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.722 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (copie suivie)
+00:05:18.753 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.753 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.787 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.822 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.857 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.889 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.920 animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (copie suivie)
+00:05:18.954 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.954 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:18.988 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:19.026 animation ennemi : c51a8ff8 creneau 0 banque 0 "Search" (copie suivie)
+00:05:30.722 position ennemi : 18 envois, 198 corrections au total ; animations : 8 annoncees, 50 rejouees, 555 bloquees (mode 2)
+00:05:34.123 position ennemi : Enemy_Bokoblin_Junior 636d844c ramene vers la copie de J1, ecart 0.47 m (rc=1), n.300
+00:05:44.690 position ennemi : Enemy_Bokoblin_Junior 636d844c ramene vers la copie de J1, ecart 0.96 m (rc=1), n.600
+00:05:54.990 position ennemi : Enemy_Bokoblin_Junior 636d844c ramene vers la copie de J1, ecart 0.47 m (rc=1), n.900
+00:06:05.156 position ennemi : Enemy_Bokoblin_Junior 636d844c ramene vers la copie de J1, ecart 0.47 m (rc=1), n.1200
+00:06:05.591 position ennemi : Enemy_Bokoblin_Junior 636d844c, notre copie fait foi (nous a 9.3 m, J1 a 3.1 m)
+00:06:06.060 position ennemi : Enemy_Bokoblin_Junior c51a8ff8, notre copie fait foi (nous a 19.9 m, J1 a 19.3 m)
+00:06:06.193 position ennemi : Enemy_Golem_Junior d72f6746, notre copie fait foi (nous a 142.8 m, J1 a 134.3 m)
+=== relais
+18:07:01.982 joueur 1 connecte depuis 127.0.0.1:23053 (1 en ligne)
+18:07:22.819 joueur 2 connecte depuis 127.0.0.1:23070 (2 en ligne)
+18:07:36.311 joueur 3 connecte depuis 127.0.0.1:23075 (3 en ligne)
+18:09:02.708 joueur 1 : animation d'ennemi n.1 = c51a8ff8 TalkStart
+18:11:34.578 joueur 1 : animation d'ennemi n.2 = c51a8ff8 Squat
+18:11:34.732 joueur 1 : animation d'ennemi n.3 = c51a8ff8 TalkStart
+18:11:38.083 joueur 1 : animation d'ennemi n.4 = 52859ed1 Notice
+18:11:38.083 joueur 1 : animation d'ennemi n.5 = c51a8ff8 Squat
+18:11:38.234 joueur 1 : animation d'ennemi n.6 = c51a8ff8 Talk
+18:11:38.849 joueur 1 : animation d'ennemi n.7 = 52859ed1 BattleWait
+18:11:39.922 joueur 1 : animation d'ennemi n.8 = 52859ed1 Search
+18:11:39.922 joueur 1 : animation d'ennemi n.9 = 52859ed1 Run
+18:11:40.845 joueur 1 : animation d'ennemi n.10 = 52859ed1 Turn
+18:11:41.299 joueur 1 : animation d'ennemi n.11 = 52859ed1 BattleWait
+18:11:41.752 joueur 1 : animation d'ennemi n.12 = 636d844c ListenStart
+18:11:44.663 joueur 1 : animation d'ennemi n.13 = 52859ed1 GrabAndShoot
+18:11:46.806 joueur 1 : animation d'ennemi n.14 = 52859ed1 BattleWait
+18:11:47.563 joueur 1 : animation d'ennemi n.15 = 52859ed1 GrabAndShoot
+18:11:49.547 joueur 1 : animation d'ennemi n.16 = 52859ed1 BattleWait
+18:11:51.536 joueur 1 : animation d'ennemi n.17 = c51a8ff8 Squat
+18:11:53.210 joueur 1 : animation d'ennemi n.18 = 52859ed1 GrabAndShoot
+18:11:55.185 joueur 1 : animation d'ennemi n.19 = 52859ed1 BattleWait
+18:11:57.624 joueur 1 : animation d'ennemi n.20 = 52859ed1 GrabAndShoot
+18:12:17.798 joueur 3 connecte depuis 127.0.0.1:36119 (3 en ligne)
+18:12:19.569 joueur 2 : animation d'ennemi n.1 = 52859ed1 BattleWait
+18:12:22.002 joueur 2 : animation d'ennemi n.2 = 52859ed1 GrabAndShoot
+18:12:23.968 joueur 2 : animation d'ennemi n.3 = 52859ed1 BattleWait
+18:12:26.245 joueur 2 : animation d'ennemi n.4 = 52859ed1 GrabAndShoot
+18:12:28.218 joueur 2 : animation d'ennemi n.5 = 52859ed1 BattleWait
+18:12:30.340 joueur 2 : animation d'ennemi n.6 = 52859ed1 GrabAndShoot

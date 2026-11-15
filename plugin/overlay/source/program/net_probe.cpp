@@ -317,6 +317,8 @@ namespace coop::net_probe {
                            &pm.m_Mtx[0], &pm.m_Mtx[1], &pm.m_Mtx[2], &pm.m_Mtx[3], &pm.m_Mtx[4], &pm.m_Mtx[5], &pm.m_Mtx[6], &pm.m_Mtx[7],
                            &pm.m_Mtx[8], &pm.m_Mtx[9], &pm.m_Mtx[10], &pm.m_Mtx[11]) == 15) {
                 coop::enemy_life::g_PosIncoming.Push(pm);
+            } else if (coop::enemy_life::SeqMsg sm; std::sscanf(line, "EAS %d %x %47s", &sm.m_FromId, &sm.m_Hash, sm.m_Name) == 3) {
+                coop::enemy_life::g_SeqIncoming.Push(sm);
             } else if (unsigned lifeHash = 0; std::sscanf(line, "LIFE %d %x %d", &id, &lifeHash, &m_days) == 3) {
                 if (m_days >= 0)
                     coop::enemy_life::g_Incoming.Push({ lifeHash, static_cast<std::uint32_t>(m_days) });
@@ -648,6 +650,11 @@ namespace coop::net_probe {
                             static_cast<double>(m[4]), static_cast<double>(m[5]), static_cast<double>(m[6]), static_cast<double>(m[7]),
                             static_cast<double>(m[8]), static_cast<double>(m[9]), static_cast<double>(m[10]), static_cast<double>(m[11])));
                     }
+                    /* Animations d'ennemis (EAS) : au plus 8 par passe. */
+                    coop::enemy_life::SeqMsg sm;
+                    for (int n = 0; n < 8 && used + 80 < sizeof(posBuf) && coop::enemy_life::g_SeqOutgoing.Pop(sm); n++)
+                        used += static_cast<std::size_t>(std::snprintf(posBuf + used, sizeof(posBuf) - used,
+                            "EAS %08x %s\n", sm.m_Hash, sm.m_Name));
                     if (used > 0 && !SendAll(s_Fd, posBuf, used))
                         Disconnect("echec d'envoi");
                 }

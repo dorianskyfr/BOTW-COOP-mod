@@ -270,6 +270,10 @@ namespace coop::game {
 
     /* Outil de test : place le Bokoblin de carte le plus proche au-dessus du joueur (essai chute, NOTES 5.11). */
     int DropNearestEnemy(float height, float ahead);
+    /* Liste de sequences d'animation de l'acteur (ksys::as::ASList*, Actor+0x560, NOTES 5.27), 0 si illisible. */
+    std::uintptr_t GetActorASList(std::uintptr_t actor);
+    /* Outil de test : position du Bokoblin de carte le plus proche du joueur (false s'il n'y en a pas). */
+    bool NearestBokoblinPos(float out[3]);
     /*
      * Points de vie d'un ennemi actif (Actor::getLife / getMaxLife, cases 87 et 30 de la
      * vtable, mesurees a l'essai kw). lifePtr : ou ecrire. false si ce n'est pas un ennemi
