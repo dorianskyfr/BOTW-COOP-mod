@@ -33,6 +33,14 @@ static class Program
                 case "--page": page = Next(); break;
                 case "--relay-test": relayTest = int.Parse(Next()); break;
                 case "--duo-test": duoTest = int.Parse(Next()); break;
+                case "--test-connection":
+                {
+                    // Essai : meme verification que le bouton « Tester » ; resultat dans test-connexion.log.
+                    var (ok, message) = Setup.TestRelayAsync(Next()).GetAwaiter().GetResult();
+                    Directory.CreateDirectory(Settings.WorkDir);
+                    File.AppendAllText(Path.Combine(Settings.WorkDir, "test-connexion.log"), (ok ? "OK " : "ECHEC ") + message + Environment.NewLine);
+                    return ok ? 0 : 2;
+                }
                 case "--ryujinx": ryujinx = Next(); break;
                 case "--base": baseNsp = Next(); break;
                 case "--update": update = Next(); break;

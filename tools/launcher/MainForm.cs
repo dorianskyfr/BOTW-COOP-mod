@@ -29,6 +29,7 @@ public sealed class MainForm : Form
     readonly FlatButton _duoBtn = new() { Kind = FlatButton.Kinds.Segment, Text = "À deux sur ce PC" };
     readonly InputBox _relayAddr = new() { Placeholder = "Adresse de l'hôte, ex. 192.168.1.20" };
     readonly Label _hostInfo = new() { AutoSize = false, ForeColor = Theme.Muted };
+    readonly FlatButton _testBtn = new() { Text = "Tester" };
     readonly InputBox _password = new() { Placeholder = "Facultatif, le même pour les deux" };
     readonly FlatButton _play = new() { Kind = FlatButton.Kinds.Primary, Text = "JOUER", Radius = 10 };
     readonly FlatButton _install = new() { Text = "Installer / Mettre à jour", Radius = 10 };
@@ -99,6 +100,7 @@ public sealed class MainForm : Form
         _hostBtn.Click += (_, _) => SetRole(Role.Host);
         _guestBtn.Click += (_, _) => SetRole(Role.Guest);
         _duoBtn.Click += (_, _) => SetRole(Role.Duo);
+        _testBtn.Click += async (_, _) => await TestConnectionAsync();
         _install.Click += async (_, _) => await Busy(InstallAsync);
         _play.Click += async (_, _) => await Busy(PlayAsync);
         _uninstall.Click += (_, _) => Uninstall();
@@ -162,7 +164,9 @@ public sealed class MainForm : Form
         _hostBtn.SetBounds(S(22), S(84), S(150), S(38));
         _guestBtn.SetBounds(S(178), S(84), S(172), S(38));
         _duoBtn.SetBounds(S(356), S(84), S(182), S(38));
-        _relayAddr.SetBounds(S(22), S(132), S(516), S(38));
+        _relayAddr.SetBounds(S(22), S(132), S(404), S(38));
+        _testBtn.SetBounds(S(434), S(132), S(104), S(38));
+        left.Controls.Add(_testBtn);
         _hostInfo.SetBounds(S(24), S(128), S(514), S(46));
         _hostInfo.BackColor = left.BackColor;
         _hostInfo.Font = Theme.Font(9.5f);
@@ -310,6 +314,7 @@ public sealed class MainForm : Form
         foreach (var b in new[] { _hostBtn, _guestBtn, _duoBtn })
             b.Invalidate();
         _relayAddr.Visible = role == Role.Guest;
+        _testBtn.Visible = role == Role.Guest;
         _hostInfo.Visible = role != Role.Guest;
         _versionLabel.Text = CoopSaveText();
         var ip = Setup.LanAddress();
@@ -599,12 +604,66 @@ public sealed class MainForm : Form
             }
         }
         if (_s.Host && (_relay == null || _relay.HasExited))
+        {
             _relay = NewSetup().StartRelay(_s);
+            await CheckOwnRelayAsync();
+        }
+        else if (!_s.Host)
+        {
+            // Invite : on previent tout de suite si l'hote ne repond pas (le jeu reessaierait en silence).
+            var (ok, message) = await Setup.TestRelayAsync(Setup.RelayFor(_s));
+            Log((ok ? "Connexion : " : "Connexion : ÉCHEC — ") + message);
+            if (!ok && MessageBox.Show(this, message + "\n\nLancer le jeu quand même ? (il réessaiera tout seul toutes les 3 s)",
+                    "BOTW Coop", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
+        }
         if (_s.LocalDuo)
             await NewSetup().StartLocalDuoAsync(_s, _dataDirOverride);
         else
             NewSetup().StartGame(_s, _dataDirOverride);
         Progress(0);
+    }
+
+    /// <summary>
+    /// Hote : le relais vient d'etre lance ; on verifie qu'il repond sur l'adresse donnee a l'autre joueur.
+    /// Depuis ce PC, le pare-feu n'intervient pas : la premiere fois, on explique la demande de Windows.
+    /// </summary>
+    async Task CheckOwnRelayAsync()
+    {
+        await Task.Delay(1500);
+        var address = Setup.RelayFor(_s);
+        if (string.IsNullOrEmpty(address))
+            address = "127.0.0.1:47800";
+        var (ok, message) = await Setup.TestRelayAsync(address);
+        Log(ok ? "Serveur de la partie : lancé et joignable." : "Serveur de la partie : ÉCHEC — " + message);
+        if (!ok)
+        {
+            MessageBox.Show(this, "Le serveur de la partie ne répond pas sur ce PC.\n\n" + message, "BOTW Coop", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+        if (!_s.LocalDuo && !_s.FirewallTipShown)
+        {
+            _s.FirewallTipShown = true;
+            _s.Save();
+            MessageBox.Show(this,
+                "Si Windows demande d'autoriser « Python » sur le réseau, cliquez sur « Autoriser » (réseaux privés) : " +
+                "c'est le serveur de la partie, l'autre joueur doit pouvoir le joindre.\n\n" +
+                "L'autre joueur peut vérifier avec le bouton « Tester » de son launcher.",
+                "BOTW Coop", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+    }
+
+    /// <summary>Invite : verifie que le serveur de l'hote repond, avant de lancer le jeu.</summary>
+    async Task TestConnectionAsync()
+    {
+        _testBtn.Enabled = false;
+        _lastLine.Text = "Test de la connexion…";
+        var (ok, message) = await Setup.TestRelayAsync(_relayAddr.Text);
+        _testBtn.Enabled = true;
+        Log((ok ? "Connexion : " : "Connexion : ÉCHEC — ") + message);
+        _lastLine.Text = message;
+        if (!ok)
+            MessageBox.Show(this, message, "BOTW Coop", MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
 
     void Uninstall()

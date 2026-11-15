@@ -378,6 +378,52 @@ public sealed class Setup
         return a;
     }
 
+    /// <summary>
+    /// Test de connexion au relais : connexion TCP (3 s au plus), lecture de la premiere ligne
+    /// (HELLO &lt;id&gt; &lt;version du protocole&gt; &lt;defi&gt;), puis fermeture sans rien envoyer : le relais
+    /// note juste une connexion et un depart. Renvoie un message pour l'utilisateur.
+    /// </summary>
+    public static async Task<(bool Ok, string Message)> TestRelayAsync(string address)
+    {
+        var a = (address ?? "").Trim();
+        if (a.Length == 0)
+            return (false, "Indiquez l'adresse de l'hôte.");
+        var host = a;
+        var port = 47800;
+        var colon = a.LastIndexOf(':');
+        if (colon > 0 && int.TryParse(a[(colon + 1)..], out var p))
+        {
+            host = a[..colon];
+            port = p;
+        }
+        try
+        {
+            using var client = new TcpClient();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+            await client.ConnectAsync(host, port, cts.Token);
+            client.ReceiveTimeout = 3000;
+            using var reader = new StreamReader(client.GetStream(), Encoding.ASCII);
+            var hello = await reader.ReadLineAsync(cts.Token) ?? "";
+            var parts = hello.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length >= 3 && parts[0] == "HELLO")
+                return (true, $"Serveur de la partie joignable ({host}:{port}, protocole v{parts[2]}).");
+            return (false, $"{host}:{port} répond, mais ce n'est pas le serveur de BOTW Coop.");
+        }
+        catch (OperationCanceledException)
+        {
+            return (false, $"Pas de réponse de {host}:{port} en 3 s. Vérifiez l'adresse, que l'hôte a cliqué sur « Jouer », " +
+                           "et que le pare-feu Windows de l'hôte autorise Python (réseau privé).");
+        }
+        catch (SocketException e) when (e.SocketErrorCode == SocketError.ConnectionRefused)
+        {
+            return (false, $"{host} refuse la connexion : le serveur n'est pas lancé. L'hôte doit cliquer sur « Jouer ».");
+        }
+        catch (Exception e)
+        {
+            return (false, $"Connexion à {host}:{port} impossible : {e.Message}");
+        }
+    }
+
     /// <summary>Premiere adresse IPv4 privee d'une interface active (reseau local uniquement).</summary>
     public static string LanAddress()
     {
