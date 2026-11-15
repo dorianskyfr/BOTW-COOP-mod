@@ -12,6 +12,10 @@ public sealed class Settings
     public string RelayAddress { get; set; } = "";
     public string Password { get; set; } = "";
     public bool FixIgnoreMissingServices { get; set; } = true;
+    /// <summary>Deux joueurs sur ce PC : deux fenetres Ryujinx, le joueur 1 heberge (Host vaut alors vrai).</summary>
+    public bool LocalDuo { get; set; }
+    /// <summary>Premiere preparation du joueur 2 : partir d'une copie des sauvegardes du joueur 1.</summary>
+    public bool Player2CopiesSave { get; set; } = true;
     /// <summary>Version du mod installee (etiquette de la release GitHub).</summary>
     public string InstalledVersion { get; set; } = "";
     /// <summary>Empreinte des fichiers du jeu et de la version des scripts ayant servi a la generation.</summary>

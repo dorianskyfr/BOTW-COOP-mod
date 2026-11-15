@@ -26,6 +26,7 @@ public sealed class MainForm : Form
     readonly StatusLine _status = new();
     readonly FlatButton _hostBtn = new() { Kind = FlatButton.Kinds.Segment, Text = "J'héberge" };
     readonly FlatButton _guestBtn = new() { Kind = FlatButton.Kinds.Segment, Text = "Je rejoins un ami" };
+    readonly FlatButton _duoBtn = new() { Kind = FlatButton.Kinds.Segment, Text = "À deux sur ce PC" };
     readonly InputBox _relayAddr = new() { Placeholder = "Adresse de l'hôte, ex. 192.168.1.20" };
     readonly Label _hostInfo = new() { AutoSize = false, ForeColor = Theme.Muted };
     readonly InputBox _password = new() { Placeholder = "Facultatif, le même pour les deux" };
@@ -48,6 +49,11 @@ public sealed class MainForm : Form
     readonly CheckBox _fixCfg = new()
     {
         Text = "Activer « Ignorer les services manquants » dans Ryujinx (nécessaire au jeu 1.9.0)",
+        ForeColor = Theme.Text, FlatStyle = FlatStyle.Flat, AutoSize = true,
+    };
+    readonly CheckBox _p2Save = new()
+    {
+        Text = "À deux sur ce PC : le joueur 2 part d'une copie des sauvegardes du joueur 1 (première fois)",
         ForeColor = Theme.Text, FlatStyle = FlatStyle.Flat, AutoSize = true,
     };
     readonly FlatButton _back = new() { Kind = FlatButton.Kinds.Primary, Text = "Enregistrer", Radius = 10 };
@@ -90,8 +96,9 @@ public sealed class MainForm : Form
         _busyButtons.AddRange(new[] { _play, _install, _uninstall, _back });
 
         LoadForm();
-        _hostBtn.Click += (_, _) => SetRole(true);
-        _guestBtn.Click += (_, _) => SetRole(false);
+        _hostBtn.Click += (_, _) => SetRole(Role.Host);
+        _guestBtn.Click += (_, _) => SetRole(Role.Guest);
+        _duoBtn.Click += (_, _) => SetRole(Role.Duo);
         _install.Click += async (_, _) => await Busy(InstallAsync);
         _play.Click += async (_, _) => await Busy(PlayAsync);
         _uninstall.Click += (_, _) => Uninstall();
@@ -153,13 +160,14 @@ public sealed class MainForm : Form
 
         Caption("PARTIE", left, S(24), S(62));
         _hostBtn.SetBounds(S(22), S(84), S(150), S(38));
-        _guestBtn.SetBounds(S(178), S(84), S(170), S(38));
+        _guestBtn.SetBounds(S(178), S(84), S(172), S(38));
+        _duoBtn.SetBounds(S(356), S(84), S(182), S(38));
         _relayAddr.SetBounds(S(22), S(132), S(516), S(38));
-        _hostInfo.SetBounds(S(24), S(132), S(514), S(38));
+        _hostInfo.SetBounds(S(24), S(128), S(514), S(46));
         _hostInfo.BackColor = left.BackColor;
         _hostInfo.Font = Theme.Font(9.5f);
         _hostInfo.TextAlign = ContentAlignment.MiddleLeft;
-        left.Controls.AddRange(new Control[] { _hostBtn, _guestBtn, _relayAddr, _hostInfo });
+        left.Controls.AddRange(new Control[] { _hostBtn, _guestBtn, _duoBtn, _relayAddr, _hostInfo });
 
         Caption("MOT DE PASSE DE LA PARTIE", left, S(24), S(182));
         _password.SetBounds(S(22), S(204), S(516), S(38));
@@ -218,8 +226,14 @@ public sealed class MainForm : Form
         _fixCfg.FlatAppearance.BorderColor = Theme.Border;
         _fixCfg.FlatAppearance.CheckedBackColor = Theme.Surface2;
         _fixCfg.Font = Theme.Font(9.5f);
-        _fixCfg.Location = new Point(S(24), y + S(4));
+        _fixCfg.Location = new Point(S(24), y - S(2));
         card.Controls.Add(_fixCfg);
+        _p2Save.BackColor = card.BackColor;
+        _p2Save.Font = Theme.Font(9.5f);
+        _p2Save.FlatAppearance.BorderColor = Theme.Border;
+        _p2Save.FlatAppearance.CheckedBackColor = Theme.Surface2;
+        _p2Save.Location = new Point(S(24), y + S(24));
+        card.Controls.Add(_p2Save);
 
         _back.SetBounds(S(892 - 22 - 180), S(352 - 22 - 46), S(180), S(46));
         card.Controls.Add(_back);
@@ -284,19 +298,27 @@ public sealed class MainForm : Form
         _logBtn.Text = page == _logPage ? "←  Retour" : "☰  Journal";
     }
 
-    void SetRole(bool host)
+    enum Role { Host, Guest, Duo }
+
+    Role CurrentRole => _duoBtn.Selected ? Role.Duo : _guestBtn.Selected ? Role.Guest : Role.Host;
+
+    void SetRole(Role role)
     {
-        _hostBtn.Selected = host;
-        _guestBtn.Selected = !host;
-        _hostBtn.Invalidate();
-        _guestBtn.Invalidate();
-        _relayAddr.Visible = !host;
-        _hostInfo.Visible = host;
+        _hostBtn.Selected = role == Role.Host;
+        _guestBtn.Selected = role == Role.Guest;
+        _duoBtn.Selected = role == Role.Duo;
+        foreach (var b in new[] { _hostBtn, _guestBtn, _duoBtn })
+            b.Invalidate();
+        _relayAddr.Visible = role == Role.Guest;
+        _hostInfo.Visible = role != Role.Guest;
         _versionLabel.Text = CoopSaveText();
         var ip = Setup.LanAddress();
-        _hostInfo.Text = ip == null
-            ? "Aucun réseau local détecté : l'autre joueur ne pourra pas vous rejoindre."
-            : $"Votre adresse à donner à l'autre joueur :  {ip}";
+        if (role == Role.Duo)
+            _hostInfo.Text = "Deux fenêtres de jeu sur ce PC, une manette par joueur. La première fois, réglez la manette du joueur 2 dans SA fenêtre (Options > Paramètres > Entrées).";
+        else
+            _hostInfo.Text = ip == null
+                ? "Aucun réseau local détecté : l'autre joueur ne pourra pas vous rejoindre."
+                : $"Votre adresse à donner à l'autre joueur :  {ip}";
     }
 
     void LoadForm()
@@ -307,7 +329,8 @@ public sealed class MainForm : Form
         _relayAddr.Text = _s.RelayAddress;
         _password.Text = _s.Password;
         _fixCfg.Checked = _s.FixIgnoreMissingServices;
-        SetRole(_s.Host);
+        _p2Save.Checked = _s.Player2CopiesSave;
+        SetRole(_s.LocalDuo ? Role.Duo : _s.Host ? Role.Host : Role.Guest);
     }
 
     void ReadForm()
@@ -315,10 +338,12 @@ public sealed class MainForm : Form
         _s.RyujinxExe = _ryujinx.Text.Trim().Trim('"');
         _s.BaseNsp = _base.Text.Trim().Trim('"');
         _s.UpdateNsp = _update.Text.Trim().Trim('"');
-        _s.Host = _hostBtn.Selected;
+        _s.LocalDuo = CurrentRole == Role.Duo;
+        _s.Host = CurrentRole != Role.Guest;
         _s.RelayAddress = _relayAddr.Text.Trim();
         _s.Password = _password.Text.Trim();
         _s.FixIgnoreMissingServices = _fixCfg.Checked;
+        _s.Player2CopiesSave = _p2Save.Checked;
     }
 
     /// <summary>Ryujinx choisi : on propose la mise a jour deja selectionnee dans Ryujinx, s'il y en a une.</summary>
@@ -392,7 +417,7 @@ public sealed class MainForm : Form
     /// <summary>Etat de la sauvegarde de partie coop (tenue par le relais de l'hote), pour le pied de page.</summary>
     string CoopSaveText()
     {
-        if (!_hostBtn.Selected)
+        if (CurrentRole == Role.Guest)
             return "Partie coop : gardée par l'hôte";
         var save = Setup.ReadCoopSave();
         if (!save.Exists)
@@ -575,7 +600,10 @@ public sealed class MainForm : Form
         }
         if (_s.Host && (_relay == null || _relay.HasExited))
             _relay = NewSetup().StartRelay(_s);
-        NewSetup().StartGame(_s);
+        if (_s.LocalDuo)
+            await NewSetup().StartLocalDuoAsync(_s, _dataDirOverride);
+        else
+            NewSetup().StartGame(_s, _dataDirOverride);
         Progress(0);
     }
 

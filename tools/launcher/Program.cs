@@ -18,7 +18,7 @@ static class Program
         string dataDir = null, zip = null, ryujinx = null, baseNsp = null, update = null, guest = null, password = null;
         bool headless = false, updateOnly = false;
         string screenshot = null, page = "main";
-        int relayTest = 0;
+        int relayTest = 0, duoTest = 0;
         for (int i = 0; i < args.Length; i++)
         {
             string Next() => i + 1 < args.Length ? args[++i] : "";
@@ -32,6 +32,7 @@ static class Program
                 case "--screenshot": screenshot = Next(); break;
                 case "--page": page = Next(); break;
                 case "--relay-test": relayTest = int.Parse(Next()); break;
+                case "--duo-test": duoTest = int.Parse(Next()); break;
                 case "--ryujinx": ryujinx = Next(); break;
                 case "--base": baseNsp = Next(); break;
                 case "--update": update = Next(); break;
@@ -41,6 +42,8 @@ static class Program
         }
         if (relayTest > 0)
             return RelayTest(relayTest);
+        if (duoTest > 0)
+            return DuoTest(duoTest, dataDir);
         if (headless)
             return InstallHeadless(dataDir, zip, ryujinx, baseNsp, update, guest, password, updateOnly);
         ApplicationConfiguration.Initialize();
@@ -74,6 +77,51 @@ static class Program
         {
             log.WriteLine("ERREUR : " + e);
             return 1;
+        }
+    }
+
+    /// <summary>
+    /// Essai : « Jouer » en mode deux joueurs sur ce PC (relais, joueur 1, joueur 2), garde les jeux
+    /// N secondes puis ferme tout ; journal duo-test.log (identifiants des processus en tete).
+    /// </summary>
+    static int DuoTest(int seconds, string dataDir)
+    {
+        Directory.CreateDirectory(Settings.WorkDir);
+        using var log = new StreamWriter(Path.Combine(Settings.WorkDir, "duo-test.log"), false) { AutoFlush = true };
+        var s = Settings.Load();
+        s.Host = true;
+        s.LocalDuo = true;
+        var started = new List<System.Diagnostics.Process>();
+        try
+        {
+            var setup = new Setup(line => log.WriteLine(line), _ => { });
+            setup.ApplyPartySettings(s, dataDir);
+            started.Add(setup.StartRelay(s));
+            started.AddRange(setup.StartLocalDuoAsync(s, dataDir).GetAwaiter().GetResult());
+            log.WriteLine("pids " + string.Join(' ', started.Skip(1).Select(p => p.Id)));
+            Thread.Sleep(seconds * 1000);
+            return 0;
+        }
+        catch (Exception e)
+        {
+            log.WriteLine("ERREUR : " + e);
+            return 1;
+        }
+        finally
+        {
+            foreach (var p in started)
+            {
+                try
+                {
+                    if (!p.HasExited)
+                        p.Kill();
+                }
+                catch (Exception)
+                {
+                    // Deja ferme.
+                }
+            }
+            log.WriteLine("ferme");
         }
     }
 

@@ -468,6 +468,13 @@ public sealed class Setup
         {
             _log("Le mod n'était pas installé.");
         }
+        // Mod du joueur 2 (deux joueurs sur ce PC) ; son dossier et ses sauvegardes restent.
+        var p2 = ModTarget(Player2DataDir);
+        if (Directory.Exists(p2))
+        {
+            Directory.Delete(p2, true);
+            _log($"Retiré : {p2}");
+        }
         s.InstalledVersion = "";
         s.Save();
     }
@@ -707,9 +714,112 @@ public sealed class Setup
         return Process.Start(new ProcessStartInfo(python, args) { UseShellExecute = false, CreateNoWindow = true });
     }
 
-    public void StartGame(Settings s)
+    /// <summary>
+    /// Lance Ryujinx sur le jeu. rootDataDir : dossier de donnees a part (joueur 2 sur le meme PC,
+    /// essais) via l'option --root-data-dir de Ryujinx ; null = dossier habituel de l'utilisateur.
+    /// </summary>
+    public Process StartGame(Settings s, string rootDataDir = null, string who = null)
     {
-        _log("Lancement de Ryujinx…");
-        Process.Start(new ProcessStartInfo(s.RyujinxExe, $"\"{s.BaseNsp}\"") { UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(s.RyujinxExe) });
+        _log(who == null ? "Lancement de Ryujinx…" : $"Lancement de Ryujinx ({who})…");
+        var args = rootDataDir == null ? $"\"{s.BaseNsp}\"" : $"--root-data-dir \"{rootDataDir}\" \"{s.BaseNsp}\"";
+        return Process.Start(new ProcessStartInfo(s.RyujinxExe, args) { UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(s.RyujinxExe) });
+    }
+
+    // ---- Deux joueurs sur le meme PC ----
+
+    /// <summary>
+    /// Deux fenetres sur ce PC : prepare le joueur 2, lance le joueur 1 (dossier habituel), puis le
+    /// joueur 2 (son dossier) quelques secondes plus tard, pour que le joueur 1 se connecte en premier.
+    /// Le relais (hote) doit deja tourner.
+    /// </summary>
+    public async Task<Process[]> StartLocalDuoAsync(Settings s, string dataDirOverride)
+    {
+        await Task.Run(() => PreparePlayer2(s, dataDirOverride));
+        var p1 = StartGame(s, dataDirOverride, "joueur 1");
+        await Task.Delay(8000);
+        var p2 = StartGame(s, Player2DataDir, "joueur 2");
+        _log("Deux fenêtres lancées : une manette par joueur.");
+        return new[] { p1, p2 };
+    }
+
+    /// <summary>Dossier de donnees Ryujinx du joueur 2 (deux fenetres sur ce PC).</summary>
+    public static string Player2DataDir => Path.Combine(Work, "joueur2");
+
+    /// <summary>
+    /// Prepare le dossier de donnees du joueur 2 a partir de celui du joueur 1 (lu seulement) :
+    /// cles (system), configuration de Ryujinx, liste des mises a jour du jeu ; micrologiciel
+    /// (bis\system\Contents) par jonction, sans copie ; comptes et sauvegardes copies la premiere
+    /// fois si demande (sinon le joueur 2 commence une nouvelle partie). Puis copie le mod installe
+    /// chez le joueur 1 (meme version, meme configuration de partie).
+    /// </summary>
+    public void PreparePlayer2(Settings s, string dataDirOverride)
+    {
+        var p1 = s.RyujinxDataDir(dataDirOverride);
+        var p2 = Player2DataDir;
+        var keys = Path.Combine(p1, "system", "prod.keys");
+        if (!File.Exists(keys))
+            throw new InvalidOperationException($"Clés introuvables : {keys}.");
+        var firstTime = !Directory.Exists(Path.Combine(p2, "system"));
+        Directory.CreateDirectory(p2);
+        if (firstTime)
+        {
+            _log($"Joueur 2 : préparation de son dossier Ryujinx ({p2})…");
+            CopyTree(Path.Combine(p1, "system"), Path.Combine(p2, "system"));
+            if (File.Exists(Path.Combine(p1, "Config.json")))
+                File.Copy(Path.Combine(p1, "Config.json"), Path.Combine(p2, "Config.json"), true);
+            // Micrologiciel : jonction (pas de droits administrateur necessaires), pas de copie.
+            var firmware = Path.Combine(p1, "bis", "system", "Contents");
+            var link = Path.Combine(p2, "bis", "system", "Contents");
+            if (Directory.Exists(firmware) && !Directory.Exists(link))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(link)!);
+                using var mk = Process.Start(new ProcessStartInfo("cmd.exe", $"/c mklink /J \"{link}\" \"{firmware}\"")
+                { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true });
+                mk?.WaitForExit(10000);
+                if (!Directory.Exists(link))
+                    throw new InvalidOperationException("Joueur 2 : lien vers le micrologiciel de Ryujinx impossible.");
+            }
+            // Comptes (bis\system\save) toujours ; parties (bis\user\save) si demande.
+            var sysSave = Path.Combine(p1, "bis", "system", "save");
+            if (Directory.Exists(sysSave))
+                CopyTree(sysSave, Path.Combine(p2, "bis", "system", "save"));
+            var userSave = Path.Combine(p1, "bis", "user", "save");
+            if (s.Player2CopiesSave && Directory.Exists(userSave))
+            {
+                CopyTree(userSave, Path.Combine(p2, "bis", "user", "save"));
+                _log("Joueur 2 : copie des sauvegardes du joueur 1 (les originales ne sont que lues).");
+            }
+            else
+            {
+                _log("Joueur 2 : nouvelle partie (pas de copie de sauvegarde).");
+            }
+            _log("Joueur 2 : réglez sa manette une fois dans SA fenêtre (Options > Paramètres > Entrées) ; le réglage est gardé.");
+        }
+        if (s.FixIgnoreMissingServices)
+            FixRyujinxConfig(p2);
+        EnsureUpdateSelected(p2, s.UpdateNsp);
+
+        // Mod : meme contenu que chez le joueur 1, recopie seulement s'il a change.
+        var from = ModTarget(p1);
+        var to = ModTarget(p2);
+        if (!File.Exists(Path.Combine(from, "exefs", "subsdk9")))
+            throw new InvalidOperationException("Installez d'abord le mod.");
+        var marker = Path.Combine(to, "copie-du-joueur1.txt");
+        var stamp = $"{s.InstalledVersion}|{s.GeneratedKey}|{File.GetLastWriteTimeUtc(Path.Combine(from, "exefs", "subsdk9")).Ticks}";
+        if (!File.Exists(marker) || File.ReadAllText(marker) != stamp)
+        {
+            _log("Joueur 2 : copie du mod…");
+            if (Directory.Exists(to))
+                Directory.Delete(to, true); // dossier du mod du joueur 2, cree par le launcher
+            CopyTree(from, to);
+            File.WriteAllText(marker, stamp);
+        }
+        else
+        {
+            // Partie (relais, mot de passe) : la meme que le joueur 1.
+            var cfg = Path.Combine(from, "romfs", "botw-coop.txt");
+            if (File.Exists(cfg))
+                File.Copy(cfg, Path.Combine(to, "romfs", "botw-coop.txt"), true);
+        }
     }
 }
