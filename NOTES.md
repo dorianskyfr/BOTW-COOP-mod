@@ -812,6 +812,16 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.57 Sauvegarde de la partie coop gardee par le serveur (2026-11-15) - [V] sans le jeu (relais lance par le launcher)
+
+Demande de l'utilisateur : « un systeme de serveur que les deux joueurs rejoignent, comme une sauvegarde ».
+- Deja en place (5.5, 5.12) : le relais retient les drapeaux partages (definitifs et « lune de sang »), l'heure et le jour de la session ; `--state fichier.json` les garde sur disque (ecrit au plus toutes les ~5 s quand quelque chose change, fichier remplace d'un coup) et les relit au demarrage ; a l'entree en jeu chaque jeu demande l'etat complet (STATE) **et renvoie tous ses drapeaux partages a 1** (`g_ResyncRequested`, flags.cpp) : la sauvegarde du serveur est donc l'union de la progression des deux jeux.
+- Manquait : le launcher lancait le relais **sans** `--state` (tout etait perdu a sa fermeture). Corrige : `--state %LOCALAPPDATA%\BotwCoop\parties\partie-coop.json` et `--log ...\relais.log` ; le pied de page affiche « Partie coop : N elements partages · sauvegardee ... » (hote) ou « gardee par l'hote » (invite), rafraichi toutes les 10 s.
+- Pas de bouton « nouvelle partie » : vider le fichier ne remettrait rien a zero, puisque chaque jeu renvoie sa progression en entrant en jeu.
+- [V] Essai sans le jeu (option `--relay-test`, client qui imite un jeu : VER puis 3 FLAG) : apres arret brutal du relais (comme a la fermeture du launcher), le fichier contient les 3 drapeaux ; le relais relance les redonne (STATE -> 3 FLAG, STATEEND 3) ; le launcher journalise « Partie coop reprise : 3 elements ».
+- Non mesure dans cet essai, verifie avant (5.5) : l'arrivee d'un jeu en cours de partie. Non verifie : deux PC, et l'hote qui change d'une partie a l'autre (la reconstruction repose sur le renvoi des drapeaux deja verifie en 5.5 / 5.26).
+- Vu en passant : l'auto-mise a jour du launcher a fonctionne de bout en bout (exe d'essai numerote 0.95.0 remplace par le 0.96.0 de la release, ancienne copie supprimee au redemarrage).
+
 ### 5.56 Ennemis : position essayee en combat ; animations annoncees et rejouees ; combat a l'epee (2026-11-15, essais `eb1` a `eb6`) - [V] par les journaux et a l'image, deux instances
 
 Synchro des ennemis reprise a la demande de l'utilisateur (en pause depuis le 2026-11-13).

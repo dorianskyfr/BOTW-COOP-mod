@@ -102,6 +102,12 @@ public sealed class MainForm : Form
         Shown += async (_, _) => await OnShownAsync();
         FormClosing += (_, _) => StopRelay();
 
+        // Pendant la partie, le relais met la sauvegarde coop a jour : on rafraichit son resume.
+        var saveTimer = new System.Windows.Forms.Timer { Interval = 10000 };
+        saveTimer.Tick += (_, _) => _versionLabel.Text = CoopSaveText();
+        saveTimer.Start();
+        FormClosed += (_, _) => saveTimer.Dispose();
+
         CleanOldExe();
         RefreshStatus();
         // Premier lancement : les chemins d'abord.
@@ -286,6 +292,7 @@ public sealed class MainForm : Form
         _guestBtn.Invalidate();
         _relayAddr.Visible = !host;
         _hostInfo.Visible = host;
+        _versionLabel.Text = CoopSaveText();
         var ip = Setup.LanAddress();
         _hostInfo.Text = ip == null
             ? "Aucun réseau local détecté : l'autre joueur ne pourra pas vous rejoindre."
@@ -379,7 +386,19 @@ public sealed class MainForm : Form
         }
         _status.Invalidate();
         _install.Text = string.IsNullOrEmpty(installed) ? "Installer le mod" : "Réinstaller / Mettre à jour";
-        _versionLabel.Text = _latest == null ? "" : $"Dernière version publiée : {_latest.Tag}";
+        _versionLabel.Text = CoopSaveText();
+    }
+
+    /// <summary>Etat de la sauvegarde de partie coop (tenue par le relais de l'hote), pour le pied de page.</summary>
+    string CoopSaveText()
+    {
+        if (!_hostBtn.Selected)
+            return "Partie coop : gardée par l'hôte";
+        var save = Setup.ReadCoopSave();
+        if (!save.Exists)
+            return "Partie coop : nouvelle (sauvegardée dès la première progression)";
+        var when = save.Saved.Date == DateTime.Today ? $"aujourd'hui à {save.Saved:HH:mm}" : $"le {save.Saved:dd/MM à HH:mm}";
+        return $"Partie coop : {save.Progress:N0} éléments partagés · sauvegardée {when}";
     }
 
     async Task OnShownAsync()

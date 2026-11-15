@@ -10,6 +10,7 @@ static class Program
     /// &lt;work-dir&gt;\install.log, code de sortie 0 si tout s'est bien passe. --update-if-needed :
     /// meme verification que le bouton « Jouer » (installe la derniere version si elle differe), sans lancer le jeu.
     /// --screenshot &lt;png&gt; [--page main|settings|log] : essai, enregistre la fenetre et ferme.
+    /// --relay-test &lt;s&gt; : essai, lance le relais comme « Jouer » (hote) pendant s secondes.
     /// </summary>
     [STAThread]
     static int Main(string[] args)
@@ -17,6 +18,7 @@ static class Program
         string dataDir = null, zip = null, ryujinx = null, baseNsp = null, update = null, guest = null, password = null;
         bool headless = false, updateOnly = false;
         string screenshot = null, page = "main";
+        int relayTest = 0;
         for (int i = 0; i < args.Length; i++)
         {
             string Next() => i + 1 < args.Length ? args[++i] : "";
@@ -29,6 +31,7 @@ static class Program
                 case "--update-if-needed": headless = true; updateOnly = true; break;
                 case "--screenshot": screenshot = Next(); break;
                 case "--page": page = Next(); break;
+                case "--relay-test": relayTest = int.Parse(Next()); break;
                 case "--ryujinx": ryujinx = Next(); break;
                 case "--base": baseNsp = Next(); break;
                 case "--update": update = Next(); break;
@@ -36,6 +39,8 @@ static class Program
                 case "--password": password = Next(); break;
             }
         }
+        if (relayTest > 0)
+            return RelayTest(relayTest);
         if (headless)
             return InstallHeadless(dataDir, zip, ryujinx, baseNsp, update, guest, password, updateOnly);
         ApplicationConfiguration.Initialize();
@@ -45,6 +50,31 @@ static class Program
             form.Shown += async (_, _) => await form.SaveScreenshotAsync(screenshot, 6000, page);
         Application.Run(form);
         return 0;
+    }
+
+    /// <summary>Essai : relais lance comme par « Jouer » (hote), garde N secondes, puis arrete ; journal relay-test.log.</summary>
+    static int RelayTest(int seconds)
+    {
+        Directory.CreateDirectory(Settings.WorkDir);
+        using var log = new StreamWriter(Path.Combine(Settings.WorkDir, "relay-test.log"), false) { AutoFlush = true };
+        var s = Settings.Load();
+        s.Host = true;
+        try
+        {
+            var setup = new Setup(line => log.WriteLine(line), _ => { });
+            using var relay = setup.StartRelay(s);
+            Thread.Sleep(seconds * 1000);
+            relay.Kill();
+            relay.WaitForExit(5000);
+            var save = Setup.ReadCoopSave();
+            log.WriteLine($"sauvegarde : existe={save.Exists} progression={save.Progress} lune={save.MoonFlags} ({Setup.CoopSavePath})");
+            return 0;
+        }
+        catch (Exception e)
+        {
+            log.WriteLine("ERREUR : " + e);
+            return 1;
+        }
     }
 
     static int InstallHeadless(string dataDir, string zip, string ryujinx, string baseNsp, string update, string guest, string password, bool updateOnly)

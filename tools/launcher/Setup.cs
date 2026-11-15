@@ -651,6 +651,43 @@ public sealed class Setup
 
     // ---- Lancement ----
 
+    /// <summary>
+    /// Sauvegarde de la partie coop, tenue par le relais de l'hote (--state) : progression partagee
+    /// (drapeaux de la liste blanche), heure et jour de la session. Elle survit a la fermeture du relais ;
+    /// chaque jeu y renvoie aussi sa propre progression en entrant en jeu (fusion, rien n'est retire).
+    /// </summary>
+    public static string CoopSavePath => Path.Combine(Work, "parties", "partie-coop.json");
+
+    public sealed class CoopSaveInfo
+    {
+        public int Progress;     // drapeaux partages definitifs
+        public int MoonFlags;    // ennemis vaincus / objets pris depuis la derniere lune de sang
+        public DateTime Saved;
+        public bool Exists;
+    }
+
+    /// <summary>Lecture de la sauvegarde de partie coop (format ecrit par relay.py, save_state).</summary>
+    public static CoopSaveInfo ReadCoopSave()
+    {
+        var info = new CoopSaveInfo();
+        var path = CoopSavePath;
+        if (!File.Exists(path))
+            return info;
+        try
+        {
+            var json = JsonNode.Parse(File.ReadAllText(path));
+            info.Progress = json?["flags"]?.AsArray().Count ?? 0;
+            info.MoonFlags = json?["moon_flags"]?.AsArray().Count ?? 0;
+            info.Saved = File.GetLastWriteTime(path);
+            info.Exists = true;
+        }
+        catch (Exception)
+        {
+            // Fichier en cours d'ecriture ou abime : on l'affiche comme absent.
+        }
+        return info;
+    }
+
     public Process StartRelay(Settings s, string modDirOverride = null)
     {
         var python = Path.Combine(Work, "python", "python.exe");
@@ -658,10 +695,15 @@ public sealed class Setup
         if (!File.Exists(python) || !File.Exists(relay))
             throw new InvalidOperationException("Installez d'abord le mod (Python et le relais manquent).");
         var ip = LanAddress() ?? "127.0.0.1";
-        var args = $"-I \"{relay}\" --host {ip}";
+        Directory.CreateDirectory(Path.GetDirectoryName(CoopSavePath)!);
+        var args = $"-I \"{relay}\" --host {ip} --state \"{CoopSavePath}\" --log \"{Path.Combine(Work, "relais.log")}\"";
         if (!string.IsNullOrEmpty(s.Password))
             args += $" --password \"{s.Password}\"";
+        var save = ReadCoopSave();
         _log($"Relais lancé sur {ip}:47800 (réseau local uniquement). Donnez cette adresse à l'autre joueur.");
+        _log(save.Exists
+            ? $"Partie coop reprise : {save.Progress} éléments de progression partagés ({CoopSavePath})."
+            : $"Nouvelle partie coop : elle sera gardée dans {CoopSavePath}.");
         return Process.Start(new ProcessStartInfo(python, args) { UseShellExecute = false, CreateNoWindow = true });
     }
 
