@@ -258,8 +258,11 @@ namespace coop::weapons {
                         Logging.Log("[botw-coop] don : relu dans l'inventaire %s valeur=%d bonus=%x/%d", s_MatRead[i].m_Name,
                             s_MatRead[i].m_Value, s_MatRead[i].m_Bonus.m_Flags, s_MatRead[i].m_Bonus.m_Value);
 #endif
-                char msg[80];
-                std::snprintf(msg, sizeof(msg), "Joueur %d vous a donné %s", g.m_From, GiftLabel(g.m_Name));
+                char msg[96];
+                if (const char* item = coop::config::ItemNameFor(Crc32(g.m_Name)))
+                    std::snprintf(msg, sizeof(msg), "Don du joueur %d : %s", g.m_From, item);
+                else
+                    std::snprintf(msg, sizeof(msg), "Joueur %d vous a donné %s", g.m_From, GiftLabel(g.m_Name));
                 coop::notify::Post(msg);
             }
         }
@@ -315,8 +318,11 @@ namespace coop::weapons {
                 coop::game::DeleteActor(lg.m_Actor);
                 Logging.Log("[botw-coop] don : %s (valeur %d, bonus %x/%d) donne au joueur %d, a %.1f m de lui", g.m_Name, g.m_Value,
                     g.m_BonusFlags, g.m_BonusValue, coop::session::g_Remote.Id(), static_cast<double>(std::sqrt(dx * dx + dy * dy + dz * dz)));
-                char msg[80];
-                std::snprintf(msg, sizeof(msg), "Vous avez donné %s au joueur %d", GiftLabel(g.m_Name), coop::session::g_Remote.Id());
+                char msg[96];
+                if (const char* item = coop::config::ItemNameFor(Crc32(g.m_Name)))
+                    std::snprintf(msg, sizeof(msg), "Don au joueur %d : %s", coop::session::g_Remote.Id(), item);
+                else
+                    std::snprintf(msg, sizeof(msg), "Vous avez donné %s au joueur %d", GiftLabel(g.m_Name), coop::session::g_Remote.Id());
                 coop::notify::Post(msg);
                 lg = LetGo {};
             }

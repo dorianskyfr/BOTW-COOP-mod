@@ -67,6 +67,10 @@ namespace coop::config {
     /* Armes, boucliers, arcs, carquois, fourreaux : acteur CoopWeapon_* (content:/botw-coop/weapon-map.bin). */
     inline std::atomic<int> g_WeaponCount { 0 };
     const char* WeaponActorFor(std::uint32_t weaponHash);
+    /* Nom en clair d'un objet, en UTF-8 (content:/botw-coop/item-names.bin, tools/build_item_names.py) ;
+       nullptr si inconnu. CRC32 du nom d'acteur. */
+    inline std::atomic<int> g_ItemNameCount { 0 };
+    const char* ItemNameFor(std::uint32_t actorHash);
 
     /* Points de voyage du jeu (sanctuaires, tours), lus dans content:/botw-coop/travel-points.txt. */
     struct TravelPoint {

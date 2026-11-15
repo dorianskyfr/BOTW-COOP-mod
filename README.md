@@ -99,6 +99,12 @@ Le mod ne partage que les drapeaux d'une liste générée depuis **votre** copie
    build\venv\Scripts\python.exe -I tools\build_puppet.py build\romfs-1.9.0 build\deploy\romfs
    ```
    Sans ces fichiers, l'autre joueur apparaît sous la forme d'un villageois. Sans les `Armor_*` / `Weapon_*`, il apparaît sans armure / sans armes. Sans les modèles `Model/Armor_*`, ses pièces teintes gardent leur couleur d'origine.
+5. Noms des objets dans les bandeaux de don (textes français du jeu) :
+   ```
+   build\tools\romfs-extract\RomfsExtract.exe "%APPDATA%\Ryujinx\system\prod.keys" "<jeu de base .nsp>" "<mise à jour 1.9.0 .nsp>" build\romfs-1.9.0 /Pack/Bootup_EUfr.pack
+   build\venv\Scripts\python.exe -I tools\build_item_names.py build\romfs-1.9.0 EUfr build\deploy\romfs
+   ```
+   Sans ce fichier, le bandeau dit « une arme », « un bouclier », « un arc » ou « un objet ».
 
 `install-mod.ps1` et `run-live.ps1` copient ensuite `build\deploy\romfs` dans le mod.
 

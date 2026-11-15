@@ -1,0 +1,48 @@
+﻿gn1_game.txt 00:00:08.390 [botw-coop] messages : crochet pose sur main+0xe84870
+gn1_game.txt 00:00:17.657 [botw-coop] config: 992 noms d'objets montrables sur le partenaire
+gn1_game.txt 00:00:17.949 [botw-coop] messages : "Coop : connect?? (joueur 1)"
+gn1_game.txt 00:01:56.299 [botw-coop] messages : "Joueur 2 a rejoint la partie"
+gn1_game.txt 00:01:56.681 [botw-coop] messages : bandeau demande (26 caracteres)
+gn1_game.txt 00:02:00.214 [botw-coop] messages : bandeau demande (28 caracteres)
+gn1_game.txt 00:02:06.382 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+gn1_game.txt 00:02:26.413 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 1), nouvel essai
+gn1_game.txt 00:02:26.447 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+gn1_game.txt 00:02:46.479 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 2), nouvel essai
+gn1_game.txt 00:02:46.517 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+gn1_game.txt 00:03:06.545 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 3), nouvel essai
+gn1_game.txt 00:03:06.579 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+gn1_game.txt 00:03:26.614 [botw-coop] acteur distant : ECHEC de creation de "CoopPlayer" (introuvable apres 601 images, echec 4), repli sur le PNJ
+gn1_game.txt 00:03:26.650 [botw-coop] acteur distant : creation de "Npc_Kakariko003" demandee en (-1023.28, 252.63, 1799.95)
+gn1_game.txt 00:03:27.153 [botw-coop] acteur distant : CREE apres 15 images, acteur=660773b998 nom="Npc_Kakariko003" pos=(-1023.28, 252.65, 1799.95)
+gn1_game.txt 00:04:57.570 [botw-coop] acteur distant : PNJ de repli en place, nouvel essai du Link ("CoopPlayer")
+gn1_game.txt 00:05:17.770 [botw-coop] acteur distant : Link toujours introuvable apres 605 images, PNJ garde
+gn1_game.txt 00:06:27.637 [botw-coop] acteur distant : PNJ de repli en place, nouvel essai du Link ("CoopPlayer")
+gn1_game.txt 00:06:47.804 [botw-coop] acteur distant : Link toujours introuvable apres 605 images, PNJ garde
+gn1_game.txt 00:06:48.788 [botw-coop] don : Weapon_Bow_001 au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus 0/0)
+gn1_game.txt 00:06:50.582 [botw-coop] don : Weapon_Bow_001 (valeur 2000, bonus 0/0) donne au joueur 2, a 2.3 m de lui
+gn1_game.txt 00:06:50.583 [botw-coop] messages : "Don au joueur 2 : Arc de voyageur"
+gn1_game.txt 00:06:50.649 [botw-coop] messages : bandeau demande (33 caracteres)
+gn1_game.txt 00:07:57.536 [botw-coop] don : Weapon_Sword_001 a quitte Link, surveillee 10 s (bonus 0/0)
+gn1_game.txt 00:07:57.703 [botw-coop] acteur distant : PNJ de repli en place, nouvel essai du Link ("CoopPlayer")
+gn1_game.txt 00:08:01.013 [botw-coop] don : Weapon_Sword_001 (valeur 2000, bonus 0/0) donne au joueur 2, a 1.5 m de lui
+gn1_game.txt 00:08:01.013 [botw-coop] messages : "Don au joueur 2 : ??p??e de voyageur"
+gn1_game.txt 00:08:01.079 [botw-coop] messages : bandeau demande (34 caracteres)
+gn1_game.txt 00:08:17.847 [botw-coop] acteur distant : Link toujours introuvable apres 605 images, PNJ garde
+gn1_game2.txt 00:00:09.469 [botw-coop] messages : crochet pose sur main+0xe84870
+gn1_game2.txt 00:00:18.860 [botw-coop] config: 992 noms d'objets montrables sur le partenaire
+gn1_game2.txt 00:00:19.025 [botw-coop] messages : "Coop : connect?? (joueur 2)"
+gn1_game2.txt 00:01:22.822 [botw-coop] messages : "Joueur 1 a rejoint la partie"
+gn1_game2.txt 00:01:49.953 [botw-coop] messages : bandeau demande (26 caracteres)
+gn1_game2.txt 00:01:53.489 [botw-coop] messages : bandeau demande (28 caracteres)
+gn1_game2.txt 00:01:59.720 [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (-1024.48, 252.63, 1799.95)
+gn1_game2.txt 00:01:59.887 [botw-coop] acteur distant : CREE apres 5 images, acteur=6607267f18 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+gn1_game2.txt 00:06:29.538 [botw-coop] don : Weapon_Bow_001 (valeur 2000, bonus 0/0) recu du joueur 1 -> inventaire ok, objets 8 -> 9
+gn1_game2.txt 00:06:29.538 [botw-coop] don : relu dans l'inventaire Weapon_Bow_001 valeur=2000 bonus=0/0
+gn1_game2.txt 00:06:29.538 [botw-coop] don : relu dans l'inventaire Weapon_Bow_001 valeur=2000 bonus=0/0
+gn1_game2.txt 00:06:29.538 [botw-coop] messages : "Don du joueur 1 : Arc de voyageur"
+gn1_game2.txt 00:06:41.958 [botw-coop] messages : bandeau indisponible pour l'instant, nouvel essai (n.1)
+gn1_game2.txt 00:06:54.505 [botw-coop] messages : bandeau demande (33 caracteres)
+gn1_game2.txt 00:07:39.988 [botw-coop] don : Weapon_Sword_001 (valeur 2000, bonus 0/0) recu du joueur 1 -> inventaire ok, objets 9 -> 10
+gn1_game2.txt 00:07:39.988 [botw-coop] don : relu dans l'inventaire Weapon_Sword_001 valeur=2000 bonus=0/0
+gn1_game2.txt 00:07:39.988 [botw-coop] don : relu dans l'inventaire Weapon_Sword_001 valeur=2000 bonus=0/0
+gn1_game2.txt 00:07:39.988 [botw-coop] messages : "Don du joueur 1 : ??p??e de voyageur"

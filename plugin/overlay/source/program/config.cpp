@@ -126,6 +126,10 @@ namespace coop::config {
         char s_GearNameBuf[MaxGear][NameLen];
         std::uint32_t s_WeaponHashBuf[MaxWeapon];
         char s_WeaponNameBuf[MaxWeapon][NameLen];
+        /* Noms en clair : 992 avec la RomFS 1.9.0, textes EUfr (2026-11-15). */
+        constexpr int MaxItemNames = 1500;
+        std::uint32_t s_ItemHashBuf[MaxItemNames];
+        char s_ItemNameBuf[MaxItemNames][NameLen];
         struct ModelMap {
             const char*   m_Path;
             const char*   m_Magic;
@@ -137,6 +141,7 @@ namespace coop::config {
         };
         ModelMap s_GearMap { "content:/botw-coop/gear-map.bin", "CGM1", "pieces d'armure", s_GearHashBuf, s_GearNameBuf, MaxGear, &g_GearCount };
         ModelMap s_WeaponMap { "content:/botw-coop/weapon-map.bin", "CWM1", "armes", s_WeaponHashBuf, s_WeaponNameBuf, MaxWeapon, &g_WeaponCount };
+        ModelMap s_ItemNameMap { "content:/botw-coop/item-names.bin", "CIN1", "noms d'objets", s_ItemHashBuf, s_ItemNameBuf, MaxItemNames, &g_ItemNameCount };
 
         void LoadModelMap(ModelMap& map) {
             auto* s_GearHashes = map.m_Hashes;
@@ -183,6 +188,7 @@ namespace coop::config {
         void LoadGearMap() {
             LoadModelMap(s_GearMap);
             LoadModelMap(s_WeaponMap);
+            LoadModelMap(s_ItemNameMap);
         }
 
         /* Points de voyage (tools/build_travel_points.py) : texte, une ligne « X Y Z carte point ». */
@@ -255,6 +261,7 @@ namespace coop::config {
 
     const char* GearActorFor(std::uint32_t pieceHash) { return Lookup(s_GearMap, pieceHash); }
     const char* WeaponActorFor(std::uint32_t weaponHash) { return Lookup(s_WeaponMap, weaponHash); }
+    const char* ItemNameFor(std::uint32_t actorHash) { return Lookup(s_ItemNameMap, actorHash); }
 
     int SyncFlagGroup(std::uint32_t hash) {
         int lo = 0, hi = g_SyncFlagCount - 1;
