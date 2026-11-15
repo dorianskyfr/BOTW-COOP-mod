@@ -1,0 +1,24 @@
+﻿Essais go1-go3 (2026-11-15). go1 : un seul jeu, Game Over, Continue -> monde pret 16 s apres. mk1 : deux jeux, Game Over de J2 -> ecran de chargement bloque plus de 3 min (acteur du partenaire toujours ecrit). go3 : correctif (partenaire retire des que le monde n'est plus pret).
+=== go1 ===
+00:00:06.440 [botw-coop] sauvetage : crochet pose sur main+0xcead24
+00:00:56.908 [botw-coop] monde : pret (acteur du joueur actif)
+00:01:09.344 [botw-coop] sauvetage : refuse (pas de partenaire en jeu, distance -1 m, vie du partenaire -1 quarts, -1 inconnue) -> Game Over
+00:01:15.274 [botw-coop] monde : plus pret (chargement ou ecran-titre)
+00:02:56.940 [botw-coop] monde : pret (acteur du joueur actif)
+=== mk1 (J2) ===
+00:00:07.551 [botw-coop] sauvetage : crochet pose sur main+0xcead24
+00:01:15.059 [botw-coop] monde : pret (acteur du joueur actif)
+00:04:05.618 [botw-coop] sauvetage : Link releve par le partenaire (J1 a 2 m), vie 0 -> 12 quarts (n.1)
+00:06:04.176 [botw-coop] sauvetage : refuse (sauvetage trop recent, distance 2 m, vie du partenaire 12 quarts, -1 inconnue) -> Game Over
+00:06:10.086 [botw-coop] monde : plus pret (chargement ou ecran-titre)
+00:09:41.213 (derniere ecriture du partenaire pendant le chargement bloque)
+=== go3 (J2) ===
+00:00:07.151 [botw-coop] sauvetage : crochet pose sur main+0xcead24
+00:01:14.896 [botw-coop] monde : pret (acteur du joueur actif)
+00:01:47.374 [botw-coop] sauvetage : Link releve par le partenaire (J1 a 0 m), vie 0 -> 12 quarts (n.1)
+00:01:55.399 [botw-coop] sauvetage : refuse (sauvetage trop recent, distance 0 m, vie du partenaire 12 quarts, -1 inconnue) -> Game Over
+00:01:57.050 [botw-coop] acteur distant : CREE apres 5 images, acteur=66084740a0 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+00:02:01.312 [botw-coop] monde : plus pret (chargement ou ecran-titre)
+00:02:01.313 [botw-coop] acteur distant : monde en chargement, personnage retire
+00:02:15.681 [botw-coop] monde : pret (acteur du joueur actif)
+00:02:35.884 [botw-coop] acteur distant : CREE apres 5 images, acteur=6606b9a148 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)

@@ -254,6 +254,21 @@ namespace coop::remote_actor {
             s_InGameFrames = 0;
             return;
         }
+        if (!coop::game::IsWorldReady()) {
+            /* Monde en chargement (Game Over, voyage) alors que le joueur se lit encore : on retire nous-memes
+               le partenaire et ses pieces, sans plus y ecrire. Garde, le jeu restait bloque sur l'ecran de
+               chargement apres un Game Over (essai mk1, 2026-11-15). Il sera recree une fois le monde pret. */
+            if (s_State != State::WaitingForPlayer) {
+                const bool ok = s_Actor != 0 && coop::game::IsActorListed(s_Actor) && coop::game::DeleteActor(s_Actor);
+                Logging.Log("[botw-coop] acteur distant : monde en chargement, personnage %s", s_Actor == 0 ? "absent" : ok ? "retire" : "non retire");
+                s_State = State::WaitingForPlayer;
+                s_Actor = 0;
+                coop::gear::RemoveAll(true);
+                coop::weapons::RemoveAll(true);
+            }
+            s_InGameFrames = 0;
+            return;
+        }
         s_InGameFrames++;
 
         if (!s_LayoutLogged && s_InGameFrames > 300) {

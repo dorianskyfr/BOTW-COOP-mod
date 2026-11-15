@@ -809,6 +809,16 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.50 Essais a l'image (2026-11-15, essais `mk1`, `go1` a `go3`) et defaut du Game Over corrige
+
+- [V] a l'image, deux jeux cote a cote sur l'ecran 1 (`run-live.ps1 -Screen 1`) :
+  - **Partenaire sur la carte** (5.43) : J2 a 55 m -> une feuille (icone 34) sur la mini-carte de J1, devant Link, et sur l'ecran de la carte a cote de « Current Location ». Capture `2026-11-15_partenaire-sur-la-carte_mk1.png`.
+  - **Link du partenaire** : a 2 m, de face, dans le bon sens, pose au sol, des deux cotes. **Defaut vu : il est chauve** (pas de cheveux, ni queue de cheval). Capture `2026-11-15_link-partenaire_mk1.png`.
+  - **Bandeau** : chez le joueur releve, « Sauvé par Joueur 1 ! (prochain dans 120 s) », accents justes. Celui du sauveteur (« Vous avez sauvé le joueur 2 ! ») est demande (journal) mais pas vu : captures trop tardives. Capture `2026-11-15_bandeau-sauvetage_mk1.png`.
+- **Defaut trouve et corrige : Game Over avec un partenaire.** [V] `mk1` : apres un Game Over de J2 et « Continue », ecran de chargement bloque plus de 3 min ; le plugin continuait d'ecrire dans le Link du partenaire (le joueur se lit encore pendant ce chargement). [V] `go1` (un seul jeu) : rechargement normal, monde pret 16 s apres. Correctif (`remote_actor.cpp`) : des que le monde n'est plus pret, le partenaire et ses pieces sont retires par nous et ne sont plus touches. [V] `go3` : `monde en chargement, personnage retire` -> monde pret 14 s apres -> partenaire recree 20 s plus tard. Les essais precedents (rv2, rv7, rv8) s'arretaient avant la fin du chargement : le « le monde se recharge » de 5.37 n'etait pas verifie.
+- Cheveux, premier essai (`go2`), **echec** : poser la piece `Armor_Default_Head` (le jeu la pose sur Link quand la tete est nue ; `SlotOf` l'ecarte du releve local) via `CoopGear_Armor_Default_*` **fige les deux jeux** des la creation du partenaire. Retire. Cause non trouvee.
+- Preuves : `docs/evidence/2026-11-15_game-over-recharge-go1-go3.txt`, `2026-11-15_apres-game-over_go3.png`.
+
 ### 5.49 Relais protege contre les lignes invalides (2026-11-15, essai `rl1`) - [V]
 
 - Chaque valeur d'un message d'etat est verifiee avant retransmission (`FIELD_KINDS` : nombre fini, entier, hexadecimal de 8 chiffres au plus, nom d'acteur `[A-Za-z0-9_]` de 47 caracteres au plus) ; une ligne non conforme est ignoree et journalisee. Avant : un `MTX` aux valeurs non numeriques etait retransmis tel quel (le plugin l'aurait ignore, `sscanf`).
