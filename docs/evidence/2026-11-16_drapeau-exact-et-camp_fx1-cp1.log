@@ -1,0 +1,34 @@
+== fx1_game.txt
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon122 Entrance_1 -> demande
+[botw-coop] essai drapeau local : hachage=f52fc876 index 40321, octet 0 -> 1
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_2834046538 -> f52fc876 existe, valeur 1, proprietes 0x27 | objet de carte n.40321 -> f52fc876 (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_3905342825 -> 43ea800a existe, valeur 0, proprietes 0x27 | objet de carte n.11344 -> 43ea800a (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_2854684637 -> 1819a4ae existe, valeur 0, proprietes 0x27 | objet de carte n.4041 -> 1819a4ae (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_TBox_Dungeon_Iron_4075460597 -> 5569bc75 existe, valeur 0, proprietes 0x07 | objet de carte n.14267 -> 5569bc75 (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_2834046538 -> f52fc876 existe, valeur 1, proprietes 0x27 | objet de carte n.40321 -> f52fc876 (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_3905342825 -> 43ea800a existe, valeur 0, proprietes 0x27 | objet de carte n.11344 -> 43ea800a (le meme)
+== fx1_game2.txt
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon122 Entrance_1 -> demande
+[botw-coop] objet : Enemy_Guardian_Mini_Junior pris, ouvert ou vaincu par l'autre joueur (drapeau f52fc876) -> retire ici
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_3905342825 -> 43ea800a existe, valeur 0, proprietes 0x27 | objet de carte n.11344 -> 43ea800a (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_2854684637 -> 1819a4ae existe, valeur 0, proprietes 0x27 | objet de carte n.4041 -> 1819a4ae (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_TBox_Dungeon_Iron_4075460597 -> 5569bc75 existe, valeur 0, proprietes 0x07 | objet de carte n.14267 -> 5569bc75 (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_2834046538 -> f52fc876 existe, valeur 1, proprietes 0x27 | objet de carte n.40321 -> f52fc876 (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_3905342825 -> 43ea800a existe, valeur 0, proprietes 0x27 | objet de carte n.11344 -> 43ea800a (le meme)
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Baby_2854684637 -> 1819a4ae existe, valeur 0, proprietes 0x27 | objet de carte n.4041 -> 1819a4ae (le meme)
+== cp1_game.txt
+[botw-coop] essai pose : (-2835, 353, -690) a 3043 m, trop loin
+[botw-coop] essai drapeau local : hachage=942e27a9 index 24417, octet 0 -> 1
+[botw-coop] drapeau change : n.24417 hachage=942e27a9 0 -> 1 (envoye)
+[botw-coop] essai pose : (-2835, 353, -690) a 270 m, trop loin
+[botw-coop] essai pose : (-2835, 353, -690) a 270 m, trop loin
+[botw-coop] essai pose : Link pose en (-2860.0, 380.0, -600.0), 188 m
+[botw-coop] essai pose : Link pose en (-2835.0, 353.0, -690.0), 113 m
+== cp1_game2.txt
+[botw-coop] essai pose : (-2840, 353, -685) a 3047 m, trop loin
+[botw-coop] drapeau recu : n.24417 hachage=942e27a9 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] essai pose : (-2840, 353, -685) a 264 m, trop loin
+[botw-coop] essai pose : (-2840, 353, -685) a 264 m, trop loin
+[botw-coop] essai pose : Link pose en (-2860.0, 380.0, -600.0), 188 m
+[botw-coop] essai pose : Link pose en (-2840.0, 353.0, -685.0), 106 m
+[botw-coop] essai pose : Link pose en (-2826.0, 356.0, -713.0), 32 m

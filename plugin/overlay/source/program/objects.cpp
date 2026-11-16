@@ -167,7 +167,8 @@ namespace coop::objects {
         bool OnActorDiag(const coop::game::ActorInfo& info, void*) {
             if (info.m_HashId == 0 || info.m_Name == nullptr)
                 return false;
-            if (std::strncmp(info.m_Name, "Enemy_", 6) != 0 && std::strncmp(info.m_Name, "TBox_", 5) != 0)
+            if (std::strncmp(info.m_Name, "Enemy_", 6) != 0 && std::strncmp(info.m_Name, "TBox_", 5) != 0
+                && std::strncmp(info.m_Name, "LinkTag", 7) != 0)
                 return false;
             char flagName[96] = "(nom trop long)";
             std::uint32_t crc = 0;
