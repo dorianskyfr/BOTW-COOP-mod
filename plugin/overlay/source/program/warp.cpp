@@ -377,6 +377,17 @@ namespace coop::warp {
             Logging.Log("[botw-coop] voyage (essai) : vers %s Entrance_1 -> %s", map, ok ? "demande" : "REFUSE");
             return;
         }
+        /* Essai : x = 9300 + n entre dans l'Epreuve de l'epee (DLC 1). Cartes et points d'apres les
+           ChangeScene de l'evenement EventFlow/100enemy.bfevfl (Event/100enemy.sbeventpack, jeu de base) :
+           0 AocField/A-1 Air_2, 1 AocField/A-1 Entrance_1, 2 AocField/B-2 Night_1. */
+        if (x >= 9300.0f && x < 9303.0f) {
+            static const char* const Maps[] = { "AocField/A-1", "AocField/A-1", "AocField/B-2" };
+            static const char* const Points[] = { "Air_2", "Entrance_1", "Night_1" };
+            const int n = static_cast<int>(x - 9300.0f);
+            const bool ok = coop::game::ChangeStage(Maps[n], Points[n]);
+            Logging.Log("[botw-coop] voyage (essai) : vers %s %s -> %s", Maps[n], Points[n], ok ? "demande" : "REFUSE");
+            return;
+        }
         const float target[3] = { x, st.m_Pos[1], z };
         float d = 0.0f;
         const int i = NearestTravelPoint(target, st.m_Pos, 0.0f, d);

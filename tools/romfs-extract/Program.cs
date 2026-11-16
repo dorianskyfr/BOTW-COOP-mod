@@ -1,11 +1,14 @@
-// Copie des fichiers de la RomFS de BOTW 1.9.0 (base + mise a jour appliquee) vers un dossier local.
+// Copie des fichiers de la RomFS de BOTW 1.9.0 (base + mise a jour appliquee) ou d'un DLC vers un dossier local.
 //
 //   RomfsExtract <prod.keys> <base.nsp> <maj.nsp> <dossier de sortie> <prefixe> [<prefixe> ...]
 //   RomfsExtract <prod.keys> <base.nsp> <maj.nsp> --list <filtre>
+//   RomfsExtract <prod.keys> --aoc <dlc.nsp> <dossier de sortie> <prefixe> [<prefixe> ...]
+//   RomfsExtract <prod.keys> --aoc <dlc.nsp> --list <filtre>
 //
 // Les cles et les NSP sont ceux de l'utilisateur, ouverts en lecture seule. Les cles de titre
 // viennent des tickets contenus dans les NSP. La mise a jour s'applique comme dans Ryujinx
-// (Nca.OpenStorageWithPatch). Les chemins de sortie gardent l'arborescence de la RomFS.
+// (Nca.OpenStorageWithPatch). Le DLC utilise un NCA PublicData, ouvert sans patch.
+// Les chemins de sortie gardent l'arborescence de la RomFS.
 
 using LibHac.Common;
 using LibHac.Common.Keys;
@@ -22,16 +25,28 @@ using Path = System.IO.Path;
 
 if (args.Length < 5)
 {
-    Console.Error.WriteLine("usage : RomfsExtract <prod.keys> <base.nsp> <maj.nsp> <sortie> <prefixe>... | --list <filtre>");
+    Console.Error.WriteLine("usage : RomfsExtract <prod.keys> <base.nsp> <maj.nsp> <sortie> <prefixe>...");
+    Console.Error.WriteLine("        RomfsExtract <prod.keys> <base.nsp> <maj.nsp> --list <filtre>");
+    Console.Error.WriteLine("        RomfsExtract <prod.keys> --aoc <dlc.nsp> <sortie> <prefixe>...");
+    Console.Error.WriteLine("        RomfsExtract <prod.keys> --aoc <dlc.nsp> --list <filtre>");
     return 2;
 }
 
 var keys = new KeySet();
 ExternalKeyReader.ReadKeyFile(keys, args[0], null, null, null, null);
 
-Nca program = ProgramNca(args[1], keys);
-Nca update = ProgramNca(args[2], keys);
-var romfs = new RomFsFileSystem(program.OpenStorageWithPatch(update, NcaSectionType.Data, IntegrityCheckLevel.None));
+RomFsFileSystem romfs;
+if (args[1] == "--aoc")
+{
+    Nca dlc = FindNca(args[2], keys, NcaContentType.PublicData);
+    romfs = new RomFsFileSystem(dlc.OpenStorage(NcaSectionType.Data, IntegrityCheckLevel.None));
+}
+else
+{
+    Nca program = FindNca(args[1], keys, NcaContentType.Program);
+    Nca update = FindNca(args[2], keys, NcaContentType.Program);
+    romfs = new RomFsFileSystem(program.OpenStorageWithPatch(update, NcaSectionType.Data, IntegrityCheckLevel.None));
+}
 
 if (args[3] == "--list")
 {
@@ -70,8 +85,8 @@ foreach (DirectoryEntryEx e in romfs.EnumerateEntries("/", "*", SearchOptions.Re
 Console.WriteLine($"{count} fichiers, {total} octets -> {outDir}");
 return count > 0 ? 0 : 1;
 
-// NCA de type Program d'un NSP ; les cles de titre des tickets du NSP sont ajoutees au jeu de cles.
-static Nca ProgramNca(string nsp, KeySet keys)
+// NCA du type demande d'un NSP ; les cles de titre des tickets du NSP sont ajoutees au jeu de cles.
+static Nca FindNca(string nsp, KeySet keys, NcaContentType contentType)
 {
     var pfs = new PartitionFileSystem();
     pfs.Initialize(new LocalStorage(nsp, FileAccess.Read, FileMode.Open)).ThrowIfFailure();
@@ -90,8 +105,8 @@ static Nca ProgramNca(string nsp, KeySet keys)
         var f = new UniqueRef<IFile>();
         pfs.OpenFile(ref f.Ref, e.FullPath.ToU8Span(), OpenMode.Read).ThrowIfFailure();
         var nca = new Nca(keys, f.Release().AsStorage());
-        if (nca.Header.ContentType == NcaContentType.Program)
+        if (nca.Header.ContentType == contentType)
             return nca;
     }
-    throw new InvalidOperationException($"pas de NCA Program dans {nsp}");
+    throw new InvalidOperationException($"pas de NCA {contentType} dans {nsp}");
 }

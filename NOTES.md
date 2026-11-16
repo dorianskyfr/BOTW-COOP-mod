@@ -812,6 +812,17 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.77 Epreuve de l'epee a deux, rang des ennemis en mode expert (2026-11-16, essais `dl1`, `dl2`, Eden) - [V] journaux
+
+- Entree : l'evenement `EventFlow/100enemy.bfevfl` (`Event/100enemy.sbeventpack`, jeu de base) change de scene vers `AocField/A-1` (`Air_2`, `Entrance_1`) et `AocField/B-2` (`Night_1`) ; ces points sont listes dans `Map/AocField/Static.smubin` du DLC (`Entrance_1` en -4660 ; 300 ; -3817). Outil : `drive.py goto_tp 9300+n 0` (0 A-1 Air_2, 1 A-1 Entrance_1, 2 B-2 Night_1). [V] `dl1`, `dl2` : les deux joueurs dans `AocField/A-1` a `Entrance_1`, Link du partenaire cree chez les deux.
+- Lecture du DLC : `tools/romfs-extract` mode `--aoc <dlc.nsp>` (NCA `PublicData`, sans patch), ecrit par Codex dans un worktree (branche `codex/aoc-extract`), relu, compile et essaye ici : cartes `Map/AocField/*` extraites dans `build/romfs-aoc`. Trois Bokoblins a 62 m de `Entrance_1` dans `A-1_Static.smubin` (HashId 2117518451, 2290900596, 3043629014).
+- **Defaut trouve (`dl1`)** : en mode expert l'acteur s'appelle `Enemy_Bokoblin_Middle`, mais son drapeau est `AocField_Enemy_Bokoblin_Junior_2117518451` (index 5144 de la table) : le jeu monte le rang de l'acteur et garde le nom de la carte pour le drapeau. Le mod calculait `..._Middle_...` -> `ABSENT de la table`, donc un ennemi vaincu chez l'un n'etait jamais retire chez l'autre. Touche aussi le monde principal en mode expert (non essaye la).
+- Correctif (`objects.cpp`) : on essaie le nom de l'acteur avec chacun des rangs `Junior`, `Middle`, `Senior`, `Dark`, `Gold` (rangs lus dans les noms des paquets `Actor/Pack/Enemy_*` : 35, 23, 17, 5 et 4 paquets). [V] `dl2` : les trois drapeaux `existe` ; J1 pose `1f11af22` (`-DCOOP_TEST_SETLOCAL=0x1f11af22 -DCOOP_TEST_SETLOCAL_AFTER=420`) -> chez J2 `objet : Enemy_Bokoblin_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 1f11af22) -> retire ici` ; a 460 s ce Bokoblin n'est plus dans la liste des acteurs de J2 (encore present a 307 s, juste apres le retrait : le retrait prend un moment).
+- Inexplique : a 460 s, la liste de J2 n'a plus non plus le Bokoblin 2290900596 (J1 l'a encore) ; aucune ligne du journal de J2 ne le concerne.
+- Relecture Codex du changement (worktree, sans `build/`) : « No actionable defects ». Codex ne lit plus `build/` : profil `protege` de `~/.codex/config.toml`, refus de lecture pose sur le disque pour `CodexSandboxUsers` (`icacls build`).
+- Non essaye : une vraie partie de l'epreuve (etages, inventaire retire par le jeu, fin), la Ballade des Prodiges. Pas d'image.
+- Preuve : `2026-11-16_epreuve-de-l-epee_dl1-dl2.log`.
+
 ### 5.76 Sanctuaire a deux (2026-11-16, essai `sh1`, Eden) - [V] journaux
 
 - Entree : `Map/CDungeon/Static.smubin` (Bootup.pack) liste `Entrance_1` pour les 120 sanctuaires ; la carte `CDungeon/DungeonNNN` est supposee sur le modele de `MainFieldDungeon/RemainsFire` (5.75) et confirmee par l'essai. Outil : `drive.py goto_tp 9100+n 0`. [V] les deux joueurs dans le sanctuaire 073 (test de force, `Pack/Dungeon073.pack` : Gardien `Enemy_Guardian_Mini_Junior_Wipe` 455548141, coffre 628803076).

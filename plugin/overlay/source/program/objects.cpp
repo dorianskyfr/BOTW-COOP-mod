@@ -82,10 +82,45 @@ namespace coop::objects {
          */
         constexpr const char* MapPrefixes[] = { "MainField", "MainFieldDungeon", "CDungeon", "AocField" };
 
-        /* Drapeau "<carte>_<nom>_<HashId>" de l'acteur pour le prefixe k ; 0 si le nom est trop long. */
-        std::uint32_t ActorFlag(const coop::game::ActorInfo& info, int k) {
-            char flagName[96];
-            const int len = std::snprintf(flagName, sizeof(flagName), "%s_%s_%u", MapPrefixes[k], info.m_Name, info.m_HashId);
+        /*
+         * Rang de l'ennemi dans son nom (Junior, Middle, Senior, Dark, Gold : noms des paquets
+         * Actor/Pack/Enemy_*). Essai dl1 (mode expert, Epreuve de l'epee) : l'acteur s'appelle
+         * "Enemy_Bokoblin_Middle" mais son drapeau est "AocField_Enemy_Bokoblin_Junior_2117518451"
+         * (index 5144 de la table) : le jeu monte le rang de l'acteur et garde le nom de la carte pour
+         * le drapeau. On ne sait pas lire le nom de la carte : on essaie le nom avec chaque rang.
+         */
+        constexpr const char* Ranks[] = { "Junior", "Middle", "Senior", "Dark", "Gold" };
+        constexpr int NumRanks = 5;
+        constexpr int NumNames = 1 + NumRanks;
+
+        /* Nom n de l'acteur : 0 = son nom, 1..5 = son nom avec le rang Ranks[n-1] a la place du sien
+           (faux si le nom n'a pas de rang, si c'est deja le sien ou s'il est trop long). */
+        bool ActorName(const char* name, int n, char (&out)[64]) {
+            if (n == 0) {
+                const int len = std::snprintf(out, sizeof(out), "%s", name);
+                return len > 0 && len < static_cast<int>(sizeof(out));
+            }
+            for (const char* rank : Ranks) {
+                const std::size_t rl = std::strlen(rank);
+                for (const char* p = std::strstr(name, rank); p != nullptr; p = std::strstr(p + 1, rank)) {
+                    if (p == name || p[-1] != '_' || (p[rl] != '_' && p[rl] != '\0'))
+                        continue;
+                    if (rank == Ranks[n - 1])
+                        return false;
+                    const int len = std::snprintf(out, sizeof(out), "%.*s%s%s", static_cast<int>(p - name), name,
+                        Ranks[n - 1], p + rl);
+                    return len > 0 && len < static_cast<int>(sizeof(out));
+                }
+            }
+            return false;
+        }
+
+        /* Drapeau "<carte>_<nom>_<HashId>" de l'acteur pour le prefixe k et le nom n ; 0 si ce nom n'existe pas. */
+        std::uint32_t ActorFlag(const coop::game::ActorInfo& info, int k, int n, char (&flagName)[96]) {
+            char name[64];
+            if (!ActorName(info.m_Name, n, name))
+                return 0;
+            const int len = std::snprintf(flagName, sizeof(flagName), "%s_%s_%u", MapPrefixes[k], name, info.m_HashId);
             if (len <= 0 || len >= static_cast<int>(sizeof(flagName)))
                 return 0;
             return Crc32(flagName);
@@ -96,14 +131,16 @@ namespace coop::objects {
             s_SeenWithId += info.m_HashId != 0;
             if (info.m_HashId == 0 || info.m_Name == nullptr || info.m_Name[0] == '\0')
                 return false;
-            std::uint32_t crcs[4];
+            std::uint32_t crcs[4 * NumNames];
+            char flagName[96];
             for (int k = 0; k < 4; k++)
-                crcs[k] = ActorFlag(info, k);
+                for (int n = 0; n < NumNames; n++)
+                    crcs[k * NumNames + n] = ActorFlag(info, k, n, flagName);
             for (int i = 0; i < s_NumPending; i++) {
                 std::uint32_t crc = 0;
-                for (int k = 0; k < 4 && crc == 0; k++)
-                    if (crcs[k] != 0 && crcs[k] == s_Pending[i])
-                        crc = crcs[k];
+                for (int j = 0; j < 4 * NumNames && crc == 0; j++)
+                    if (crcs[j] != 0 && crcs[j] == s_Pending[i])
+                        crc = crcs[j];
                 if (crc == 0)
                     continue;
                 Victim& v = s_Victims[s_NumVictims++];
@@ -126,14 +163,19 @@ namespace coop::objects {
                 return false;
             if (std::strncmp(info.m_Name, "Enemy_", 6) != 0 && std::strncmp(info.m_Name, "TBox_", 5) != 0)
                 return false;
-            char flagName[96];
+            char flagName[96] = "(nom trop long)";
             std::uint32_t crc = 0;
             int q = -1;
-            for (int k = 0; k < 4 && q == -1; k++) {
-                std::snprintf(flagName, sizeof(flagName), "%s_%s_%u", MapPrefixes[k], info.m_Name, info.m_HashId);
-                crc = Crc32(flagName);
-                q = coop::flags::Query(crc);
-            }
+            for (int k = 0; k < 4 && q == -1; k++)
+                for (int n = 0; n < NumNames && q == -1; n++) {
+                    char tried[96];
+                    const std::uint32_t c = ActorFlag(info, k, n, tried);
+                    if (c == 0)
+                        continue;
+                    crc = c;
+                    std::memcpy(flagName, tried, sizeof(flagName));
+                    q = coop::flags::Query(crc);
+                }
             if (q >= 0)
                 Logging.Log("[botw-coop] drapeau d'acteur : %s -> %08x existe, valeur %d, proprietes 0x%02x", flagName, crc, q & 1, q >> 8);
             else

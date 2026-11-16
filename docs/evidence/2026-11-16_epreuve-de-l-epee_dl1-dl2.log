@@ -1,0 +1,56 @@
+== dl1_game.txt
+[botw-coop] voyage (essai) : vers AocField/A-1 Entrance_1 -> demande
+[botw-coop] essai drapeau local : hachage=1f11af22 index 5144, octet 0 -> 1
+[botw-coop] drapeau change : n.5144 hachage=1f11af22 0 -> 1 (envoye, lune de sang)
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Middle_3043629014 -> 45a8f889 ABSENT de la table
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Middle_2290900596 -> f8f3338d ABSENT de la table
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Middle_2117518451 -> 6b395bcf ABSENT de la table
+[botw-coop] drapeau d'acteur : 3 acteur(s) examines (ennemis et coffres)
+== dl1_game2.txt
+[botw-coop] voyage (essai) : vers AocField/A-1 Entrance_1 -> demande
+[botw-coop] drapeau recu : n.5144 hachage=1f11af22 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Middle_3043629014 -> 45a8f889 ABSENT de la table
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Middle_2290900596 -> f8f3338d ABSENT de la table
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Middle_2117518451 -> 6b395bcf ABSENT de la table
+[botw-coop] drapeau d'acteur : 3 acteur(s) examines (ennemis et coffres)
+== dl2_game.txt
+[botw-coop] voyage (essai) : vers AocField/A-1 Entrance_1 -> demande
+[botw-coop] essai drapeau local : hachage=1f11af22 index 5144, octet 0 -> 1
+[botw-coop] drapeau change : n.5144 hachage=1f11af22 0 -> 1 (envoye, lune de sang)
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_2290900596 -> 8cdbc760 existe, valeur 0, proprietes 0x27
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_2117518451 -> 1f11af22 existe, valeur 1, proprietes 0x27
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_3043629014 -> 31800c64 existe, valeur 0, proprietes 0x27
+[botw-coop] drapeau d'acteur : 3 acteur(s) examines (ennemis et coffres)
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_2290900596 -> 8cdbc760 existe, valeur 0, proprietes 0x27
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_2117518451 -> 1f11af22 existe, valeur 1, proprietes 0x27
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_3043629014 -> 31800c64 existe, valeur 0, proprietes 0x27
+[botw-coop] drapeau d'acteur : 3 acteur(s) examines (ennemis et coffres)
+== dl2_game2.txt
+[botw-coop] voyage (essai) : vers AocField/A-1 Entrance_1 -> demande
+[botw-coop] drapeau recu : n.5144 hachage=1f11af22 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] objet : Enemy_Bokoblin_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 1f11af22) -> retire ici
+[botw-coop] objets : 1 retires au total, 32 parcours, 0 drapeaux non traites (file pleine)
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_3043629014 -> 31800c64 existe, valeur 0, proprietes 0x27
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_2290900596 -> 8cdbc760 existe, valeur 0, proprietes 0x27
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_2117518451 -> 1f11af22 existe, valeur 1, proprietes 0x27
+[botw-coop] drapeau d'acteur : 3 acteur(s) examines (ennemis et coffres)
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_3043629014 -> 31800c64 existe, valeur 0, proprietes 0x27
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_2290900596 -> 8cdbc760 existe, valeur 0, proprietes 0x27
+[botw-coop] drapeau d'acteur : AocField_Enemy_Bokoblin_Junior_2117518451 -> 1f11af22 existe, valeur 1, proprietes 0x27
+[botw-coop] drapeau d'acteur : 3 acteur(s) examines (ennemis et coffres)
+== dl2_pilot.log (listes d'acteurs, 'to 1' = J1, 'to 2' = J2)
+  241.9s goto_tp : voyage vers le point le plus proche de (9301, 0)
+  242.4s goto_tp : voyage vers le point le plus proche de (9301, 0)
+  304.9s acteurs (Bokoblin) : 2
+  304.9s    Enemy_Bokoblin_Middle                    (-4622.96, 300.38, -3866.98)
+  304.9s    Enemy_Bokoblin_Middle                    (-4631.62, 300.21, -3872.25)
+  307.5s acteurs (Bokoblin) : 4
+  307.5s    Enemy_Bokoblin_Middle                    (-4625.19, 300.30, -3872.86)
+  307.5s    Enemy_Bokoblin_Middle                    (-4622.96, 300.38, -3866.98)
+  307.5s    Enemy_Bokoblin_Middle                    (-4631.62, 300.29, -3872.25)
+  460.0s acteurs (Bokoblin) : 1
+  460.0s    Enemy_Bokoblin_Middle                    (-4625.19, 300.30, -3872.86)
+  462.5s acteurs (Bokoblin) : 4
+  462.5s    Enemy_Bokoblin_Middle                    (-4622.96, 300.38, -3866.98)
+  462.5s    Enemy_Bokoblin_Middle                    (-4631.62, 300.21, -3872.25)
+  462.5s    Enemy_Bokoblin_Middle                    (-4625.19, 300.30, -3872.86)
