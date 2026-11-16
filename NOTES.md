@@ -812,6 +812,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.82 Groupe 3 (LinkTag) : c'est l'etat « camp nettoye », pas les enigmes des sanctuaires (2026-11-16, analyse des donnees) - [V] donnees, non essaye en jeu
+
+- Catalogue (`build/gamedata/flags.tsv`) : les 485 drapeaux LinkTag sauvegardes sont **tous** `MainField_LinkTag*` ; aucun `CDungeon_`. L'etat des enigmes des sanctuaires n'est pas sauvegarde par le jeu (il revient a zero) : rien a partager par drapeau ; la fin d'un sanctuaire l'est deja (groupe 1).
+- `tools/linktag_camps.py` (liens `LinksToObj` des cartes du monde, a travers les LinkTag) : ces portes sont actionnees par des ennemis (Bokoblin, Lezalfos, Moblin, Chuchu, Hinox) et commandent `TBox_Field_Enemy` (54), `BattleBgmRequestFinishTag` (54) et `EventTag` (55) : c'est le **camp d'ennemis nettoye** (coffre du camp debloque, fin de la musique de combat). 55 camps trouves dans les cartes (369 noms sauvegardes distincts).
+- Partager le groupe 3 debloquerait chez l'autre joueur le coffre d'un camp nettoye par l'un (chacun ouvre son coffre : regle des recompenses pour les deux). Doute : deux drapeaux par camp dans la table, avec et sans zero devant (`MainField_LinkTagAnd_0913348730` f21f5215 et `MainField_LinkTagAnd_913348730` 942e27a9) ; on ne sait pas lequel le jeu pose.
+- **Essai prevu** (PC libre, `share_groups` avec 3) : camp `LinkTagAnd_913348730` (-2830 ; 350 ; -709), 7 ennemis, a 286 m du point de chargement des sauvegardes d'essai (-2929 ; 306 ; -441). J1 nettoie le camp (ou pose le drapeau) -> J2 recoit le drapeau ; chez J2, le coffre du camp s'ouvre-t-il ? (a l'image ou par l'etat du coffre).
+
 ### 5.81 Drapeau exact de l'objet de carte (2026-11-16) - code seulement, NON essaye en jeu
 
 - Probleme general (5.77, 5.80) : le jeu fait monter les ennemis (mode expert, et `Ecosystem/LevelSensor.sbyml` du jeu de base : 5 familles, ex. `Enemy_Assassin_Shooter_Junior` -> `Enemy_Assassin_Middle`, `Enemy_Moriblin_Senior_Volcano` -> `Enemy_Moriblin_Dark`) ; le drapeau garde le nom de la carte. La regle des rangs (5.77) ne couvre pas ces cas. Le DLC n'a pas de `LevelSensor` : la montee du mode expert est faite ailleurs (inconnu).
