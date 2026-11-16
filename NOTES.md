@@ -812,6 +812,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.76 Sanctuaire a deux (2026-11-16, essai `sh1`, Eden) - [V] journaux
+
+- Entree : `Map/CDungeon/Static.smubin` (Bootup.pack) liste `Entrance_1` pour les 120 sanctuaires ; la carte `CDungeon/DungeonNNN` est supposee sur le modele de `MainFieldDungeon/RemainsFire` (5.75) et confirmee par l'essai. Outil : `drive.py goto_tp 9100+n 0`. [V] les deux joueurs dans le sanctuaire 073 (test de force, `Pack/Dungeon073.pack` : Gardien `Enemy_Guardian_Mini_Junior_Wipe` 455548141, coffre 628803076).
+- [V] Correctif des prefixes (5.75) dans un sanctuaire : `CDungeon_Enemy_Guardian_Mini_Junior_Wipe_455548141 -> 40e3652c existe` ; J1 pose ce drapeau (`-DCOOP_TEST_SETLOCAL=0x40e3652c`) -> chez J2 `objet : Enemy_Guardian_Mini_Junior_Wipe pris, ouvert ou vaincu par l'autre joueur -> retire ici`, plus aucun Gardien dans sa liste.
+- Non essaye : un vrai combat, l'enigme d'un sanctuaire (portes logiques `LinkTag*`, groupe 3, inactif par defaut), la fin du sanctuaire a deux. Pas d'image.
+- Preuve : `2026-11-16_sanctuaire-a-deux_sh1.log`.
+
 ### 5.75 Creatures divines : entree a deux, drapeaux des objets, enigmes partagees (2026-11-16, essais `gd8` a `gd11`, Eden) - [V] journaux
 
 - Fichiers lus (extraits du jeu de l'utilisateur dans `build/`, hors git) : `Pack/RemainsWind.pack` (cartes de Vah Medoh : 501 objets, 5 bornes `DgnObj_RemainsTerminalBody_A`, borne de fin, boss `Enemy_SiteBoss_Bow`, 168 portes logiques `LinkTag*`, 8 coffres, un receptacle), `Map/MainFieldDungeon/Static.smubin` (dans `Bootup.pack` : points `Entrance_1`, `StartDemoEnter` des quatre Creatures), `Event/*.sbeventpack` (un `ChangeScene` du jeu : carte `MainFieldDungeon/RemainsFire`, point `Entrance_1`). Outils : `tools/list_pack_map.py`, `tools/grep_events.py`.

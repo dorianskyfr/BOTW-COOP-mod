@@ -367,6 +367,16 @@ namespace coop::warp {
             Logging.Log("[botw-coop] voyage (essai) : vers %s Entrance_1 -> %s", map, ok ? "demande" : "REFUSE");
             return;
         }
+        /* Essai : x = 9100 + n entre dans le sanctuaire n ("CDungeon/DungeonNNN", "Entrance_1" : point
+           liste pour les 120 sanctuaires dans Map/CDungeon/Static.smubin, Bootup.pack ; forme de la carte
+           supposee comme "MainFieldDungeon/RemainsFire"). */
+        if (x >= 9100.0f && x < 9300.0f) {
+            char map[32];
+            std::snprintf(map, sizeof(map), "CDungeon/Dungeon%03d", static_cast<int>(x - 9100.0f));
+            const bool ok = coop::game::ChangeStage(map, "Entrance_1");
+            Logging.Log("[botw-coop] voyage (essai) : vers %s Entrance_1 -> %s", map, ok ? "demande" : "REFUSE");
+            return;
+        }
         const float target[3] = { x, st.m_Pos[1], z };
         float d = 0.0f;
         const int i = NearestTravelPoint(target, st.m_Pos, 0.0f, d);

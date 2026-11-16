@@ -1,0 +1,19 @@
+== sh1_game.txt
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon073 Entrance_1 -> demande
+[botw-coop] drapeau d'acteur : CDungeon_TBox_Dungeon_Stone_628803076 -> 3251aa6d existe, valeur 0, proprietes 0x07
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Junior_Wipe_455548141 -> 40e3652c existe, valeur 0, proprietes 0x37
+[botw-coop] essai drapeau local : hachage=40e3652c index 10817, octet 0 -> 1
+[botw-coop] drapeau change : n.10817 hachage=40e3652c 0 -> 1 (envoye, lune de sang)
+[botw-coop] drapeau d'acteur : CDungeon_TBox_Dungeon_Stone_628803076 -> 3251aa6d existe, valeur 0, proprietes 0x07
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Junior_Wipe_455548141 -> 40e3652c existe, valeur 1, proprietes 0x37
+== sh1_game2.txt
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon073 Entrance_1 -> demande
+[botw-coop] objets : 1 drapeau(x) recu(s) a verifier, 161 acteurs parcourus dont 65 avec identifiant de carte
+[botw-coop] drapeau d'acteur : CDungeon_TBox_Dungeon_Stone_628803076 -> 3251aa6d existe, valeur 0, proprietes 0x07
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Junior_Wipe_455548141 -> 40e3652c existe, valeur 0, proprietes 0x37
+[botw-coop] drapeau recu : n.10817 hachage=40e3652c mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] objets : 2 drapeau(x) recu(s) a verifier, 163 acteurs parcourus dont 65 avec identifiant de carte
+[botw-coop] objet : Enemy_Guardian_Mini_Junior_Wipe pris, ouvert ou vaincu par l'autre joueur (drapeau 40e3652c) -> retire ici
+[botw-coop] objets : 1 retires au total, 25 parcours, 0 drapeaux non traites (file pleine)
+[botw-coop] drapeau d'acteur : CDungeon_TBox_Dungeon_Stone_628803076 -> 3251aa6d existe, valeur 0, proprietes 0x07
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Junior_Wipe_455548141 -> 40e3652c existe, valeur 1, proprietes 0x37
