@@ -136,7 +136,12 @@ namespace coop::game {
 
         const Offsets* s_Offsets = nullptr;
 
-        bool ReadMainBuildId(std::uint8_t out[16], std::uint32_t& outSize) {
+        /*
+         * Lit la note GNU build-id de main. `skip` : nombre de notes a passer (Eden : la premiere note
+         * trouvee n'est pas celle de main 1.9.0, essai e2 du 2026-11-16 ; on essaie donc les suivantes).
+         * `atOff` recoit la position de la note dans la zone lue.
+         */
+        bool ReadMainBuildId(std::uint8_t out[16], std::uint32_t& outSize, int skip = 0, std::size_t* atOff = nullptr) {
             const auto& info = exl::util::GetMainModuleInfo();
             const auto start = info.m_Rodata.m_Start;
             const auto size = info.m_Rodata.m_Size;
@@ -160,7 +165,11 @@ namespace coop::game {
                 const std::size_t descOff = off + sizeof(hdr) + 4;
                 if (descOff + hdr.m_DescSize > size)
                     continue;
+                if (skip-- > 0)
+                    continue;
 
+                if (atOff != nullptr)
+                    *atOff = off;
                 std::memset(out, 0, 16);
                 std::memcpy(out, base + descOff, hdr.m_DescSize < 16 ? hdr.m_DescSize : 16);
                 outSize = hdr.m_DescSize;
@@ -183,11 +192,32 @@ namespace coop::game {
         for (int i = 0; i < 16; i++)
             std::snprintf(hex + i * 2, 3, "%02x", id[i]);
 
-        for (const auto& known : s_Known) {
-            if (std::memcmp(known.m_BuildId, id, 16) == 0) {
-                s_Offsets = &known;
+        /* Notes suivantes essayees si la premiere n'est pas connue (Eden, voir ReadMainBuildId). */
+        for (int note = 0; note < 16 && s_Offsets == nullptr; note++) {
+            std::uint8_t other[16] = {};
+            std::uint32_t otherSize = 0;
+            std::size_t at = 0;
+            if (note > 0 && !ReadMainBuildId(other, otherSize, note, &at))
                 break;
+            const std::uint8_t* cand = note == 0 ? id : other;
+            for (const auto& known : s_Known) {
+                if (std::memcmp(known.m_BuildId, cand, 16) == 0) {
+                    s_Offsets = &known;
+                    if (note > 0) {
+                        std::memcpy(id, cand, 16);
+                        idSize = otherSize;
+                        for (int i = 0; i < 16; i++)
+                            std::snprintf(hex + i * 2, 3, "%02x", id[i]);
+                        Logging.Log("[botw-coop] build id : note %d de main (a +0x%lx de sa zone en lecture seule)", note, at);
+                    }
+                    break;
+                }
             }
+        }
+        if (s_Offsets == nullptr) {
+            const auto& m = exl::util::GetMainModuleInfo();
+            Logging.Log("[botw-coop] main : texte %016lx +0x%lx, lecture seule %016lx +0x%lx, donnees %016lx +0x%lx",
+                m.m_Text.m_Start, m.m_Text.m_Size, m.m_Rodata.m_Start, m.m_Rodata.m_Size, m.m_Data.m_Start, m.m_Data.m_Size);
         }
 
         Logging.Log("[botw-coop] build id main : %s (%u octets) -> %s",

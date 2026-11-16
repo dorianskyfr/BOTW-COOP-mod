@@ -5,6 +5,7 @@ namespace BotwCoopLauncher;
 /// <summary>Reglages du launcher, gardes dans %LOCALAPPDATA%\BotwCoop\launcher.json.</summary>
 public sealed class Settings
 {
+    /// <summary>Executable de l'emulateur : Ryujinx.exe ou eden.exe (nom garde pour les reglages existants).</summary>
     public string RyujinxExe { get; set; } = "";
     public string BaseNsp { get; set; } = "";
     public string UpdateNsp { get; set; } = "";
@@ -59,6 +60,9 @@ public sealed class Settings
     {
         if (!string.IsNullOrEmpty(overrideDir))
             return overrideDir;
+        // Eden (son executable est choisi dans le meme champ) : voir Eden.cs.
+        if (Eden.IsEdenExe(RyujinxExe))
+            return Eden.DataDir(RyujinxExe);
         if (!string.IsNullOrEmpty(RyujinxExe))
         {
             var portable = Path.Combine(Path.GetDirectoryName(RyujinxExe) ?? "", "portable");

@@ -90,7 +90,7 @@ public sealed class Setup
 
     public static Version LauncherVersion => Assembly.GetExecutingAssembly().GetName().Version ?? new Version(0, 0);
 
-    static string Work => Settings.WorkDir;
+    internal static string Work => Settings.WorkDir;
 
     // ---- Releases ----
 
@@ -243,9 +243,9 @@ public sealed class Setup
         _progress(0);
         CheckInputs(s);
         var dataDir = s.RyujinxDataDir(o.DataDirOverride);
-        var keys = Path.Combine(dataDir, "system", "prod.keys");
+        var keys = KeysFile(dataDir);
         if (!File.Exists(keys))
-            throw new InvalidOperationException($"Clés introuvables : {keys}. Lancez une fois Ryujinx avec vos clés installées.");
+            throw new InvalidOperationException($"Clés introuvables : {keys}. Lancez une fois l'émulateur avec vos clés installées.");
 
         // 1. Archive du mod
         string zip, version;
@@ -313,9 +313,16 @@ public sealed class Setup
         CopyTree(generated, Path.Combine(target, "romfs"));
         WriteModConfig(target, s);
         _log($"Mod installé dans {target}");
-        if (s.FixIgnoreMissingServices)
-            FixRyujinxConfig(dataDir);
-        EnsureUpdateSelected(dataDir, s.UpdateNsp);
+        if (Eden.IsEdenDataDir(dataDir))
+        {
+            EnsureEdenUpdate(dataDir, s.UpdateNsp);
+        }
+        else
+        {
+            if (s.FixIgnoreMissingServices)
+                FixRyujinxConfig(dataDir);
+            EnsureUpdateSelected(dataDir, s.UpdateNsp);
+        }
         s.InstalledVersion = modVersion;
         s.Save();
         _progress(100);
@@ -324,15 +331,28 @@ public sealed class Setup
     static void CheckInputs(Settings s)
     {
         if (string.IsNullOrEmpty(s.RyujinxExe) || !File.Exists(s.RyujinxExe))
-            throw new InvalidOperationException("Indiquez le fichier Ryujinx.exe.");
+            throw new InvalidOperationException("Indiquez l'émulateur (Ryujinx.exe ou eden.exe).");
         if (!File.Exists(s.BaseNsp))
             throw new InvalidOperationException("Indiquez le jeu de base (.nsp).");
         if (!File.Exists(s.UpdateNsp))
             throw new InvalidOperationException("Indiquez la mise à jour 1.9.0 (.nsp).");
     }
 
-    public static string ModTarget(string dataDir) =>
-        Path.Combine(dataDir, "mods", "contents", TitleId, "botw-coop");
+    public static string ModTarget(string dataDir) => Eden.IsEdenDataDir(dataDir)
+        ? Eden.ModTarget(dataDir)
+        : Path.Combine(dataDir, "mods", "contents", TitleId, "botw-coop");
+
+    /// <summary>Fichier prod.keys de l'emulateur (Ryujinx : system\, Eden : keys\).</summary>
+    public static string KeysFile(string dataDir) => Eden.IsEdenDataDir(dataDir)
+        ? Eden.KeysFile(dataDir)
+        : Path.Combine(dataDir, "system", "prod.keys");
+
+    /// <summary>Eden : la mise a jour 1.9.0 doit etre installee dans sa NAND (voir Eden.cs).</summary>
+    void EnsureEdenUpdate(string dataDir, string updateNsp)
+    {
+        var n = Eden.InstallNsp(updateNsp, dataDir, _log);
+        _log(n > 0 ? $"Eden : mise à jour 1.9.0 installée ({n} fichiers)." : "Eden : mise à jour 1.9.0 déjà installée.");
+    }
 
     static string GenerationKey(Settings s, string modDir)
     {
@@ -344,7 +364,7 @@ public sealed class Setup
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(sb.ToString())));
     }
 
-    static void CopyTree(string src, string dst)
+    internal static void CopyTree(string src, string dst)
     {
         foreach (var dir in Directory.GetDirectories(src, "*", SearchOption.AllDirectories))
             Directory.CreateDirectory(Path.Combine(dst, Path.GetRelativePath(src, dir)));
@@ -518,7 +538,7 @@ public sealed class Setup
             _log("Le mod n'était pas installé.");
         }
         // Mod du joueur 2 (deux joueurs sur ce PC) ; son dossier et ses sauvegardes restent.
-        var p2 = ModTarget(Player2DataDir);
+        var p2 = ModTarget(Player2DataDirFor(s));
         if (Directory.Exists(p2))
         {
             Directory.Delete(p2, true);
@@ -769,6 +789,16 @@ public sealed class Setup
     /// </summary>
     public Process StartGame(Settings s, string rootDataDir = null, string who = null)
     {
+        if (Eden.IsEdenExe(s.RyujinxExe))
+        {
+            // Eden : le joueur 2 sur ce PC a sa propre copie d'Eden (rootDataDir = son dossier de donnees).
+            var exe = rootDataDir != null && Path.GetFullPath(rootDataDir) == Path.GetFullPath(Eden.Player2DataDir) ? Eden.Player2Exe : s.RyujinxExe;
+            _log(who == null ? "Lancement d'Eden…" : $"Lancement d'Eden ({who})…");
+            return Process.Start(new ProcessStartInfo(exe, $"-g \"{s.BaseNsp}\"")
+            {
+                UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(exe),
+            });
+        }
         _log(who == null ? "Lancement de Ryujinx…" : $"Lancement de Ryujinx ({who})…");
         // Chemin complet : Ryujinx part de son propre dossier, et un chemin relatif introuvable le fait
         // retomber sur le dossier habituel de l'utilisateur (constate a l'essai du 2026-11-15).
@@ -824,9 +854,22 @@ public sealed class Setup
             using var dst = zip.CreateEntry(Path.GetFileName(name), CompressionLevel.Optimal).Open();
             src.CopyTo(dst);
         }
+        // Eden ecrit son journal (et celui du mod) dans son propre dossier.
+        if (Eden.IsEdenExe(s.RyujinxExe))
+        {
+            foreach (var (log, label) in new[] { (Eden.LogFile(Eden.DataDir(s.RyujinxExe)), "eden.log"), (Eden.LogFile(Eden.Player2DataDir), "eden-joueur-2.log") })
+            {
+                if (!File.Exists(log))
+                    continue;
+                using var src = new FileStream(log, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                using var dst = zip.CreateEntry(label, CompressionLevel.Optimal).Open();
+                src.CopyTo(dst);
+            }
+        }
         var info = new StringBuilder();
         info.AppendLine($"launcher {LauncherVersion.ToString(3)}");
         info.AppendLine($"mod {s.InstalledVersion}");
+        info.AppendLine($"emulateur {(Eden.IsEdenExe(s.RyujinxExe) ? "Eden" : "Ryujinx")}");
         info.AppendLine($"mode {(s.LocalDuo ? "deux sur ce PC" : s.Host ? "hote" : "invite")}");
         info.AppendLine($"relais {RelayFor(s)}");
         info.AppendLine($"mot de passe {(string.IsNullOrEmpty(s.Password) ? "non" : "oui (non copie)")}");
@@ -849,13 +892,16 @@ public sealed class Setup
         await Task.Run(() => PreparePlayer2(s, dataDirOverride));
         var p1 = StartGame(s, dataDirOverride, "joueur 1");
         await Task.Delay(8000);
-        var p2 = StartGame(s, Player2DataDir, "joueur 2");
+        var p2 = StartGame(s, Player2DataDirFor(s), "joueur 2");
         _log("Deux fenêtres lancées : une manette par joueur.");
         return new[] { p1, p2 };
     }
 
     /// <summary>Dossier de donnees Ryujinx du joueur 2 (deux fenetres sur ce PC).</summary>
     public static string Player2DataDir => Path.Combine(Work, "joueur2");
+
+    /// <summary>Dossier de donnees du joueur 2 selon l'emulateur (Eden : sa propre copie d'Eden).</summary>
+    public static string Player2DataDirFor(Settings s) => Eden.IsEdenExe(s.RyujinxExe) ? Eden.Player2DataDir : Player2DataDir;
 
     /// <summary>
     /// Prepare le dossier de donnees du joueur 2 a partir de celui du joueur 1 (lu seulement) :
@@ -867,13 +913,19 @@ public sealed class Setup
     public void PreparePlayer2(Settings s, string dataDirOverride)
     {
         var p1 = s.RyujinxDataDir(dataDirOverride);
-        var p2 = Player2DataDir;
-        var keys = Path.Combine(p1, "system", "prod.keys");
+        var eden = Eden.IsEdenDataDir(p1);
+        var p2 = eden ? Eden.Player2DataDir : Player2DataDir;
+        var keys = KeysFile(p1);
         if (!File.Exists(keys))
             throw new InvalidOperationException($"Clés introuvables : {keys}.");
         var firstTime = !Directory.Exists(Path.Combine(p2, "system"));
         Directory.CreateDirectory(p2);
-        if (firstTime)
+        if (eden)
+        {
+            Eden.PreparePlayer2(s.RyujinxExe, s.Player2CopiesSave, _log);
+            EnsureEdenUpdate(p2, s.UpdateNsp);
+        }
+        else if (firstTime)
         {
             _log($"Joueur 2 : préparation de son dossier Ryujinx ({p2})…");
             CopyTree(Path.Combine(p1, "system"), Path.Combine(p2, "system"));
@@ -907,9 +959,12 @@ public sealed class Setup
             }
             _log("Joueur 2 : réglez sa manette une fois dans SA fenêtre (Options > Paramètres > Entrées) ; le réglage est gardé.");
         }
-        if (s.FixIgnoreMissingServices)
-            FixRyujinxConfig(p2);
-        EnsureUpdateSelected(p2, s.UpdateNsp);
+        if (!eden)
+        {
+            if (s.FixIgnoreMissingServices)
+                FixRyujinxConfig(p2);
+            EnsureUpdateSelected(p2, s.UpdateNsp);
+        }
 
         // Mod : meme contenu que chez le joueur 1, recopie seulement s'il a change.
         var from = ModTarget(p1);

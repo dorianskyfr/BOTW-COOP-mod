@@ -45,7 +45,7 @@ public sealed class MainForm : Form
     readonly Label _versionLabel = new() { AutoSize = false, ForeColor = Theme.Muted, TextAlign = ContentAlignment.MiddleRight };
 
     // Parametres
-    readonly InputBox _ryujinx = new() { Placeholder = "Chemin de Ryujinx.exe" };
+    readonly InputBox _ryujinx = new() { Placeholder = "Chemin de Ryujinx.exe ou eden.exe" };
     readonly InputBox _base = new() { Placeholder = "Jeu de base BOTW (.nsp)" };
     readonly InputBox _update = new() { Placeholder = "Mise à jour 1.9.0 (.nsp)" };
     readonly CheckBox _fixCfg = new()
@@ -217,14 +217,14 @@ public sealed class MainForm : Form
         card.Controls.Add(title);
         var hint = new Label
         {
-            Text = "Vos fichiers restent sur ce PC : le mod est fabriqué à partir de votre propre copie du jeu. Ryujinx doit déjà avoir vos clés (prod.keys).",
+            Text = "Vos fichiers restent sur ce PC : le mod est fabriqué à partir de votre propre copie du jeu. L'émulateur (Ryujinx ou Eden) doit déjà avoir vos clés (prod.keys).",
             ForeColor = Theme.Muted, BackColor = card.BackColor, AutoSize = false, Font = Theme.Font(9.5f),
         };
         hint.SetBounds(S(24), S(50), S(840), S(22));
         card.Controls.Add(hint);
 
         int y = S(86);
-        AddPathRow(card, "RYUJINX", _ryujinx, "Ryujinx|Ryujinx.exe;Ryujinx.Ava.exe|Programme|*.exe", OnRyujinxPicked, ref y);
+        AddPathRow(card, "ÉMULATEUR", _ryujinx, "Ryujinx ou Eden|Ryujinx.exe;Ryujinx.Ava.exe;eden.exe|Programme|*.exe", OnRyujinxPicked, ref y);
         AddPathRow(card, "JEU DE BASE", _base, "BOTW (.nsp)|*.nsp", () => { ReadForm(); LoadGameIconAsync(); }, ref y);
         AddPathRow(card, "MISE À JOUR 1.9.0", _update, "Mise à jour (.nsp)|*.nsp", null, ref y);
 
@@ -468,7 +468,7 @@ public sealed class MainForm : Form
     {
         if (_hero.Icon != null || !File.Exists(_s.BaseNsp))
             return;
-        var keys = Path.Combine(_s.RyujinxDataDir(_dataDirOverride), "system", "prod.keys");
+        var keys = Setup.KeysFile(_s.RyujinxDataDir(_dataDirOverride));
         var nsp = _s.BaseNsp;
         try
         {

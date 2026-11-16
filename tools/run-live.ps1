@@ -25,6 +25,9 @@ param(
     # -Password2 : celui du second joueur, s'il doit differer. Le relais le recoit par -RelayArgs '--password ...'.
     [string]$Password = '',
     [string]$Password2 = $null,
+    # Emulateur : ryujinx (dossiers build\ryu\<Dir>) ou eden (dossiers build\eden\<Dir>, tools\new-eden-dir.ps1).
+    # Avec eden, -From peut nommer un dossier de test Ryujinx (sa sauvegarde est recopiee) ou Eden.
+    [ValidateSet('ryujinx', 'eden')][string]$Emu = 'ryujinx',
     [switch]$Stop
 )
 
@@ -42,7 +45,7 @@ if ($Stop) {
     if (Test-Path $pidFile) {
         foreach ($id in (Get-Content $pidFile)) {
             $proc = Get-Process -Id ([int]$id) -ErrorAction SilentlyContinue
-            if ($proc -and $proc.ProcessName -match 'Ryujinx|python') {
+            if ($proc -and $proc.ProcessName -match 'Ryujinx|python|eden') {
                 Stop-Process -Id $proc.Id -Confirm:$false
                 Write-Output "arrete : $($proc.ProcessName) $($proc.Id)"
             }
@@ -64,6 +67,7 @@ if (-not $NoBuild) {
 
 if ($Dir -eq '') { $Dir = "t_$Name" }
 . (Join-Path $PSScriptRoot 'new-test-dir.ps1')
+. (Join-Path $PSScriptRoot 'new-eden-dir.ps1')
 
 $relayLog = Join-Path $runs "${Name}_relay.log"
 # Memoire du serveur : un fichier par essai, garde d'un lancement a l'autre du meme nom.
@@ -78,12 +82,21 @@ $n = 0
 foreach ($d in @($Dir, $Dir2)) {
     if ($d -eq '') { continue }
     $n++
-    $dataDir = Join-Path $project "build\ryu\$d"
-    if (-not (Test-Path $dataDir)) {
-        if ($From -ne '') { $dataDir = New-CoopTestDirFromSave -Project $project -Name $d -From $From }
-        else { $dataDir = New-CoopTestDir -Project $project -Name $d }
+    if ($Emu -eq 'eden') {
+        $dataDir = Join-Path $project "build\eden\$d"
+        if (-not (Test-Path $dataDir)) {
+            $dataDir = New-EdenTestDir -Project $project -Name $d
+            if ($From -ne '') { Import-EdenSave -Project $project -Dir $dataDir -From $From }
+        }
+        $modDir = Join-Path $dataDir 'user\load\01007EF00011E000\botw-coop\exefs'
+    } else {
+        $dataDir = Join-Path $project "build\ryu\$d"
+        if (-not (Test-Path $dataDir)) {
+            if ($From -ne '') { $dataDir = New-CoopTestDirFromSave -Project $project -Name $d -From $From }
+            else { $dataDir = New-CoopTestDir -Project $project -Name $d }
+        }
+        $modDir = Join-Path $dataDir 'mods\contents\01007ef00011e000\botw-coop\exefs'
     }
-    $modDir = Join-Path $dataDir 'mods\contents\01007ef00011e000\botw-coop\exefs'
     New-Item -ItemType Directory -Force $modDir | Out-Null
     Copy-Item (Join-Path $project 'build\deploy\subsdk9') (Join-Path $modDir 'subsdk9') -Force
     # Fichiers generes depuis la RomFS de l'utilisateur (liste blanche des drapeaux...), hors git.
@@ -108,7 +121,17 @@ foreach ($d in @($Dir, $Dir2)) {
     }
     $suffix = if ($n -eq 1) { '' } else { "$n" }
     $gameOut = Join-Path $runs "${Name}_game$suffix.txt"
-    $p = Start-Process -FilePath $ryujinx -ArgumentList ('--root-data-dir "' + $dataDir + '" "' + $game + '"') -PassThru -RedirectStandardOutput $gameOut -RedirectStandardError (Join-Path $runs "${Name}_game$suffix.err.txt")
+    if ($Emu -eq 'eden') {
+        # Eden ecrit son journal (avec celui du mod) dans user\log\eden_log.txt : <Name>_game.txt en est
+        # un lien dur, pour que les outils lisent le meme fichier qu'avec Ryujinx.
+        $edenLog = Join-Path $dataDir 'user\log\eden_log.txt'
+        $p = Start-Process -FilePath (Join-Path $dataDir 'eden.exe') -ArgumentList ('-g "' + $game + '"') -PassThru
+        for ($k = 0; $k -lt 40 -and -not (Test-Path $edenLog); $k++) { Start-Sleep -Milliseconds 250 }
+        if (Test-Path $gameOut) { Remove-Item $gameOut -Confirm:$false }
+        New-Item -ItemType HardLink -Path $gameOut -Target $edenLog | Out-Null
+    } else {
+        $p = Start-Process -FilePath $ryujinx -ArgumentList ('--root-data-dir "' + $dataDir + '" "' + $game + '"') -PassThru -RedirectStandardOutput $gameOut -RedirectStandardError (Join-Path $runs "${Name}_game$suffix.err.txt")
+    }
     $ids += $p.Id
     $gamePids += $p.Id
     if ($Screen -gt 0) { & $python (Join-Path $project 'tools\place_windows.py') $Screen $p.Id | Out-Null }
