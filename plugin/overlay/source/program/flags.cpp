@@ -255,6 +255,7 @@ namespace coop::flags {
         /*
          * Recompenses pour les deux joueurs (demande de l'utilisateur, 2026-11-15) : la progression reste
          * partagee, et celui qui la recoit gagne aussi la recompense qu'il n'a pas eue en jeu.
+         * - Korok trouve chez l'autre (groupe 6) : une graine de Korok (Obj_KorokNuts).
          * - Sanctuaire termine chez l'autre (Clear_DungeonNNN) : un embleme du triomphe
          *   (Obj_DungeonClearSeal), chacun le depense ensuite a la statue comme il veut.
          * - Creature divine liberee chez l'autre (Clear_Remains*) : la competence du Prodige (objet cle
@@ -300,6 +301,10 @@ namespace coop::flags {
             std::uint32_t demo = 0;
             if (IsShrineCleared(hash)) {
                 item = "Obj_DungeonClearSeal";
+            } else if (coop::config::SyncFlagGroup(hash) == 6) {
+                /* Korok trouve par l'autre (groupe 6 de la liste blanche) : sa graine aussi
+                   (Obj_KorokNuts, nom de la decompilation, uiPauseMenuDataMgr.cpp). */
+                item = "Obj_KorokNuts";
             } else {
                 for (const auto& r : s_BeastRewards)
                     if (r.m_Flag == hash) {

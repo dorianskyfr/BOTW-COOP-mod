@@ -6,9 +6,8 @@ groupes actives (romfs/botw-coop.txt : share_groups=...).
 
 Groupes :
   1 progression : sanctuaires trouves / ouverts / termines (Enter_, Open_, Clear_DungeonNNN),
-                  Creatures divines liberees (Clear_Remains*), tours (MapTower_NN), Koroks
-                  (MainField_Npc_HiddenKorok*). Prefixes d'apres botw-coop (README, « Shared
-                  progress »), verifies sur les noms du catalogue.
+                  Creatures divines liberees (Clear_Remains*), tours (MapTower_NN). Prefixes d'apres
+                  botw-coop (README, « Shared progress »), verifies sur les noms du catalogue.
   2 objets de carte : un drapeau par objet place (nom termine par son HashId) dans les cartes
                   MainField, AocField, CDungeon (sanctuaires), MainFieldDungeon : objets ramasses,
                   coffres, ennemis tues, caisses, minerais... (ce que le mod partageait deja).
@@ -18,6 +17,14 @@ Groupes :
   4 coffres (TBox_*) des cartes : non actifs par defaut, chaque joueur ouvre son propre coffre et
                   en recoit le contenu (demande de l'utilisateur, 2026-11-15). share_groups=1,2,4 pour
                   qu'un coffre ouvert par l'un le soit aussi chez l'autre.
+  5 (libre)
+  6 Koroks (MainField_Npc_HiddenKorok*) : partages (actif par defaut), et celui qui recoit le Korok
+                  trouve par l'autre recoit aussi sa graine (plugin, recompenses pour les deux,
+                  2026-11-16). Ils etaient dans le groupe 1 ; ils ne sont pas retenus par la garde de
+                  la paravoile.
+  7 receptacles de coeur poses dans les cartes (<carte>_Obj_HeartUtuwa_*, dont les 4 des Creatures
+                  divines) : non actifs par defaut, chacun ramasse le sien (sinon celui ramasse par
+                  l'un disparaissait chez l'autre). share_groups=...,7 pour les partager.
 
 Format de sortie (petit-boutiste) : "CSF1", u32 nombre, nombre x u32 hachage trie, nombre x u8 groupe.
 Usage : python -I tools\\build_sync_flags.py build\\gamedata\\flags.tsv build\\deploy\\romfs\\botw-coop\\sync-flags.bin
@@ -34,9 +41,10 @@ RULES = [
     (1, re.compile(r"^(Enter|Open|Clear)_Dungeon\d{3}$")),
     (1, re.compile(r"^Clear_Remains[A-Za-z]+$")),
     (1, re.compile(r"^MapTower_\d+$")),
-    (1, re.compile(r"^MainField_Npc_HiddenKorok[A-Za-z]*_\d+$")),
+    (6, re.compile(r"^MainField_Npc_HiddenKorok[A-Za-z]*_\d+$")),
     (3, re.compile(r"^" + MAPS + r"_LinkTag[A-Za-z]*_\d+$")),
     (4, re.compile(r"^" + MAPS + r"_TBox_[A-Za-z0-9_]*_\d+$")),
+    (7, re.compile(r"^" + MAPS + r"_Obj_HeartUtuwa_[A-Za-z0-9_]*_\d+$")),
     (2, re.compile(r"^" + MAPS + r"_(?!Npc_)(?!LinkTag)[A-Za-z][A-Za-z0-9_]*_\d+$")),
 ]
 

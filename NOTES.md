@@ -812,6 +812,14 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.72 Koroks : graine pour les deux ; receptacles de coeur : un chacun (2026-11-16, essai `kr1`, Eden) - [V] journaux et image
+
+- Constat : les Koroks (groupe 1) et les receptacles de coeur poses (groupe 2 : `MainField_Obj_HeartUtuwa_A_01_*`, et `MainFieldDungeon_Obj_HeartUtuwa_A_01_*` x4, ceux des Creatures divines) etaient partages : trouve ou ramasse par l'un, l'objet disparaissait chez l'autre sans qu'il en ait la recompense. Dans l'esprit de la demande « progression partagee, recompenses pour les deux » (5.64) :
+  - Koroks -> groupe 6, actif par defaut (`share_groups` par defaut `1,2,6`) ; a la reception, `itemGet("Obj_KorokNuts")` (nom : decompilation, `uiPauseMenuDataMgr.cpp`). Ils ne sont plus retenus par la garde de la paravoile (seul le groupe 1 l'est).
+  - Receptacles de coeur poses -> groupe 7, inactif par defaut : chacun ramasse le sien. Non verifie : que le receptacle d'une Creature divine apparaisse bien chez le joueur qui n'a pas battu le boss.
+- [V] `kr1` (une instance Eden, memoire du relais preparee) : `liste blanche lue : ... Koroks 900, receptacles 22, groupes actifs 0x46` ; Korok `MainField_Npc_HiddenKorokFly_611457876` -> `recompense : ... Obj_KorokNuts donne (objets 1 -> 2)`, `mis a 1` ; receptacle `MainField_Obj_HeartUtuwa_A_01_3353329220` -> `ignore (... groupe 7 ...)`. Image : objets cles = tablette Sheikah, « Korok Seed » x1.
+- Preuves : `2026-11-16_korok-et-receptacle_kr1.log`, `..._graine-de-korok-recue_kr1.png`.
+
 ### 5.71 Jouer par internet avec un VPN ; adresse du reseau local corrigee (2026-11-16) - [V] partiel
 
 - Demande de l'utilisateur (accord donne pour cette ouverture reseau). `relay.py --host` accepte plusieurs adresses separees par des virgules (une ecoute par adresse). Launcher : case « Jouer par internet avec un VPN (Tailscale ou ZeroTier) » (`UseVpn`, desactivee par defaut) ; si elle est cochee et qu'une carte Tailscale/ZeroTier (nom ou description) ou une adresse 100.64.0.0/10 (RFC 6598) est active, le relais ecoute sur l'adresse du reseau local ET sur celle du VPN, jamais sur toutes les interfaces ; l'adresse VPN s'affiche sous « J'heberge ».

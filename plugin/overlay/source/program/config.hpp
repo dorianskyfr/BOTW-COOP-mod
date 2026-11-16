@@ -17,8 +17,9 @@
  *   partner_range=<metres>       distance de creation du Link du partenaire (250 par defaut)
  *   cutscene_tp=0                le partenaire trop loin ne rejoint pas le joueur pour une cinematique
  *   rewards=0                    pas d'embleme ni de competence donnes a la reception de la progression
- *   share_groups=1,2             groupes de drapeaux partages (liste blanche, voir plus bas) ;
- *                                4 = coffres (inactif : un coffre chacun)
+ *   share_groups=1,2,6           groupes de drapeaux partages (liste blanche, voir plus bas) ;
+ *                                4 = coffres (inactif : un coffre chacun), 6 = Koroks,
+ *                                7 = receptacles de coeur (inactif : un chacun)
  *   revive=0                     coupe le sauvetage par le partenaire (actif par defaut)
  *   revive_delay=120             secondes entre deux sauvetages par le partenaire
  *   revive_range=150             distance maximale du partenaire, en metres
@@ -77,7 +78,7 @@ namespace coop::config {
     inline int g_ReviveRangeM = 150;
 
     /* Groupes de drapeaux actifs (bit n = groupe n). Par defaut 1 et 2. */
-    inline std::uint32_t g_ShareGroups = (1u << 1) | (1u << 2);
+    inline std::uint32_t g_ShareGroups = (1u << 1) | (1u << 2) | (1u << 6); /* 6 : Koroks */
 
     /* Nombre d'entrees de la liste blanche lues (0 : fichier absent ou invalide). */
     inline int g_SyncFlagCount = 0;

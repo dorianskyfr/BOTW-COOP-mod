@@ -1,0 +1,5 @@
+﻿[botw-coop] build id main : cd57b23fa4bbad65803d9788c01821ee (16 octets) -> 1.9.0
+[botw-coop] config: liste blanche lue : 33350 drapeaux (progression 430, objets de carte 29905, portes logiques 485, coffres 1608, Koroks 900, receptacles 22), groupes actifs 0x46
+[botw-coop] recompense : progression 71e8a107 du partenaire -> Obj_KorokNuts donne (objets 1 -> 2)
+[botw-coop] drapeau recu : n.18860 hachage=71e8a107 mis a 1 (octet 23 : categorie 11 gardee)
+[botw-coop] drapeau recu : hachage=bcb01e5f ignore (index 31012, valeur ici 0, groupe 7, proprietes 0x7, bascule 0)

@@ -121,12 +121,12 @@ namespace coop::config {
                     Logging.Log("[botw-coop] config: liste blanche non triee (entree %u) : AUCUN drapeau ne sera partage", i);
                     return;
                 }
-            int perGroup[5] = {};
+            int perGroup[8] = {};
             for (std::uint32_t i = 0; i < n; i++)
-                perGroup[s_SyncGroups[i] < 5 ? s_SyncGroups[i] : 0]++;
+                perGroup[s_SyncGroups[i] < 8 ? s_SyncGroups[i] : 0]++;
             g_SyncFlagCount = static_cast<int>(n);
-            Logging.Log("[botw-coop] config: liste blanche lue : %u drapeaux (progression %d, objets de carte %d, portes logiques %d, coffres %d), groupes actifs 0x%x",
-                n, perGroup[1], perGroup[2], perGroup[3], perGroup[4], g_ShareGroups);
+            Logging.Log("[botw-coop] config: liste blanche lue : %u drapeaux (progression %d, objets de carte %d, portes logiques %d, coffres %d, Koroks %d, receptacles %d), groupes actifs 0x%x",
+                n, perGroup[1], perGroup[2], perGroup[3], perGroup[4], perGroup[6], perGroup[7], g_ShareGroups);
         }
 
         /* Pieces d'armure / armes : signature, u32 n, n x u32 CRC32 du nom de piece (tries), n x nom
