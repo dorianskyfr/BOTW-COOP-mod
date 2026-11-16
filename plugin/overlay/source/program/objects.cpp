@@ -88,9 +88,11 @@ namespace coop::objects {
          * "Enemy_Bokoblin_Middle" mais son drapeau est "AocField_Enemy_Bokoblin_Junior_2117518451"
          * (index 5144 de la table) : le jeu monte le rang de l'acteur et garde le nom de la carte pour
          * le drapeau. On ne sait pas lire le nom de la carte : on essaie le nom avec chaque rang.
+         * "Baby" (paquets Enemy_Guardian_Mini_Baby, _Baby_Dark) : essai sh2, sanctuaire 122 du DLC en mode
+         * expert, la carte place des "Enemy_Guardian_Mini_Baby" et le jeu cree des "Enemy_Guardian_Mini_Junior".
          */
-        constexpr const char* Ranks[] = { "Junior", "Middle", "Senior", "Dark", "Gold" };
-        constexpr int NumRanks = 5;
+        constexpr const char* Ranks[] = { "Baby", "Junior", "Middle", "Senior", "Dark", "Gold" };
+        constexpr int NumRanks = 6;
         constexpr int NumNames = 1 + NumRanks;
 
         /* Nom n de l'acteur : 0 = son nom, 1..5 = son nom avec le rang Ranks[n-1] a la place du sien

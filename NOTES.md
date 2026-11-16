@@ -812,6 +812,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.80 Sanctuaires de la Ballade des Prodiges, rang « Baby » (2026-11-16, essais `sh2` a `sh4`, Eden) - [V] en partie
+
+- Le DLC (`Map/CDungeon/Static.smubin`, NSP du DLC 1) liste les sanctuaires 120 a 135 avec `Entrance_1` : l'outil `goto_tp 9100+n` y mene (`sh2`, `sh4` : `voyage (essai) : vers CDungeon/Dungeon122 Entrance_1 -> demande`, joueur dans le sanctuaire). Ennemis : sanctuaires 122 et 132 (3 `Enemy_Guardian_Mini_Baby`), 135 (10). Extraits dans `build/romfs-aoc/Pack/Dungeon12x.pack`.
+- **Defaut trouve (`sh2`)** : en mode expert la carte place `Enemy_Guardian_Mini_Baby` et le jeu cree `Enemy_Guardian_Mini_Junior` ; « Baby » manquait aux rangs de 5.77 -> `AocField_Enemy_Guardian_Mini_Gold_... ABSENT de la table`. Correctif : rang `Baby` ajoute (paquets `Enemy_Guardian_Mini_Baby`, `_Baby_Dark`).
+- [V] `sh4`, J1 dans le sanctuaire 122 : `CDungeon_Enemy_Guardian_Mini_Baby_2834046538 -> f52fc876 existe` (et les deux autres) ; J1 pose `f52fc876`, envoye. **Non verifie** : le retrait chez J2, dont Eden a plante avant l'entree (`eden.exe` c0000005, journal d'applications de Windows ; deux plantages aussi en `sh3`). Un autre jeu tournait alors sur le PC (memoire libre ~7 Go) : cause probable, non prouvee. A refaire PC libre.
+
 ### 5.79 Verrous par version surs, relais robuste (2026-11-16, essais `sq1`, `rl1`, Eden) - [V] journaux, essais du relais
 
 - **Plugin** : `seqvalue.hpp` (`SeqValue<T>`, verrou par version, donnees en mots atomiques) remplace la copie memcpy d'une structure ordinaire de `session::RemotePlayer` (positions du partenaire) et `weapons::PoseSlot` (objets portes) ; la lecture de `PoseSlot` est bornee (64 essais, sinon derniere pose lue) au lieu d'une boucle sans fin. Reste de l'audit 5.78. [V] `sq1` : J1 deplace (`tp`) -> chez J2 `CoopPlayer` en (-2914,55 ; 304,83 ; -430,05) puis `acteur distant : ... lu=(-2940.00, 309.00, -455.00)` ; armes du partenaire creees et suivant le pantin.
