@@ -447,12 +447,30 @@ public sealed class Setup
         }
     }
 
-    /// <summary>Premiere adresse IPv4 privee d'une interface active (reseau local uniquement).</summary>
-    public static string LanAddress()
+    /// <summary>
+    /// Adresse IPv4 privee du reseau local (VPN exclus). Les cartes physiques (Wi-Fi, Ethernet) passent
+    /// d'abord : constate le 2026-11-16 chez l'utilisateur, un VPN commercial (CyberGhost, WireGuard) avait
+    /// une adresse 10.x et etait choisi a la place du Wi-Fi 192.168.x, injoignable pour un joueur du reseau local.
+    /// </summary>
+    public static string LanAddress() => PrivateAddress(physicalOnly: true) ?? PrivateAddress(physicalOnly: false);
+
+    static bool IsPhysicalNic(NetworkInterface nic)
+    {
+        var d = (nic.Name + " " + nic.Description).ToLowerInvariant();
+        foreach (var word in new[] { "vpn", "wireguard", "tap-windows", "tunnel", "virtual", "hyper-v", "vmware", "virtualbox", "cyberghost", "openvpn", "wintun" })
+            if (d.Contains(word))
+                return false;
+        return nic.NetworkInterfaceType is NetworkInterfaceType.Ethernet or NetworkInterfaceType.Wireless80211
+            or NetworkInterfaceType.GigabitEthernet or NetworkInterfaceType.FastEthernetT or NetworkInterfaceType.FastEthernetFx;
+    }
+
+    static string PrivateAddress(bool physicalOnly)
     {
         foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
         {
-            if (nic.OperationalStatus != OperationalStatus.Up || nic.NetworkInterfaceType == NetworkInterfaceType.Loopback)
+            if (nic.OperationalStatus != OperationalStatus.Up || nic.NetworkInterfaceType == NetworkInterfaceType.Loopback || IsVpnNic(nic))
+                continue;
+            if (physicalOnly && !IsPhysicalNic(nic))
                 continue;
             foreach (var u in nic.GetIPProperties().UnicastAddresses)
             {
@@ -463,6 +481,38 @@ public sealed class Setup
                 if (isPrivate)
                     return u.Address.ToString();
             }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Interface d'un VPN prive entre joueurs : Tailscale ou ZeroTier (nom ou description de la carte
+    /// reseau), ou adresse dans 100.64.0.0/10 (plage partagee utilisee par Tailscale, RFC 6598).
+    /// </summary>
+    static bool IsVpnNic(NetworkInterface nic)
+    {
+        var text = (nic.Name + " " + nic.Description).ToLowerInvariant();
+        if (text.Contains("tailscale") || text.Contains("zerotier"))
+            return true;
+        foreach (var u in nic.GetIPProperties().UnicastAddresses)
+        {
+            var b = u.Address.GetAddressBytes();
+            if (u.Address.AddressFamily == AddressFamily.InterNetwork && b[0] == 100 && b[1] >= 64 && b[1] <= 127)
+                return true;
+        }
+        return false;
+    }
+
+    /// <summary>Adresse IPv4 de ce PC sur un VPN prive (Tailscale, ZeroTier), ou null.</summary>
+    public static string VpnAddress()
+    {
+        foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
+        {
+            if (nic.OperationalStatus != OperationalStatus.Up || !IsVpnNic(nic))
+                continue;
+            foreach (var u in nic.GetIPProperties().UnicastAddresses)
+                if (u.Address.AddressFamily == AddressFamily.InterNetwork)
+                    return u.Address.ToString();
         }
         return null;
     }
@@ -771,12 +821,20 @@ public sealed class Setup
         if (!File.Exists(python) || !File.Exists(relay))
             throw new InvalidOperationException("Installez d'abord le mod (Python et le relais manquent).");
         var ip = LanAddress() ?? "127.0.0.1";
+        // Par internet (choix de l'utilisateur) : ecoute aussi sur l'adresse du VPN prive, jamais sur
+        // toutes les interfaces ni sur une adresse publique.
+        var vpn = s.UseVpn ? VpnAddress() : null;
+        var hosts = vpn == null ? ip : $"{ip},{vpn}";
         Directory.CreateDirectory(Path.GetDirectoryName(CoopSavePath)!);
-        var args = $"-I \"{relay}\" --host {ip} --state \"{CoopSavePath}\" --log \"{Path.Combine(Work, "relais.log")}\"";
+        var args = $"-I \"{relay}\" --host {hosts} --state \"{CoopSavePath}\" --log \"{Path.Combine(Work, "relais.log")}\"";
         if (!string.IsNullOrEmpty(s.Password))
             args += $" --password \"{s.Password}\"";
         var save = ReadCoopSave();
-        _log($"Relais lancé sur {ip}:47800 (réseau local uniquement). Donnez cette adresse à l'autre joueur.");
+        _log($"Relais lancé sur {ip}:47800 (réseau local). Donnez cette adresse à l'autre joueur s'il est chez vous.");
+        if (vpn != null)
+            _log($"Par internet : relais aussi sur {vpn}:47800 (VPN). Donnez cette adresse à l'autre joueur s'il joue de chez lui.");
+        else if (s.UseVpn)
+            _log("Par internet : aucun VPN (Tailscale, ZeroTier) actif sur ce PC, seul le réseau local est ouvert.");
         _log(save.Exists
             ? $"Partie coop reprise : {save.Progress} éléments de progression partagés ({CoopSavePath})."
             : $"Nouvelle partie coop : elle sera gardée dans {CoopSavePath}.");

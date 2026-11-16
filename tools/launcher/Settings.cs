@@ -17,6 +17,11 @@ public sealed class Settings
     public bool LocalDuo { get; set; }
     /// <summary>Premiere preparation du joueur 2 : partir d'une copie des sauvegardes du joueur 1.</summary>
     public bool Player2CopiesSave { get; set; } = true;
+    /// <summary>
+    /// Jouer par internet avec un VPN prive (Tailscale, ZeroTier) installe par les deux joueurs : le relais
+    /// de l'hote ecoute aussi sur l'adresse du VPN. Desactive par defaut (choix de l'utilisateur).
+    /// </summary>
+    public bool UseVpn { get; set; }
     /// <summary>Conseil sur la demande du pare-feu Windows deja montre a l'hote.</summary>
     public bool FirewallTipShown { get; set; }
     /// <summary>Version du mod installee (etiquette de la release GitHub).</summary>

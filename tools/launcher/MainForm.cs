@@ -58,6 +58,11 @@ public sealed class MainForm : Form
         Text = "À deux sur ce PC : le joueur 2 part d'une copie des sauvegardes du joueur 1 (première fois)",
         ForeColor = Theme.Text, FlatStyle = FlatStyle.Flat, AutoSize = true,
     };
+    readonly CheckBox _vpn = new()
+    {
+        Text = "Jouer par internet avec un VPN (Tailscale ou ZeroTier, installé par les deux joueurs)",
+        ForeColor = Theme.Text, FlatStyle = FlatStyle.Flat, AutoSize = true,
+    };
     readonly FlatButton _back = new() { Kind = FlatButton.Kinds.Primary, Text = "Enregistrer", Radius = 10 };
 
     readonly TextBox _log = new()
@@ -132,7 +137,7 @@ public sealed class MainForm : Form
     void BuildHero()
     {
         _hero.SetBounds(0, 0, ClientSize.Width, S(232));
-        _hero.Subtitle = "Breath of the Wild à deux, en réseau local";
+        _hero.Subtitle = "Breath of the Wild à deux, en réseau local ou par internet (VPN)";
         _hero.Badge = $"launcher {Setup.LauncherVersion.ToString(3)}";
         Controls.Add(_hero);
     }
@@ -223,7 +228,7 @@ public sealed class MainForm : Form
         hint.SetBounds(S(24), S(50), S(840), S(22));
         card.Controls.Add(hint);
 
-        int y = S(86);
+        int y = S(80);
         AddPathRow(card, "ÉMULATEUR", _ryujinx, "Ryujinx ou Eden|Ryujinx.exe;Ryujinx.Ava.exe;eden.exe|Programme|*.exe", OnRyujinxPicked, ref y);
         AddPathRow(card, "JEU DE BASE", _base, "BOTW (.nsp)|*.nsp", () => { ReadForm(); LoadGameIconAsync(); }, ref y);
         AddPathRow(card, "MISE À JOUR 1.9.0", _update, "Mise à jour (.nsp)|*.nsp", null, ref y);
@@ -238,8 +243,14 @@ public sealed class MainForm : Form
         _p2Save.Font = Theme.Font(9.5f);
         _p2Save.FlatAppearance.BorderColor = Theme.Border;
         _p2Save.FlatAppearance.CheckedBackColor = Theme.Surface2;
-        _p2Save.Location = new Point(S(24), y + S(24));
+        _p2Save.Location = new Point(S(24), y + S(22));
         card.Controls.Add(_p2Save);
+        _vpn.BackColor = card.BackColor;
+        _vpn.Font = Theme.Font(9.5f);
+        _vpn.FlatAppearance.BorderColor = Theme.Border;
+        _vpn.FlatAppearance.CheckedBackColor = Theme.Surface2;
+        _vpn.Location = new Point(S(24), y + S(46));
+        card.Controls.Add(_vpn);
 
         _back.SetBounds(S(892 - 22 - 180), S(352 - 22 - 46), S(180), S(46));
         card.Controls.Add(_back);
@@ -264,7 +275,7 @@ public sealed class MainForm : Form
         };
         parent.Controls.Add(box);
         parent.Controls.Add(browse);
-        y += S(70);
+        y += S(64);
     }
 
     void BuildLogPage()
@@ -324,9 +335,16 @@ public sealed class MainForm : Form
         if (role == Role.Duo)
             _hostInfo.Text = "Deux fenêtres de jeu sur ce PC, une manette par joueur. La première fois, réglez la manette du joueur 2 dans SA fenêtre (Options > Paramètres > Entrées).";
         else
-            _hostInfo.Text = ip == null
+        {
+            var vpn = _s.UseVpn ? Setup.VpnAddress() : null;
+            _hostInfo.Text = ip == null && vpn == null
                 ? "Aucun réseau local détecté : l'autre joueur ne pourra pas vous rejoindre."
-                : $"Votre adresse à donner à l'autre joueur :  {ip}";
+                : vpn != null
+                    ? $"Votre adresse : {ip ?? "—"} (chez vous)   ·   {vpn} (par internet, VPN)"
+                    : _s.UseVpn
+                        ? $"Votre adresse : {ip}   ·   VPN non détecté : lancez Tailscale ou ZeroTier pour jouer par internet"
+                        : $"Votre adresse à donner à l'autre joueur :  {ip}";
+        }
     }
 
     void LoadForm()
@@ -338,6 +356,7 @@ public sealed class MainForm : Form
         _password.Text = _s.Password;
         _fixCfg.Checked = _s.FixIgnoreMissingServices;
         _p2Save.Checked = _s.Player2CopiesSave;
+        _vpn.Checked = _s.UseVpn;
         SetRole(_s.LocalDuo ? Role.Duo : _s.Host ? Role.Host : Role.Guest);
     }
 
@@ -352,6 +371,7 @@ public sealed class MainForm : Form
         _s.Password = _password.Text.Trim();
         _s.FixIgnoreMissingServices = _fixCfg.Checked;
         _s.Player2CopiesSave = _p2Save.Checked;
+        _s.UseVpn = _vpn.Checked;
     }
 
     /// <summary>Ryujinx choisi : on propose la mise a jour deja selectionnee dans Ryujinx, s'il y en a une.</summary>

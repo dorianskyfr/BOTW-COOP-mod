@@ -812,6 +812,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.71 Jouer par internet avec un VPN ; adresse du reseau local corrigee (2026-11-16) - [V] partiel
+
+- Demande de l'utilisateur (accord donne pour cette ouverture reseau). `relay.py --host` accepte plusieurs adresses separees par des virgules (une ecoute par adresse). Launcher : case « Jouer par internet avec un VPN (Tailscale ou ZeroTier) » (`UseVpn`, desactivee par defaut) ; si elle est cochee et qu'une carte Tailscale/ZeroTier (nom ou description) ou une adresse 100.64.0.0/10 (RFC 6598) est active, le relais ecoute sur l'adresse du reseau local ET sur celle du VPN, jamais sur toutes les interfaces ; l'adresse VPN s'affiche sous « J'heberge ».
+- **Bug corrige** : `LanAddress` prenait la premiere adresse privee ; chez l'utilisateur, le VPN commercial CyberGhost (WireGuard, 10.33.x) passait avant le Wi-Fi (192.168.1.21) : un joueur du reseau local n'aurait pas pu se connecter. Les cartes physiques (Wi-Fi, Ethernet, sans « VPN », « WireGuard », « TAP », « virtual »... dans leur nom) passent maintenant d'abord.
+- [V] `test_relay.py` 73/73 ; relais sur `127.0.0.1,127.0.0.2` : `HELLO` recu sur les deux. [V] Captures du launcher : case visible dans les Parametres ; page principale « Votre adresse : 192.168.1.21 · VPN non detecte » (pas de Tailscale sur ce PC). Non verifie : une vraie partie par Tailscale ou ZeroTier.
+
 ### 5.70 Hinox (2026-11-16, essai `sw5`, Eden, mode expert) - [V] journaux et image
 
 - Hinox a l'ouest du plateau ((-1704, 112, 1777) dans la carte), atteint par `goto_tp` + `tp` a 10 m (en `sw2`, pose a 14 m il etait tombe dans l'eau et le Hinox n'etait pas charge). Le jeu cree un `Enemy_Giant_Senior` (Hinox noir, 1000 PV : rang au-dessus en mode expert) et ses parties `Enemy_Giant_Attention`, `Enemy_Giant_WeakPoint` (sans identifiant de carte, non partagees).

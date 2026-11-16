@@ -37,7 +37,8 @@ a tout joueur qui le demande (arrivee, reconnexion, chargement de sauvegarde).
 Avec --state fichier.json, cette memoire survit a un redemarrage du serveur.
 
 Ecoute sur 127.0.0.1 par defaut. Pour jouer en LAN, passer --host avec l'adresse
-LAN du PC hote (jamais d'exposition a Internet : pas de redirection de port).
+LAN du PC hote (jamais d'exposition a Internet : pas de redirection de port). Plusieurs adresses
+separees par des virgules : par exemple l'adresse LAN et celle d'un VPN prive (Tailscale, ZeroTier).
 
 Version : un jeu doit annoncer VER <n> avant tout etat ; une autre version, ou un etat
 envoye sans VER (plugin plus ancien), est refuse (REFUSE) et la liaison fermee. Les
@@ -192,17 +193,20 @@ def main():
             fh.flush()
 
     sel = selectors.DefaultSelector()
-    srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
-        # Windows : SO_REUSEADDR y laisse un second relais ecouter le meme port sans erreur, et les
-        # jeux se repartissent entre les deux (constate le 2026-11-13, essai gr3). Port exclusif.
-        srv.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
-    else:
-        srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    srv.bind((args.host, args.port))
-    srv.listen(8)
-    srv.setblocking(False)
-    sel.register(srv, selectors.EVENT_READ, None)
+    # --host peut lister plusieurs adresses separees par des virgules (reseau local + adresse d'un VPN
+    # comme Tailscale ou ZeroTier, choisie par l'utilisateur dans le launcher) : une ecoute par adresse.
+    for host in [h.strip() for h in args.host.split(",") if h.strip()]:
+        srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        if hasattr(socket, "SO_EXCLUSIVEADDRUSE"):
+            # Windows : SO_REUSEADDR y laisse un second relais ecouter le meme port sans erreur, et les
+            # jeux se repartissent entre les deux (constate le 2026-11-13, essai gr3). Port exclusif.
+            srv.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        else:
+            srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        srv.bind((host, args.port))
+        srv.listen(8)
+        srv.setblocking(False)
+        sel.register(srv, selectors.EVENT_READ, None)
     log(f"relais en ecoute sur {args.host}:{args.port}, protocole v{proto}, "
         f"{'mot de passe de session demande' if password else 'sans mot de passe'}")
     if args.lag > 0 or args.jitter > 0:
@@ -362,7 +366,7 @@ def main():
             timeout = min(timeout, max(0.0, nxt - time.monotonic()))
         for key, _ in sel.select(timeout=timeout):
             if key.data is None:
-                sock, peer = srv.accept()
+                sock, peer = key.fileobj.accept()
                 sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
                 client = Client(sock, peer, free_player_id())
                 clients[sock] = client
