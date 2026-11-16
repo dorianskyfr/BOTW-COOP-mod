@@ -1,0 +1,36 @@
+﻿== sw5_game.txt
+[botw-coop] essai pose : Link pose en (-1694.0, 116.0, 1777.0), 83 m
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "ShallowSleep" (fait foi)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "Sleep" (fait foi)
+[botw-coop] vie : Enemy_Giant_Senior           hash=74360820 dist=10.3 vie=1000 max=1000 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Giant_Senior 74360820 1000 -> 995
+[botw-coop] vie ennemi : Enemy_Giant_Senior 74360820 1000 -> 995 chez nous (max 1000), annonce, n.1
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "ShallowSleep" (fait foi)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "WakeUp" (fait foi)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "SleepEnd" (fait foi)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "Turn" (fait foi)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "Notice" (fait foi)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "BattleTurn" (fait foi)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "BattleWait" (fait foi)
+[botw-coop] sauvetage : Link releve par le partenaire (J2 a 14 m), vie 0 -> 12 quarts (n.1)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "BattleWait" (fait foi)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "AttackHandL" (fait foi)
+== sw5_game2.txt
+[botw-coop] essai pose : Link pose en (-1700.0, 116.0, 1765.0), 74 m
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "ShallowSleep" (annonce par J1), n.1
+[botw-coop] position ennemi : Enemy_Giant_Senior 74360820, on suit la copie de l'autre joueur (nous a 13.3 m, J1 a 10.3 m)
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "ShallowSleep" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "Sleep" (annonce par J1), n.2
+[botw-coop] vie ennemi : Enemy_Giant_Senior 74360820 1000 -> 995 (annonce par l'autre joueur), n.1
+[botw-coop] vie : Enemy_Giant_Senior           hash=74360820 dist=12.5 vie=995 max=1000 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "ShallowSleep" (annonce par J1), n.3
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "WakeUp" (annonce par J1), n.4
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "SleepEnd" (annonce par J1), n.5
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "Turn" (annonce par J1), n.6
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "Notice" (annonce par J1), n.7
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "BattleTurn" (annonce par J1), n.8
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "BattleWait" (annonce par J1), n.9
+[botw-coop] animation ennemi : 74360820 creneau 0 banque 0 "WakeUp" (copie suivie)
+[botw-coop] sauvetage : le joueur 1 a ete releve grace a nous (14 m)
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "BattleWait" (annonce par J1), n.10
+[botw-coop] animation ennemi : Enemy_Giant_Senior 74360820 rejoue "AttackHandL" (annonce par J1), n.11

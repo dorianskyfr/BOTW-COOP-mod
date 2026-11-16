@@ -812,6 +812,14 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.70 Hinox (2026-11-16, essai `sw5`, Eden, mode expert) - [V] journaux et image
+
+- Hinox a l'ouest du plateau ((-1704, 112, 1777) dans la carte), atteint par `goto_tp` + `tp` a 10 m (en `sw2`, pose a 14 m il etait tombe dans l'eau et le Hinox n'etait pas charge). Le jeu cree un `Enemy_Giant_Senior` (Hinox noir, 1000 PV : rang au-dessus en mode expert) et ses parties `Enemy_Giant_Attention`, `Enemy_Giant_WeakPoint` (sans identifiant de carte, non partagees).
+- [V] Vie : `hurt` chez J1 `1000 -> 995 chez nous, annonce` ; chez J2 `1000 -> 995 (annonce par l'autre joueur)`, relu `vie=995`. [V] Position : chez J2 `on suit la copie de l'autre joueur (nous a 13.3 m, J1 a 10.3 m)`. [V] Animations : J1 fait foi `ShallowSleep`, `WakeUp`, `SleepEnd`, `Turn`, `Notice`, `BattleTurn`, `BattleWait` ; J2 rejoue `Sleep`, `ShallowSleep`, `WakeUp`, `SleepEnd`, `Turn`, `Notice` (« annonce par J1 »). Image chez J2 : le Hinox debout face a lui.
+- Non essaye : le combat jusqu'au bout (oeil, chute), le butin.
+- Gardiens : aucun « Enemy_Guardian* » dans les objets places des cartes (seulement des ruines `FldObj_RuinGuardian*`) ; ou ils apparaissent reste a trouver.
+- Preuves : `2026-11-16_hinox_sw5.log`, `..._hinox-reveille-vu-par-J2_sw5.png`.
+
 ### 5.69 Lynel (2026-11-16, essais `sw3`, `sw4`, Eden, mode expert) - [V] vie, position, animations (creneau 0)
 
 - `tools/near_travel.py` : ennemis les plus proches d'un point de voyage. Lynel choisi : (-2874, 305, -282), point C-4 a 161 m ; le jeu cree un `Enemy_Lynel_Middle` (3000 PV, rang au-dessus en mode expert).
