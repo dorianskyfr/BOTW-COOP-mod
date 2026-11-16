@@ -23,6 +23,9 @@ namespace coop::flags {
      */
     int Query(std::uint32_t hash);
 
+    /* Hachage du drapeau booleen d'indice index dans la table du jeu ; 0 si illisible. Fil du jeu. */
+    std::uint32_t HashOfBoolIndex(int index);
+
     /*
      * Ecrit le minuteur de lune de sang dans le drapeau numerique WM_BloodyMoonTimer.
      * expectedLocal : valeur lue dans TimeMgr, pour reconnaitre le drapeau. Fil du jeu.

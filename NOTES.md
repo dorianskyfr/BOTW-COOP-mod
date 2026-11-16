@@ -812,6 +812,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.81 Drapeau exact de l'objet de carte (2026-11-16) - code seulement, NON essaye en jeu
+
+- Probleme general (5.77, 5.80) : le jeu fait monter les ennemis (mode expert, et `Ecosystem/LevelSensor.sbyml` du jeu de base : 5 familles, ex. `Enemy_Assassin_Shooter_Junior` -> `Enemy_Assassin_Middle`, `Enemy_Moriblin_Senior_Volcano` -> `Enemy_Moriblin_Dark`) ; le drapeau garde le nom de la carte. La regle des rangs (5.77) ne couvre pas ces cas. Le DLC n'a pas de `LevelSensor` : la montee du mode expert est faite ailleurs (inconnu).
+- Solution : lire le drapeau de reapparition de l'objet de carte de l'acteur (`game::GetActorRevivalFlagIndex`) : `Actor::mMapObject` +0x7c8 (actActor.h 1.5.0) -> `ksys::map::Object::mRevivalGameDataFlagHash` +0x48, un `gdt::FlagHandle` = indice du drapeau booleen | prefixe << 24 (gdtManager.h, makeFlagHandle) -> hachage par la table des drapeaux (`flags::HashOfBoolIndex`). Garde-fou : l'objet n'est retenu que si son `mHashId` (+0x58) egale celui de l'acteur (+0x640). Les noms (prefixes, rangs) restent en secours.
+- Relecture adversaire Codex : approuvee (MubinIter 0x10 octets aligne sur 8 -> +0x48, +0x58, taille 0x70 ; lectures protegees). Le journal `drapeau d'acteur` indique maintenant `objet de carte n.<i> -> <hachage> (le meme / DIFFERENT)`.
+- **A essayer** (PC libre) : un essai `actors` sur un ennemi non monte (le meme), un ennemi monte (5.77, 5.80), puis le retrait chez l'autre joueur.
+
 ### 5.80 Sanctuaires de la Ballade des Prodiges, rang « Baby » (2026-11-16, essais `sh2` a `sh4`, Eden) - [V] en partie
 
 - Le DLC (`Map/CDungeon/Static.smubin`, NSP du DLC 1) liste les sanctuaires 120 a 135 avec `Entrance_1` : l'outil `goto_tp 9100+n` y mene (`sh2`, `sh4` : `voyage (essai) : vers CDungeon/Dungeon122 Entrance_1 -> demande`, joueur dans le sanctuaire). Ennemis : sanctuaires 122 et 132 (3 `Enemy_Guardian_Mini_Baby`), 135 (10). Extraits dans `build/romfs-aoc/Pack/Dungeon12x.pack`.

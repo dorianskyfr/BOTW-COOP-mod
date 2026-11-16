@@ -133,14 +133,18 @@ namespace coop::objects {
             s_SeenWithId += info.m_HashId != 0;
             if (info.m_HashId == 0 || info.m_Name == nullptr || info.m_Name[0] == '\0')
                 return false;
-            std::uint32_t crcs[4 * NumNames];
+            /* Drapeau exact : celui de l'objet de carte de l'acteur (game::GetActorRevivalFlagIndex). En
+               secours, si l'objet n'est pas lisible : les noms possibles (prefixes de carte et rangs). */
+            const int revivalIdx = coop::game::GetActorRevivalFlagIndex(info.m_Actor);
+            const std::uint32_t exact = revivalIdx >= 0 ? coop::flags::HashOfBoolIndex(revivalIdx) : 0;
+            std::uint32_t crcs[1 + 4 * NumNames] = { exact };
             char flagName[96];
             for (int k = 0; k < 4; k++)
                 for (int n = 0; n < NumNames; n++)
-                    crcs[k * NumNames + n] = ActorFlag(info, k, n, flagName);
+                    crcs[1 + k * NumNames + n] = ActorFlag(info, k, n, flagName);
             for (int i = 0; i < s_NumPending; i++) {
                 std::uint32_t crc = 0;
-                for (int j = 0; j < 4 * NumNames && crc == 0; j++)
+                for (int j = 0; j < 1 + 4 * NumNames && crc == 0; j++)
                     if (crcs[j] != 0 && crcs[j] == s_Pending[i])
                         crc = crcs[j];
                 if (crc == 0)
@@ -178,10 +182,19 @@ namespace coop::objects {
                     std::memcpy(flagName, tried, sizeof(flagName));
                     q = coop::flags::Query(crc);
                 }
-            if (q >= 0)
-                Logging.Log("[botw-coop] drapeau d'acteur : %s -> %08x existe, valeur %d, proprietes 0x%02x", flagName, crc, q & 1, q >> 8);
+            /* Drapeau de l'objet de carte (essai : il doit egaler le drapeau trouve par le nom). */
+            const int revivalIdx = coop::game::GetActorRevivalFlagIndex(info.m_Actor);
+            const std::uint32_t exact = revivalIdx >= 0 ? coop::flags::HashOfBoolIndex(revivalIdx) : 0;
+            char objPart[64];
+            if (revivalIdx >= 0)
+                std::snprintf(objPart, sizeof(objPart), "objet de carte n.%d -> %08x (%s)", revivalIdx, exact,
+                    exact == crc && q >= 0 ? "le meme" : "DIFFERENT");
             else
-                Logging.Log("[botw-coop] drapeau d'acteur : %s -> %08x %s", flagName, crc, q == -1 ? "ABSENT de la table" : "table illisible");
+                std::snprintf(objPart, sizeof(objPart), "objet de carte illisible (%d)", revivalIdx);
+            if (q >= 0)
+                Logging.Log("[botw-coop] drapeau d'acteur : %s -> %08x existe, valeur %d, proprietes 0x%02x | %s", flagName, crc, q & 1, q >> 8, objPart);
+            else
+                Logging.Log("[botw-coop] drapeau d'acteur : %s -> %08x %s | %s", flagName, crc, q == -1 ? "ABSENT de la table" : "table illisible", objPart);
             return ++s_DiagShown >= 60;
         }
     }

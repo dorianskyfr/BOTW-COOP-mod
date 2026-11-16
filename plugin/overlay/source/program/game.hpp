@@ -128,6 +128,14 @@ namespace coop::game {
     void ForEachListedActor(bool (*fn)(const ActorInfo& info, void* user), void* user);
 
     /*
+     * Indice (dans la table des drapeaux booleens du jeu) du drapeau de reapparition de l'objet de carte
+     * de l'acteur, celui que le jeu met a 1 quand l'ennemi est vaincu ou l'objet pris : c'est le vrai
+     * drapeau, quel que soit le nom actuel de l'acteur (rang monte). Negatif : pas d'objet de carte (-1),
+     * objet incoherent (-2, mHashId different), pas de drapeau (-3). Fil du jeu.
+     */
+    int GetActorRevivalFlagIndex(std::uintptr_t actor);
+
+    /*
      * Demande au jeu de detruire un acteur (BaseProc::deleteLater, raison 0).
      * false si la version n'est pas supportee ou si le jeu refuse (deja en destruction).
      */

@@ -582,6 +582,19 @@ namespace coop::flags {
         return (value ? 1 : 0) | (props << 8);
     }
 
+    std::uint32_t HashOfBoolIndex(int index) {
+        if (s_Param == 0 || !s_LayoutKnown || index < 0)
+            return 0;
+        PtrArray bools {};
+        if (!Read(s_Param + Param_BoolFlags, bools) || bools.m_Num <= 0 || bools.m_Num > MaxBools || index >= bools.m_Num)
+            return 0;
+        std::uintptr_t flag = 0;
+        std::uint32_t hash = 0;
+        if (!Read(bools.m_Buffer + 8ull * index, flag) || !Read(flag + s_HashOffset, hash))
+            return 0;
+        return hash;
+    }
+
     /* "FirstTouchdown" : lu par playerHasLeftPlateau() (worldTimeMgr.cpp), condition d'une lune de sang. */
     int QueryLeftPlateau() {
         const int r = Query(Crc32("FirstTouchdown"));

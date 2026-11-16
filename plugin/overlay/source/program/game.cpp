@@ -593,6 +593,31 @@ namespace coop::game {
         });
     }
 
+    int GetActorRevivalFlagIndex(std::uintptr_t actor) {
+        /*
+         * Decompilation zeldaret/botw 1.5.0 (third_party/botw) :
+         * - actActor.h : Actor::mHashId +0x640 (verifie en 1.9.0, NOTES 5.6), Actor::mMapObject +0x7c8 ;
+         * - mapObject.h : ksys::map::Object (0x70 octets, KSYS_CHECK_SIZE_NX150) : mRevivalGameDataFlagHash
+         *   (gdt::FlagHandle) +0x48, mHashId +0x58 (champs ranges a la suite, MubinIter de 0x10 octets) ;
+         * - gdtManager.h : FlagHandle = indice du drapeau booleen | prefixe << 24 (makeFlagHandle).
+         * +0x7c8 n'est pas verifie en 1.9.0 : on ne garde l'objet que si son mHashId est celui de l'acteur.
+         */
+        constexpr std::uintptr_t Actor_HashId = 0x640, Actor_MapObject = 0x7c8;
+        constexpr std::uintptr_t MapObject_Size = 0x70, MapObject_Revival = 0x48, MapObject_HashId = 0x58;
+        if (actor == 0 || !CanRead(actor + Actor_MapObject, 8) || !CanRead(actor + Actor_HashId, 4))
+            return -1;
+        const auto hashId = Peek<std::uint32_t>(actor + Actor_HashId);
+        const auto obj = Peek<std::uintptr_t>(actor + Actor_MapObject);
+        if (hashId == 0 || !LooksLikeHeapPtr(obj) || !CanRead(obj, MapObject_Size))
+            return -1;
+        if (Peek<std::uint32_t>(obj + MapObject_HashId) != hashId)
+            return -2;
+        const auto handle = Peek<std::uint32_t>(obj + MapObject_Revival);
+        if (handle == 0xffffffffu)
+            return -3;
+        return static_cast<int>(handle & 0xffffffu);
+    }
+
     bool DeleteActor(std::uintptr_t actor) {
         if (s_Offsets == nullptr || s_Offsets->m_BaseProc_DeleteLater == 0 || actor == 0)
             return false;
