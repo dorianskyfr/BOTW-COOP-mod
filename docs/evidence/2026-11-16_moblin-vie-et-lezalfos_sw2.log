@@ -1,0 +1,76 @@
+﻿== sw2_game.txt
+[botw-coop] sauvetage : crochet pose sur main+0xcead24
+[botw-coop] voyage (essai) : vers (-1704, 1777), point 48 a 182 m de la cible
+[botw-coop] voyage (essai cible) : MainField/D-6 StartPos_CDungeon072, point (-1695.7, 81.8, 1701.0), a 1139 m de Link
+[botw-coop] voyage : chargement commence (2589 ms apres la demande)
+[botw-coop] voyage : arrive en (-1699.2, 68.9, 1708.5), a 15.4 m du point vise, 10778 ms apres la demande
+[botw-coop] essai pose : Link pose en (-1690.0, 105.0, 1765.0), 68 m
+[botw-coop] voyage (essai) : vers (-731, 1367), point 61 a 199 m de la cible
+[botw-coop] voyage (essai cible) : MainField/E-6 StartPos_CDungeon038, point (-672.5, 186.1, 1513.6), a 1055 m de Link
+[botw-coop] voyage : chargement commence (2591 ms apres la demande)
+[botw-coop] voyage : arrive en (-666.0, 173.1, 1518.7), a 15.4 m du point vise, 11236 ms apres la demande
+[botw-coop] sauvetage : le joueur 2 a ete releve grace a nous (7 m)
+[botw-coop] essai pose : Link pose en (-722.0, 136.0, 1366.0), 159 m
+[botw-coop] vie : Enemy_Moriblin_Middle        hash=6785fde0 dist=9.0 vie=144 max=144 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] sauvetage : Link releve par le partenaire (J2 a 16 m), vie 0 -> 12 quarts (n.1)
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Moriblin_Middle 6785fde0 144 -> 139
+[botw-coop] vie ennemi : Enemy_Moriblin_Middle 6785fde0 144 -> 139 chez nous (max 144), annonce, n.1
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Moriblin_Middle 6785fde0 139 -> 134
+[botw-coop] vie ennemi : Enemy_Moriblin_Middle 6785fde0 139 -> 134 chez nous (max 144), annonce, n.2
+[botw-coop] vie : Enemy_Moriblin_Middle        hash=6785fde0 dist=4.2 vie=134 max=144 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] sauvetage : refuse (sauvetage trop recent, distance 18 m, vie du partenaire 12 quarts, -1 inconnue) -> Game Over
+[botw-coop] voyage (essai) : vers (-393, 2532), point 65 a 106 m de la cible
+[botw-coop] voyage (essai cible) : MainField/E-7 StartPos_CDungeon068, point (-329.2, 81.0, 2600.1), a 1303 m de Link
+[botw-coop] voyage : chargement commence (2325 ms apres la demande)
+[botw-coop] voyage : arrive en (-337.2, 68.0, 2598.7), a 15.4 m du point vise, 8549 ms apres la demande
+[botw-coop] essai pose : Link pose en (-385.0, 95.0, 2545.0), 77 m
+[botw-coop] animation ennemi : Enemy_Lizalfos_Middle b69eaf39 rejoue "Turn" (annonce par J2), n.36
+[botw-coop] animation ennemi : Enemy_Lizalfos_Middle b69eaf39 rejoue "Notice" (annonce par J2), n.37
+[botw-coop] animation ennemi : Enemy_Lizalfos_Middle b69eaf39 rejoue "Run" (annonce par J2), n.38
+[botw-coop] animation ennemi : Enemy_Lizalfos_Middle b69eaf39 rejoue "Search" (annonce par J2), n.39
+[botw-coop] animation ennemi : Enemy_Lizalfos_Middle b69eaf39 rejoue "Notice" (annonce par J2), n.40
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=b69eaf39 dist=21.9 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=b332bd3a dist=64.5 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=a9f68342 dist=95.8 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=599a43a5 dist=7.9 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=e5e89de3 etat=0 dist=156.8 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] sauvetage : refuse (sauvetage trop recent, distance 8 m, vie du partenaire 12 quarts, -1 inconnue) -> Game Over
+[botw-coop] vie ennemi : OUTIL DE TEST, aucun ennemi de carte actif
+[botw-coop] sauvetage : le joueur 2 a ete releve grace a nous (8 m)
+== sw2_game2.txt
+[botw-coop] sauvetage : crochet pose sur main+0xcead24
+[botw-coop] voyage (essai) : vers (-1704, 1777), point 48 a 182 m de la cible
+[botw-coop] voyage (essai cible) : MainField/D-6 StartPos_CDungeon072, point (-1695.7, 81.8, 1701.0), a 1139 m de Link
+[botw-coop] voyage : chargement commence (2589 ms apres la demande)
+[botw-coop] voyage : arrive en (-1699.2, 68.9, 1708.5), a 15.4 m du point vise, 10878 ms apres la demande
+[botw-coop] essai pose : Link pose en (-1685.0, 105.0, 1758.0), 63 m
+[botw-coop] voyage (essai) : vers (-731, 1367), point 61 a 199 m de la cible
+[botw-coop] voyage (essai cible) : MainField/E-6 StartPos_CDungeon038, point (-672.5, 186.1, 1513.6), a 1050 m de Link
+[botw-coop] voyage : chargement commence (2594 ms apres la demande)
+[botw-coop] voyage : arrive en (-666.0, 173.1, 1518.7), a 15.4 m du point vise, 11369 ms apres la demande
+[botw-coop] sauvetage : Link releve par le partenaire (J1 a 7 m), vie 0 -> 12 quarts (n.1)
+[botw-coop] essai pose : Link pose en (-728.0, 136.0, 1380.0), 162 m
+[botw-coop] vie : Enemy_Moriblin_Middle        hash=6785fde0 dist=14.0 vie=144 max=144 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] sauvetage : le joueur 1 a ete releve grace a nous (16 m)
+[botw-coop] vie ennemi : Enemy_Moriblin_Middle 6785fde0 144 -> 139 (annonce par l'autre joueur), n.1
+[botw-coop] vie ennemi : Enemy_Moriblin_Middle 6785fde0 139 -> 134 (annonce par l'autre joueur), n.2
+[botw-coop] vie : Enemy_Moriblin_Middle        hash=6785fde0 dist=14.0 vie=134 max=144 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] voyage (essai) : vers (-393, 2532), point 65 a 105 m de la cible
+[botw-coop] voyage (essai cible) : MainField/E-7 StartPos_CDungeon068, point (-329.2, 81.0, 2600.1), a 1284 m de Link
+[botw-coop] voyage : chargement commence (2592 ms apres la demande)
+[botw-coop] voyage : arrive en (-337.2, 68.0, 2598.7), a 15.4 m du point vise, 9082 ms apres la demande
+[botw-coop] essai pose : Link pose en (-378.0, 95.0, 2550.0), 69 m
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=b69eaf39 dist=17.1 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=1d447b13 etat=0 dist=199.8 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=b332bd3a dist=63.2 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=a9f68342 dist=91.6 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=599a43a5 dist=11.3 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=e5e89de3 etat=0 dist=148.4 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=b69eaf39 dist=12.8 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=1d447b13 etat=0 dist=199.8 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=b332bd3a dist=63.2 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=a9f68342 dist=91.6 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=599a43a5 dist=11.1 vie=120 max=120 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie : Enemy_Lizalfos_Middle        hash=e5e89de3 etat=0 dist=148.4 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] sauvetage : Link releve par le partenaire (J1 a 8 m), vie 0 -> 12 quarts (n.2)
+[botw-coop] sauvetage : refuse (sauvetage trop recent, distance 14 m, vie du partenaire 1 quarts, -1 inconnue) -> Game Over

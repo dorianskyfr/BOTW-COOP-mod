@@ -125,8 +125,10 @@ foreach ($d in @($Dir, $Dir2)) {
         # Eden ecrit son journal (avec celui du mod) dans user\log\eden_log.txt : <Name>_game.txt en est
         # un lien dur, pour que les outils lisent le meme fichier qu'avec Ryujinx.
         $edenLog = Join-Path $dataDir 'user\log\eden_log.txt'
+        $launched = Get-Date
         $p = Start-Process -FilePath (Join-Path $dataDir 'eden.exe') -ArgumentList ('-g "' + $game + '"') -PassThru
-        for ($k = 0; $k -lt 40 -and -not (Test-Path $edenLog); $k++) { Start-Sleep -Milliseconds 250 }
+        # Dossier deja utilise : Eden renomme l'ancien journal et en cree un neuf ; on attend le neuf.
+        for ($k = 0; $k -lt 60 -and -not ((Test-Path $edenLog) -and (Get-Item $edenLog).CreationTime -ge $launched.AddSeconds(-1)); $k++) { Start-Sleep -Milliseconds 250 }
         if (Test-Path $gameOut) { Remove-Item $gameOut -Confirm:$false }
         New-Item -ItemType HardLink -Path $gameOut -Target $edenLog | Out-Null
     } else {

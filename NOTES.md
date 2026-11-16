@@ -812,6 +812,14 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.67 Vie du Moblin partagee ; Lezalfos (2026-11-16, essai `sw2`, Eden) - [V] journaux et image
+
+- [V] Moblin (`Enemy_Moriblin_Middle` 6785fde0) : outil `hurt` chez J1 : `144 -> 139 chez nous, annonce`, puis `139 -> 134` ; chez J2 `144 -> 139 (annonce par l'autre joueur)`, `139 -> 134`. Meme chemin que les Bokoblin.
+- [V] Lezalfos (`Enemy_Lizalfos_Middle`, au sud-est du plateau, dans l'eau) : chez J1 la copie rejoue `Turn`, `Notice`, `Run`, `Search` « annonce par J2 » ; image chez J2 : le Link de J1 avec un Lezalfos a cote de lui. Les deux joueurs ont ete tues pendant l'essai (de nuit, plusieurs Lezalfos) : `le joueur 2 a ete releve grace a nous (8 m)`, puis des Game Over `sauvetage trop recent`. Vie du Lezalfos partagee : non mesuree (J1 mort au moment de l'outil).
+- Hinox : a la position de la carte (`Enemy_Giant_Middle`, (-1704, 112, 1777)), aucun Hinox dans la liste des acteurs (zone d'eau) ; non essaye. Lynel : non essaye.
+- `run-live.ps1 -Emu eden` : avec un dossier deja utilise, le lien vers le journal attend le journal neuf d'Eden (il pointait sur l'ancien).
+- Preuves : `2026-11-16_moblin-vie-et-lezalfos_sw2.log`, `..._lezalfos-et-link-du-partenaire-vus-par-J2_sw2.png`.
+
 ### 5.66 Hors du plateau avec la sauvegarde Savage Wind : Moblin (2026-11-16, essai `sw1`, Eden) - [V] journaux et image
 
 - Copie (lecture seule de l'original) de `F:\Jeux-Console\Zelda-BOTW-PC\save\save_0` dans deux dossiers de test Eden. « Continuer » charge une partie a 4 coeurs, rune bombe, avec la paravoile. `goto_tp` puis `tp` sous la falaise nord-est du plateau : cette fois pas de `Demo048_0`, les deux Link restent hors du plateau.
