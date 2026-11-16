@@ -812,6 +812,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.68 Mode expert : les essais `sw1`, `sw2` y etaient (2026-11-16) - [V] journaux
+
+- Avec la copie de `save_0` de Savage Wind, « Continuer » a charge l'emplacement 3 et le traceur `tracker/trackblock_hard00.sav` (journal du mod : `save:/3/game_data.sav`, `save:/tracker/trackblock_hard00.sav`, redirige vers `save:/coop/`) : c'est la partie en **mode expert** (deja notee ainsi le 2026-11-15). Recoupement : la carte normale place un `Enemy_Moriblin_Junior` et des `Enemy_Lizalfos_Junior` a ces endroits (`find_actors.py`), le jeu a cree des `Moriblin_Middle` et `Lizalfos_Middle` (rang au-dessus, propre au mode expert).
+- Donc [V] en mode expert : mod charge, deux joueurs connectes, sauvegarde coop separee, voyage et pose hors du plateau, animations et vie des ennemis partagees, degats, sauvetage. Non verifie : la regeneration de vie des ennemis du mode expert face au partage de la vie ; les plateformes volantes ; l'ecran de titre « Mode expert » (la partie a ete chargee par « Continuer »).
+- DLC : installes dans les copies d'Eden de test (`nsp_extract.py`), le menu « DLC » est present en jeu ; le contenu (Epreuve de l'epee, Ode aux Prodiges) n'est pas essaye.
+
 ### 5.67 Vie du Moblin partagee ; Lezalfos (2026-11-16, essai `sw2`, Eden) - [V] journaux et image
 
 - [V] Moblin (`Enemy_Moriblin_Middle` 6785fde0) : outil `hurt` chez J1 : `144 -> 139 chez nous, annonce`, puis `139 -> 134` ; chez J2 `144 -> 139 (annonce par l'autre joueur)`, `139 -> 134`. Meme chemin que les Bokoblin.
