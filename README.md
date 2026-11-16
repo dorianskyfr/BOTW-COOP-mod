@@ -1,14 +1,18 @@
-# BOTW coop (prototype)
+# BOTW Coop
 
-Mod de présence à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 1.9.0 (Switch), chargé comme plugin (`subsdk9`), sans modifier le jeu. Aucun fichier du jeu n'est dans ce dépôt.
+Mod coopératif à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 1.9.0 (Switch), sur émulateur (Eden ou Ryujinx). Les deux joueurs partagent le même monde : chacun voit l'autre, les ennemis, la progression, l'heure et la météo sont communs, et les récompenses sont données aux deux. Le mod est un plugin (`subsdk9`) qui ne modifie pas le jeu. **Aucun fichier du jeu n'est dans ce dépôt** : tout ce dont le mod a besoin est fabriqué sur votre PC à partir de votre propre copie.
 
 ![Deux joueurs dans le même monde : le joueur 2 voit le Link du joueur 1 à gauche](docs/evidence/2026-11-13_pantin-link_deux-instances_J2-voit-J1.png)
 
 *Le joueur 2 (au centre) voit le joueur 1 (à gauche) dans son monde.*
 
+**Sommaire** : [Installation](#installation-simple--le-launcher) · [Fonctionnalités](#ce-que-fait-la-version-actuelle) · [État et limites](#état-vérifié-et-limites) · [Captures](#captures) · [Développeurs](#jouer-à-deux-à-la-main)
+
+**Téléchargement** : onglet [Releases](https://github.com/dorianskyfr/BOTW-COOP-mod/releases/latest) (`BotwCoopLauncher.exe`).
+
 ## Captures
 
-Images prises pendant les essais à deux instances (toutes les preuves : `docs/evidence/`).
+Images prises pendant les essais à deux instances (toutes les preuves : [`docs/evidence/`](docs/evidence/)).
 
 | | |
 |---|---|
@@ -21,7 +25,7 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 | ![Le Bokoblin vu par le joueur 1](docs/evidence/2026-11-15_ennemi-anime-par-J1_vu-par-J1_eb3.png) | ![Le même Bokoblin vu par le joueur 2](docs/evidence/2026-11-15_ennemi-anime-par-J1_vu-par-J2_eb3.png) |
 | Un Bokoblin attaque : vu par le joueur 1… | … et par le joueur 2, même place, même animation |
 
-État réel, limites et preuves : `PROGRESS.md`. Détails techniques : `NOTES.md`, `ARCHITECTURE.md`. Décisions : `DECISIONS.md`.
+Journal d'avancement : [`PROGRESS.md`](PROGRESS.md). Détails techniques : [`NOTES.md`](NOTES.md), [`ARCHITECTURE.md`](ARCHITECTURE.md). Décisions : [`DECISIONS.md`](DECISIONS.md).
 
 ## Ce que fait la version actuelle
 - Chaque joueur voit l'autre dans son monde sous la forme d'un Link animé (attente, marche, course, sprint, escalade, nage, vol plané, chute, surf, saut, coups d'épée, tir à l'arc, parade), avec son armure (tête, torse, jambes, teintures comprises) et ses armes, bouclier, arc et carquois.
@@ -42,8 +46,19 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 - **Contrôle de version** : le relais refuse un jeu dont le mod n'a pas la même version que lui (et inversement) ; un message l'indique dans le jeu, qui réessaie toutes les minutes. Mettre à jour le mod et le relais ensemble.
 - Inventaire, santé et équipement restent individuels.
 
-Testé avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0.2.1, sur un même PC. Non testé entre deux PC.
-Ennemis vérifiés : Bokoblin, Moblin (vie, attaques, dégâts), Lézalfos (animations), Lynel (vie, position, animations, y compris celles de son second créneau : cri, dégainer, charge ; combat non essayé), Hinox (vie, réveil et animations), Gardiens mobiles et fixes (vie et position ; leurs mouvements dépendent de chaque jeu). Le monstre vise le joueur le plus proche de lui et change de cible quand l'autre devient le plus proche. Mode expert : vérifié (partie chargée depuis une sauvegarde en mode expert). Vraie lune de sang : déclenchée par le jeu chez les deux joueurs au même minuit (vérifié par les journaux). Créatures divines : les deux joueurs entrent ensemble, énigmes, bornes, coffres et ennemis vaincus partagés (vérifié par les journaux dans Vah Medoh) ; la rotation de la Créature n'est pas partagée et le boss n'est pas essayé. Épreuve de l'épée (DLC) : les deux joueurs entrent ensemble, un ennemi vaincu chez l'un est retiré chez l'autre (vérifié par les journaux, en mode expert) ; épreuve complète non essayée. Correctif : les ennemis que le jeu fait monter de rang (mode expert, progression de la partie) n'étaient pas retirés chez l'autre joueur ; le mod lit maintenant le drapeau exact de l'objet de carte (vérifié dans un sanctuaire de la Ballade des Prodiges). Pas encore essayés : Gardiens volants, la Ballade des Prodiges.
+## État vérifié et limites
+
+Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0.2.1, **sur un même PC** (journaux et captures : `docs/evidence/`, détail dans `PROGRESS.md` et `NOTES.md`).
+
+- **Ennemis** : Bokoblin, Moblin (vie, attaques, dégâts), Lézalfos (animations), Lynel (vie, position, animations, y compris celles de son second créneau : cri, dégainer, charge), Hinox (vie, réveil, animations), Gardiens mobiles et fixes (vie et position ; leurs mouvements dépendent de chaque jeu). Le monstre vise le joueur le plus proche de lui. Un ennemi vaincu chez l'un est retiré chez l'autre, y compris quand le jeu l'a fait monter de rang (mode expert, progression de la partie) : le mod lit le drapeau exact de son objet de carte.
+- **Mode expert** : vérifié (parties chargées depuis une sauvegarde en mode expert).
+- **Lune de sang** : déclenchée par le jeu chez les deux joueurs au même minuit.
+- **Créatures divines** : les deux joueurs entrent ensemble ; énigmes, bornes, coffres et ennemis vaincus partagés (Vah Medoh).
+- **Sanctuaires** : les deux joueurs entrent ensemble, ennemis vaincus partagés ; l'état d'une énigme en cours n'est pas sauvegardé par le jeu, donc pas partagé (la fin du sanctuaire l'est).
+- **DLC** : Épreuve de l'épée et sanctuaires de la Ballade des Prodiges, les deux joueurs entrent ensemble, ennemis vaincus partagés.
+- **Réseau** : relais protégé (mot de passe, connexions limitées, messages invalides ignorés, client trop lent déconnecté).
+
+Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : la rotation d'une Créature divine (non partagée), un boss, une épreuve de l'épée complète, la Ballade des Prodiges jouée, les Gardiens volants, le coffre d'un camp nettoyé par l'autre joueur (groupe 3).
 
 ## Installation simple : le launcher
 
@@ -54,9 +69,9 @@ Ennemis vérifiés : Bokoblin, Moblin (vie, attaques, dégâts), Lézalfos (anim
 2. Choisir « J'héberge » (votre adresse s'affiche, à donner à l'autre joueur), « Je rejoins un ami » (avec son adresse) ou **« À deux sur ce PC »**, et un mot de passe si vous voulez. À deux sur ce PC, « Jouer » ouvre deux fenêtres : le joueur 2 a son propre dossier Ryujinx (`%LOCALAPPDATA%\BotwCoop\joueur2`), préparé la première fois à partir du vôtre (clés, réglages, copie de vos sauvegardes si la case est cochée dans les Paramètres). Il faut une manette par joueur : la première fois, réglez celle du joueur 2 dans sa fenêtre (Options > Paramètres > Entrées).
    **Par internet** : installez tous les deux un VPN privé gratuit, **Tailscale** ou **ZeroTier**, et rejoignez le même réseau. L'hôte coche « Jouer par internet avec un VPN » dans les Paramètres : son serveur écoute alors aussi sur son adresse VPN (affichée sous « J'héberge »), que l'autre joueur saisit dans « Je rejoins un ami ». Seuls les appareils de votre VPN peuvent s'y connecter : rien n'est ouvert sur internet (pas de redirection de port). Détection : carte réseau Tailscale ou ZeroTier, ou adresse dans 100.64.0.0/10 (RFC 6598). Non essayé avec un vrai VPN (vérifié : le serveur écoute sur deux adresses à la fois).
    Invité : le bouton **Tester** vérifie que le serveur de l'hôte répond (l'hôte doit avoir cliqué sur « Jouer ») ; « Jouer » fait la même vérification et prévient en cas d'échec. Hôte : la première fois, Windows peut demander d'autoriser « Python » sur le réseau : cliquer sur « Autoriser » (réseaux privés), sinon l'autre PC ne pourra pas se connecter.
-3. **Installer / Mettre à jour** : le launcher télécharge la dernière version du mod, lit dans votre jeu les fichiers dont il a besoin (lecture seule), fabrique le Link de l'autre joueur, la liste des drapeaux partagés, etc. (Python portable de python.org et paquets `oead`, `rstb` de PyPI, dans `%LOCALAPPDATA%\BotwCoop`), puis copie le tout dans le dossier des mods de Ryujinx. Il active « Ignorer les services manquants » et sélectionne la mise à jour 1.9.0 dans Ryujinx (copies de sécurité `*.avant-botw-coop`). Environ une minute la première fois.
+3. **Installer / Mettre à jour** : le launcher télécharge la dernière version du mod, lit dans votre jeu les fichiers dont il a besoin (lecture seule), fabrique le Link de l'autre joueur, la liste des drapeaux partagés, etc. (Python portable de python.org et paquets `oead`, `rstb` de PyPI, dans `%LOCALAPPDATA%\BotwCoop`), puis copie le tout dans le dossier des mods de l'émulateur. Avec Ryujinx, il active « Ignorer les services manquants » et sélectionne la mise à jour 1.9.0 dans Ryujinx (copies de sécurité `*.avant-botw-coop`). Environ une minute la première fois.
 4. **Sauvegarde de la partie coop** : le relais de l'hôte garde la progression partagée (sanctuaires, tours, Koroks, objets pris, ennemis vaincus), l'heure et le jour de la session dans `%LOCALAPPDATA%\BotwCoop\parties\partie-coop.json`, et la redonne à chaque joueur qui entre en jeu. En entrant en jeu, chaque jeu lui renvoie aussi sa propre progression : si c'est l'autre joueur qui héberge la fois suivante, sa partie se reconstruit à partir des deux jeux. Rien n'est jamais retiré. Le pied de page du launcher en donne l'état.
-5. **Jouer** : installe le mod s'il ne l'est pas encore, ou la dernière version si elle a changé (les deux joueurs doivent avoir la même, le relais refuse deux versions différentes), puis lance le relais (pour l'hôte, sur le réseau local uniquement) et Ryujinx.
+5. **Jouer** : installe le mod s'il ne l'est pas encore, ou la dernière version si elle a changé (les deux joueurs doivent avoir la même, le relais refuse deux versions différentes), puis lance le relais (pour l'hôte, sur le réseau local, ou aussi sur le VPN si la case est cochée) et l'émulateur.
 
 Au démarrage, le launcher se remplace lui-même s'il existe un launcher plus récent : il compare sa version à `launcher.json` de la dernière release, qui ne change que si le launcher a changé (sinon pas de nouveau téléchargement de 52 Mo). Aucun fichier du jeu n'est distribué : tout est fabriqué sur votre PC, à partir de votre copie. Préparer une release : `tools\make-release.ps1 -Version a.b.c` (trois fichiers dans `build\release` : `botw-coop-mod.zip`, `BotwCoopLauncher.exe`, `launcher.json`, à publier comme release `va.b.c` du dépôt public ; la version du launcher est gardée dans `tools\launcher\RELEASED`).
 
@@ -130,7 +145,7 @@ Le mod ne partage que les drapeaux d'une liste générée depuis **votre** copie
 
 `install-mod.ps1` et `run-live.ps1` copient ensuite `build\deploy\romfs` dans le mod.
 
-Groupes (réglage `share_groups=` dans `romfs\botw-coop.txt`, par défaut `1,2,6,8`) : 1 progression (430 drapeaux : sanctuaires, Créatures divines, tours), 2 objets de carte (29 909, y compris dans les sanctuaires et les Créatures divines), 3 portes logiques des énigmes (485, inactif par défaut), 4 coffres (1 608, inactif par défaut : un coffre chacun), 6 Koroks (900, graine donnée aux deux), 7 réceptacles de cœur (22, inactif par défaut : un chacun), 8 énigmes des Créatures divines (29 : portes, volets, fissures, raccourcis). Tant qu'un joueur n'a pas la paravoile, la progression reçue attend (les sanctuaires du plateau donnent les runes).
+Groupes (réglage `share_groups=` dans `romfs\botw-coop.txt`, par défaut `1,2,6,8`) : 1 progression (430 drapeaux : sanctuaires, Créatures divines, tours), 2 objets de carte (29 909, y compris dans les sanctuaires et les Créatures divines), 3 camps d'ennemis nettoyés (485 portes logiques `LinkTag` : coffre du camp débloqué chez l'autre ; inactif par défaut, non vérifié), 4 coffres (1 608, inactif par défaut : un coffre chacun), 6 Koroks (900, graine donnée aux deux), 7 réceptacles de cœur (22, inactif par défaut : un chacun), 8 énigmes des Créatures divines (29 : portes, volets, fissures, raccourcis). Tant qu'un joueur n'a pas la paravoile, la progression reçue attend (les sanctuaires du plateau donnent les runes).
 
 ## Outils de test
-`tools\run-live.ps1` et `tools\drive.py` lancent une ou deux instances et les pilotent par le réseau (déplacements, boutons, captures d'écran). Ils demandent une build de test (`-Defines '-DCOOP_REMOTE_PAD'`), à ne pas utiliser pour jouer. Options d'essai de l'armure : `-DCOOP_TEST_SPAWN -DCOOP_TEST_GEAR` (Link témoin à 3 m, en tenue hylienne), `-DCOOP_TEST_WEAR` (deux instances : J1 annonce la tenue 001, J2 la tenue 005), `-DCOOP_TEST_GIVE` (ajoute pommes, armure hylienne, épée, bouclier et arc à l'inventaire de la copie de test, à équiper par le menu ; avec `-DCOOP_TEST_BONUS`, l'épée a le bonus « Attaque + » 10). `drive.py <nom> lift` soulève Link de 50 m (essai du sauvetage). Réseau dégradé : `relay.py --lag 150 --jitter 50` retarde chaque message de 150 à 200 ms (`run-live.ps1 -RelayArgs '--lag 150 --jitter 50'`) ; `--pretend-version 99` fait passer le relais pour une autre version.
+`tools\run-live.ps1` et `tools\drive.py` lancent une ou deux instances (Ryujinx, ou Eden avec `-Emu eden`) et les pilotent par le réseau (déplacements, voyages, boutons, captures d'écran). Ils demandent une build de test (`-Defines '-DCOOP_REMOTE_PAD'`), à ne pas utiliser pour jouer ; une build de release n'en contient aucun. Autres options d'essai : `-DCOOP_TEST_GODMODE` (vie de Link maintenue), `-DCOOP_TEST_SETLOCAL=0x<hachage>` (le joueur 1 pose un drapeau), `-DCOOP_TEST_LOG_ALL_SEQ` (toutes les animations d'ennemis au journal). Options d'essai de l'armure : `-DCOOP_TEST_SPAWN -DCOOP_TEST_GEAR` (Link témoin à 3 m, en tenue hylienne), `-DCOOP_TEST_WEAR` (deux instances : J1 annonce la tenue 001, J2 la tenue 005), `-DCOOP_TEST_GIVE` (ajoute pommes, armure hylienne, épée, bouclier et arc à l'inventaire de la copie de test, à équiper par le menu ; avec `-DCOOP_TEST_BONUS`, l'épée a le bonus « Attaque + » 10). `drive.py <nom> lift` soulève Link de 50 m (essai du sauvetage). Réseau dégradé : `relay.py --lag 150 --jitter 50` retarde chaque message de 150 à 200 ms (`run-live.ps1 -RelayArgs '--lag 150 --jitter 50'`) ; `--pretend-version 99` fait passer le relais pour une autre version.
