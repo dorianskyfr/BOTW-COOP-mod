@@ -812,11 +812,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
-### 5.69 Lynel (2026-11-16, essai `sw3`, Eden, mode expert) - [V] vie et position ; animations inconnues
+### 5.69 Lynel (2026-11-16, essais `sw3`, `sw4`, Eden, mode expert) - [V] vie, position, animations (creneau 0)
 
 - `tools/near_travel.py` : ennemis les plus proches d'un point de voyage. Lynel choisi : (-2874, 305, -282), point C-4 a 161 m ; le jeu cree un `Enemy_Lynel_Middle` (3000 PV, rang au-dessus en mode expert).
 - [V] Vie : `hurt` chez J1 -> chez J2 `3000 -> 2995 (annonce par l'autre joueur)`. [V] Position : chez J2 `on suit la copie de l'autre joueur (nous a 19.8 m, J1 a 18.8 m)`. [V] J2 tue pendant l'essai puis `Link releve par le partenaire (J1 a 10 m)`.
-- **Animations du Lynel : inconnu.** Aucune ligne « animation ennemi » pour lui, mais le journal en limite le nombre (80 lignes « creneau », ~40 « rejoue ») et ce plafond etait atteint avant son arrivee (80 et 14/43 lignes, toutes pour des Bokoblin et Stalkos autour). L'essai ne dit donc rien. A refaire avec un plafond plus haut ou seulement pour l'ennemi vise.
+- Animations du Lynel : rien dans le journal de `sw3`, car le journal en limite le nombre (80 lignes « creneau », ~40 « rejoue ») et ce plafond etait atteint avant son arrivee. Refait en `sw4` avec `-DCOOP_TEST_LOG_ALL_SEQ` (sans plafond) : [V] J1 fait foi (`ViewTerror`, `QuickTurn`) ; chez J2 `Enemy_Lynel_Middle ca214004 rejoue "DrawWeapon" (annonce par J1)`, puis `"Wait"`. Le Lynel joue aussi des sequences dans le **creneau 1** (`ViewTerror`, `QuickTurn`, `DrawWeapon`), que le mod ne partage pas (seul le creneau 0 l'est) ; effet visible non verifie. Combat contre le Lynel non essaye.
+- Preuves (suite) : `2026-11-16_lynel-animations_sw4.log`.
 - Preuve : `2026-11-16_lynel_sw3.log`.
 
 ### 5.68 Mode expert : les essais `sw1`, `sw2` y etaient (2026-11-16) - [V] journaux

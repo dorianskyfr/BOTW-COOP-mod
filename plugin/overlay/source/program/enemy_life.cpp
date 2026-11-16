@@ -15,6 +15,13 @@ namespace coop::enemy_life {
 
     namespace {
 
+        /* Essai : -DCOOP_TEST_LOG_ALL_SEQ journalise toutes les sequences d'ennemis (sans plafond). */
+#ifdef COOP_TEST_LOG_ALL_SEQ
+        constexpr bool LogAllSeq = true;
+#else
+        constexpr bool LogAllSeq = false;
+#endif
+
         struct Entry {
             std::uint32_t m_Hash = 0;
             int m_LastLife = -1;  /* derniere vie lue chez nous, -1 si l'ennemi n'a pas encore ete vu */
@@ -218,7 +225,7 @@ namespace coop::enemy_life {
                     const bool ok = coop::game::PlayActorSequence(info.m_Actor, e->m_RemoteSeq);
                     s_ReplayList.store(0, std::memory_order_release);
                     s_SeqPlayed++;
-                    if (s_SeqPlayed <= 40 || s_SeqPlayed % 100 == 0)
+                    if (LogAllSeq || s_SeqPlayed <= 40 || s_SeqPlayed % 100 == 0)
                         Logging.Log("[botw-coop] animation ennemi : %s %08x rejoue \"%s\" (annonce par J%d)%s, n.%lu",
                             info.m_Name, info.m_HashId, e->m_RemoteSeq, e->m_RemoteFrom, ok ? "" : " REFUSE", s_SeqPlayed);
                 }
@@ -394,7 +401,7 @@ namespace coop::enemy_life {
         if (list == s_ReplayList.load(std::memory_order_acquire))
             return true; /* notre propre demande de rejeu */
         const bool following = t->m_Following.load(std::memory_order_acquire);
-        if (s_SeqLogs.fetch_add(1, std::memory_order_relaxed) < 80)
+        if (s_SeqLogs.fetch_add(1, std::memory_order_relaxed) < 80 || LogAllSeq)
             Logging.Log("[botw-coop] animation ennemi : %08x creneau %d banque %d \"%s\" (%s)", t->m_Hash.load(std::memory_order_relaxed),
                 slot, bank, name, following ? "copie suivie" : "fait foi");
         if (slot != 0)

@@ -1,0 +1,41 @@
+﻿== sw4_game.txt
+[botw-coop] essai pose : Link pose en (-2859.0, 309.0, -282.0), 174 m
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "ViewTerror" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "QuickTurn" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "QuickTurn" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Body_Move_Normal_Gear1" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "WaitStop" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DrawWeapon" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "DrawWeapon" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Body_Wait" (fait foi)
+== sw4_game2.txt
+[botw-coop] essai pose : Link pose en (-2862.0, 309.0, -300.0), 156 m
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004, on suit la copie de l'autre joueur (nous a 25.3 m, J1 a 19.2 m)
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 2.14 m (rc=1), n.1
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 1.50 m (rc=1), n.2
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 1.01 m (rc=1), n.3
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 0.74 m (rc=1), n.4
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 0.46 m (rc=1), n.5
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 0.33 m (rc=1), n.6
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 0.15 m (rc=1), n.7
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "QuickTurn" (annonce par J1), n.1
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "QuickTurn" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "ViewTerror" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "Wait" (copie suivie)
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 0.16 m (rc=1), n.8
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 0.74 m (rc=1), n.9
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004 ramene vers la copie de J1, ecart 0.65 m (rc=1), n.10
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "QuickTurn" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "QuickTurn" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "Wait_Curve_L" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "QuickTurn" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DrawWeapon" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "DrawWeapon" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "DrawWeapon" (annonce par J1), n.2
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "Wait" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DrawWeapon" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "Wait" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "Wait" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 0 banque 0 "Wait" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "Wait" (annonce par J1), n.3
