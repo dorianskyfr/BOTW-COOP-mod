@@ -70,6 +70,16 @@ namespace coop::status {
     }
 
     void OnFrame() {
+#ifdef COOP_TEST_GODMODE
+        /* OUTIL DE TEST : vie de Link remise a 80 quarts (20 cœurs) a chaque image, pour les essais pres
+           d'ennemis avec les sauvegardes d'essai a 1,5 cœur (cp1, cp2 : Link tue avant le coffre du camp). */
+        {
+            int godLife = -1, godMax = -1;
+            std::uintptr_t godPtr = 0;
+            if (coop::game::IsWorldReady() && coop::game::GetPlayerLife(godLife, godMax, godPtr) && godPtr != 0 && godLife > 0 && godLife < 80)
+                *reinterpret_cast<int*>(godPtr) = 80;
+        }
+#endif
         if (++s_Frames % 15 != 0)
             return;
         int life = -1, maxLife = -1;

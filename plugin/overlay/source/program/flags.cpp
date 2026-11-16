@@ -743,16 +743,25 @@ namespace coop::flags {
 #endif
                 static int s_SetCountdown = COOP_TEST_SETLOCAL_AFTER;
                 if (inGame && s_HaveSnapshot && coop::session::g_LocalId == 1 && s_SetCountdown > 0 && --s_SetCountdown == 0) {
-                    std::uintptr_t f = 0;
-                    const int i = FindByHash(bools, static_cast<std::uint32_t>(COOP_TEST_SETLOCAL), f);
-                    std::uint8_t before = 0xff, after = 0xff;
-                    if (i >= 0) {
-                        Read(f + s_ValueOffset, before);
-                        SetBoolValue(f);
-                        Read(f + s_ValueOffset, after);
+                    /* -DCOOP_TEST_SETLOCAL2=0x... : un second drapeau pose en meme temps (essai cp2 : les deux
+                       noms d'un camp, avec et sans zero devant). */
+#ifdef COOP_TEST_SETLOCAL2
+                    const std::uint32_t hashes[] = { static_cast<std::uint32_t>(COOP_TEST_SETLOCAL), static_cast<std::uint32_t>(COOP_TEST_SETLOCAL2) };
+#else
+                    const std::uint32_t hashes[] = { static_cast<std::uint32_t>(COOP_TEST_SETLOCAL) };
+#endif
+                    for (const std::uint32_t hash : hashes) {
+                        std::uintptr_t f = 0;
+                        const int i = FindByHash(bools, hash, f);
+                        std::uint8_t before = 0xff, after = 0xff;
+                        if (i >= 0) {
+                            Read(f + s_ValueOffset, before);
+                            SetBoolValue(f);
+                            Read(f + s_ValueOffset, after);
+                        }
+                        Logging.Log("[botw-coop] essai drapeau local : hachage=%08x index %d, octet %d -> %d",
+                            static_cast<unsigned>(hash), i, before, after);
                     }
-                    Logging.Log("[botw-coop] essai drapeau local : hachage=%08x index %d, octet %d -> %d",
-                        static_cast<unsigned>(COOP_TEST_SETLOCAL), i, before, after);
                 }
             }
 #endif
