@@ -1,7 +1,7 @@
 """Cherche des acteurs dans les cartes du monde principal (outil d'essai, lecture seule).
 
-Lit les fichiers Map/MainField/<section>/<section>_{Dynamic,Static}.smubin extraits du jeu de
-l'utilisateur (Yaz0 + BYML, lus avec oead) : pour chaque objet place (cle "Objs"), son nom
+Lit les fichiers Map/MainField/<section>/<section>_Dynamic.smubin extraits du jeu de
+l'utilisateur, et les <section>_Static.smubin de Pack/TitleBG.pack (Gardiens...) (Yaz0 + BYML, lus avec oead) : pour chaque objet place (cle "Objs"), son nom
 ("UnitConfigName") et sa position ("Translate"). Affiche les acteurs dont le nom commence par le
 prefixe donne, groupes par nom, avec quelques positions.
 
@@ -17,15 +17,27 @@ from collections import defaultdict
 import oead
 
 
+def _objs(raw, src):
+    data = oead.byml.from_binary(oead.yaz0.decompress(raw))
+    for obj in data.get("Objs", []):
+        name = str(obj.get("UnitConfigName", ""))
+        t = obj.get("Translate")
+        if t is None:
+            continue
+        yield name, (float(t[0]), float(t[1]), float(t[2])), src
+
+
 def objects(romfs):
     for path in glob.glob(os.path.join(romfs, "Map", "MainField", "*", "*.smubin")):
-        data = oead.byml.from_binary(oead.yaz0.decompress(open(path, "rb").read()))
-        for obj in data.get("Objs", []):
-            name = str(obj.get("UnitConfigName", ""))
-            t = obj.get("Translate")
-            if t is None:
-                continue
-            yield name, (float(t[0]), float(t[1]), float(t[2])), os.path.basename(path)
+        yield from _objs(open(path, "rb").read(), os.path.basename(path))
+    # Les cartes *_Static du monde principal ne sont pas dans Map/ : elles sont dans
+    # Pack/TitleBG.pack (archive SARC), sous Map/MainField/<section>/<section>_Static.smubin.
+    pack = os.path.join(romfs, "Pack", "TitleBG.pack")
+    if os.path.exists(pack):
+        sarc = oead.Sarc(open(pack, "rb").read())
+        for f in sarc.get_files():
+            if f.name.startswith("Map/MainField/") and f.name.endswith(".smubin"):
+                yield from _objs(bytes(f.data), os.path.basename(f.name))
 
 
 def main(romfs, prefix, per_name=3, near_x=None, near_z=None):

@@ -104,6 +104,9 @@ namespace coop::enemy_life {
                     oldest = &t;
             }
             Tracked* t = freeSlot != nullptr ? freeSlot : oldest;
+            static int s_NoListLogs = 0;
+            if (list == 0 && s_NoListLogs++ < 20)
+                Logging.Log("[botw-coop] animation ennemi : %08x sans liste de sequences (acteur+0x560), animations non partagees", hash);
             t->m_List.store(0, std::memory_order_release);
             t->m_Hash.store(hash, std::memory_order_relaxed);
             t->m_Following.store(following, std::memory_order_relaxed);
@@ -195,15 +198,37 @@ namespace coop::enemy_life {
                 return false;
             const float dx = info.m_Pos[0] - s_PlayerPos[0], dy = info.m_Pos[1] - s_PlayerPos[1], dz = info.m_Pos[2] - s_PlayerPos[2];
             const float dist = std::sqrt(dx * dx + dy * dy + dz * dz);
-            if (dist > PosRadius || coop::game::GetActorState(info.m_Actor) != 1)
+            if (coop::game::GetActorState(info.m_Actor) != 1)
                 return false;
+            if (dist > PosRadius) {
+                /* Notre copie est loin, mais celle de l'autre joueur peut etre pres de nous : un ennemi
+                   qui se deplace beaucoup (Gardien mobile, essai gd2) partait d'un cote chez l'un, d'un
+                   autre chez l'autre, et n'etait plus jamais recale. On le suit alors aussi. */
+                const Entry* r = Find(info.m_HashId, false);
+                if (r == nullptr || r->m_RemoteFrame == 0 || s_Frames - r->m_RemoteFrame >= PosStaleFrames)
+                    return false;
+                const float rx = r->m_RemoteMtx[3] - s_PlayerPos[0], ry = r->m_RemoteMtx[7] - s_PlayerPos[1], rz = r->m_RemoteMtx[11] - s_PlayerPos[2];
+                if (rx * rx + ry * ry + rz * rz > PosRadius * PosRadius)
+                    return false;
+                static int s_FarLogs = 0;
+                if (s_FarLogs++ < 20)
+                    Logging.Log("[botw-coop] position ennemi : %s %08x, notre copie a %.1f m mais celle de J%d est pres de nous : suivie",
+                        info.m_Name, info.m_HashId, static_cast<double>(dist), r->m_RemoteFrom);
+            }
             Entry* e = Find(info.m_HashId, true);
 
             const bool fresh = e->m_RemoteFrame != 0 && s_Frames - e->m_RemoteFrame < PosStaleFrames;
             const int localId = coop::session::g_LocalId;
-            /* L'autre fait foi s'il est nettement plus pres de l'ennemi ; a egalite, le plus petit identifiant. */
+            /* L'autre fait foi s'il est nettement plus pres de l'ennemi ; a egalite, le plus petit identifiant.
+               Role garde a egalite : celui qui suit continue tant que l'autre n'est pas nettement plus loin.
+               Sans cela, deux joueurs a la meme distance se passaient le role plusieurs fois par seconde
+               (essai gd4, Gardien mobile : 29,0 / 29,4 m contre 27,1 m). Deux copies suivies a la fois
+               s'arretent seules : celui qui suit n'envoie rien, donc apres ~3 s plus rien n'est « frais ». */
+            /* Entree : l'autre plus pres de 2 m, ou egalite et plus petit identifiant ; sortie : nous plus
+               pres de 4 m (gd5 : un seul seuil a 2 m faisait encore basculer le joueur 2). */
             const bool follow = fresh && (e->m_RemoteDist < dist - PosHysteresis
-                || (e->m_RemoteDist <= dist + PosHysteresis && e->m_RemoteFrom < localId));
+                || (e->m_RemoteDist <= dist + PosHysteresis && e->m_RemoteFrom < localId)
+                || (e->m_Following && e->m_RemoteDist <= dist + 2.0f * PosHysteresis));
             if (coop::config::g_EnemyAnim != 0) {
                 Tracked* t = Track(info.m_HashId, coop::game::GetActorASList(info.m_Actor), follow, s_Frames);
                 if (!follow) {
@@ -251,7 +276,13 @@ namespace coop::enemy_life {
                     mtx[7] = info.m_Pos[1] + ey * 0.3f;
                     mtx[11] = info.m_Pos[2] + ez * 0.3f;
                 }
-                const int rc = coop::game::SetActorCharacterPos(info.m_Actor, mtx, false);
+                int rc = coop::game::SetActorCharacterPos(info.m_Actor, mtx, false);
+                /* Sans controleur de personnage (rc -2 : Gardiens, essai gd1) : corps principal
+                   Actor::mMainBody (+0x190), comme pour le Link du partenaire. rc 100+n = corps. */
+                if (rc == -2) {
+                    const int body = coop::game::SetActorBodyTransform(info.m_Actor, mtx);
+                    rc = body == 0 ? 100 : -100 + body;
+                }
                 s_PosApplied++;
                 if (s_PosApplied <= 10 || s_PosApplied % 300 == 0)
                     Logging.Log("[botw-coop] position ennemi : %s %08x ramene vers la copie de J%d, ecart %.2f m (rc=%d), n.%lu",
@@ -364,9 +395,17 @@ namespace coop::enemy_life {
         float mtx[12];
         coop::game::GetActorMtx(n.m_Best.m_Actor, mtx);
         const float from[3] = { mtx[3], mtx[7], mtx[11] };
+#ifdef COOP_TEST_NUDGE_FAR
+        /* Essai gd3 : copie envoyee hors du rayon de 150 m chez ce joueur seulement. */
+        mtx[3] += 170.0f;
+        mtx[7] += 30.0f;
+#else
         mtx[3] += 4.0f;
         mtx[7] += 0.5f;
-        const int rc = coop::game::SetActorCharacterPos(n.m_Best.m_Actor, mtx, false);
+#endif
+        int rc = coop::game::SetActorCharacterPos(n.m_Best.m_Actor, mtx, false);
+        if (rc == -2)
+            rc = 100 + coop::game::SetActorBodyTransform(n.m_Best.m_Actor, mtx);
         Logging.Log("[botw-coop] position ennemi : OUTIL DE TEST, %s %08x deplace de (%.2f, %.2f, %.2f) a (%.2f, %.2f, %.2f), rc=%d",
             n.m_Best.m_Name, n.m_Best.m_HashId, static_cast<double>(from[0]), static_cast<double>(from[1]), static_cast<double>(from[2]),
             static_cast<double>(mtx[3]), static_cast<double>(mtx[7]), static_cast<double>(mtx[11]), rc);

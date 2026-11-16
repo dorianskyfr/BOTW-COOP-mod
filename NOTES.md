@@ -812,6 +812,17 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.74 Gardiens (2026-11-16, essais `gd1` a `gd6`, Eden, mode expert) - [V] journaux
+
+- Emplacements trouves : les Gardiens ne sont pas dans les `Map/MainField/*/*_Dynamic.smubin` extraits, mais dans les cartes `*_Static.smubin` rangees dans `Pack/TitleBG.pack` (archive SARC). `find_actors.py` lit maintenant aussi ces cartes : 48 `Enemy_Guardian_A_Fixed_Moss`, 36 `Enemy_Guardian_A`, 29 `Enemy_Guardian_C` (Gardiens mobiles), 20 `Enemy_Guardian_B` (volants), plus les variantes Sand/Snow. Essai pres du sanctuaire 073 (E-4), Gardien mobile `d2ac17e9` a 70 m du point.
+- **Defaut corrige (gd1)** : la copie suivie d'un Gardien n'etait jamais recalee (`rc=-2` : pas de controleur de personnage a `Actor::mPhysics+0x80`), l'ecart montait jusqu'a 50 m. Repli sur le corps principal `Actor::mMainBody` (+0x190, `SetActorBodyTransform`, deja utilise pour le Link du partenaire). [V] `gd2` : `rc=100` (corps principal), ecart 0,16 a 1,55 m.
+- **Defaut corrige (gd2)** : un ennemi qui se deplace loin pouvait sortir du rayon de 150 m chez un joueur et rester fige la-bas pendant que l'autre copie revenait pres des joueurs ; il n'etait plus jamais recale. Un ennemi est maintenant aussi suivi quand la position annoncee par l'autre joueur est a moins de 150 m de nous. [V] `gd4` (outil `-DCOOP_TEST_NUDGE_FAR` : copie envoyee a 170 m chez J2 seulement) : la copie revient pres des joueurs ; journal `notre copie a 150.7 m mais celle de J1 est pres de nous : suivie`.
+- **Defaut corrige (gd4)** : deux joueurs a la meme distance se passaient le role « fait foi » plusieurs fois par seconde (29,0 / 29,4 m contre 27,1 m). Celui qui suit garde maintenant le role tant que l'autre n'est pas 4 m plus loin (entree a 2 m). [V] `gd6` : 1 bascule chez J1, 4 chez J2 pendant tout l'essai (contre plus de 60 avant) ; position du Gardien relue dans les deux mondes a 13 cm pres.
+- [V] Vie partagee : Gardien mobile `1500 -> 1495` chez les deux (`gd4`), Gardien fixe `500 -> 495` (`gd6`).
+- Animations : le Gardien mobile ne joue presque pas de sequences d'animation (`MaterialDamageStun`, `MaterialDefault`, creneau 2, non partage) ; ses pattes et son rayon dependent donc de l'IA de chaque jeu. Effet visible non verifie.
+- Supposé, non verifie : que les deux Link mis a terre (puis releves l'un par l'autre, a des moments differents) l'aient ete par le rayon du Gardien plutot que par la chute de la pose. Pas d'image : l'affichage de Windows etait en veille. Gardiens volants non essayes.
+- Preuve : `2026-11-16_gardiens_gd1-gd6.log`.
+
 ### 5.73 Vraie lune de sang chez les deux joueurs (2026-11-16, essai `bm1`, Eden) - [V] journaux
 
 - Demande de l'utilisateur (« et la cinematique de lune de sang »). Copie Savage Wind, outil `-DCOOP_TEST_LEFT_PLATEAU` (pose `FirstTouchdown`, condition `playerHasLeftPlateau()` de `TimeMgr::handleNewDay`, decompilation `worldTimeMgr.cpp`). Le mod partage l'heure et le minuteur ; `Demo011_0` n'est pas envoyee par le mod (chaque jeu la lance lui-meme).

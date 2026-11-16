@@ -43,7 +43,7 @@ Images prises pendant les essais à deux instances (toutes les preuves : `docs/e
 - Inventaire, santé et équipement restent individuels.
 
 Testé avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0.2.1, sur un même PC. Non testé entre deux PC.
-Ennemis vérifiés : Bokoblin, Moblin (vie, attaques, dégâts), Lézalfos (animations), Lynel (vie, position, animations ; combat non essayé), Hinox (vie, réveil et animations). Le monstre vise le joueur le plus proche de lui et change de cible quand l'autre devient le plus proche. Mode expert : vérifié (partie chargée depuis une sauvegarde en mode expert). Vraie lune de sang : déclenchée par le jeu chez les deux joueurs au même minuit (vérifié par les journaux). Pas encore essayés : Gardiens, Créatures divines, contenu du DLC.
+Ennemis vérifiés : Bokoblin, Moblin (vie, attaques, dégâts), Lézalfos (animations), Lynel (vie, position, animations ; combat non essayé), Hinox (vie, réveil et animations), Gardiens mobiles et fixes (vie et position ; leurs mouvements dépendent de chaque jeu). Le monstre vise le joueur le plus proche de lui et change de cible quand l'autre devient le plus proche. Mode expert : vérifié (partie chargée depuis une sauvegarde en mode expert). Vraie lune de sang : déclenchée par le jeu chez les deux joueurs au même minuit (vérifié par les journaux). Pas encore essayés : Gardiens volants, Créatures divines, contenu du DLC.
 
 ## Installation simple : le launcher
 
