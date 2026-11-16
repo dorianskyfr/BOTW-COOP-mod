@@ -692,6 +692,21 @@ namespace coop::flags {
             const int gliderIdx = FindByHash(bools, ParagliderHash, glider);
             if (gliderIdx < 0 || !ReadBoolValue(glider, hasGlider))
                 hasGlider = 0;
+#ifdef COOP_TEST_LEFT_PLATEAU
+            /* Essai : pose FirstTouchdown (plateau quitte, condition d'une lune de sang, worldTimeMgr.cpp)
+               une fois en jeu, pour verifier une vraie lune de sang chez les deux joueurs. */
+            {
+                static bool s_LeftDone = false;
+                std::uintptr_t ft = 0;
+                std::uint8_t v = 0;
+                if (!s_LeftDone && inGame && s_HaveSnapshot && FindByHash(bools, Crc32("FirstTouchdown"), ft) >= 0 && ReadBoolValue(ft, v)) {
+                    s_LeftDone = true;
+                    if (v == 0)
+                        SetBoolValue(ft);
+                    Logging.Log("[botw-coop] essai lune de sang : FirstTouchdown %d -> 1", v);
+                }
+            }
+#endif
 #ifdef COOP_TEST_GLIDER_AFTER
             /* Essai : la paravoile est posee ici apres N echanges en jeu (comme si le joueur l'avait recue),
                pour verifier que la progression mise en attente est ensuite appliquee. */

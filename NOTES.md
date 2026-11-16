@@ -812,6 +812,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.73 Vraie lune de sang chez les deux joueurs (2026-11-16, essai `bm1`, Eden) - [V] journaux
+
+- Demande de l'utilisateur (« et la cinematique de lune de sang »). Copie Savage Wind, outil `-DCOOP_TEST_LEFT_PLATEAU` (pose `FirstTouchdown`, condition `playerHasLeftPlateau()` de `TimeMgr::handleNewDay`, decompilation `worldTimeMgr.cpp`). Le mod partage l'heure et le minuteur ; `Demo011_0` n'est pas envoyee par le mod (chaque jeu la lance lui-meme).
+- [V] `hour 354 2600` (heure et minuteur de la session) : au premier minuit, chez les deux, minuteur 2605 -> 0 et jour 2 -> 3 (`handleNewDay` : minuteur > 7 jours et plateau quitte -> drapeau du « jour rouge »). Au minuit suivant (`hour 354`), chez **J1 et J2** : `evenement demande : Demo011_0 -> accepte` (`callBloodMoonDemo`, mode Normal), `non annoncee (evenement du jeu ...)`, l'heure reste figee a 0.015 pendant l'evenement (`hasActiveEvent`) puis repart. Le recalage de l'heure du mod ecrit `mNewTime` (comme `setTimeWithoutDayChecks`), pas `setTime` : pas de passage en mode Forced qui sauterait la cinematique.
+- Non vu a l'image : la cinematique elle-meme (captures prises avant ou apres) ; la reapparition des ennemis.
+- Preuve : `2026-11-16_vraie-lune-de-sang-chez-les-deux_bm1.log`.
+
 ### 5.72 Koroks : graine pour les deux ; receptacles de coeur : un chacun (2026-11-16, essai `kr1`, Eden) - [V] journaux et image
 
 - Constat : les Koroks (groupe 1) et les receptacles de coeur poses (groupe 2 : `MainField_Obj_HeartUtuwa_A_01_*`, et `MainFieldDungeon_Obj_HeartUtuwa_A_01_*` x4, ceux des Creatures divines) etaient partages : trouve ou ramasse par l'un, l'objet disparaissait chez l'autre sans qu'il en ait la recompense. Dans l'esprit de la demande « progression partagee, recompenses pour les deux » (5.64) :
