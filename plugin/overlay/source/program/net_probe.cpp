@@ -20,6 +20,7 @@
 #include <lib/log/logger_mgr.hpp>
 #include <lib/util/sys/modules.hpp>
 
+#include <cmath>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
@@ -164,6 +165,9 @@ namespace coop::net_probe {
         std::uint32_t s_ConnectFailures = 0;
         char          s_Rx[512];
         std::size_t   s_RxLen = 0;
+        /* Debut d'une ligne trop longue jete : le reste, jusqu'a la fin de ligne, l'est aussi (sinon il serait
+           lu comme une ligne a part, par exemple "DENY" ; audit Codex 2026-11-16). */
+        bool          s_RxSkip = false;
         std::uint64_t s_Sent = 0;
 
         /* Relais d'une autre version : on ne retente qu'apres ce delai, sans bandeau. */
@@ -184,6 +188,7 @@ namespace coop::net_probe {
             s_Fd = -1;
             s_Joined = false;
             s_RxLen = 0;
+            s_RxSkip = false;
             coop::session::g_Remote.SetInactive();
             Logging.Log("[botw-coop] net: liaison fermee (%s), reconnexion automatique", why);
             if (!quiet)
@@ -247,6 +252,21 @@ namespace coop::net_probe {
         int s_LastRemoteId = 0;
 
         /* Une ligne recue du relais (voir tools/relay.py pour le protocole). */
+        /*
+         * Matrice 3x4 recue (lignes : rotation 3 valeurs puis position) acceptable : toutes les valeurs finies,
+         * rotation bornee a 10 en valeur absolue, position a posLimit. Bornes choisies, larges : le monde fait
+         * quelques milliers de metres. Sans ce controle, une valeur infinie ou enorme allait au moteur du jeu
+         * (audit Codex 2026-11-16).
+         */
+        bool SaneMtx(const float* m, float posLimit) {
+            for (int i = 0; i < 12; i++) {
+                const float limit = (i % 4 == 3) ? posLimit : 10.0f;
+                if (!std::isfinite(m[i]) || std::fabs(m[i]) > limit)
+                    return false;
+            }
+            return true;
+        }
+
         void HandleLine(const char* line) {
             int id = 0;
             int m_days = 0, m_weather = 0;
@@ -254,6 +274,8 @@ namespace coop::net_probe {
             float m[12];
             if (unsigned anim = 0; std::sscanf(line, "MTX %d %f %f %f %f %f %f %f %f %f %f %f %f %u", &id,
                     &m[0], &m[1], &m[2], &m[3], &m[4], &m[5], &m[6], &m[7], &m[8], &m[9], &m[10], &m[11], &anim) >= 13) {
+                if (!SaneMtx(m, 100000.0f))
+                    return;
                 s_LastRemoteId = id;
                 if (!coop::session::g_Remote.IsActive()) {
                     char msg[48];
@@ -264,6 +286,10 @@ namespace coop::net_probe {
                 coop::anim_state::g_Remote.store(anim < coop::anim_state::Count ? static_cast<std::uint8_t>(anim) : 0);
                 coop::session::g_Remote.Push(id, m, coop::clock::NowMs());
             } else if (int hpLife = 0, hpMax = 0; std::sscanf(line, "HP %d %d %d", &id, &hpLife, &hpMax) == 3) {
+                /* Bornes (quarts de coeur ; borne choisie, bien au-dessus du jeu) : status.cpp calcule
+                   max * 2 / 5, qui debordait avec un maximum enorme (audit Codex 2026-11-16). */
+                if (hpLife < 0 || hpMax <= 0 || hpMax > 1000 || hpLife > hpMax + 1000)
+                    return;
                 coop::status::g_RemoteLife.store(hpLife);
                 coop::status::g_RemoteMax.store(hpMax);
             } else if (coop::weapons::Gift gift; std::sscanf(line, "GIFT %d %47s %d %x %d", &id, gift.m_Name, &gift.m_Value,
@@ -302,7 +328,7 @@ namespace coop::net_probe {
                 float* o = p.m_Rel;
                 if (std::sscanf(line, "WPN %d %d %x %f %f %f %f %f %f %f %f %f %f %f %f", &id, &slot, &crc,
                         &o[0], &o[1], &o[2], &o[3], &o[4], &o[5], &o[6], &o[7], &o[8], &o[9], &o[10], &o[11]) == 15
-                    && slot >= 0 && slot < coop::weapons::Slots) {
+                    && slot >= 0 && slot < coop::weapons::Slots && SaneMtx(o, 1000.0f)) {
                     p.m_Crc = crc;
                     coop::weapons::g_Remote[slot].Write(p);
                 }
@@ -317,9 +343,12 @@ namespace coop::net_probe {
             } else if (coop::enemy_life::PosMsg pm; std::sscanf(line, "EMTX %d %x %f %f %f %f %f %f %f %f %f %f %f %f %f", &pm.m_FromId, &pm.m_Hash, &pm.m_Dist,
                            &pm.m_Mtx[0], &pm.m_Mtx[1], &pm.m_Mtx[2], &pm.m_Mtx[3], &pm.m_Mtx[4], &pm.m_Mtx[5], &pm.m_Mtx[6], &pm.m_Mtx[7],
                            &pm.m_Mtx[8], &pm.m_Mtx[9], &pm.m_Mtx[10], &pm.m_Mtx[11]) == 15) {
-                coop::enemy_life::g_PosIncoming.Push(pm);
-            } else if (coop::enemy_life::SeqMsg sm; std::sscanf(line, "EAS %d %x %47s", &sm.m_FromId, &sm.m_Hash, sm.m_Name) == 3) {
-                coop::enemy_life::g_SeqIncoming.Push(sm);
+                if (SaneMtx(pm.m_Mtx, 100000.0f) && std::isfinite(pm.m_Dist) && pm.m_Dist >= 0.0f && pm.m_Dist < 100000.0f)
+                    coop::enemy_life::g_PosIncoming.Push(pm);
+            } else if (coop::enemy_life::SeqMsg sm; std::sscanf(line, "EAS %d %x %47s %d", &sm.m_FromId, &sm.m_Hash, sm.m_Name, &sm.m_Slot) >= 3) {
+                /* Creneau absent (3 valeurs) : 0. Hors de 0..1 : ignore. */
+                if (sm.m_Slot >= 0 && sm.m_Slot < coop::enemy_life::SeqSlots)
+                    coop::enemy_life::g_SeqIncoming.Push(sm);
             } else if (unsigned actCode = 0; std::sscanf(line, "ACT %d %u", &id, &actCode) == 2) {
                 coop::anim_state::g_RemoteAction.store(static_cast<std::uint8_t>(actCode));
                 coop::anim_state::g_RemoteActions.fetch_add(1, std::memory_order_release);
@@ -430,15 +459,21 @@ namespace coop::net_probe {
                     if (s_Rx[i] != '\n')
                         continue;
                     s_Rx[i] = '\0';
-                    HandleLine(s_Rx + start);
-                    if (s_Fd < 0)
-                        return; /* liaison coupee par la ligne (version refusee) : tampon deja vide */
+                    if (s_RxSkip) {
+                        s_RxSkip = false; /* fin de la ligne trop longue : jetee */
+                    } else {
+                        HandleLine(s_Rx + start);
+                        if (s_Fd < 0)
+                            return; /* liaison coupee par la ligne (version refusee) : tampon deja vide */
+                    }
                     start = i + 1;
                 }
                 s_RxLen -= start;
                 std::memmove(s_Rx, s_Rx + start, s_RxLen);
-                if (s_RxLen >= sizeof(s_Rx) - 1)
-                    s_RxLen = 0; /* ligne trop longue : on jette */
+                if (s_RxLen >= sizeof(s_Rx) - 1) {
+                    s_RxLen = 0; /* ligne trop longue : on jette, jusqu'a sa fin de ligne */
+                    s_RxSkip = true;
+                }
             }
         }
 
@@ -673,7 +708,7 @@ namespace coop::net_probe {
                     coop::enemy_life::SeqMsg sm;
                     for (int n = 0; n < 8 && used + 80 < sizeof(posBuf) && coop::enemy_life::g_SeqOutgoing.Pop(sm); n++)
                         used += static_cast<std::size_t>(std::snprintf(posBuf + used, sizeof(posBuf) - used,
-                            "EAS %08x %s\n", sm.m_Hash, sm.m_Name));
+                            "EAS %08x %s %d\n", sm.m_Hash, sm.m_Name, sm.m_Slot));
                     /* Cinematiques demarrees chez nous (DEMO). */
                     coop::cutscene::Demo dm;
                     for (int n = 0; n < 4 && used + 112 < sizeof(posBuf) && coop::cutscene::g_Outgoing.Pop(dm); n++)

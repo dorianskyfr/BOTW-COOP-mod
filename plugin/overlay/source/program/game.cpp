@@ -1340,7 +1340,7 @@ namespace coop::game {
         return reinterpret_cast<const char*>(actor + s_ActorNameOffset);
     }
 
-    bool PlayActorSequence(std::uintptr_t actor, const char* name) {
+    bool PlayActorSequence(std::uintptr_t actor, const char* name, int slot) {
         /*
          * BOTW 1.9.0 seulement (adresses citees par botw-coop, docs/reverse-engineering.md et
          * offsets.hpp, et reverifiees sur notre image de main 1.9.0, NOTES 5.27) :
@@ -1355,7 +1355,7 @@ namespace coop::game {
         constexpr std::uintptr_t Actor_ASList = 0x560;
         constexpr std::uintptr_t StartSequence = 0x149f24c;
         constexpr std::uintptr_t GotSafeStringVtable = 0x1d66260;
-        if (s_Offsets == nullptr || actor == 0 || name == nullptr)
+        if (s_Offsets == nullptr || actor == 0 || name == nullptr || slot < 0)
             return false;
         const auto list = Peek<std::uintptr_t>(actor + Actor_ASList);
         const auto vtableSlot = Peek<std::uintptr_t>(MainBase() + GotSafeStringVtable);
@@ -1366,7 +1366,8 @@ namespace coop::game {
             const char* m_Str;
         } str { vtableSlot + 0x10, name };
         using StartFn = void (*)(std::uintptr_t, float, float, const SafeString*, int, int, bool);
-        reinterpret_cast<StartFn>(MainBase() + StartSequence)(list, -1.0f, -1.0f, &str, 0, 0, true);
+        /* Creneau : la fonction du jeu ne fait rien s'il depasse le nombre de creneaux de la liste (+0xb8). */
+        reinterpret_cast<StartFn>(MainBase() + StartSequence)(list, -1.0f, -1.0f, &str, slot, 0, true);
         return true;
     }
 

@@ -36,10 +36,60 @@ namespace coop::enemy_life {
             std::uint64_t m_SentFrame = 0;
             bool          m_Following = false;
 
-            /* Animations : derniere sequence annoncee par l'autre joueur, et celle rejouee ici. */
-            char          m_RemoteSeq[48] = {};
-            std::uint32_t m_RemoteSeqCount = 0;
-            std::uint32_t m_PlayedSeqCount = 0;
+            /* Animations, par creneau : derniere sequence annoncee par l'autre joueur, et celle rejouee ici. */
+            char          m_RemoteSeq[SeqSlots][48] = {};
+            std::uint32_t m_RemoteSeqCount[SeqSlots] = {};
+            std::uint32_t m_PlayedSeqCount[SeqSlots] = {};
+        };
+
+        /*
+         * Derniere sequence demarree sur un creneau : ecrite par le crochet des sequences (un fil du jeu
+         * pour cet acteur), lue par le fil du jeu qui l'annonce. Verrou par version (impaire = ecriture en
+         * cours) et nom range en mots atomiques : pas de lecture d'un nom a moitie reecrit, sans course de
+         * donnees au sens du C++ (relecture adversaire Codex, 2026-11-16). Version / 2 = nombre de sequences.
+         */
+        class SeqBox {
+        public:
+            static constexpr std::size_t Words = 6; /* 48 octets, comme SeqMsg::m_Name */
+
+            void Write(const char* name) {
+                const auto v = m_Ver.load(std::memory_order_relaxed);
+                m_Ver.store(v + 1, std::memory_order_relaxed);
+                std::atomic_thread_fence(std::memory_order_release);
+                char buf[Words * 8] = {};
+                for (std::size_t i = 0; i < sizeof(buf) - 1 && name[i] != '\0'; i++)
+                    buf[i] = name[i];
+                for (std::size_t w = 0; w < Words; w++) {
+                    std::uint64_t word;
+                    std::memcpy(&word, buf + w * 8, 8);
+                    m_Words[w].store(word, std::memory_order_relaxed);
+                }
+                m_Ver.store(v + 2, std::memory_order_release);
+            }
+
+            /* Nombre de sequences ecrites (stable : seulement si aucune ecriture n'est en cours). */
+            std::uint32_t Count() const { return m_Ver.load(std::memory_order_acquire) / 2; }
+
+            /* Copie coherente du nom et du nombre ; faux si une ecriture etait en cours (reessayer plus tard). */
+            bool Read(char (&out)[Words * 8], std::uint32_t& count) const {
+                const auto v1 = m_Ver.load(std::memory_order_acquire);
+                if ((v1 & 1u) != 0)
+                    return false;
+                for (std::size_t w = 0; w < Words; w++) {
+                    const std::uint64_t word = m_Words[w].load(std::memory_order_relaxed);
+                    std::memcpy(out + w * 8, &word, 8);
+                }
+                std::atomic_thread_fence(std::memory_order_acquire);
+                if (m_Ver.load(std::memory_order_relaxed) != v1)
+                    return false;
+                out[sizeof(out) - 1] = '\0';
+                count = v1 / 2;
+                return true;
+            }
+
+        private:
+            std::atomic<std::uint32_t> m_Ver { 0 };
+            std::atomic<std::uint64_t> m_Words[Words] = {};
         };
 
         /*
@@ -51,10 +101,9 @@ namespace coop::enemy_life {
             std::atomic<std::uint32_t>  m_Hash { 0 };
             std::atomic<bool>           m_Following { false };
             std::atomic<std::uint64_t>  m_SeenFrame { 0 };
-            std::atomic<std::uint32_t>  m_SeqCount { 0 };  /* sequences demarrees par notre copie (fait foi) */
+            SeqBox                      m_Seq[SeqSlots];   /* sequences demarrees par notre copie (fait foi), par creneau */
             std::atomic<std::uint64_t>  m_HurtFrame { 0 }; /* derniere baisse de vie due a notre joueur */
-            std::uint32_t               m_SeqSent = 0;     /* fil du jeu seulement */
-            char                        m_Seq[48] = {};
+            std::uint32_t               m_SeqSent[SeqSlots] = {}; /* fil du jeu seulement : nombre deja annonce */
         };
         constexpr int MaxTracked = 32;
         Tracked s_Tracked[MaxTracked];
@@ -111,7 +160,8 @@ namespace coop::enemy_life {
             t->m_Hash.store(hash, std::memory_order_relaxed);
             t->m_Following.store(following, std::memory_order_relaxed);
             t->m_SeenFrame.store(frame, std::memory_order_relaxed);
-            t->m_SeqSent = t->m_SeqCount.load(std::memory_order_relaxed);
+            for (int s = 0; s < SeqSlots; s++)
+                t->m_SeqSent[s] = t->m_Seq[s].Count();
             t->m_List.store(list, std::memory_order_release);
             return t;
         }
@@ -231,28 +281,34 @@ namespace coop::enemy_life {
                 || (e->m_Following && e->m_RemoteDist <= dist + 2.0f * PosHysteresis));
             if (coop::config::g_EnemyAnim != 0) {
                 Tracked* t = Track(info.m_HashId, coop::game::GetActorASList(info.m_Actor), follow, s_Frames);
-                if (!follow) {
-                    /* Notre copie fait foi : annoncer la derniere sequence demarree, s'il y en a une nouvelle. */
-                    const auto count = t->m_SeqCount.load(std::memory_order_acquire);
-                    if (count != t->m_SeqSent) {
+                for (int s = 0; s < SeqSlots; s++) {
+                    if (!follow) {
+                        /* Notre copie fait foi : annoncer la derniere sequence demarree, s'il y en a une nouvelle.
+                           File pleine ou ecriture en cours : on reessaie a l'image suivante (rien n'est marque
+                           annonce tant que l'envoi n'est pas en file ; relecture adversaire Codex). */
                         SeqMsg m;
-                        m.m_Hash = info.m_HashId;
-                        std::memcpy(m.m_Name, t->m_Seq, sizeof(m.m_Name));
-                        m.m_Name[sizeof(m.m_Name) - 1] = '\0';
-                        if (m.m_Name[0] != '\0' && g_SeqOutgoing.Push(m))
-                            s_SeqSent++;
-                        t->m_SeqSent = count;
+                        std::uint32_t count = 0;
+                        if (t->m_Seq[s].Count() != t->m_SeqSent[s] && t->m_Seq[s].Read(m.m_Name, count)) {
+                            m.m_Hash = info.m_HashId;
+                            m.m_Slot = s;
+                            if (m.m_Name[0] == '\0') {
+                                t->m_SeqSent[s] = count;
+                            } else if (g_SeqOutgoing.Push(m)) {
+                                s_SeqSent++;
+                                t->m_SeqSent[s] = count;
+                            }
+                        }
+                    } else if (e->m_RemoteSeqCount[s] != e->m_PlayedSeqCount[s] && e->m_RemoteSeq[s][0] != '\0') {
+                        /* Copie suivie : rejouer la sequence annoncee par celui qui fait foi, dans le meme creneau. */
+                        e->m_PlayedSeqCount[s] = e->m_RemoteSeqCount[s];
+                        s_ReplayList.store(t->m_List.load(std::memory_order_relaxed), std::memory_order_release);
+                        const bool ok = coop::game::PlayActorSequence(info.m_Actor, e->m_RemoteSeq[s], s);
+                        s_ReplayList.store(0, std::memory_order_release);
+                        s_SeqPlayed++;
+                        if (LogAllSeq || s_SeqPlayed <= 40 || s_SeqPlayed % 100 == 0)
+                            Logging.Log("[botw-coop] animation ennemi : %s %08x rejoue \"%s\" creneau %d (annonce par J%d)%s, n.%lu",
+                                info.m_Name, info.m_HashId, e->m_RemoteSeq[s], s, e->m_RemoteFrom, ok ? "" : " REFUSE", s_SeqPlayed);
                     }
-                } else if (e->m_RemoteSeqCount != e->m_PlayedSeqCount && e->m_RemoteSeq[0] != '\0') {
-                    /* Copie suivie : rejouer la sequence annoncee par celui qui fait foi. */
-                    e->m_PlayedSeqCount = e->m_RemoteSeqCount;
-                    s_ReplayList.store(t->m_List.load(std::memory_order_relaxed), std::memory_order_release);
-                    const bool ok = coop::game::PlayActorSequence(info.m_Actor, e->m_RemoteSeq);
-                    s_ReplayList.store(0, std::memory_order_release);
-                    s_SeqPlayed++;
-                    if (LogAllSeq || s_SeqPlayed <= 40 || s_SeqPlayed % 100 == 0)
-                        Logging.Log("[botw-coop] animation ennemi : %s %08x rejoue \"%s\" (annonce par J%d)%s, n.%lu",
-                            info.m_Name, info.m_HashId, e->m_RemoteSeq, e->m_RemoteFrom, ok ? "" : " REFUSE", s_SeqPlayed);
                 }
             }
             if (follow != e->m_Following) {
@@ -329,10 +385,13 @@ namespace coop::enemy_life {
         for (int n = 0; n < 64 && g_SeqIncoming.Pop(sm); n++) {
             if (!ready)
                 continue;
+            if (sm.m_Slot < 0 || sm.m_Slot >= SeqSlots)
+                continue;
             Entry* e = Find(sm.m_Hash, true);
-            std::memcpy(e->m_RemoteSeq, sm.m_Name, sizeof(e->m_RemoteSeq));
-            e->m_RemoteSeq[sizeof(e->m_RemoteSeq) - 1] = '\0';
-            e->m_RemoteSeqCount++;
+            char* dst = e->m_RemoteSeq[sm.m_Slot];
+            std::memcpy(dst, sm.m_Name, sizeof(e->m_RemoteSeq[0]));
+            dst[sizeof(e->m_RemoteSeq[0]) - 1] = '\0';
+            e->m_RemoteSeqCount[sm.m_Slot]++;
         }
         coop::game::PlayerState player;
         s_HavePlayer = ready && coop::game::ReadPlayer(player);
@@ -443,14 +502,10 @@ namespace coop::enemy_life {
         if (s_SeqLogs.fetch_add(1, std::memory_order_relaxed) < 80 || LogAllSeq)
             Logging.Log("[botw-coop] animation ennemi : %08x creneau %d banque %d \"%s\" (%s)", t->m_Hash.load(std::memory_order_relaxed),
                 slot, bank, name, following ? "copie suivie" : "fait foi");
-        if (slot != 0)
+        if (slot < 0 || slot >= SeqSlots)
             return true;
         if (!following) {
-            std::size_t i = 0;
-            for (; i < sizeof(t->m_Seq) - 1 && name[i] != '\0'; i++)
-                t->m_Seq[i] = name[i];
-            t->m_Seq[i] = '\0';
-            t->m_SeqCount.fetch_add(1, std::memory_order_release);
+            t->m_Seq[slot].Write(name);
             return true;
         }
         if (coop::config::g_EnemyAnim == 2) {

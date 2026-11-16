@@ -1,0 +1,71 @@
+== lk1_game.txt
+[botw-coop] net: entree dans la session acceptee (J1)
+[botw-coop] messages : "Joueur 2 a rejoint la partie"
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "ViewTerror" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "QuickTurn" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Body_Move_Normal_Gear1" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "WaitStop" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DrawWeapon" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Body_Wait" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Howl" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DashAttackLswordStart" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DashAttackLswordLoop" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DashAttackLswordEnd" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DashAttackLswordEnd" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Body_Move_Normal_Gear3" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "AttackStart" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "AttackLoop" (copie suivie)
+== lk1_game2.txt
+[botw-coop] net: entree dans la session acceptee (J2)
+[botw-coop] messages : "Joueur 1 a rejoint la partie"
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "ViewTerror" creneau 1 (annonce par J1), n.1
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "QuickTurn" creneau 1 (annonce par J1), n.3
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "QuickTurn" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "WaitStop" creneau 1 (annonce par J1), n.4
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "DrawWeapon" creneau 1 (annonce par J1), n.6
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "Body_Wait" creneau 1 (annonce par J1), n.8
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "Howl" creneau 1 (annonce par J1), n.10
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "DashAttackLswordStart" creneau 1 (annonce par J1), n.12
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "DashAttackLswordLoop" creneau 1 (annonce par J1), n.14
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "DashAttackLswordEnd" creneau 1 (annonce par J1), n.16
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "Body_Move_Normal_Gear3" creneau 1 (annonce par J1), n.17
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "AttackStart" creneau 1 (annonce par J1), n.18
+== lk2_game.txt
+[botw-coop] net: entree dans la session acceptee (J1)
+[botw-coop] messages : "Joueur 2 a rejoint la partie"
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "ViewTerror" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "QuickTurn" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Body_Move_Normal_Gear1" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "WaitStop" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DrawWeapon" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Body_Wait" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Howl" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DashAttackLswordStart" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DashAttackLswordLoop" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DashAttackLswordEnd" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "DashAttackLswordEnd" (fait foi)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "Body_Move_Normal_Gear3" (fait foi)
+== lk2_game2.txt
+[botw-coop] net: entree dans la session acceptee (J2)
+[botw-coop] messages : "Joueur 1 a rejoint la partie"
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "ViewTerror" creneau 1 (annonce par J1), n.1
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "QuickTurn" creneau 1 (annonce par J1), n.3
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "QuickTurn" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "ViewTerror" (copie suivie)
+[botw-coop] animation ennemi : ca214004 creneau 1 banque 0 "QuickTurn" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "WaitStop" creneau 1 (annonce par J1), n.4
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "DrawWeapon" creneau 1 (annonce par J1), n.6
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "Body_Wait" creneau 1 (annonce par J1), n.8
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "Howl" creneau 1 (annonce par J1), n.10
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "DashAttackLswordStart" creneau 1 (annonce par J1), n.12
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "DashAttackLswordLoop" creneau 1 (annonce par J1), n.14
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "DashAttackLswordEnd" creneau 1 (annonce par J1), n.16
+[botw-coop] animation ennemi : Enemy_Lynel_Middle ca214004 rejoue "Body_Move_Normal_Gear3" creneau 1 (annonce par J1), n.17
+== test_relay.py (relais corrige) puis relais d'avant le correctif
+OK     animation d'ennemi du creneau 1 retransmise avec son creneau
+OK     animation d'ennemi au creneau invalide non retransmise
+OK     PAD non ASCII ou trop long non retransmis
+OK     relais toujours en marche apres des lignes invalides
+OK     lignes invalides ou binaires : le relais continue de servir
+77 / 77 essais passes
+relais d'avant le correctif : ConnectionResetError [WinError 10054] apres 'PAD 0 \xff 0 0 1' (relais arrete)

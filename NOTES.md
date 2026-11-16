@@ -812,6 +812,21 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.78 Creneau 1 des animations d'ennemis (Lynel), protocole 5, audit reseau par Codex (2026-11-16, essais `lk1`, `lk2`, Eden) - [V] journaux, essais du relais
+
+- **Creneau 1** : le Lynel joue des sequences dans le creneau 1, banque 0 (5.69). `EAS <hachage> <sequence> <creneau>` (protocole 5 ; relais : 3e valeur facultative, entier) ; celui qui fait foi annonce les creneaux 0 et 1, la copie suivie rejoue dans le meme creneau (`game::PlayActorSequence(acteur, nom, creneau)` : 5e argument de `main+0x149f24c`, qui ne fait rien si le creneau depasse ceux de la liste). Autres creneaux ignores (jamais vus dans les journaux).
+- [V] `lk1`, `lk2` (Lynel de 5.69, `-DCOOP_TEST_LOG_ALL_SEQ`) : J1 fait foi (12 sequences du creneau 1 : `ViewTerror`, `QuickTurn`, `DrawWeapon`, `Howl`, `DashAttackLswordStart`...) ; chez J2 `Enemy_Lynel_Middle ca214004 rejoue "Howl" creneau 1 (annonce par J1)` (10 du creneau 1 et 7 du creneau 0 en `lk2`), aucun refus. Effet a l'image non verifie. Combat non essaye.
+- **Relecture adversaire Codex** (avant l'essai) : deux defauts reels, corriges : (1) le nom de la sequence etait copie par le fil du jeu pendant que le crochet pouvait le reecrire (course de donnees) -> `SeqBox`, verrou par version et nom en mots atomiques ; (2) une sequence non mise en file (file pleine) etait marquee annoncee et jamais renvoyee -> on ne marque qu'apres un envoi reussi. Relecture finale Codex : aucune regression.
+- **Audit reseau Codex** (lecture seule, sans `build/`), 9 points ; verifies et corriges :
+  - relais : une ligne non ASCII (`PAD 0 \xff 0 0 1`) arretait le relais (`UnicodeEncodeError` a l'envoi). [V] reproduit sur l'ancien relais (`ConnectionResetError`), corrige : lignes non ASCII ou de plus de 400 octets ignorees, `PAD` valide (`valid_pad`) ;
+  - plugin : apres une ligne de plus de 511 octets, la fin etait lue comme une ligne a part (ex. `DENY` -> deconnexion de 60 s) ; on jette maintenant jusqu'a la fin de ligne ;
+  - relais : `TIME` avec un compteur de jours enorme rendait l'heure de session infinie ; heure 0..360 et jours < 1e7 exiges ;
+  - plugin : `HP` avec un maximum enorme (debordement dans `status.cpp`) ; borne a 1000 quarts de coeur ;
+  - plugin : matrices `MTX`, `EMTX`, `WPN` non finies ou enormes refusees (`SaneMtx`).
+  - [V] `test_relay.py` : 77/77 (nouveaux essais : creneau EAS, non ASCII, ligne longue, `TIME` enorme, relais toujours en marche).
+  - **Non corriges** (note pour plus tard) : un client qui ne lit plus peut bloquer le relais (`sendall` bloquant) ; connexions sans authentification non limitees ; memoires des drapeaux, vies et `WPN` sans plafond ; verrous par version de `session.hpp` et `weapons.hpp` (meme course de donnees que (1), deja la avant). Risque faible en LAN ou VPN prive avec mot de passe.
+- Preuve : `2026-11-16_lynel-creneau1-et-audit-reseau_lk1-lk2.log`.
+
 ### 5.77 Epreuve de l'epee a deux, rang des ennemis en mode expert (2026-11-16, essais `dl1`, `dl2`, Eden) - [V] journaux
 
 - Entree : l'evenement `EventFlow/100enemy.bfevfl` (`Event/100enemy.sbeventpack`, jeu de base) change de scene vers `AocField/A-1` (`Air_2`, `Entrance_1`) et `AocField/B-2` (`Night_1`) ; ces points sont listes dans `Map/AocField/Static.smubin` du DLC (`Entrance_1` en -4660 ; 300 ; -3817). Outil : `drive.py goto_tp 9300+n 0` (0 A-1 Air_2, 1 A-1 Entrance_1, 2 B-2 Night_1). [V] `dl1`, `dl2` : les deux joueurs dans `AocField/A-1` a `Entrance_1`, Link du partenaire cree chez les deux.

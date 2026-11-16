@@ -73,12 +73,17 @@ import time
 # Version du protocole : a changer en meme temps que coop::protocol::Version
 # (plugin/overlay/source/program/protocol.hpp) ; tools/test_relay.py compare les deux.
 # 2 : GIFT porte le bonus de l'arme ; 3 : TIME porte le climat ; 4 : defi et mot de passe (AUTH, WELCOME, DENY)
-PROTOCOL_VERSION = 4
+# 5 : EAS porte le creneau de la sequence
+PROTOCOL_VERSION = 5
 
 
 # Octets recus sans fin de ligne au-dela desquels un client est deconnecte (la plus longue ligne
 # du protocole, EMTX, fait ~200 octets ; un paquet de drapeaux arrive en plusieurs lignes).
 MAX_PENDING = 64 * 1024
+# Ligne la plus longue acceptee (octets, sans la fin de ligne) ; au-dela, ou avec un octet non ASCII, elle est
+# ignoree : sinon un caractere non ASCII faisait planter l'envoi (UnicodeEncodeError), et une ligne longue
+# retransmise depassait le tampon de 512 octets du plugin (audit Codex 2026-11-16).
+MAX_LINE = 400
 
 
 def auth_digest(challenge, password):
@@ -106,7 +111,8 @@ def auth_digest(challenge, password):
 #   GIFT : arme donnee au partenaire (nom de l'acteur, durabilite), retransmise telle quelle.
 #   MEAL : soin d'un repas mange par le joueur (quarts de coeur), retransmis tel quel.
 #   EAS : animation demarree par un ennemi de carte chez le joueur qui fait foi (hachage d'objet,
-#         nom de la sequence), retransmise telle quelle ; l'autre la rejoue sur sa copie.
+#         nom de la sequence, creneau 0 ou 1), retransmise telle quelle ; l'autre la rejoue sur sa copie,
+#         dans le meme creneau.
 #   ACT : action ponctuelle du joueur (code d'attaque, de tir, de saut, de parade ; anim_state.hpp),
 #         retransmise telle quelle : le Link du partenaire la joue.
 #   DEMO : cinematique demarree chez un joueur (evenement, point d'entree), retransmise telle quelle ;
@@ -117,13 +123,14 @@ STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2
 #   (le relais rend aux autres le climat du joueur de reference de la meteo, avec sa meteo).
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
 # GIFT peut porter 2 valeurs de plus : le bonus de l'arme (bits WeaponModifier en hexadecimal, valeur).
-OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2}
+# EAS peut porter une 3e valeur : le creneau de la sequence (protocole 5 ; absent = creneau 0).
+OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2, "EAS": 1}
 
 # Nature de chaque valeur, valeurs facultatives comprises : f nombre fini, i entier, x hexadecimal,
 # n nom d'acteur. Une ligne dont une valeur ne correspond pas est ignoree (jamais retransmise).
 FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi", "FLAGR": "xi", "LIFE": "xi",
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
-               "GIFT": "nixi", "MEAL": "i", "EAS": "xn", "DEMO": "nn", "ACT": "i"}
+               "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i"}
 
 
 def valid_fields(kind, values):
@@ -143,6 +150,17 @@ def valid_fields(kind, values):
         except ValueError:
             return False
     return True
+
+
+def valid_pad(values):
+    """PAD <id cible> <boutons hex> <stick x> <stick y> <duree ms> : valeurs bornees (outil de test)."""
+    import math
+    try:
+        target, buttons, sx, sy, ms = int(values[0]), int(values[1], 16), float(values[2]), float(values[3]), int(values[4])
+    except ValueError:
+        return False
+    return (0 <= target < 1000 and len(values[1]) <= 16 and buttons >= 0 and math.isfinite(sx) and math.isfinite(sy)
+            and abs(sx) <= 100000 and abs(sy) <= 100000 and 0 <= ms <= 60000)
 
 
 class Client:
@@ -264,7 +282,7 @@ def main():
     def send_now(client, text):
         try:
             client.sock.sendall(text.encode("ascii"))
-        except OSError as exc:
+        except (OSError, UnicodeEncodeError) as exc:
             log(f"joueur {client.pid} : erreur d'envoi ({exc})")
 
     def send(client, text, always=False):
@@ -396,7 +414,12 @@ def main():
                 continue
             while b"\n" in client.buf and client.sock in clients:
                 raw, client.buf = client.buf.split(b"\n", 1)
-                parts = raw.decode("ascii", "replace").split()
+                if len(raw) > MAX_LINE or not raw.isascii():
+                    client.bad_lines = getattr(client, "bad_lines", 0) + 1
+                    if client.bad_lines <= 5:
+                        log(f"joueur {client.pid} : ligne ignoree ({len(raw)} octets, trop longue ou non ASCII)")
+                    continue
+                parts = raw.decode("ascii").split()
                 if len(parts) == 2 and parts[0] == "VER":
                     try:
                         version = int(parts[1])
@@ -431,6 +454,8 @@ def main():
                 if len(parts) == 6 and parts[0] == "PAD":
                     # Outil de test : commande de manette d'un pilote vers un joueur precis.
                     #   PAD <id cible> <boutons hex> <stick x> <stick y> <duree ms>
+                    if not valid_pad(parts[1:]):
+                        continue
                     for other in clients.values():
                         # cible 0 = tous les autres clients
                         if other is not client and parts[1] in ("0", str(other.pid)):
@@ -503,7 +528,12 @@ def main():
                         # Le serveur la redistribue aux autres sous l'identifiant 0.
                         client.times += 1
                         try:
-                            absolute = float(parts[2]) * 360.0 + float(parts[1])
+                            hour, days = float(parts[1]), float(parts[2])
+                            # Bornes : un compteur de jours enorme rendait l'heure de session infinie, et
+                            # elle ne pouvait plus avancer (audit Codex 2026-11-16).
+                            if not (0.0 <= hour <= 360.0 and 0.0 <= days < 1e7):
+                                continue
+                            absolute = days * 360.0 + hour
                             if len(parts) > 4:
                                 client.moon = float(parts[4])
                             if not client.pilot:

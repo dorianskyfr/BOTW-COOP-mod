@@ -67,12 +67,16 @@ namespace coop::enemy_life {
     inline PosQueue g_PosIncoming;
 
     /*
-     * Animations des ennemis (message EAS <hachage> <sequence>, config::g_EnemyAnim). Celui qui fait
-     * foi annonce chaque sequence demarree sur le creneau 0 de son ennemi ; l'autre la rejoue sur sa copie.
+     * Animations des ennemis (message EAS <hachage> <sequence> <creneau>, config::g_EnemyAnim). Celui qui
+     * fait foi annonce chaque sequence demarree sur les creneaux 0 et 1 de son ennemi ; l'autre la rejoue
+     * sur sa copie, dans le meme creneau. Le creneau 1 sert au Lynel (essai sw4 : ViewTerror, QuickTurn,
+     * DrawWeapon, banque 0) ; aucun autre creneau vu dans les journaux.
      */
+    inline constexpr int SeqSlots = 2;
     struct SeqMsg {
         std::uint32_t m_Hash = 0;
         int           m_FromId = 0;
+        int           m_Slot = 0;   /* 0 ou 1 */
         char          m_Name[48] = {};
     };
 
