@@ -1,0 +1,13 @@
+﻿[botw-coop] build id main : cd57b23fa4bbad65803d9788c01821ee (16 octets) -> 1.9.0
+[botw-coop] drapeau recu : hachage=816c97c5 mis en attente (pas de paravoile)
+[botw-coop] drapeau recu : hachage=b742dd6c mis en attente (pas de paravoile)
+[botw-coop] drapeau recu : hachage=f66ba753 mis en attente (pas de paravoile)
+[botw-coop] essai paravoile : IsGet_PlayerStole2 pose (octet 1), 3 drapeaux en attente
+[botw-coop] drapeaux : paravoile obtenue, 3 drapeaux de progression mis en attente : etat redemande
+[botw-coop] recompense : progression 816c97c5 du partenaire -> Obj_DungeonClearSeal donne (objets 1 -> 2)
+[botw-coop] drapeau recu : n.21403 hachage=816c97c5 mis a 1 (octet 3 : categorie 1 gardee)
+[botw-coop] recompense : progression b742dd6c du partenaire -> Obj_HeroSoul_Zora donne (objets 2 -> 3)
+[botw-coop] drapeau recu : n.30174 hachage=b742dd6c mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] drapeau recu : hachage=c2aa7d7e ignore (index 32023, valeur ici 1, groupe 2, proprietes 0x17, bascule 0)
+[botw-coop] recompense : progression f66ba753 du partenaire -> Obj_DungeonClearSeal donne (objets 3 -> 3)
+[botw-coop] drapeau recu : n.40530 hachage=f66ba753 mis a 1 (octet 3 : categorie 1 gardee)

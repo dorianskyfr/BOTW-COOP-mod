@@ -16,6 +16,7 @@
  *   cutscene=0                   coupe les cinematiques partagees ; cutscene_range=<metres> (50 par defaut)
  *   partner_range=<metres>       distance de creation du Link du partenaire (250 par defaut)
  *   cutscene_tp=0                le partenaire trop loin ne rejoint pas le joueur pour une cinematique
+ *   rewards=0                    pas d'embleme ni de competence donnes a la reception de la progression
  *   share_groups=1,2             groupes de drapeaux partages (liste blanche, voir plus bas) ;
  *                                4 = coffres (inactif : un coffre chacun)
  *   revive=0                     coupe le sauvetage par le partenaire (actif par defaut)
@@ -58,6 +59,10 @@ namespace coop::config {
     inline int g_CutsceneRangeM = 50;
     /* Partenaire trop loin pour une cinematique : il rejoint le joueur (teleportation ou voyage) puis la voit. */
     inline bool g_CutsceneTeleport = true;
+
+    /* Recompenses pour les deux (embleme du triomphe, competence du Prodige) quand la progression
+       du partenaire arrive ; rewards=0 les coupe. */
+    inline bool g_ShareRewards = true;
 
     /* Sauvetage par le partenaire (revive.cpp, NOTES 5.37) : a la mort, si ni fee ni Grace de Mipha
        ne sauvent Link et que le partenaire est en jeu, vivant et a moins de g_ReviveRangeM, Link

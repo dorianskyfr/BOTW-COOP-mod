@@ -252,6 +252,74 @@ namespace coop::flags {
             *reinterpret_cast<std::uint8_t*>(flag + s_ValueOffset) |= 1;
         }
 
+        /*
+         * Recompenses pour les deux joueurs (demande de l'utilisateur, 2026-11-15) : la progression reste
+         * partagee, et celui qui la recoit gagne aussi la recompense qu'il n'a pas eue en jeu.
+         * - Sanctuaire termine chez l'autre (Clear_DungeonNNN) : un embleme du triomphe
+         *   (Obj_DungeonClearSeal), chacun le depense ensuite a la statue comme il veut.
+         * - Creature divine liberee chez l'autre (Clear_Remains*) : la competence du Prodige (objet cle
+         *   Obj_HeroSoul_*) et le drapeau de la cinematique de don, comme le fait le jeu lui-meme au
+         *   chargement quand la competence manque (decompilation zeldaret/botw,
+         *   uiPauseMenuDataMgr.cpp, « Add missing champion powers »).
+         * Le drapeau n'est applique que s'il etait a 0 ici : une recompense par sanctuaire et par joueur.
+         * Le receptacle de coeur des Creatures divines n'est pas donne (mecanisme non etudie).
+         */
+        struct BeastReward {
+            std::uint32_t m_Flag;
+            const char*   m_Item;
+            std::uint32_t m_DemoFlag;
+        };
+        constexpr BeastReward s_BeastRewards[] = {
+            { Crc32("Clear_RemainsWind"),     "Obj_HeroSoul_Rito",   Crc32("IsPlayed_Demo119_0") },
+            { Crc32("Clear_RemainsFire"),     "Obj_HeroSoul_Goron",  Crc32("IsPlayed_Demo116_0") },
+            { Crc32("Clear_RemainsWater"),    "Obj_HeroSoul_Zora",   Crc32("IsPlayed_Demo122_0") },
+            { Crc32("Clear_RemainsElectric"), "Obj_HeroSoul_Gerudo", Crc32("IsPlayed_Demo125_0") },
+        };
+
+        bool IsShrineCleared(std::uint32_t hash) {
+            static std::uint32_t s_Hashes[200];
+            static bool s_Ready = false;
+            if (!s_Ready) {
+                char name[24];
+                for (int i = 0; i < 200; i++) {
+                    std::snprintf(name, sizeof(name), "Clear_Dungeon%03d", i);
+                    s_Hashes[i] = Crc32(name);
+                }
+                s_Ready = true;
+            }
+            for (const auto h : s_Hashes)
+                if (h == hash)
+                    return true;
+            return false;
+        }
+
+        void GiveReward(const PtrArray& bools, std::uint32_t hash) {
+            if (!coop::config::g_ShareRewards)
+                return;
+            const char* item = nullptr;
+            std::uint32_t demo = 0;
+            if (IsShrineCleared(hash)) {
+                item = "Obj_DungeonClearSeal";
+            } else {
+                for (const auto& r : s_BeastRewards)
+                    if (r.m_Flag == hash) {
+                        item = r.m_Item;
+                        demo = r.m_DemoFlag;
+                    }
+            }
+            if (item == nullptr)
+                return;
+            int before = 0, after = 0;
+            const bool ok = coop::game::AddInventoryItem(item, 1, before, after);
+            if (demo != 0) {
+                std::uintptr_t f = 0;
+                if (FindByHash(bools, demo, f) >= 0)
+                    SetBoolValue(f);
+            }
+            Logging.Log("[botw-coop] recompense : progression %08x du partenaire -> %s %s (objets %d -> %d)",
+                hash, item, ok ? "donne" : "REFUSE par le jeu", before, after);
+        }
+
     }
 
     /*
@@ -683,6 +751,7 @@ namespace coop::flags {
                 SetBoolValue(flag);
                 s_LastBool[idx] = 1; /* pas de renvoi */
                 coop::objects::OnRemoteFlagSet(in.m_Hash); /* objet de carte deja charge ? */
+                GiveReward(bools, in.m_Hash);
                 s_Applied++;
                 if (s_Applied <= 60) {
                     std::uint8_t raw = 0;

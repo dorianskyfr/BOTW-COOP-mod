@@ -812,6 +812,23 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.64 Recompenses pour les deux joueurs (2026-11-16, essai `rw1`, Eden) - [V] journaux et image
+
+- Demande de l'utilisateur : progression partagee, mais chacun gagne la recompense, dans les deux sens. A la reception d'un drapeau de progression applique ici (0 -> 1) : `Clear_DungeonNNN` -> `itemGet("Obj_DungeonClearSeal")` (embleme du triomphe) ; `Clear_RemainsWind/Fire/Water/Electric` -> `Obj_HeroSoul_Rito/Goron/Zora/Gerudo` + `IsPlayed_Demo119/116/122/125_0`, exactement ce que fait le jeu au chargement quand la competence manque (decompilation zeldaret/botw, `uiPauseMenuDataMgr.cpp`, « Add missing champion powers » ; noms d'objets du meme fichier). `rewards=0` coupe.
+- [V] `rw1` (une instance Eden, sauvegarde du plateau, `-DCOOP_TEST_GLIDER_AFTER=120`, memoire du relais preparee avec `Clear_Dungeon100`, `Clear_Dungeon101`, `Clear_RemainsWater`) : mis en attente (pas de paravoile), paravoile posee par l'outil, puis `recompense : ... Obj_DungeonClearSeal donne (objets 1 -> 2)`, `Obj_HeroSoul_Zora donne (2 -> 3)`, second embleme (3 -> 3, meme case). Image : objets cles = tablette Sheikah, embleme ×2, Grace de Mipha.
+- Non fait / non verifie : receptacle de coeur des Creatures divines (mecanisme non etudie) ; que la Grace de Mipha marche en combat ; [S] un joueur qui recoit `Clear_DungeonNNN` alors qu'il est dans ce meme sanctuaire pourrait avoir un second embleme du moine.
+- Preuves : `2026-11-16_recompenses_eden_rw1.log`, `..._recompenses-emblemes-et-grace-de-mipha_eden_rw1.png`.
+
+### 5.63 Eden (2026-11-16, essais `e1` a `e4`, `ed1`, `ed2`, launcher) - [V] journaux, deux instances
+
+- Eden v0.2.1 (derive de yuzu) : portable quand `user\` est a cote de `eden.exe` ; sinon `%APPDATA%\eden` (chez l'utilisateur, ce dossier sert deja a un autre emulateur). Le mod se charge comme sous Ryujinx (`user\load\01007EF00011E000\botw-coop\exefs\subsdk9`, `romfs\`).
+- **Mise a jour** : lance avec `-g` dans un dossier neuf, Eden demarre le programme 1.0.0 (build id `2094f152...`, le mod se coupe : « VERSION INCONNUE ») ; la mise a jour trouvee par le scan des dossiers de jeux n'est appliquee que si la liste des jeux est deja faite. Corrige en l'installant dans la NAND : NCA du NSP copies dans `nand\user\Contents\registered` (+ cle de titre du ticket dans `keys\title.keys`), `tools\nsp_extract.py` et `Eden.InstallNsp` du launcher. Ensuite `ExeFS: Update (v0.17.0)`, main `cd57b23f...` -> 1.9.0.
+- **Verrou** : Eden ouvre les fichiers de sa NAND sans partage ; une seconde instance qui lisait les memes (jonction) n'a pas pu les ouvrir et a demarre en 1.0.0 (`ed1`). Chaque instance a donc sa copie (essais : `new-eden-dir.ps1` ; launcher : copie d'Eden du joueur 2).
+- **Journal** : Eden garde le texte de `svcOutputDebugString` jusqu'au saut de ligne ; le logger d'exlaunch n'en mettait pas -> messages par paquets de 4 Ko. Remplace (`plugin/overlay/source/lib/log/svc_logger.cpp`).
+- [V] `ed2` (deux instances, sauvegarde du plateau) : J1 et J2 connectes, en jeu, Link du partenaire cree chez chacun, animations d'ennemis rejouees chez l'autre. [V] launcher : `--install-now` avec `eden.exe` (mod + mise a jour dans la NAND), `--duo-test` (deux Eden, 1.9.0, J1 et J2 au relais), `--pack-logs` (journaux d'Eden dans l'archive).
+- Un dialogue du pare-feu Windows pour Python (relais lance sur l'adresse du reseau local par le `--duo-test`) est reste ouvert : pas touche.
+- Preuves : `2026-11-16_eden-deux-joueurs_ed2.log`.
+
 ### 5.62 Un coffre chacun (2026-11-15, essai `cf1`) - [V] par les journaux, deux instances
 
 - Demande de l'utilisateur : chaque joueur ouvre son propre coffre. `tools/build_sync_flags.py` range les drapeaux `<carte>_TBox_*_<HashId>` (1 608, cartes MainField, CDungeon, AocField, MainFieldDungeon) dans un **groupe 4 « coffres », inactif par defaut** ; ils sortaient du groupe 2 (29 931 au lieu de 31 539). Le plugin ne les envoie ni ne les applique ; le code « coffre montre ouvert, retire a 3 m » (5.61) ne sert plus que si `share_groups` contient 4.

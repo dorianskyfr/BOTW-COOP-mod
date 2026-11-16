@@ -59,6 +59,8 @@ namespace coop::config {
                 g_CutsceneRangeM = static_cast<int>(flag);
             if (std::sscanf(line, "cutscene_tp=%u", &flag) == 1)
                 g_CutsceneTeleport = flag != 0;
+            if (std::sscanf(line, "rewards=%u", &flag) == 1)
+                g_ShareRewards = flag != 0;
             if (std::sscanf(line, "partner_range=%u", &flag) == 1 && flag >= 30 && flag <= 2000)
                 g_PartnerRangeM = static_cast<int>(flag);
             if (std::sscanf(line, "meal=%u", &flag) == 1)

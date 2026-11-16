@@ -1,0 +1,26 @@
+﻿== J1
+[botw-coop] build id main : cd57b23fa4bbad65803d9788c01821ee (16 octets) -> 1.9.0
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+[botw-coop] net: le relais nous attribue l'identifiant J1, reponse au defi envoyee
+[botw-coop] acteur distant : CREE apres 1 images, acteur=21b04f2240 nom="CoopPlayer" pos=(-1024.48, 252.64, 1799.95)
+[botw-coop] acteur distant : CREE apres 2 images, acteur=21b75d9c08 nom="CoopPlayer" pos=(-1027.72, 250.65, 1816.30)
+[botw-coop] animation ennemi : 52859ed1 creneau 0 banque 0 "Notice" (fait foi)
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "Notice" (fait foi)
+[botw-coop] acteur distant : CREE apres 9 images, acteur=21afbf34c8 nom="CoopPlayer" pos=(-1027.72, 250.65, 1816.30)
+[botw-coop] acteur distant : CREE apres 1 images, acteur=21afdc5d40 nom="CoopPlayer" pos=(-1027.72, 250.65, 1816.30)
+[botw-coop] acteur distant : CREE apres 1 images, acteur=21afbf34c8 nom="CoopPlayer" pos=(-1027.72, 250.65, 1816.30)
+[botw-coop] animation ennemi : 52859ed1 creneau 0 banque 0 "Search" (fait foi)
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "Search" (fait foi)
+== J2
+[botw-coop] build id main : cd57b23fa4bbad65803d9788c01821ee (16 octets) -> 1.9.0
+[botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+[botw-coop] net: le relais nous attribue l'identifiant J2, reponse au defi envoyee
+[botw-coop] acteur distant : CREE apres 1 images, acteur=21b07a4048 nom="CoopPlayer" pos=(-1024.48, 252.63, 1799.95)
+[botw-coop] acteur distant : CREE apres 1 images, acteur=21b09c7798 nom="CoopPlayer" pos=(-1131.35, 256.91, 1774.69)
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Notice" (annonce par J1), n.1
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "Notice" (annonce par J1), n.2
+[botw-coop] acteur distant : CREE apres 1 images, acteur=21b07a4048 nom="CoopPlayer" pos=(-1131.35, 256.91, 1774.71)
+[botw-coop] acteur distant : CREE apres 1 images, acteur=21b09c7798 nom="CoopPlayer" pos=(-1131.35, 256.91, 1774.71)
+[botw-coop] acteur distant : CREE apres 1 images, acteur=21b0e07c00 nom="CoopPlayer" pos=(-1131.35, 256.91, 1774.71)
+[botw-coop] acteur distant : CREE apres 1 images, acteur=21b09c7798 nom="CoopPlayer" pos=(-1131.35, 256.91, 1774.71)
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Search" (annonce par J1), n.3
