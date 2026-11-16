@@ -38,10 +38,12 @@ def digest(challenge, password):
 
 
 class Fake:
-    def __init__(self, port, version=VERSION, password=None):
+    def __init__(self, port, version=VERSION, password=None, recvbuf=None):
         """Faux joueur ; version=None : plugin ancien qui n'annonce pas de version.
         password : repond au defi de HELLO avec ce mot de passe (None : ne repond pas)."""
         self.sock = socket.create_connection(("127.0.0.1", port), timeout=5)
+        if recvbuf is not None:
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, recvbuf)
         self.buf = b""
         self.lines = []
         self.hello = self.expect("HELLO")
@@ -108,8 +110,26 @@ class Fake:
         self.sock.close()
 
 
-def start_relay(port, state, *extra):
-    proc = subprocess.Popen([sys.executable, "-u", os.path.join(HERE, "relay.py"), "--port", str(port), "--state", state, *extra],
+def start_relay(port, state, *extra, limits=None, accept_error=False):
+    command = [sys.executable, "-u"]
+    if limits is not None or accept_error:
+        # Bornes reduites dans le processus d'essai seulement, sans option publique supplementaire.
+        setup = "import runpy, sys\nns = runpy.run_path(sys.argv.pop(1))\n"
+        if limits is not None:
+            setup += f"ns['main'].__globals__.update({limits!r})\n"
+        if accept_error:
+            setup += ("import socket\n"
+                      "class FlakySocket(socket.socket):\n"
+                      "    failed = False\n"
+                      "    def accept(self):\n"
+                      "        if not FlakySocket.failed:\n"
+                      "            FlakySocket.failed = True\n"
+                      "            raise OSError('accept simule')\n"
+                      "        return super().accept()\n"
+                      "socket.socket = FlakySocket\n")
+        command += ["-c", setup + "ns['main']()"]
+    command += [os.path.join(HERE, "relay.py"), "--port", str(port), "--state", state, *extra]
+    proc = subprocess.Popen(command,
                             stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
     for _ in range(50):
         try:
@@ -130,6 +150,198 @@ def free_port():
 
 
 MTX = "MTX 1 0 0 10 0 1 0 20 0 0 1 30"
+
+
+def rejected(port):
+    """Une connexion en trop est fermee sans meme recevoir HELLO."""
+    with socket.create_connection(("127.0.0.1", port), timeout=2) as sock:
+        try:
+            return sock.recv(1) == b""
+        except socket.timeout:
+            return False
+        except ConnectionResetError:
+            return True
+
+
+def robustness_tests(tmp, check):
+    # Huit clients muets occupent deja les huit places de leur adresse IP.
+    for name, limits, count in (("par IP", None, 8), ("total", {"MAX_CLIENTS": 3}, 3)):
+        port = free_port()
+        relay = start_relay(port, os.path.join(tmp, "connections.json"), limits=limits, accept_error=limits is not None)
+        peers = []
+        try:
+            time.sleep(0.3)
+            peers = [Fake(port, version=None) for _ in range(count)]
+            if limits is not None:
+                check("OSError transitoire dans accept sans arreter le relais", relay.poll() is None)
+            check(f"plafond de connexions {name}, meme avant authentification", rejected(port))
+            peers.pop().close()
+            time.sleep(0.2)
+            peers.append(Fake(port))
+            check(f"place liberee apres le plafond {name}", peers[-1].hello.startswith("HELLO ") and relay.poll() is None)
+        finally:
+            for peer in peers:
+                peer.close()
+            relay.kill()
+            relay.wait()
+
+    # Le delai court depuis accept(), pas depuis la derniere ligne recue.
+    for password in ("", "secret"):
+        port = free_port()
+        relay = start_relay(port, os.path.join(tmp, "timeout.json"), "--password", password,
+                            "--handshake-timeout", "1.2")
+        peers = []
+        try:
+            time.sleep(0.3)
+            t0 = time.monotonic()
+            silent = Fake(port, version=None)
+            peers.append(silent)
+            cut = silent.closed(2.5)
+            check(f"connexion muette fermee apres le delai (mot de passe : {bool(password)})",
+                  cut and 1.0 <= time.monotonic() - t0 < 2.5)
+            if password:
+                partial = Fake(port)
+                peers.append(partial)
+                # VER seul ne suffit pas et sa repetition ne prolonge pas l'entree.
+                time.sleep(0.6)
+                partial.send(f"VER {VERSION}")
+                check("VER sans AUTH ferme sans renouveler le delai", partial.closed(0.9))
+                auth_only = Fake(port, version=None, password=password)
+                peers.append(auth_only)
+                auth_only.expect("WELCOME")
+                check("AUTH sans VER ni PILOT ne termine pas l'entree", auth_only.closed(2.0))
+            game = Fake(port, password=password or None)
+            peers.append(game)
+            pilot = Fake(port, version=None, password=password or None)
+            peers.append(pilot)
+            pilot.send("PILOT")
+            check(f"jeu entre conserve apres le delai (mot de passe : {bool(password)})", not game.closed(1.5))
+            check(f"PILOT entre conserve apres le delai (mot de passe : {bool(password)})", not pilot.closed(0.1))
+            pilot.send(f"PAD {game.pid} 1 0 0 200")
+            check("relais utilisable apres expiration des entrees incompletes", game.expect("PAD").split()[2:] == ["1", "0", "0", "200"])
+        finally:
+            for peer in peers:
+                peer.close()
+            relay.kill()
+            relay.wait()
+
+    # Un receveur cesse de lire ; l'autre doit recevoir tous les paquets, dans l'ordre.
+    port = free_port()
+    output_log = os.path.join(tmp, "output.log")
+    relay = start_relay(port, os.path.join(tmp, "output.json"), "--log", output_log)
+    peers = []
+    try:
+        time.sleep(0.3)
+        a, b, slow = Fake(port), Fake(port), Fake(port, recvbuf=1024)
+        peers = [a, b, slow]
+        for peer in (b, slow):
+            peer.send("STATE")
+            peer.expect("STATEEND")
+        a.sock.settimeout(3.0)
+        # Lignes proches de MAX_LINE : assez d'octets pour saturer aussi les tampons TCP.
+        matrix = "MTX " + " ".join(["1." + "0" * 26] * 12)
+        batch = "".join(f"{matrix} {i}\n" for i in range(256))
+        expected = [f"MTX {a.pid} {matrix[4:]} {i}" for i in range(256)]
+        ordered = True
+        dropped = False
+        for i in range(256):
+            a.sock.sendall((batch + f"ACT {i}\n").encode("ascii"))
+            marker = b.expect("ACT", 3.0)
+            received = b.take("MTX")
+            ordered = ordered and marker == f"ACT {a.pid} {i}" and received == expected
+            if f"BYE {slow.pid}" in b.take("BYE"):
+                dropped = True
+                break
+        check("un client qui ne lit plus ne bloque pas l'autre joueur", ordered)
+        with open(output_log, encoding="utf-8") as f:
+            log = f.read()
+        check("client lent deconnecte quand sa file depasse 1 Mio", dropped and "file d'envoi superieure a 1048576 octets" in log)
+        a.send(MTX)
+        check("relais toujours actif apres drop pendant une diffusion", b.expect("MTX") == f"MTX {a.pid} {MTX[4:]}")
+    finally:
+        for peer in peers:
+            peer.close()
+        relay.kill()
+        relay.wait()
+
+    # Un fichier ecrit par une ancienne version ne doit pas contourner les bornes.
+    port = free_port()
+    loaded_state = os.path.join(tmp, "loaded_bound.json")
+    with open(loaded_state, "w", encoding="utf-8") as f:
+        json.dump({"flags": [f"{i:08x}" for i in range(12)],
+                   "moon_flags": [f"{i:08x}" for i in range(12)]}, f)
+    relay = start_relay(port, loaded_state, limits={"MAX_FLAGS": 8, "MAX_MOON_FLAGS": 8})
+    peers = []
+    try:
+        time.sleep(0.3)
+        b = Fake(port)
+        peers = [b]
+        b.send("STATE")
+        end = b.expect("STATEEND")
+        check("memoires relues sur disque egalement bornees", end == "STATEEND 16"
+              and len(b.take("FLAG ")) == 8 and len(b.take("FLAGR")) == 8)
+    finally:
+        for peer in peers:
+            peer.close()
+        relay.kill()
+        relay.wait()
+
+    # La file de --lag est soumise a la meme borne, avant que ses lignes soient exigibles.
+    port = free_port()
+    relay = start_relay(port, os.path.join(tmp, "lag_bound.json"), "--lag", "1000", limits={"MAX_OUTPUT": 1024})
+    peers = []
+    try:
+        time.sleep(0.3)
+        a, b = Fake(port), Fake(port)
+        peers = [a, b]
+        b.send("STATE")
+        b.expect("STATEEND")
+        a.sock.sendall(("PAD 2 1 0 0 200\n" * 100).encode("ascii"))
+        check("file d'envoi retardee egalement bornee", b.closed(2.0))
+        check("drop dans la file retardee annonce sans arreter le relais", a.expect("BYE", 3.0) == f"BYE {b.pid}" and relay.poll() is None)
+    finally:
+        for peer in peers:
+            peer.close()
+        relay.kill()
+        relay.wait()
+
+    # Petites bornes pour verifier debordements, mises a jour et journal unique sans inondation.
+    port = free_port()
+    memory_log = os.path.join(tmp, "memory.log")
+    relay = start_relay(port, os.path.join(tmp, "memory.json"), "--log", memory_log,
+                        limits={"MAX_FLAGS": 8, "MAX_MOON_FLAGS": 8, "MAX_LIVES": 8})
+    peers = []
+    try:
+        time.sleep(0.3)
+        a, b = Fake(port), Fake(port)
+        peers = [a, b]
+        b.send("STATE")
+        b.expect("STATEEND")
+        for kind in ("FLAG", "FLAGR", "LIFE"):
+            a.sock.sendall("".join(f"{kind} {i:08x} 1\n" for i in range(12)).encode("ascii"))
+            a.send("ACT 1")
+            b.expect("ACT")
+            check(f"memoire {kind} bornee, surplus non retransmis", b.take(kind + " ") == [f"{kind} {a.pid} {i:08x} 1" for i in range(8)])
+        a.send("LIFE 00000000 3")
+        check("vie deja connue encore modifiable a la borne", b.expect("LIFE") == f"LIFE {a.pid} 00000000 3")
+        b.send("STATE")
+        end = b.expect("STATEEND")
+        check("etat complet respecte les trois bornes", end == "STATEEND 16" and len(b.take("FLAG ")) == 8
+              and len(b.take("FLAGR")) == 8 and len(b.take("LIFE")) == 8)
+        a.send("FLAGR 00000000 0")
+        a.send("FLAGR 00000010 1")
+        a.send("LIFE 00000010 5")
+        check("place recuperable dans les drapeaux de lune de sang", b.expect("FLAGR") == f"FLAGR {a.pid} 00000010 1")
+        check("vies reutilisables apres lune de sang", b.expect("LIFE") == f"LIFE {a.pid} 00000010 5")
+        with open(memory_log, encoding="utf-8") as f:
+            log = f.read()
+        check("chaque borne de memoire journalisee une seule fois",
+              all(log.count(f"borne de memoire atteinte : {name} (8)") == 1 for name in ("flags", "moon_flags", "lives")))
+    finally:
+        for peer in peers:
+            peer.close()
+        relay.kill()
+        relay.wait()
 
 
 def main():
@@ -197,6 +409,13 @@ def main():
         a.send(wpn)
         line = b.expect("WPN")
         check("objet porte retransmis avec l'identifiant", line == "WPN 1 " + wpn[4:], line)
+        for slot in (9, -1, 6):
+            a.send(f"WPN {slot} 0badf00d " + " ".join(["0.100"] * 12))
+        a.send("ACT 99")
+        b.expect("ACT")
+        check("WPN emplacement 9 (ou hors de 0..5) non retransmis", not b.take("WPN"), str(b.lines))
+        a.send("WPN 5 0badf00d " + " ".join(["0.100"] * 12))
+        check("WPN emplacement 5 toujours accepte", b.expect("WPN").startswith("WPN 1 5 "))
         a.send("SAVED 12")
         line = b.expect("SAVED")
         check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
@@ -477,6 +696,9 @@ def main():
         h.close()
     finally:
         relay.kill()
+        relay.wait()
+
+    robustness_tests(tmp, check)
 
     failed = [n for n, ok in results if not ok]
     print(f"\n{len(results) - len(failed)} / {len(results)} essais passes")

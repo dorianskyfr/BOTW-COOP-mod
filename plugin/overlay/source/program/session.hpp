@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <cstring>
 
+#include "seqvalue.hpp"
+
 /*
  * Etat de la session cooperative, partage entre le fil reseau (qui ecrit les
  * echantillons recus) et le fil du jeu (qui les lit pour placer l'acteur
@@ -22,50 +24,53 @@ namespace coop::session {
 
     class RemotePlayer {
     public:
-        /* Fil reseau. */
+        /* Fil reseau (seul ecrivain). */
         void Push(int id, const float mtx[12], std::uint64_t nowMs) {
-            m_Seq.fetch_add(1, std::memory_order_acq_rel); /* impair : ecriture en cours */
-            m_Prev = m_Last;
-            std::memcpy(m_Last.m_Mtx, mtx, sizeof(m_Last.m_Mtx));
-            m_Last.m_TimeMs = nowMs;
-            m_Id = id;
-            m_Updates++;
-            m_Seq.fetch_add(1, std::memory_order_acq_rel);
+            m_Writer.m_Prev = m_Writer.m_Last;
+            std::memcpy(m_Writer.m_Last.m_Mtx, mtx, sizeof(m_Writer.m_Last.m_Mtx));
+            m_Writer.m_Last.m_TimeMs = nowMs;
+            m_Writer.m_Updates++;
+            m_Shared.Store(m_Writer);
+            m_Id.store(id, std::memory_order_relaxed);
+            m_Updates.store(m_Writer.m_Updates, std::memory_order_relaxed);
             m_Active.store(true, std::memory_order_release);
         }
 
         void SetInactive() { m_Active.store(false, std::memory_order_release); }
 
-        /* Fil du jeu : copie coherente des deux derniers echantillons. */
+        /* Fil du jeu : copie coherente des deux derniers echantillons (verrou par version, seqvalue.hpp). */
         bool Snapshot(Sample& prev, Sample& last, std::uint64_t& updates) const {
             if (!m_Active.load(std::memory_order_acquire))
                 return false;
+            State s;
             for (int attempt = 0; attempt < 8; attempt++) {
-                const auto before = m_Seq.load(std::memory_order_acquire);
-                if (before & 1)
-                    continue;
-                prev = m_Prev;
-                last = m_Last;
-                updates = m_Updates;
-                if (m_Seq.load(std::memory_order_acquire) == before)
+                if (m_Shared.TryLoad(s)) {
+                    prev = s.m_Prev;
+                    last = s.m_Last;
+                    updates = s.m_Updates;
                     return true;
+                }
             }
             return false;
         }
 
         bool IsActive() const { return m_Active.load(std::memory_order_acquire); }
-        int Id() const { return m_Id; }
-        std::uint64_t Updates() const { return m_Updates; }
-        /* Lecture non synchronisee, pour le log uniquement. */
-        const Sample& LastUnsafe() const { return m_Last; }
+        int Id() const { return m_Id.load(std::memory_order_relaxed); }
+        std::uint64_t Updates() const { return m_Updates.load(std::memory_order_relaxed); }
+        /* Dernier echantillon ecrit : fil reseau (l'ecrivain) seulement. */
+        const Sample& LastUnsafe() const { return m_Writer.m_Last; }
 
     private:
-        std::atomic<std::uint32_t> m_Seq { 0 };
-        std::atomic<bool>          m_Active { false };
-        Sample                     m_Prev;
-        Sample                     m_Last;
-        int                        m_Id = 0;
-        std::uint64_t              m_Updates = 0;
+        struct State {
+            Sample        m_Prev;
+            Sample        m_Last;
+            std::uint64_t m_Updates = 0;
+        };
+        State                       m_Writer;   /* copie de travail du fil reseau */
+        SeqValue<State>             m_Shared;   /* copie publiee aux autres fils */
+        std::atomic<bool>           m_Active { false };
+        std::atomic<int>            m_Id { 0 };
+        std::atomic<std::uint64_t>  m_Updates { 0 };
     };
 
     /*

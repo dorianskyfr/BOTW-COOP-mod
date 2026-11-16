@@ -1,0 +1,64 @@
+== sq1_game2.txt
+[botw-coop] net: entree dans la session acceptee (J2)
+[botw-coop] messages : "Joueur 1 a rejoint la partie"
+[botw-coop] net: etat complet recu du serveur (49 drapeaux en memoire chez lui)
+[botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+[botw-coop] acteur distant : vivant etat=1 lu=(-2929.48, 306.46, -441.13) pos=(-2929.48, 306.46, -441.13) avant=(0.16, -0.99) | ecritures=6 interpolees=608 figees=1 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+[botw-coop] acteur distant : vivant etat=1 lu=(-2929.48, 306.46, -441.13) pos=(-2929.48, 306.46, -441.13) avant=(0.16, -0.99) | ecritures=156 interpolees=758 figees=1 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-2929.48, 306.46, -441.13) pos=(-2929.48, 306.46, -441.13) avant=(0.16, -0.99) | ecritures=306 interpolees=908 figees=1 pas max=0.000 m | deplace par le jeu=0
+== rl1_game.txt
+[botw-coop] net: entree dans la session acceptee (J1)
+[botw-coop] net: etat complet recu du serveur (1 drapeaux en memoire chez lui)
+[botw-coop] messages : "Joueur 2 a rejoint la partie"
+[botw-coop] acteur distant : vivant etat=1 lu=(-2929.48, 306.46, -441.13) pos=(-2929.48, 306.46, -441.13) avant=(0.16, -0.99) | ecritures=64 interpolees=260 figees=7 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+[botw-coop] acteur distant : vivant etat=1 lu=(-2929.48, 306.46, -441.13) pos=(-2929.48, 306.46, -441.13) avant=(0.16, -0.99) | ecritures=214 interpolees=410 figees=7 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-2929.48, 306.46, -441.13) pos=(-2929.48, 306.46, -441.13) avant=(0.16, -0.99) | ecritures=364 interpolees=560 figees=7 pas max=0.000 m | deplace par le jeu=0
+== rl1_game2.txt
+[botw-coop] net: entree dans la session acceptee (J2)
+[botw-coop] messages : "Joueur 1 a rejoint la partie"
+[botw-coop] net: etat complet recu du serveur (49 drapeaux en memoire chez lui)
+[botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+[botw-coop] acteur distant : vivant etat=1 lu=(-2929.48, 306.46, -441.13) pos=(-2929.48, 306.46, -441.13) avant=(0.16, -0.99) | ecritures=37 interpolees=639 figees=1 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-2929.48, 306.46, -441.13) pos=(-2929.48, 306.46, -441.13) avant=(0.16, -0.99) | ecritures=187 interpolees=789 figees=1 pas max=0.000 m | deplace par le jeu=0
+[botw-coop] acteur distant : vivant etat=1 lu=(-2929.48, 306.46, -441.13) pos=(-2929.48, 306.46, -441.13) avant=(0.16, -0.99) | ecritures=337 interpolees=939 figees=1 pas max=0.000 m | deplace par le jeu=0
+== sq1_pilot.log / rl1_pilot.log
+  269.4s    CoopPlayer                               (-2929.48, 306.46, -441.13)
+  269.4s    CoopWeapon_Stal_Bokoblin_Junior_Arm_Left (-2929.30, 307.98, -441.02)
+  269.4s    CoopWeapon_Weapon_Sheath_019             (-2929.30, 307.98, -441.02)
+  272.0s    CoopPlayer                               (-2929.48, 306.46, -441.13)
+  272.0s    CoopWeapon_Stal_Bokoblin_Junior_Arm_Left (-2929.30, 307.99, -441.01)
+  272.0s    CoopWeapon_Weapon_Sheath_019             (-2929.30, 307.99, -441.01)
+    1.2s tp : Link pose en (-2915, 309, -430)
+   11.7s acteurs (CoopPlayer) : 1
+   11.7s    CoopPlayer                               (-2914.55, 304.83, -430.05)
+   14.2s acteurs (CoopPlayer) : 1
+   14.2s    CoopPlayer                               (-2929.48, 306.46, -441.13)
+   15.3s tp : Link pose en (-2940, 309, -455)
+   25.8s acteurs (CoopWeapon) : 0
+    2.6s acteurs (CoopWeapon) : 1
+    2.6s    CoopWeapon_Stal_Bokoblin_Junior_Arm_Left (-2939.80, 290.64, -455.12)
+  267.5s tp : Link pose en (-2915, 309, -430)
+  278.0s acteurs (CoopPlayer) : 1
+  278.0s    CoopPlayer                               (-2914.55, 304.83, -430.05)
+== test_relay.py
+OK     sans mot de passe, toute reponse au defi est acceptee (WELCOME)
+OK     WPN emplacement 9 (ou hors de 0..5) non retransmis
+OK     WPN emplacement 5 toujours accepte
+OK     plafond de connexions par IP, meme avant authentification
+OK     place liberee apres le plafond par IP
+OK     OSError transitoire dans accept sans arreter le relais
+OK     plafond de connexions total, meme avant authentification
+OK     place liberee apres le plafond total
+OK     connexion muette fermee apres le delai (mot de passe : False)
+OK     jeu entre conserve apres le delai (mot de passe : False)
+OK     PILOT entre conserve apres le delai (mot de passe : False)
+OK     connexion muette fermee apres le delai (mot de passe : True)
+OK     VER sans AUTH ferme sans renouveler le delai
+OK     jeu entre conserve apres le delai (mot de passe : True)
+OK     PILOT entre conserve apres le delai (mot de passe : True)
+OK     client lent deconnecte quand sa file depasse 1 Mio
+108 / 108 essais passes

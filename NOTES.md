@@ -812,6 +812,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.79 Verrous par version surs, relais robuste (2026-11-16, essais `sq1`, `rl1`, Eden) - [V] journaux, essais du relais
+
+- **Plugin** : `seqvalue.hpp` (`SeqValue<T>`, verrou par version, donnees en mots atomiques) remplace la copie memcpy d'une structure ordinaire de `session::RemotePlayer` (positions du partenaire) et `weapons::PoseSlot` (objets portes) ; la lecture de `PoseSlot` est bornee (64 essais, sinon derniere pose lue) au lieu d'une boucle sans fin. Reste de l'audit 5.78. [V] `sq1` : J1 deplace (`tp`) -> chez J2 `CoopPlayer` en (-2914,55 ; 304,83 ; -430,05) puis `acteur distant : ... lu=(-2940.00, 309.00, -455.00)` ; armes du partenaire creees et suivant le pantin.
+- **Relais** (ecrit par Codex dans le worktree `wt/relay`, branche `codex/relay-robust` ; relu ici ; Codex ne pouvait pas lancer Python dans son bac a sable, essais lances ici) : envois non bloquants, file par client bornee a 1 Mo (client trop lent deconnecte), ordre garde ; 16 connexions au plus, 8 par adresse (4 propose par Codex, monte a 8 : deux jeux, le pilote et le launcher sur un meme PC) ; entree dans la session en 10 s au plus (`--handshake-timeout`) ; erreurs d'`accept()` sans arret ; memoires bornees (200000 drapeaux, 20000 vies), `WPN` emplacements 0..5. Protocole inchange (5). [V] `test_relay.py` 108/108 ; [V] `rl1` : les deux jeux entrent, etat complet recu, partenaire suivi.
+- Preuve : `2026-11-16_verrous-et-relais-robuste_sq1-rl1.log`.
+
 ### 5.78 Creneau 1 des animations d'ennemis (Lynel), protocole 5, audit reseau par Codex (2026-11-16, essais `lk1`, `lk2`, Eden) - [V] journaux, essais du relais
 
 - **Creneau 1** : le Lynel joue des sequences dans le creneau 1, banque 0 (5.69). `EAS <hachage> <sequence> <creneau>` (protocole 5 ; relais : 3e valeur facultative, entier) ; celui qui fait foi annonce les creneaux 0 et 1, la copie suivie rejoue dans le meme creneau (`game::PlayActorSequence(acteur, nom, creneau)` : 5e argument de `main+0x149f24c`, qui ne fait rien si le creneau depasse ceux de la liste). Autres creneaux ignores (jamais vus dans les journaux).

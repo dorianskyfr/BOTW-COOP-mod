@@ -55,6 +55,7 @@ en plus, au hasard), dans l'ordre d'envoi de chaque joueur.
 
 Usage : python tools/relay.py [--host 127.0.0.1] [--port 47800] [--log fichier] [--state fichier.json]
                               [--password texte] [--lag ms] [--jitter ms]
+                              [--handshake-timeout secondes]
 """
 import argparse
 import collections
@@ -84,6 +85,19 @@ MAX_PENDING = 64 * 1024
 # ignoree : sinon un caractere non ASCII faisait planter l'envoi (UnicodeEncodeError), et une ligne longue
 # retransmise depassait le tampon de 512 octets du plugin (audit Codex 2026-11-16).
 MAX_LINE = 400
+# Files d'envoi (retard compris), connexions et memoires alimentees par le reseau.
+MAX_OUTPUT = 1024 * 1024
+WRITE_BATCH = 64 * 1024
+MAX_CLIENTS = 16
+# Par adresse : deux jeux sur le meme PC, le pilote des essais, le bouton « Tester » du launcher... (8, large).
+MAX_CLIENTS_PER_IP = 8
+HANDSHAKE_TIMEOUT = 10.0
+MAX_FLAGS = 200000
+MAX_MOON_FLAGS = 200000
+MAX_LIVES = 20000
+WPN_SLOTS = 6
+STATE_INTERVAL = 0.25
+STATE_BATCH = 100
 
 
 def auth_digest(challenge, password):
@@ -173,6 +187,7 @@ class Client:
         self.flags = 0
         self.dups = 0
         self.pending = []   # lignes d'etat a envoyer par petits paquets
+        self.next_state_at = 0.0
         self.pilot = False  # outil de test (tools/pilot.py), pas un joueur
         self.moon = None    # dernier minuteur de lune de sang annonce
         self.weather = None  # derniere meteo annoncee
@@ -180,7 +195,11 @@ class Client:
         self.version = None  # version du protocole annoncee par VER
         self.challenge = secrets.token_hex(8)  # defi de HELLO, neuf a chaque connexion
         self.authed = False  # reponse au defi acceptee (AUTH)
-        self.outbox = collections.deque()  # --lag : (heure d'envoi, texte), dans l'ordre
+        self.outbox = collections.deque()  # (heure d'envoi, octets restants), dans l'ordre
+        self.output_bytes = 0
+        self.connected_at = time.monotonic()
+        self.closing = None  # motif de fermeture apres l'envoi de REFUSE ou DENY
+        self.close_deadline = None
 
 
 def main():
@@ -195,7 +214,11 @@ def main():
                         help="essai : se presenter avec une autre version du protocole (refus du jeu)")
     parser.add_argument("--password", default=None,
                         help="mot de passe de la session (sinon variable d'environnement COOP_PASSWORD ; vide = aucun)")
+    parser.add_argument("--handshake-timeout", type=float, default=HANDSHAKE_TIMEOUT,
+                        help="delai maximal d'entree dans la session (secondes)")
     args = parser.parse_args()
+    if not 0 < args.handshake_timeout < float("inf"):
+        parser.error("--handshake-timeout doit etre positif et fini")
     proto = args.pretend_version if args.pretend_version is not None else PROTOCOL_VERSION
     password = args.password if args.password is not None else os.environ.get("COOP_PASSWORD")
     if not password:
@@ -254,11 +277,25 @@ def main():
     clock_owner = None
     owner_changes = 0
     dirty = False
+    limits_logged = set()
+
+    def full(memory, limit, name):
+        if len(memory) < limit:
+            return False
+        if name not in limits_logged:
+            limits_logged.add(name)
+            log(f"borne de memoire atteinte : {name} ({limit})")
+        return True
+
     if args.state and os.path.exists(args.state):
         with open(args.state, encoding="utf-8") as f:
             data = json.load(f)
-        flags = {int(h, 16) for h in data.get("flags", [])}
-        moon_flags = {int(h, 16) for h in data.get("moon_flags", [])}
+        for name, memory, limit in (("flags", flags, MAX_FLAGS), ("moon_flags", moon_flags, MAX_MOON_FLAGS)):
+            for h in data.get(name, []):
+                if full(memory, limit, name):
+                    break
+                memory.add(int(h, 16))
+            full(memory, limit, name)
         last_time = data.get("time")
         if last_time:
             try:
@@ -279,11 +316,70 @@ def main():
         os.replace(tmp, args.state)
         dirty = False
 
-    def send_now(client, text):
+    def entered(client):
+        return (client.pilot or client.version is not None) and (not password or client.authed)
+
+    def entry_deadline(client):
+        if client.closing:
+            return client.close_deadline
+        if not entered(client):
+            return client.connected_at + args.handshake_timeout
+        return None
+
+    def watch_output(client):
+        if client.sock not in clients:
+            return
+        events = selectors.EVENT_READ
+        if client.outbox and client.outbox[0][0] <= time.monotonic():
+            events |= selectors.EVENT_WRITE
+        if sel.get_key(client.sock).events != events:
+            sel.modify(client.sock, events, client)
+
+    def queue_output(client, text, due):
+        if client.sock not in clients or client.closing:
+            return
         try:
-            client.sock.sendall(text.encode("ascii"))
-        except (OSError, UnicodeEncodeError) as exc:
-            log(f"joueur {client.pid} : erreur d'envoi ({exc})")
+            data = text.encode("ascii")
+        except UnicodeEncodeError:
+            drop(client, "envoi non ASCII")
+            return
+        if client.output_bytes + len(data) > MAX_OUTPUT:
+            drop(client, f"file d'envoi superieure a {MAX_OUTPUT} octets")
+            return
+        if client.outbox:
+            due = max(due, client.outbox[-1][0])
+        client.outbox.append((due, memoryview(data)))
+        client.output_bytes += len(data)
+        watch_output(client)
+
+    def send_now(client, text):
+        queue_output(client, text, time.monotonic())
+
+    def write_ready(client):
+        # Un budget par tour laisse les autres sockets progresser, meme sous une rafale.
+        budget = WRITE_BATCH
+        while client.outbox and client.outbox[0][0] <= time.monotonic() and budget > 0:
+            due, data = client.outbox[0]
+            try:
+                sent = client.sock.send(data[:budget])
+            except BlockingIOError:
+                break
+            except OSError as exc:
+                drop(client, f"erreur d'envoi {exc}", announce=not client.closing)
+                return
+            if sent == 0:
+                drop(client, "envoi ferme", announce=not client.closing)
+                return
+            client.output_bytes -= sent
+            budget -= sent
+            if sent == len(data):
+                client.outbox.popleft()
+            else:
+                client.outbox[0] = (due, data[sent:])
+        if client.closing and not client.outbox:
+            drop(client, client.closing, announce=False)
+        else:
+            watch_output(client)
 
     def send(client, text, always=False):
         # Un jeu qui n'a pas encore annonce sa version ne recoit rien de la session.
@@ -295,43 +391,44 @@ def main():
         if args.lag <= 0 and args.jitter <= 0:
             send_now(client, text)
             return
-        # Essai de latence : jamais avant la ligne precedente du meme joueur (TCP garde l'ordre).
         due = time.monotonic() + (args.lag + random.uniform(0.0, args.jitter)) / 1000.0
-        if client.outbox:
-            due = max(due, client.outbox[-1][0])
-        client.outbox.append((due, text))
+        queue_output(client, text, due)
 
     def flush_lagged():
         now = time.monotonic()
         nxt = None
         for c in list(clients.values()):
-            while c.outbox and c.outbox[0][0] <= now:
-                send_now(c, c.outbox.popleft()[1])
-            if c.outbox and (nxt is None or c.outbox[0][0] < nxt):
+            watch_output(c)
+            if c.outbox and c.outbox[0][0] > now and (nxt is None or c.outbox[0][0] < nxt):
                 nxt = c.outbox[0][0]
         return nxt
 
+    def close_after(client, text, why):
+        # Finir les lignes deja commencees avant le refus, sans attendre --lag.
+        now = time.monotonic()
+        client.outbox = collections.deque((now, data) for _, data in client.outbox)
+        client.pending.clear()
+        send_now(client, text)
+        if client.sock in clients:
+            client.closing = why
+            client.close_deadline = now + args.handshake_timeout
+
     def refuse(client, version):
-        client.outbox.clear()
         n = refusals.get(client.peer[0], 0) + 1
         refusals[client.peer[0]] = n
         if n <= 3 or n % 100 == 0:
             got = f"version {version}" if version is not None else "sans version (plugin plus ancien)"
             log(f"joueur {client.pid} refuse : {got}, relais v{proto} (refus n.{n} depuis {client.peer[0]})")
-        send_now(client, f"REFUSE {proto}\n")
-        client.refused = True
-        drop(client, "version differente", announce=False)
+        close_after(client, f"REFUSE {proto}\n", "version differente")
 
     denials = {}  # adresse -> nombre de mots de passe refuses (journal limite)
 
     def deny(client, why):
-        client.outbox.clear()
         n = denials.get(client.peer[0], 0) + 1
         denials[client.peer[0]] = n
         if n <= 3 or n % 100 == 0:
             log(f"joueur {client.pid} refuse : {why} (refus n.{n} depuis {client.peer[0]})")
-        send_now(client, "DENY\n")
-        drop(client, "mot de passe refuse", announce=False)
+        close_after(client, "DENY\n", "mot de passe refuse")
 
     def time_for(recipient, payload):
         # Meteo de la session : celle du joueur de plus petit identifiant (pas celle du
@@ -359,33 +456,60 @@ def main():
         sel.unregister(client.sock)
         client.sock.close()
         del clients[client.sock]
+        client.outbox.clear()
+        client.output_bytes = 0
+        client.pending.clear()
         if clock_owner is client:
             clock_owner = None
         # Un jeu refuse n'est jamais entre dans la session : rien a annoncer aux autres.
-        if client.pilot or not announce or client.version is None:
+        if client.pilot or not announce or not entered(client):
             return
-        for other in clients.values():
+        for other in list(clients.values()):
             send(other, f"BYE {client.pid}\n")
 
     ticks = 0
     while True:
         # Etat complet demande par un joueur : 100 lignes par quart de seconde, pour
         # ne pas deborder la file de reception du plugin (vidée a ~500 drapeaux/s).
+        now = time.monotonic()
         for c in list(clients.values()):
-            if c.pending:
-                batch, c.pending = c.pending[:100], c.pending[100:]
+            deadline = entry_deadline(c)
+            if deadline is not None and now >= deadline:
+                drop(c, "delai d'entree depasse", announce=False)
+                continue
+            if c.pending and not c.closing and now >= c.next_state_at:
+                batch, c.pending = c.pending[:STATE_BATCH], c.pending[STATE_BATCH:]
+                c.next_state_at = now + STATE_INTERVAL
                 send(c, "".join(batch))
         ticks += 1
         if ticks % 20 == 0:
             save_state()
         timeout = 0.25
+        for c in clients.values():
+            deadline = entry_deadline(c)
+            if deadline is not None:
+                timeout = min(timeout, max(0.0, deadline - time.monotonic()))
+            if c.pending and not c.closing:
+                timeout = min(timeout, max(0.0, c.next_state_at - time.monotonic()))
         nxt = flush_lagged()
         if nxt is not None:
             timeout = min(timeout, max(0.0, nxt - time.monotonic()))
-        for key, _ in sel.select(timeout=timeout):
+        for key, events in sel.select(timeout=timeout):
             if key.data is None:
-                sock, peer = key.fileobj.accept()
-                sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+                try:
+                    sock, peer = key.fileobj.accept()
+                except OSError:
+                    continue
+                if (len(clients) >= MAX_CLIENTS
+                        or sum(c.peer[0] == peer[0] for c in clients.values()) >= MAX_CLIENTS_PER_IP):
+                    sock.close()
+                    continue
+                try:
+                    sock.setblocking(False)
+                    sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+                except OSError:
+                    sock.close()
+                    continue
                 client = Client(sock, peer, free_player_id())
                 clients[sock] = client
                 sel.register(sock, selectors.EVENT_READ, client)
@@ -396,8 +520,14 @@ def main():
             client = key.data
             if client.sock not in clients:
                 continue
+            if events & selectors.EVENT_WRITE:
+                write_ready(client)
+            if client.sock not in clients or client.closing or not events & selectors.EVENT_READ:
+                continue
             try:
                 chunk = client.sock.recv(4096)
+            except BlockingIOError:
+                continue
             except OSError as exc:
                 drop(client, f"erreur {exc}")
                 continue
@@ -412,7 +542,7 @@ def main():
                 log(f"joueur {client.pid} : plus de {MAX_PENDING} octets sans fin de ligne, liaison fermee")
                 drop(client, "ligne trop longue")
                 continue
-            while b"\n" in client.buf and client.sock in clients:
+            while b"\n" in client.buf and client.sock in clients and not client.closing:
                 raw, client.buf = client.buf.split(b"\n", 1)
                 if len(raw) > MAX_LINE or not raw.isascii():
                     client.bad_lines = getattr(client, "bad_lines", 0) + 1
@@ -456,7 +586,7 @@ def main():
                     #   PAD <id cible> <boutons hex> <stick x> <stick y> <duree ms>
                     if not valid_pad(parts[1:]):
                         continue
-                    for other in clients.values():
+                    for other in list(clients.values()):
                         # cible 0 = tous les autres clients
                         if other is not client and parts[1] in ("0", str(other.pid)):
                             send(other, f"PAD {client.pid} {' '.join(parts[2:])}\n")
@@ -468,6 +598,7 @@ def main():
                         next_pilot_id += 1
                 elif parts == ["STATE"]:
                     # Le joueur vient d'entrer en jeu : on lui donne tout ce que le serveur sait.
+                    client.next_state_at = time.monotonic()
                     client.pending = [f"FLAG 0 {h:08x} 1\n" for h in sorted(flags)]
                     client.pending += [f"FLAGR 0 {h:08x} 1\n" for h in sorted(moon_flags)]
                     client.pending += [f"LIFE 0 {h:08x} {v}\n" for h, v in sorted(lives.items())]
@@ -490,7 +621,10 @@ def main():
                         if h in flags:
                             client.dups += 1
                             continue
+                        if full(flags, MAX_FLAGS, "flags"):
+                            continue
                         flags.add(h)
+                        full(flags, MAX_FLAGS, "flags")
                         dirty = True
                         client.flags += 1
                         if client.flags <= 20 or client.flags % 200 == 0:
@@ -504,7 +638,10 @@ def main():
                             if h in moon_flags:
                                 client.dups += 1
                                 continue
+                            if full(moon_flags, MAX_MOON_FLAGS, "moon_flags"):
+                                continue
                             moon_flags.add(h)
+                            full(moon_flags, MAX_MOON_FLAGS, "moon_flags")
                             dirty = True
                             log(f"joueur {client.pid} : drapeau de lune de sang {h:08x} a 1 ({len(moon_flags)} en memoire)")
                         else:
@@ -555,7 +692,7 @@ def main():
                             # reference : les autres la recoivent avec l'heure de la session.
                             players = [c for c in clients.values() if not c.pilot and c.weather is not None]
                             if last_time and players and client is min(players, key=lambda c: c.pid):
-                                for other in clients.values():
+                                for other in list(clients.values()):
                                     if other is not client and not other.pilot:
                                         send(other, time_for(other, last_time))
                             continue
@@ -570,7 +707,7 @@ def main():
                         dirty = True
                         if client.times == 1 or client.times % 60 == 0:
                             log(f"joueur {client.pid} : monde n.{client.times} = TIME {payload}")
-                        for other in clients.values():
+                        for other in list(clients.values()):
                             if other is not client:
                                 send(other, time_for(other, payload))
                         if session_moon is not None and client.moon is not None and session_moon > client.moon + 3.0:
@@ -591,10 +728,13 @@ def main():
                             client.gear = payload
                             log(f"joueur {client.pid} : armure {payload}")
                     elif parts[0] == "WPN":
+                        slot = int(parts[1])
+                        if not 0 <= slot < WPN_SLOTS:
+                            continue
                         wpn = getattr(client, "wpn", {})
                         client.wpn = wpn
-                        if wpn.get(parts[1]) != parts[2]:
-                            wpn[parts[1]] = parts[2]
+                        if wpn.get(slot) != parts[2]:
+                            wpn[slot] = parts[2]
                             log(f"joueur {client.pid} : objet porte {parts[1]} = {parts[2]} (position {parts[6]} {parts[10]} {parts[14]})")
                     elif parts[0] == "SAVED":
                         log(f"joueur {client.pid} : releve par son partenaire ({payload} m)")
@@ -607,9 +747,13 @@ def main():
                         # Memoire vive seulement (pas sur disque) : au redemarrage du serveur,
                         # les ennemis entames sont oublies.
                         try:
-                            lives[int(parts[1], 16)] = int(parts[2])
+                            h, life = int(parts[1], 16), int(parts[2])
                         except ValueError:
                             continue
+                        if h not in lives and full(lives, MAX_LIVES, "lives"):
+                            continue
+                        lives[h] = life
+                        full(lives, MAX_LIVES, "lives")
                         client.lifes = getattr(client, "lifes", 0) + 1
                         if client.lifes <= 20 or client.lifes % 100 == 0:
                             log(f"joueur {client.pid} : vie d'ennemi n.{client.lifes} = {payload}")
@@ -618,7 +762,7 @@ def main():
                         client.last = payload
                         if client.count == 1 or client.count % 100 == 0:
                             log(f"joueur {client.pid} : etat n.{client.count} = {parts[0]} {payload}")
-                    for other in clients.values():
+                    for other in list(clients.values()):
                         if other is not client:
                             send(other, f"{parts[0]} {client.pid} {payload}\n")
                 else:

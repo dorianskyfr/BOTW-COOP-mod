@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <cstring>
 
+#include "seqvalue.hpp"
+
 /*
  * Armes, bouclier, arc, carquois et fourreaux portes, montres sur le personnage du partenaire.
  *
@@ -29,30 +31,28 @@ namespace coop::weapons {
         float m_Rel[12] = {};      /* matrice 3x4 (lignes) de l'objet dans le repere de Link */
     };
 
-    /* Un emplacement partage entre deux fils (un seul ecrivain) : compteur pair = stable. */
+    /*
+     * Un emplacement partage entre deux fils (un ecrivain, un lecteur) : verrou par version en mots
+     * atomiques (seqvalue.hpp). Lecture bornee : si l'ecrivain est en plein travail a chaque essai, on
+     * rend la derniere pose lue (audit Codex 2026-11-16 : l'ancienne lecture pouvait boucler sans fin
+     * et copiait une structure ordinaire pendant son ecriture).
+     */
     class PoseSlot {
     public:
-        void Write(const Pose& p) {
-            m_Seq.fetch_add(1, std::memory_order_acq_rel);
-            std::atomic_thread_fence(std::memory_order_release);
-            std::memcpy(&m_Pose, &p, sizeof(Pose));
-            std::atomic_thread_fence(std::memory_order_release);
-            m_Seq.fetch_add(1, std::memory_order_acq_rel);
-        }
+        void Write(const Pose& p) { m_Value.Store(p); }
+        /* Un seul fil lecteur par emplacement (m_LastRead lui appartient). */
         Pose Read() const {
             Pose p;
-            for (;;) {
-                const std::uint32_t a = m_Seq.load(std::memory_order_acquire);
-                std::atomic_thread_fence(std::memory_order_acquire);
-                std::memcpy(&p, &m_Pose, sizeof(Pose));
-                std::atomic_thread_fence(std::memory_order_acquire);
-                if ((a & 1u) == 0 && m_Seq.load(std::memory_order_acquire) == a)
+            for (int attempt = 0; attempt < 64; attempt++)
+                if (m_Value.TryLoad(p)) {
+                    m_LastRead = p;
                     return p;
-            }
+                }
+            return m_LastRead;
         }
     private:
-        std::atomic<std::uint32_t> m_Seq { 0 };
-        Pose m_Pose {};
+        SeqValue<Pose> m_Value;
+        mutable Pose m_LastRead {};
     };
 
     /* Ecrit par le fil du jeu (objets du joueur local), lu par le fil reseau. */
