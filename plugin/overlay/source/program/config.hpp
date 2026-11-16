@@ -78,7 +78,7 @@ namespace coop::config {
     inline int g_ReviveRangeM = 150;
 
     /* Groupes de drapeaux actifs (bit n = groupe n). Par defaut 1 et 2. */
-    inline std::uint32_t g_ShareGroups = (1u << 1) | (1u << 2) | (1u << 6); /* 6 : Koroks */
+    inline std::uint32_t g_ShareGroups = (1u << 1) | (1u << 2) | (1u << 6) | (1u << 8); /* 6 : Koroks ; 8 : enigmes des Creatures divines */
 
     /* Nombre d'entrees de la liste blanche lues (0 : fichier absent ou invalide). */
     inline int g_SyncFlagCount = 0;

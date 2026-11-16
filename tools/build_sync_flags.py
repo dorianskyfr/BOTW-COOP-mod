@@ -25,6 +25,10 @@ Groupes :
   7 receptacles de coeur poses dans les cartes (<carte>_Obj_HeartUtuwa_*, dont les 4 des Creatures
                   divines) : non actifs par defaut, chacun ramasse le sien (sinon celui ramasse par
                   l'un disparaissait chez l'autre). share_groups=...,7 pour les partager.
+  8 enigmes des Creatures divines (Remains<Wind|Water|Fire|Electric>_*, sauvegardes : portes, volets,
+                  fissures, raccourcis, premieres rotations...) : partages (actif par defaut), comme la
+                  progression. Sans les petites cles (SmallKey*, chacun ramasse les siennes) ; les rotations
+                  (RemainsWind_RotLeft...) ne sont pas sauvegardees par le jeu et restent hors liste.
 
 Format de sortie (petit-boutiste) : "CSF1", u32 nombre, nombre x u32 hachage trie, nombre x u8 groupe.
 Usage : python -I tools\\build_sync_flags.py build\\gamedata\\flags.tsv build\\deploy\\romfs\\botw-coop\\sync-flags.bin
@@ -45,6 +49,7 @@ RULES = [
     (3, re.compile(r"^" + MAPS + r"_LinkTag[A-Za-z]*_\d+$")),
     (4, re.compile(r"^" + MAPS + r"_TBox_[A-Za-z0-9_]*_\d+$")),
     (7, re.compile(r"^" + MAPS + r"_Obj_HeartUtuwa_[A-Za-z0-9_]*_\d+$")),
+    (8, re.compile(r"^Remains(Wind|Water|Fire|Electric)_(?!SmallKey)[A-Za-z0-9_]+$")),
     (2, re.compile(r"^" + MAPS + r"_(?!Npc_)(?!LinkTag)[A-Za-z][A-Za-z0-9_]*_\d+$")),
 ]
 

@@ -725,7 +725,10 @@ namespace coop::flags {
             /* Essai : le joueur 1 pose lui-meme ce drapeau (hachage) apres 80 s en jeu, comme le jeu le ferait,
                pour verifier que le releve des changements l'envoie (drapeau a categorie : octet pair -> impair). */
             {
-                static int s_SetCountdown = 160;
+#ifndef COOP_TEST_SETLOCAL_AFTER
+#define COOP_TEST_SETLOCAL_AFTER 160 /* echanges, 2 par seconde */
+#endif
+                static int s_SetCountdown = COOP_TEST_SETLOCAL_AFTER;
                 if (inGame && s_HaveSnapshot && coop::session::g_LocalId == 1 && s_SetCountdown > 0 && --s_SetCountdown == 0) {
                     std::uintptr_t f = 0;
                     const int i = FindByHash(bools, static_cast<std::uint32_t>(COOP_TEST_SETLOCAL), f);

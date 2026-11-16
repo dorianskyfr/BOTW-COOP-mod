@@ -356,6 +356,17 @@ namespace coop::warp {
         coop::game::PlayerState st;
         if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady() || s_Travelling)
             return;
+        /* Essai : x = 9000 + n entre dans la Creature divine n (0 Medoh, 1 Ruta, 2 Rudania, 3 Naboris).
+           Carte et point d'apres un evenement du jeu (ChangeScene "MainFieldDungeon/RemainsFire",
+           "Entrance_1") et Map/MainFieldDungeon/Static.smubin (Bootup.pack) : Entrance_1 pour les quatre. */
+        if (x >= 9000.0f && x < 9004.0f) {
+            static const char* const Beasts[] = { "MainFieldDungeon/RemainsWind", "MainFieldDungeon/RemainsWater",
+                "MainFieldDungeon/RemainsFire", "MainFieldDungeon/RemainsElectric" };
+            const char* map = Beasts[static_cast<int>(x - 9000.0f)];
+            const bool ok = coop::game::ChangeStage(map, "Entrance_1");
+            Logging.Log("[botw-coop] voyage (essai) : vers %s Entrance_1 -> %s", map, ok ? "demande" : "REFUSE");
+            return;
+        }
         const float target[3] = { x, st.m_Pos[1], z };
         float d = 0.0f;
         const int i = NearestTravelPoint(target, st.m_Pos, 0.0f, d);

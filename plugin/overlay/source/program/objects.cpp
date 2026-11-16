@@ -73,18 +73,38 @@ namespace coop::objects {
         constexpr float ChestRemoveDistance = 3.0f;
         OpenChest s_OpenChests[16];
 
+        /*
+         * Prefixe du drapeau d'un objet place = nom de la carte : "MainField" (monde), "MainFieldDungeon"
+         * (Creatures divines), "CDungeon" (sanctuaires), "AocField" (DLC), d'apres les noms du catalogue
+         * (tools/build_sync_flags.py). Essai gd8 : dans Vah Medoh, "MainField_TBox_Dungeon_Stone_..."
+         * etait ABSENT de la table ; le vrai drapeau commence par "MainFieldDungeon_". On ne sait pas lire
+         * la carte de l'acteur : on essaie les quatre.
+         */
+        constexpr const char* MapPrefixes[] = { "MainField", "MainFieldDungeon", "CDungeon", "AocField" };
+
+        /* Drapeau "<carte>_<nom>_<HashId>" de l'acteur pour le prefixe k ; 0 si le nom est trop long. */
+        std::uint32_t ActorFlag(const coop::game::ActorInfo& info, int k) {
+            char flagName[96];
+            const int len = std::snprintf(flagName, sizeof(flagName), "%s_%s_%u", MapPrefixes[k], info.m_Name, info.m_HashId);
+            if (len <= 0 || len >= static_cast<int>(sizeof(flagName)))
+                return 0;
+            return Crc32(flagName);
+        }
+
         bool OnActor(const coop::game::ActorInfo& info, void*) {
             s_Seen++;
             s_SeenWithId += info.m_HashId != 0;
             if (info.m_HashId == 0 || info.m_Name == nullptr || info.m_Name[0] == '\0')
                 return false;
-            char flagName[96];
-            const int len = std::snprintf(flagName, sizeof(flagName), "MainField_%s_%u", info.m_Name, info.m_HashId);
-            if (len <= 0 || len >= static_cast<int>(sizeof(flagName)))
-                return false;
-            const std::uint32_t crc = Crc32(flagName);
+            std::uint32_t crcs[4];
+            for (int k = 0; k < 4; k++)
+                crcs[k] = ActorFlag(info, k);
             for (int i = 0; i < s_NumPending; i++) {
-                if (s_Pending[i] != crc)
+                std::uint32_t crc = 0;
+                for (int k = 0; k < 4 && crc == 0; k++)
+                    if (crcs[k] != 0 && crcs[k] == s_Pending[i])
+                        crc = crcs[k];
+                if (crc == 0)
                     continue;
                 Victim& v = s_Victims[s_NumVictims++];
                 v.m_Actor = info.m_Actor;
@@ -107,9 +127,13 @@ namespace coop::objects {
             if (std::strncmp(info.m_Name, "Enemy_", 6) != 0 && std::strncmp(info.m_Name, "TBox_", 5) != 0)
                 return false;
             char flagName[96];
-            std::snprintf(flagName, sizeof(flagName), "MainField_%s_%u", info.m_Name, info.m_HashId);
-            const std::uint32_t crc = Crc32(flagName);
-            const int q = coop::flags::Query(crc);
+            std::uint32_t crc = 0;
+            int q = -1;
+            for (int k = 0; k < 4 && q == -1; k++) {
+                std::snprintf(flagName, sizeof(flagName), "%s_%s_%u", MapPrefixes[k], info.m_Name, info.m_HashId);
+                crc = Crc32(flagName);
+                q = coop::flags::Query(crc);
+            }
             if (q >= 0)
                 Logging.Log("[botw-coop] drapeau d'acteur : %s -> %08x existe, valeur %d, proprietes 0x%02x", flagName, crc, q & 1, q >> 8);
             else

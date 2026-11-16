@@ -7,7 +7,9 @@
  *
  * Quand un objet de carte est ramasse, le jeu met a 1 le drapeau de sauvegarde
  * "MainField_<nom d'acteur>_<HashId en decimal>" (mesure le 2026-11-11 : branche
- * Weapon_Sword_044 de HashId 0x78bb189f -> drapeau de hachage CRC32 0x6ca64187).
+ * Weapon_Sword_044 de HashId 0x78bb189f -> drapeau de hachage CRC32 0x6ca64187). Hors du monde,
+ * le prefixe est celui de la carte : "MainFieldDungeon_" (Creatures divines), "CDungeon_"
+ * (sanctuaires), "AocField_" (DLC) ; les quatre sont essayes (NOTES 5.75).
  * Ce drapeau voyage deja par le partage des drapeaux (flags.cpp). Ici, quand un
  * tel drapeau arrive de l'autre joueur, on detruit l'acteur correspondant s'il
  * est deja charge chez nous : le jeu ne relit pas le drapeau pour un acteur
