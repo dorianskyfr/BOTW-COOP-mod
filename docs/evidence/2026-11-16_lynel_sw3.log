@@ -1,0 +1,35 @@
+﻿== sw3_game.txt
+[botw-coop] sauvetage : crochet pose sur main+0xcead24
+[botw-coop] sauvetage : le joueur 2 a ete releve grace a nous (10 m)
+[botw-coop] voyage (essai) : vers (-865, 3182), point 66 a 433 m de la cible
+[botw-coop] voyage (essai cible) : MainField/E-8 StartPos_CDungeon069, point (-985.8, 334.2, 3565.0), a 2083 m de Link
+[botw-coop] voyage : chargement commence (2584 ms apres la demande)
+[botw-coop] voyage : arrive en (-994.0, 321.2, 3564.9), a 15.4 m du point vise, 10406 ms apres la demande
+[botw-coop] voyage (essai) : vers (-2874, -282), point 30 a 161 m de la cible
+[botw-coop] voyage (essai cible) : MainField/C-4 StartPos_CDungeon037, point (-2930.8, 319.5, -433.0), a 4442 m de Link
+[botw-coop] voyage : chargement commence (2593 ms apres la demande)
+[botw-coop] voyage : arrive en (-2929.5, 306.5, -441.1), a 15.4 m du point vise, 11465 ms apres la demande
+[botw-coop] essai pose : Link pose en (-2859.0, 309.0, -282.0), 174 m
+[botw-coop] vie : Enemy_Lynel_Middle           hash=ca214004 dist=17.3 vie=3000 max=3000 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Lynel_Middle ca214004 3000 -> 2995
+[botw-coop] vie ennemi : Enemy_Lynel_Middle ca214004 3000 -> 2995 chez nous (max 3000), annonce, n.1
+[botw-coop] vie : Enemy_Lynel_Middle           hash=ca214004 dist=17.3 vie=2995 max=3000 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] sauvetage : Link releve par le partenaire (J2 a 12 m), vie 0 -> 12 quarts (n.1)
+== sw3_game2.txt
+[botw-coop] sauvetage : crochet pose sur main+0xcead24
+[botw-coop] sauvetage : Link releve par le partenaire (J1 a 10 m), vie 0 -> 12 quarts (n.1)
+[botw-coop] voyage (essai) : vers (-865, 3182), point 66 a 433 m de la cible
+[botw-coop] voyage (essai cible) : MainField/E-8 StartPos_CDungeon069, point (-985.8, 334.2, 3565.0), a 2083 m de Link
+[botw-coop] voyage : chargement commence (2585 ms apres la demande)
+[botw-coop] voyage : arrive en (-994.0, 321.2, 3564.9), a 15.4 m du point vise, 10424 ms apres la demande
+[botw-coop] voyage (essai) : vers (-2874, -282), point 30 a 161 m de la cible
+[botw-coop] voyage (essai cible) : MainField/C-4 StartPos_CDungeon037, point (-2930.8, 319.5, -433.0), a 4442 m de Link
+[botw-coop] voyage : chargement commence (2594 ms apres la demande)
+[botw-coop] voyage : arrive en (-2929.5, 306.5, -441.1), a 15.4 m du point vise, 11167 ms apres la demande
+[botw-coop] essai pose : Link pose en (-2860.0, 309.0, -270.0), 185 m
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004, on suit la copie de l'autre joueur (nous a 19.8 m, J1 a 18.8 m)
+[botw-coop] vie : Enemy_Lynel_Middle           hash=ca214004 dist=18.2 vie=3000 max=3000 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] vie ennemi : Enemy_Lynel_Middle ca214004 3000 -> 2995 (annonce par l'autre joueur), n.1
+[botw-coop] vie : Enemy_Lynel_Middle           hash=ca214004 dist=18.2 vie=2995 max=3000 (pointeur acteur+0x848, fonctions main+0x56b240 / +0x58137c)
+[botw-coop] sauvetage : le joueur 1 a ete releve grace a nous (12 m)
+[botw-coop] position ennemi : Enemy_Lynel_Middle ca214004, notre copie fait foi (nous a 12.0 m, J1 a 19.3 m)

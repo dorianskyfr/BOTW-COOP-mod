@@ -812,6 +812,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.69 Lynel (2026-11-16, essai `sw3`, Eden, mode expert) - [V] partiel
+
+- `tools/near_travel.py` : ennemis les plus proches d'un point de voyage. Lynel choisi : (-2874, 305, -282), point C-4 a 161 m ; le jeu cree un `Enemy_Lynel_Middle` (3000 PV, rang au-dessus en mode expert).
+- [V] Vie : `hurt` chez J1 -> chez J2 `3000 -> 2995 (annonce par l'autre joueur)`. [V] Position : chez J2 `on suit la copie de l'autre joueur (nous a 19.8 m, J1 a 18.8 m)`. [V] J2 tue pendant l'essai puis `Link releve par le partenaire (J1 a 10 m)`.
+- **Non vu** : aucune ligne « animation ennemi » pour le Lynel (ni annoncee, ni rejouee), alors que Moblin, Lezalfos et Bokoblin en ont. [S] Le Lynel joue ses sequences ailleurs que dans le creneau 0 suivi par le crochet ; a etudier (ses attaques ne seraient alors pas reprises chez l'autre joueur).
+- Preuve : `2026-11-16_lynel_sw3.log`.
+
 ### 5.68 Mode expert : les essais `sw1`, `sw2` y etaient (2026-11-16) - [V] journaux
 
 - Avec la copie de `save_0` de Savage Wind, « Continuer » a charge l'emplacement 3 et le traceur `tracker/trackblock_hard00.sav` (journal du mod : `save:/3/game_data.sav`, `save:/tracker/trackblock_hard00.sav`, redirige vers `save:/coop/`) : c'est la partie en **mode expert** (deja notee ainsi le 2026-11-15). Recoupement : la carte normale place un `Enemy_Moriblin_Junior` et des `Enemy_Lizalfos_Junior` a ces endroits (`find_actors.py`), le jeu a cree des `Moriblin_Middle` et `Lizalfos_Middle` (rang au-dessus, propre au mode expert).
