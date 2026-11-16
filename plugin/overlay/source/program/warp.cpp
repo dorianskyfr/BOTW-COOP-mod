@@ -352,6 +352,37 @@ namespace coop::warp {
         s_DebugTravelRequested = true;
     }
 
+    void DebugTravelNear(float x, float z) {
+        coop::game::PlayerState st;
+        if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady() || s_Travelling)
+            return;
+        const float target[3] = { x, st.m_Pos[1], z };
+        float d = 0.0f;
+        const int i = NearestTravelPoint(target, st.m_Pos, 0.0f, d);
+        Logging.Log("[botw-coop] voyage (essai) : vers (%.0f, %.0f), point %d a %.0f m de la cible", static_cast<double>(x),
+            static_cast<double>(z), i, static_cast<double>(d));
+        s_TravelDebug = i >= 0 && StartTravel(i, st.m_Pos, "essai cible");
+    }
+
+    void DebugPlaceAt(float x, float y, float z) {
+        coop::game::PlayerState st;
+        if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady())
+            return;
+        const float target[3] = { x, y, z };
+        const float d = Dist(target, st.m_Pos);
+        if (d > MaxDistance) {
+            Logging.Log("[botw-coop] essai pose : (%.0f, %.0f, %.0f) a %.0f m, trop loin", static_cast<double>(x),
+                static_cast<double>(y), static_cast<double>(z), static_cast<double>(d));
+            return;
+        }
+        std::memcpy(s_Target, target, sizeof(target));
+        if (!Place(st, s_Target, true))
+            return;
+        s_HoldLeft = HoldFrames;
+        Logging.Log("[botw-coop] essai pose : Link pose en (%.1f, %.1f, %.1f), %.0f m", static_cast<double>(x),
+            static_cast<double>(y), static_cast<double>(z), static_cast<double>(d));
+    }
+
     void DebugLift(float height) {
         coop::game::PlayerState st;
         if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady())

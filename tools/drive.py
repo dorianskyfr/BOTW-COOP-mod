@@ -191,6 +191,18 @@ def main():
             # Essai combat : le plugin amene le Bokoblin le plus proche a 8 m devant le joueur (en z), au sol.
             p.pad(buttons=1 << 54, ms=300)
             p.log("bring : Bokoblin le plus proche amene a 8 m")
+        elif op == "goto_tp":
+            # Essai : voyage du jeu vers le point de voyage le plus proche de (x, z) (metres, champs du stick).
+            x, z = float(args[0]), float(args[1])
+            p.pad(buttons=1 << 50, lx=x, ly=z, ms=300)
+            p.log(f"goto_tp : voyage vers le point le plus proche de ({x:.0f}, {z:.0f})")
+        elif op == "tp":
+            # Essai : Link pose en (x, y, z) a moins de 250 m (deux commandes : y, puis x et z).
+            x, y, z = float(args[0]), float(args[1]), float(args[2])
+            p.pad(buttons=1 << 49, lx=y, ms=300)
+            time.sleep(0.6)
+            p.pad(buttons=1 << 48, lx=x, ly=z, ms=300)
+            p.log(f"tp : Link pose en ({x:.0f}, {y:.0f}, {z:.0f})")
         elif op == "chest":
             # Essai : le plugin pose Link devant le premier coffre de la sauvegarde de test (face au sud).
             p.pad(buttons=1 << 51, ms=300)

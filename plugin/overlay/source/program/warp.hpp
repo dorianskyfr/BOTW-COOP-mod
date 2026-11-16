@@ -35,6 +35,10 @@ namespace coop::warp {
     void DebugApproachEnemy(float distance);
     /* Essai coffre : Link pose devant le premier coffre de la sauvegarde de test (NOTES 5.8). */
     void DebugGoToFirstChest();
+    /* Essai : voyage du jeu vers le point de voyage le plus proche de (x, z). */
+    void DebugTravelNear(float x, float z);
+    /* Essai : Link pose en (x, y, z), a moins de 250 m. */
+    void DebugPlaceAt(float x, float y, float z);
 #endif
 
 }

@@ -360,6 +360,45 @@ namespace coop::input_inject {
                         }
                         buttons &= ~(1ull << 54);
                     }
+                    /* Bit 50 : voyage du jeu vers le point de voyage le plus proche de (x, z), donnes en metres
+                       dans les champs du stick (essai : aller voir d'autres ennemis hors du plateau). */
+                    if ((buttons >> 50) & 1) {
+                        static std::uint64_t s_LastGoTo = 0;
+                        const auto cmd13 = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmd13 != s_LastGoTo) {
+                            s_LastGoTo = cmd13;
+                            coop::warp::DebugTravelNear(static_cast<float>(pad.m_StickLX.load()), static_cast<float>(pad.m_StickLY.load()));
+                        }
+                        buttons &= ~(1ull << 50);
+                        pad.m_StickLX.store(0);
+                        pad.m_StickLY.store(0);
+                    }
+                    /* Bits 49 puis 48 : Link pose en (x, y, z) a moins de 250 m (essai). Bit 49 : y = champ X
+                       du stick, garde ; bit 48 : x, z = champs X, Y du stick, Link est pose. */
+                    {
+                        static float s_DebugY = 0.0f;
+                        static std::uint64_t s_LastY = 0, s_LastPlace = 0;
+                        const auto cmd14 = pad.m_Commands.load(std::memory_order_acquire);
+                        if ((buttons >> 49) & 1) {
+                            if (cmd14 != s_LastY) {
+                                s_LastY = cmd14;
+                                s_DebugY = static_cast<float>(pad.m_StickLX.load());
+                            }
+                            buttons &= ~(1ull << 49);
+                            pad.m_StickLX.store(0);
+                            pad.m_StickLY.store(0);
+                        }
+                        if ((buttons >> 48) & 1) {
+                            if (cmd14 != s_LastPlace) {
+                                s_LastPlace = cmd14;
+                                coop::warp::DebugPlaceAt(static_cast<float>(pad.m_StickLX.load()), s_DebugY,
+                                    static_cast<float>(pad.m_StickLY.load()));
+                            }
+                            buttons &= ~(1ull << 48);
+                            pad.m_StickLX.store(0);
+                            pad.m_StickLY.store(0);
+                        }
+                    }
                     /* Bit 51 : Link pose devant le premier coffre de la sauvegarde de test (essai). */
                     if ((buttons >> 51) & 1) {
                         static std::uint64_t s_LastChest = 0;

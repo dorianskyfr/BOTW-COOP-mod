@@ -1256,7 +1256,13 @@ namespace coop::game {
         float bestD2 = 1.0e12f;
         ForEachActor([&](std::uintptr_t actor) {
             const char* name = reinterpret_cast<const char*>(actor + s_ActorNameOffset);
-            if (std::strncmp(name, "Enemy_Bokoblin", 14) != 0 || Peek<std::uint32_t>(actor + 0x640) == 0)
+            /* COOP_TEST_ANY_ENEMY : tout ennemi (essais hors du plateau : Moblin, Lezalfos...). */
+#ifdef COOP_TEST_ANY_ENEMY
+            constexpr const char* Prefix = "Enemy_";
+#else
+            constexpr const char* Prefix = "Enemy_Bokoblin";
+#endif
+            if (std::strncmp(name, Prefix, std::strlen(Prefix)) != 0 || Peek<std::uint32_t>(actor + 0x640) == 0)
                 return false;
             float p[3];
             GetActorPos(actor, p);
@@ -1305,7 +1311,13 @@ namespace coop::game {
         ForEachActor([&](std::uintptr_t actor) {
             const char* name = reinterpret_cast<const char*>(actor + s_ActorNameOffset);
             /* Actif seulement (etat 1, +0x64) : un ennemi deja vaincu reste dans la liste a l'etat 0. */
-            if (std::strncmp(name, "Enemy_Bokoblin", 14) != 0 || Peek<std::uint32_t>(actor + 0x640) == 0
+            /* COOP_TEST_ANY_ENEMY : tout ennemi (essais hors du plateau : Moblin, Lezalfos...). */
+#ifdef COOP_TEST_ANY_ENEMY
+            constexpr const char* Prefix = "Enemy_";
+#else
+            constexpr const char* Prefix = "Enemy_Bokoblin";
+#endif
+            if (std::strncmp(name, Prefix, std::strlen(Prefix)) != 0 || Peek<std::uint32_t>(actor + 0x640) == 0
                 || Peek<std::uint8_t>(actor + 0x64) != 1)
                 return false;
             float p[3];

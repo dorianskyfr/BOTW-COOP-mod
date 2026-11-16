@@ -1,0 +1,30 @@
+﻿== en4_game.txt
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "GrabAndShoot" (annonce par J2), n.14
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "BattleWait" (annonce par J2), n.15
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "GrabAndShoot" (annonce par J2), n.16
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "BattleWait" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "BattleWait" (annonce par J2), n.17
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "GrabAndShoot" (annonce par J2), n.18
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "BattleWait" (annonce par J2), n.19
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "GrabAndShoot" (annonce par J2), n.20
+[botw-coop] animation ennemi : 52859ed1 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 636d844c rejoue "BattleWait" (annonce par J2), n.21
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "GrabAndShoot" (copie suivie)
+== en4_game2.txt
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "GrabAndShoot" (fait foi)
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior c51a8ff8 rejoue "Dance" (annonce par J1), n.29
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "BattleWait" (fait foi)
+[botw-coop] animation ennemi : c51a8ff8 creneau 0 banque 0 "Squat" (copie suivie)
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "GrabAndShoot" (fait foi)
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "BattleWait" (fait foi)
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "Turn" (annonce par J1), n.30
+[botw-coop] animation ennemi : Enemy_Bokoblin_Junior 52859ed1 rejoue "SearchCareFree" (annonce par J1), n.31
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "GrabAndShoot" (fait foi)
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "BattleWait" (fait foi)
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "GrabAndShoot" (fait foi)
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "BattleWait" (fait foi)
+[botw-coop] animation ennemi : c51a8ff8 creneau 0 banque 0 "DanceEnd" (copie suivie)
+[botw-coop] animation ennemi : 636d844c creneau 0 banque 0 "GrabAndShoot" (fait foi)
