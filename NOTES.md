@@ -812,6 +812,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.66 Hors du plateau avec la sauvegarde Savage Wind : Moblin (2026-11-16, essai `sw1`, Eden) - [V] journaux et image
+
+- Copie (lecture seule de l'original) de `F:\Jeux-Console\Zelda-BOTW-PC\save\save_0` dans deux dossiers de test Eden. « Continuer » charge une partie a 4 coeurs, rune bombe, avec la paravoile. `goto_tp` puis `tp` sous la falaise nord-est du plateau : cette fois pas de `Demo048_0`, les deux Link restent hors du plateau.
+- [V] Combat contre un `Enemy_Moriblin_Middle` (de nuit, avec des Stalkos autour) : chez J1 (« fait foi ») `BattleWalk`, `DownSwingAttackStart/Loop/End`, `DoubleAttack`, `Run`... ; chez J2 la copie rejoue les memes (« annonce par J1 ») et `on suit la copie de l'autre joueur (nous a 10.1 m, J1 a 9.4 m)`. **Le Moblin blesse vraiment** : J1 tue une premiere fois, `Link releve par le partenaire (J2 a 80 m), vie 0 -> 12 quarts`, puis tue de nouveau -> `refuse (sauvetage trop recent)` -> Game Over. J2, tombe de la falaise dans l'eau pendant l'essai, a perdu des coeurs (chute, pas l'ennemi : il etait a 137 m).
+- Non verifie : la vie du Moblin partagee pendant ce combat (les coups de J1 n'ont pas ete journalises comme touches) ; Lezalfos, Lynel, Hinox.
+- Preuves : `2026-11-16_moblin-hors-plateau_sauvegarde-savage-wind_sw1.log`, `..._hors-plateau-pres-du-moblin_sw1.png`, `..._combat-moblin-J1_sw1.png`.
+
 ### 5.65 Qui l'ennemi attaque ; essais hors du plateau (2026-11-16, essais `en1` a `en4`, Eden)
 
 - Question de l'utilisateur : l'ennemi attaque-t-il les deux joueurs ? Fonctionnement (code, NOTES 5.5x) : chaque jeu a sa copie de l'ennemi ; le jeu du joueur le plus proche « fait foi » et son IA ne voit que le Link de ce jeu ; l'autre copie rejoue ses animations. [V] `en4` : Bokoblin provoque par J1 (`bring`, coups), J2 le plus proche : chez J2 l'ennemi est « fait foi » et passe `Search`, `Run`, `BattleWait`, `GrabAndShoot` ; chez J1 la copie rejoue les memes (« annonce par J2 ») ; image chez J2 : indicateur d'ennemi en alerte. Donc l'ennemi s'en prend au joueur le plus proche, et change de cible quand l'autre devient le plus proche. Non verifie : les degats reellement subis (aucun coeur perdu pendant l'essai) ; si la copie suivie peut blesser le joueur eloigne.
