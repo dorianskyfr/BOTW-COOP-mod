@@ -219,10 +219,13 @@ namespace coop::beast_rotate {
                 /* Creatures verifiees seulement : Vah Medoh (rt6 a rt9) et Vah Ruta (rw1).
                    Vah Rudania exclue (essai rf1) : la rotation de 90 degres suivie chez l'autre emporte bien Link,
                    mais le sol devient un mur et le retour au point sur (Demo048_0) le replace au meme endroit, en
-                   boucle : joueur bloque. A reprendre (points de retour selon l'etat de rotation).
+                   boucle : joueur bloque. Deux corrections essayees sans succes (NOTES 5.86) : vitesse de
+                   rattrapage = celle du jeu (rf3) et drapeau RemainsFire_RotateTo0/90 ecrit chez celui qui suit (rf4).
                    Vah Naboris exclue tant qu'elle n'est pas essayee (essai rn1 : chargement bloque sous Eden). */
+#ifndef COOP_TEST_ROT_ALL /* OUTIL DE TEST : toutes les Creatures (essais Rudania) */
                 if (o.m_Ok && std::strstr(name, "RemainsWind") == nullptr && std::strstr(name, "RemainsWater") == nullptr)
                     o.m_Ok = false;
+#endif
                 o.m_Beast = o.m_Ok ? BeastOf(name) : -1;
                 s_Owners[s_OwnerNext] = o;
                 known = &s_Owners[s_OwnerNext];
@@ -339,6 +342,21 @@ namespace coop::beast_rotate {
             return;
         /* La file recue est videe meme hors de la Creature (sinon elle se remplit et perd l'angle final). */
         DrainIncoming();
+#ifdef COOP_TEST_LOG_ROTTAG
+        /* OUTIL DE TEST : moments ou le jeu pose / retire RemainsFire_RotateTo0 et RotateTo90 (chaque image). */
+        {
+            static int s_PrevTo[2] = { -9, -9 };
+            static int s_ToLogs = 0;
+            const std::uint32_t to[2] = { 0xe67730e2, 0x6bfb900c };
+            for (int i = 0; i < 2; i++) {
+                const int q = coop::flags::Query(to[i]);
+                const int v = q < 0 ? q : (q & 1);
+                if (v != s_PrevTo[i] && s_ToLogs++ < 60)
+                    Logging.Log("[botw-coop] essai rotation : drapeau %s = %d (image %lu)", i == 0 ? "RotateTo0" : "RotateTo90", v, s_Frames);
+                s_PrevTo[i] = v;
+            }
+        }
+#endif
         /* Drapeaux d'etat : lus (pour l'envoi) et poses (recus, angle atteint), dans le fil du jeu comme flags.cpp. */
         if (coop::config::g_BeastRotate && s_Frames % 15 == 0)
             for (Local& e : s_Locals) {

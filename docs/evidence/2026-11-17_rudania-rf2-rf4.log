@@ -1,0 +1,295 @@
+Preuve : Vah Rudania, essais rf2 a rf4 (Eden, deux jeux, 2026-11-17). Extraits des journaux build/runs/rfN_*.
+
+== rf2 pilote (rf2_pilot.log)
+   59.9s appui A x10 -> (?)
+   62.8s appui B x2 -> (?)
+   74.9s appui A x10 -> (?)
+  117.8s appui A x2 -> (-2929.48, 306.46, -441.13)
+  120.7s appui A x2 -> (1609.59, 116.29, 461.48)
+  233.6s appui B x2 -> (-2929.48, 306.46, -441.13)
+  236.5s appui B x2 -> (1609.59, 116.29, 461.48)
+  302.2s appui B x1 -> (0.00, 16.78, 69.50)
+  303.9s appui B x1 -> (0.00, 16.78, 69.50)
+  313.6s appui MINUS x1 -> (0.00, 16.78, 69.50)
+  317.8s appui A x1 -> (0.00, 16.78, 69.50)
+  321.0s appui B x1 -> (-2.05, 16.53, 69.50)
+  361.5s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+  363.7s capture rf2_j1.png : C:\Users\gcdor\Documents\Co ops zelda\build\runs\rf2_rf2_j1.png.png (1280x742), pixels non noirs au centre : 100.0 % | position (0.32, 14.95, 77.14)
+  364.2s position (-8.83, 8.03, 69.50) avant acteur (0.0, 1.0)
+  365.6s capture rf2_j2.png : C:\Users\gcdor\Documents\Co ops zelda\build\runs\rf2_rf2_j2.png.png (1280x742), pixels non noirs au centre : 0.0 % | position (-8.85, 8.03, 69.50)
+
+== rf2 J1 (rf2_game.txt)
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21b0512bc0 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireHead_A_01 21b064f488 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireTail_A_01 21b080bf90 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] rotation : action 21b07bdce8 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] rotation : mouvement local 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 2.70 -> 2.70 degres
+[botw-coop] rotation : angle envoye 516353cc 4.95 -> 4.95 degres
+[botw-coop] rotation : angle envoye 516353cc 7.20 -> 7.20 degres
+[botw-coop] rotation : angle envoye 516353cc 9.45 -> 9.45 degres
+[botw-coop] rotation : angle envoye 516353cc 11.70 -> 11.70 degres
+[botw-coop] rotation : angle envoye 516353cc 13.95 -> 13.95 degres
+[botw-coop] rotation : angle envoye 516353cc 16.20 -> 16.20 degres
+[botw-coop] rotation : angle envoye 516353cc 18.45 -> 18.45 degres
+[botw-coop] rotation : angle envoye 516353cc 20.70 -> 20.70 degres
+[botw-coop] rotation : angle envoye 516353cc 22.95 -> 22.95 degres
+[botw-coop] rotation : angle envoye 516353cc 25.20 -> 25.20 degres
+[botw-coop] rotation : angle envoye 516353cc 27.45 -> 27.45 degres
+[botw-coop] rotation : angle envoye 516353cc 29.70 -> 29.70 degres
+[botw-coop] rotation : angle envoye 516353cc 31.95 -> 31.95 degres
+[botw-coop] rotation : angle envoye 516353cc 34.20 -> 34.20 degres
+[botw-coop] rotation : angle envoye 516353cc 36.45 -> 36.45 degres
+[botw-coop] rotation : angle envoye 516353cc 38.70 -> 38.70 degres
+[botw-coop] rotation : angle envoye 516353cc 40.95 -> 40.95 degres
+[botw-coop] rotation : angle envoye 516353cc 43.20 -> 43.20 degres
+[botw-coop] rotation : angle envoye 516353cc 45.45 -> 45.45 degres
+[botw-coop] rotation : angle envoye 516353cc 47.70 -> 47.70 degres
+[botw-coop] rotation : angle envoye 516353cc 49.95 -> 49.95 degres
+[botw-coop] rotation : angle envoye 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle envoye 516353cc 54.45 -> 54.45 degres
+[botw-coop] rotation : angle envoye 516353cc 56.70 -> 56.70 degres
+[botw-coop] rotation : angle envoye 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle envoye 516353cc 61.20 -> 61.20 degres
+[botw-coop] rotation : angle envoye 516353cc 63.45 -> 63.45 degres
+[botw-coop] rotation : angle envoye 516353cc 65.70 -> 65.70 degres
+[botw-coop] rotation : angle envoye 516353cc 67.95 -> 67.95 degres
+[botw-coop] rotation : angle envoye 516353cc 70.20 -> 70.20 degres
+[botw-coop] rotation : angle envoye 516353cc 72.45 -> 72.45 degres
+[botw-coop] rotation : angle envoye 516353cc 74.70 -> 74.70 degres
+[botw-coop] rotation : angle envoye 516353cc 76.95 -> 76.95 degres
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b0d66610 mtx [-0.0471 -0.9989 -0.0000 7.99 | -0.9989 0.0471 -0.0000 7.62 | 0.0000 0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b0d66610 mtx [0.0000 -1.0000 0.0000 8.00 | -1.0000 -0.0000 -0.0000 8.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 1)
+
+== rf2 J2 (rf2_game2.txt)
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21afc3f888 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireHead_A_01 21afd28878 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireTail_A_01 21afda6a80 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] rotation : action 21affc9a18 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : angle rejoint 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.45 -> 2.70 degres
+[botw-coop] rotation : angle rejoint 516353cc 90.00 -> 90.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 1 -> 2, 2/2)
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b0b3d778 mtx [-0.0262 -0.9997 -0.0000 8.00 | -0.9997 0.0262 -0.0000 7.79 | 0.0000 0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b0b3d778 mtx [-0.0000 -1.0000 -0.0000 8.00 | -1.0000 0.0000 -0.0000 8.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 9)
+
+== rf3 pilote (rf3_pilot.log)
+  197.4s position (1609.59, 116.29, 461.48) avant acteur (0.9593, -0.2825)
+   46.6s position (0.00, 16.78, 69.50) avant acteur (0.0, 1.0)
+   47.1s position (0.00, 16.78, 69.50) avant acteur (0.0, 1.0)
+    1.8s appui MINUS x1 -> (0.00, 16.78, 69.50)
+    6.0s appui A x1 -> (0.00, 16.78, 69.50)
+    9.2s appui B x1 -> (-2.05, 16.53, 69.50)
+   12.7s position (-9.64, 8.57, 69.50) avant acteur (1.0, -0.0019)
+   13.2s position (-10.07, 7.27, 69.50) avant acteur (1.0, -0.0019)
+   23.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   24.2s position (-8.96, -87.06, 69.50) avant acteur (0.0, 1.0)
+   39.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   40.2s position (-8.96, -13.51, 69.50) avant acteur (0.0, 1.0)
+   60.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   60.8s capture rf3_j1.png : pas de fenetre | position (0.32, 14.95, 77.14)
+   61.3s position (-8.83, 8.07, 69.50) avant acteur (0.0, 1.0)
+   61.3s capture rf3_j2.png : pas de fenetre | position (-8.83, 8.07, 69.50)
+
+== rf3 J1 (rf3_game.txt)
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21b05511e8 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireHead_A_01 21b068b7c8 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireTail_A_01 21b08c0b40 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] rotation : action 21b07d9ce8 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] rotation : mouvement local 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 2.70 -> 2.70 degres
+[botw-coop] rotation : angle envoye 516353cc 4.95 -> 4.95 degres
+[botw-coop] rotation : angle envoye 516353cc 7.20 -> 7.20 degres
+[botw-coop] rotation : angle envoye 516353cc 9.45 -> 9.45 degres
+[botw-coop] rotation : angle envoye 516353cc 11.70 -> 11.70 degres
+[botw-coop] rotation : angle envoye 516353cc 13.95 -> 13.95 degres
+[botw-coop] rotation : angle envoye 516353cc 16.20 -> 16.20 degres
+[botw-coop] rotation : angle envoye 516353cc 18.45 -> 18.45 degres
+[botw-coop] rotation : angle envoye 516353cc 20.70 -> 20.70 degres
+[botw-coop] rotation : angle envoye 516353cc 22.95 -> 22.95 degres
+[botw-coop] rotation : angle envoye 516353cc 25.20 -> 25.20 degres
+[botw-coop] rotation : angle envoye 516353cc 27.45 -> 27.45 degres
+[botw-coop] rotation : angle envoye 516353cc 29.70 -> 29.70 degres
+[botw-coop] rotation : angle envoye 516353cc 31.95 -> 31.95 degres
+[botw-coop] rotation : angle envoye 516353cc 34.20 -> 34.20 degres
+[botw-coop] rotation : angle envoye 516353cc 36.45 -> 36.45 degres
+[botw-coop] rotation : angle envoye 516353cc 38.70 -> 38.70 degres
+[botw-coop] rotation : angle envoye 516353cc 40.95 -> 40.95 degres
+[botw-coop] rotation : angle envoye 516353cc 43.20 -> 43.20 degres
+[botw-coop] rotation : angle envoye 516353cc 45.45 -> 45.45 degres
+[botw-coop] rotation : angle envoye 516353cc 47.70 -> 47.70 degres
+[botw-coop] rotation : angle envoye 516353cc 49.95 -> 49.95 degres
+[botw-coop] rotation : angle envoye 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle envoye 516353cc 54.45 -> 54.45 degres
+[botw-coop] rotation : angle envoye 516353cc 56.70 -> 56.70 degres
+[botw-coop] rotation : angle envoye 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle envoye 516353cc 61.20 -> 61.20 degres
+[botw-coop] rotation : angle envoye 516353cc 63.45 -> 63.45 degres
+[botw-coop] rotation : angle envoye 516353cc 65.70 -> 65.70 degres
+[botw-coop] rotation : angle envoye 516353cc 67.95 -> 67.95 degres
+[botw-coop] rotation : angle envoye 516353cc 70.20 -> 70.20 degres
+[botw-coop] rotation : angle envoye 516353cc 72.45 -> 72.45 degres
+[botw-coop] rotation : angle envoye 516353cc 74.70 -> 74.70 degres
+[botw-coop] rotation : angle envoye 516353cc 76.95 -> 76.95 degres
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b0ec31b8 mtx [-0.0628 -0.9980 -0.0000 7.98 | -0.9980 0.0628 -0.0000 7.50 | 0.0000 0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b0ec31b8 mtx [0.0000 -1.0000 0.0000 8.00 | -1.0000 -0.0000 -0.0000 8.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 1)
+
+== rf3 J2 (rf3_game2.txt)
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21b03729a0 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireHead_A_01 21b04a8c18 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireTail_A_01 21b0666068 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] rotation : action 21b0616ce8 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.45 -> 2.70 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 7.20 -> 7.20 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 7.20 -> 9.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 13.95 -> 13.95 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 13.95 -> 16.20 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 20.70 -> 20.70 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 20.70 -> 22.95 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 27.45 -> 27.45 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 27.45 -> 31.95 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 1 -> 0, 2/2)
+[botw-coop] rotation : angle rejoint 516353cc 47.70 -> 47.70 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 47.70 -> 49.95 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 52.20 -> 54.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 58.95 -> 61.20 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 65.70 -> 65.70 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 65.70 -> 67.95 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 72.45 -> 72.45 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 72.45 -> 74.70 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 79.20 -> 79.20 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 79.20 -> 81.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b100dea8 mtx [-0.0157 -0.9999 -0.0000 8.00 | -0.9999 0.0157 -0.0000 7.87 | 0.0000 0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b100dea8 mtx [-0.0000 -1.0000 -0.0000 8.00 | -1.0000 0.0000 -0.0000 8.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 25)
+
+== rf4 pilote (rf4_pilot.log)
+   47.1s position (0.00, 16.78, 69.50) avant acteur (0.0, 1.0)
+    1.8s appui MINUS x1 -> (0.00, 16.78, 69.50)
+    6.0s appui A x1 -> (0.00, 16.78, 69.50)
+    9.2s appui B x1 -> (-2.05, 16.53, 69.50)
+   12.7s position (-10.05, 7.38, 69.50) avant acteur (1.0, -0.0019)
+   13.2s position (-10.22, 6.79, 69.52) avant acteur (0.9963, -0.0859)
+   23.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   24.2s position (-8.96, -77.06, 69.50) avant acteur (0.0, 1.0)
+   39.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   40.2s position (-8.96, -10.12, 69.50) avant acteur (0.0, 1.0)
+   60.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   61.2s position (-8.83, 8.07, 69.50) avant acteur (0.0, 1.0)
+   81.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   85.1s capture rf4_j1.png : aucune image obtenue | position (0.32, 14.95, 77.14)
+   85.6s position (-8.83, 8.07, 69.50) avant acteur (0.0, 1.0)
+   88.9s capture rf4_j2.png : aucune image obtenue | position (-8.85, 8.07, 69.50)
+
+== rf4 J1 (rf4_game.txt)
+[botw-coop] essai rotation : drapeau RotateTo0 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo90 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 300)
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 300)
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21aff23308 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireHead_A_01 21b005fc18 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireTail_A_01 21b011c828 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] rotation : action 21b01d0d08 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] essai rotation : drapeau RotateTo90 = 1 (image 10315)
+[botw-coop] rotation : mouvement local 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 2.70 -> 2.70 degres
+[botw-coop] rotation : angle envoye 516353cc 4.95 -> 4.95 degres
+[botw-coop] rotation : angle envoye 516353cc 7.20 -> 7.20 degres
+[botw-coop] rotation : angle envoye 516353cc 9.45 -> 9.45 degres
+[botw-coop] rotation : angle envoye 516353cc 11.70 -> 11.70 degres
+[botw-coop] rotation : angle envoye 516353cc 13.95 -> 13.95 degres
+[botw-coop] rotation : angle envoye 516353cc 16.20 -> 16.20 degres
+[botw-coop] rotation : angle envoye 516353cc 18.45 -> 18.45 degres
+[botw-coop] rotation : angle envoye 516353cc 20.70 -> 20.70 degres
+[botw-coop] rotation : angle envoye 516353cc 22.95 -> 22.95 degres
+[botw-coop] rotation : angle envoye 516353cc 25.20 -> 25.20 degres
+[botw-coop] rotation : angle envoye 516353cc 27.45 -> 27.45 degres
+[botw-coop] rotation : angle envoye 516353cc 29.70 -> 29.70 degres
+[botw-coop] rotation : angle envoye 516353cc 31.95 -> 31.95 degres
+[botw-coop] rotation : angle envoye 516353cc 34.20 -> 34.20 degres
+[botw-coop] rotation : angle envoye 516353cc 36.45 -> 36.45 degres
+[botw-coop] rotation : angle envoye 516353cc 38.70 -> 38.70 degres
+[botw-coop] rotation : angle envoye 516353cc 40.95 -> 40.95 degres
+[botw-coop] rotation : angle envoye 516353cc 43.20 -> 43.20 degres
+[botw-coop] rotation : angle envoye 516353cc 45.45 -> 45.45 degres
+[botw-coop] rotation : angle envoye 516353cc 47.70 -> 47.70 degres
+[botw-coop] rotation : angle envoye 516353cc 49.95 -> 49.95 degres
+[botw-coop] rotation : angle envoye 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle envoye 516353cc 54.45 -> 54.45 degres
+[botw-coop] rotation : angle envoye 516353cc 56.70 -> 56.70 degres
+[botw-coop] rotation : angle envoye 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle envoye 516353cc 61.20 -> 61.20 degres
+[botw-coop] rotation : angle envoye 516353cc 63.45 -> 63.45 degres
+[botw-coop] rotation : angle envoye 516353cc 65.70 -> 65.70 degres
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b0d3e558 mtx [-0.0314 -0.9995 -0.0000 8.00 | -0.9995 0.0314 -0.0000 7.75 | 0.0000 0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b0d3e558 mtx [0.0000 -1.0000 0.0000 8.00 | -1.0000 -0.0000 -0.0000 8.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 1)
+
+== rf4 J2 (rf4_game2.txt)
+[botw-coop] essai rotation : drapeau RotateTo0 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo90 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 300)
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 300)
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21b0427fe8 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireHead_A_01 21b0623c38 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireTail_A_01 21b0661c18 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00]
+[botw-coop] rotation : action 21b07b1ce8 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.45 -> 2.70 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : points de retour RemainsFire, drapeau e67730e2 pose (ok)
+[botw-coop] essai rotation : drapeau RotateTo0 = 1 (image 9451)
+[botw-coop] rotation : angle rejoint 516353cc 7.20 -> 7.20 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 7.20 -> 9.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 13.95 -> 13.95 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 13.95 -> 16.20 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 20.70 -> 20.70 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 20.70 -> 22.95 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 38.70 -> 38.70 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 38.70 -> 40.95 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : points de retour RemainsFire, drapeau 6bfb900c pose (ok)
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 9541)
+[botw-coop] essai rotation : drapeau RotateTo90 = 1 (image 9541)
+[botw-coop] rotation : angle rejoint 516353cc 45.45 -> 45.45 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 45.45 -> 47.70 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 52.20 -> 54.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 58.95 -> 61.20 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 65.70 -> 65.70 degres
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b122de10 mtx [-0.0314 -0.9995 -0.0000 8.00 | -0.9995 0.0314 -0.0000 7.75 | 0.0000 0.0000 -1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b122de10 mtx [-0.0000 -1.0000 -0.0000 8.00 | -1.0000 0.0000 -0.0000 8.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 12)
+
