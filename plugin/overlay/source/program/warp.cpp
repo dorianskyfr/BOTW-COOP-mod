@@ -381,8 +381,11 @@ namespace coop::warp {
             static const char* const Beasts[] = { "MainFieldDungeon/RemainsWind", "MainFieldDungeon/RemainsWater",
                 "MainFieldDungeon/RemainsFire", "MainFieldDungeon/RemainsElectric" };
             const char* map = Beasts[static_cast<int>(x - 9000.0f)];
-            const bool ok = coop::game::ChangeStage(map, "Entrance_1");
-            Logging.Log("[botw-coop] voyage (essai) : vers %s Entrance_1 -> %s", map, ok ? "demande" : "REFUSE");
+            /* z = 1 : point StartDemoEnter (meme fichier Static.smubin, present pour Wind, Water, Fire et
+               Electric), essai rn3 : Vah Naboris reste en chargement avec Entrance_1 (rn1, rn2). */
+            const char* pos = z > 0.5f ? "StartDemoEnter" : "Entrance_1";
+            const bool ok = coop::game::ChangeStage(map, pos);
+            Logging.Log("[botw-coop] voyage (essai) : vers %s %s -> %s", map, pos, ok ? "demande" : "REFUSE");
             return;
         }
         /* Essai : x = 9100 + n entre dans le sanctuaire n ("CDungeon/DungeonNNN", "Entrance_1" : point
