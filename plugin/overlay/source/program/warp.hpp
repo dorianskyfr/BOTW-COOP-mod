@@ -25,6 +25,9 @@ namespace coop::warp {
     void RequestJoinPartner();
     /* Teleportation ou voyage en cours ou demande. */
     bool IsBusy();
+    /* Fil du jeu : Link pose en (x, y, z), a moins de 250 m, avec les memes controles que la teleportation
+       vers le partenaire (corps Havok verifie, ecritures repetees 10 images). false si rien n'est ecrit. */
+    bool PlaceAt(float x, float y, float z, const char* why);
 
 #ifdef COOP_REMOTE_PAD
     /* Essai seulement : Link souleve de height metres, il retombe (chute mortelle, NOTES 5.37). */

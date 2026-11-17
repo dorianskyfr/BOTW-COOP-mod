@@ -19,6 +19,10 @@ namespace coop::cutscene {
     /* Fil du jeu, a chaque image : rejoue ou annonce les cinematiques recues. */
     void OnFrame();
 
+    /* Evenement « Demo... » demande par le jeu local (pas un rejeu) depuis sinceMs (clock::NowMs) ;
+       16 derniers retenus. */
+    bool PlayedLocallySinceMs(const char* event, std::uint64_t sinceMs);
+
     struct Demo {
         char m_Event[48] = {};
         char m_Entry[48] = {};

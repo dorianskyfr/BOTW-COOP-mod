@@ -213,6 +213,10 @@ namespace coop::cutscene {
         Logging.Log("[botw-coop] cinematiques : crochet pose sur main+0x%lx", EventRequest);
     }
 
+    bool PlayedLocallySinceMs(const char* event, std::uint64_t sinceMs) {
+        return PlayedLocallySince(event, sinceMs);
+    }
+
     void OnFrame() {
         const bool ready = coop::game::IsWorldReady();
         const auto now = coop::clock::NowMs();

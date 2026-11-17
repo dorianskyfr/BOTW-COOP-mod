@@ -1,0 +1,345 @@
+Preuve : Vah Rudania, essais rf5 et rf6 (Eden, deux jeux, 2026-11-17), repose apres chute. Extraits de build/runs/rfN_*.
+
+== rf5 pilote (rf5_pilot.log)
+   89.7s capture rf5_j2.png : aucune image obtenue | position (0.00, 14.95, 77.00)
+    1.8s appui MINUS x1 -> (0.00, 14.95, 77.00)
+    6.0s appui A x1 -> (0.00, 14.95, 77.00)
+    9.2s appui B x1 -> (0.00, 14.95, 77.00)
+   12.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   13.2s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+   25.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   26.2s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+   46.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   47.2s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+   67.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   68.2s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+    1.8s appui MINUS x1 -> (0.00, 14.95, 77.00)
+    5.2s stick (-1.0, 0.0) 0.4 s
+    7.4s appui A x1 -> (0.00, 14.95, 77.00)
+   10.6s appui B x1 -> (0.00, 14.95, 77.00)
+   26.1s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   26.6s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+    1.8s appui MINUS x1 -> (0.00, 14.95, 77.00)
+    5.2s stick (1.0, 0.0) 0.4 s
+    7.4s appui A x1 -> (-3.30, 14.30, 76.98)
+   10.6s appui B x1 -> (-3.30, 14.30, 76.98)
+   26.1s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   26.6s position (-3.30, 14.30, 76.98) avant acteur (-0.9995, -0.0327)
+    3.0s appui B x2 -> (-3.30, 14.30, 76.98)
+    6.2s appui MINUS x1 -> (-3.30, 14.30, 76.98)
+   10.4s appui A x1 -> (-3.30, 14.30, 76.98)
+   13.4s stick (-1.0, 0.0) 1.0 s
+   15.6s appui A x1 -> (-3.30, 14.30, 76.98)
+   18.8s appui B x1 -> (-3.30, 14.30, 76.98)
+   34.3s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   34.8s position (-3.30, 14.30, 76.98) avant acteur (-0.9995, -0.0327)
+    3.0s appui B x2 -> (-3.30, 14.30, 76.98)
+    6.2s appui MINUS x1 -> (-3.30, 14.30, 76.98)
+   10.4s appui A x1 -> (-3.30, 14.30, 76.98)
+   13.4s stick (1.0, 0.0) 1.0 s
+   15.6s appui A x1 -> (-3.30, 14.30, 76.98)
+   18.8s appui B x1 -> (-3.30, 14.30, 76.98)
+   34.3s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   34.8s position (-3.30, 14.30, 76.98) avant acteur (-0.9995, -0.0327)
+
+== rf5 J1 (rf5_game.txt)
+[botw-coop] essai rotation : drapeau RotateTo0 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo90 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 300)
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 300)
+[botw-coop] essai drapeau local : hachage=7532e9f2 index 19436, octet 0 -> 1
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21b0618cf0 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] rotation : action 21b099fce8 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] essai rotation : drapeau RotateTo90 = 1 (image 10132)
+[botw-coop] rotation : mouvement local 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 2.70 -> 2.70 degres
+[botw-coop] rotation : angle envoye 516353cc 4.95 -> 4.95 degres
+[botw-coop] rotation : angle envoye 516353cc 7.20 -> 7.20 degres
+[botw-coop] rotation : angle envoye 516353cc 9.45 -> 9.45 degres
+[botw-coop] rotation : angle envoye 516353cc 11.70 -> 11.70 degres
+[botw-coop] rotation : angle envoye 516353cc 13.95 -> 13.95 degres
+[botw-coop] rotation : angle envoye 516353cc 16.20 -> 16.20 degres
+[botw-coop] rotation : angle envoye 516353cc 18.45 -> 18.45 degres
+[botw-coop] rotation : angle envoye 516353cc 20.70 -> 20.70 degres
+[botw-coop] rotation : angle envoye 516353cc 22.95 -> 22.95 degres
+[botw-coop] rotation : angle envoye 516353cc 25.20 -> 25.20 degres
+[botw-coop] rotation : angle envoye 516353cc 27.45 -> 27.45 degres
+[botw-coop] rotation : angle envoye 516353cc 29.70 -> 29.70 degres
+[botw-coop] rotation : angle envoye 516353cc 31.95 -> 31.95 degres
+[botw-coop] rotation : angle envoye 516353cc 34.20 -> 34.20 degres
+[botw-coop] rotation : angle envoye 516353cc 36.45 -> 36.45 degres
+[botw-coop] rotation : angle envoye 516353cc 38.70 -> 38.70 degres
+[botw-coop] rotation : angle envoye 516353cc 40.95 -> 40.95 degres
+[botw-coop] rotation : angle envoye 516353cc 43.20 -> 43.20 degres
+[botw-coop] rotation : angle envoye 516353cc 45.45 -> 45.45 degres
+[botw-coop] rotation : angle envoye 516353cc 47.70 -> 47.70 degres
+[botw-coop] rotation : angle envoye 516353cc 49.95 -> 49.95 degres
+[botw-coop] rotation : angle envoye 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle envoye 516353cc 54.45 -> 54.45 degres
+[botw-coop] rotation : angle envoye 516353cc 56.70 -> 56.70 degres
+[botw-coop] rotation : angle envoye 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle envoye 516353cc 61.20 -> 61.20 degres
+[botw-coop] rotation : angle envoye 516353cc 63.45 -> 63.45 degres
+[botw-coop] rotation : angle envoye 516353cc 65.70 -> 65.70 degres
+[botw-coop] rotation : angle envoye 516353cc 67.95 -> 67.95 degres
+[botw-coop] rotation : angle envoye 516353cc 70.20 -> 70.20 degres
+[botw-coop] rotation : angle envoye 516353cc 72.45 -> 72.45 degres
+[botw-coop] rotation : angle envoye 516353cc 74.70 -> 74.70 degres
+[botw-coop] rotation : angle envoye 516353cc 76.95 -> 76.95 degres
+[botw-coop] rotation : angle envoye 516353cc 79.20 -> 79.20 degres
+[botw-coop] rotation : angle envoye 516353cc 81.45 -> 81.45 degres
+[botw-coop] rotation : angle envoye 516353cc 83.70 -> 83.70 degres
+[botw-coop] rotation : angle envoye 516353cc 85.95 -> 85.95 degres
+[botw-coop] rotation : angle envoye 516353cc 88.20 -> 88.20 degres
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 10332)
+[botw-coop] rotation : angle envoye 516353cc 90.00 -> 90.00 degres
+[botw-coop] rotation : angle final envoye 516353cc 90.00 -> 90.00 degres
+derniere matrice : [botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b14058e8 mtx [0.0000 -1.0000 0.0000 8.00 | -1.0000 -0.0000 -0.0000 8.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 1)
+
+== rf5 J2 (rf5_game2.txt)
+[botw-coop] essai rotation : drapeau RotateTo0 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo90 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 300)
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 300)
+[botw-coop] carte : notre tampon n'est plus actif, il sera repose
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21b06fda68 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] rotation : action 21b099da18 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.45 -> 2.70 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 7.20 -> 7.20 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 7.20 -> 9.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 25.20 -> 25.20 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 25.20 -> 27.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 31.95 -> 31.95 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 31.95 -> 34.20 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 38.70 -> 38.70 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 38.70 -> 40.95 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 45.45 -> 45.45 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 45.45 -> 47.70 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 52.20 -> 54.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 58.95 -> 61.20 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 65.70 -> 65.70 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 65.70 -> 67.95 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 76.95 -> 76.95 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 76.95 -> 79.20 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : chute (Demo048_0) dans RemainsFire en (-13.30, -17.90, 69.80), repose armee
+[botw-coop] rotation : angle rejoint 516353cc 83.70 -> 83.70 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 83.70 -> 85.95 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 90.00 -> 90.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 1 -> 0, 2/2)
+[botw-coop] rotation : retour au point sur du jeu vu, (-13.30, -103.62, 69.80) -> (-8.80, 8.07, 69.50)
+[botw-coop] teleportation : chaine acteur -> 2109592c90, vtable attendue, position (-8.80, 8.07, 69.50)
+[botw-coop] teleportation : corps Havok trouve par la chaine acteur
+[botw-coop] teleportation (repose apres chute) : de (-8.80, 8.07, 69.50) vers (0.00, 15.50, 77.00), 13.7 m
+[botw-coop] teleportation : arrivee, position (0.00, 15.50, 77.00)
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 0 -> 2, 2/2)
+[botw-coop] carte : notre tampon n'est plus actif, il sera repose
+derniere matrice : [botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b14077e0 mtx [-0.0000 -1.0000 -0.0000 8.00 | -1.0000 0.0000 -0.0000 8.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 1)
+
+== rf6 pilote (rf6_pilot.log)
+   47.9s appui B x2 -> (?)
+   59.9s appui A x10 -> (?)
+   62.8s appui B x2 -> (?)
+   74.8s appui A x10 -> (?)
+  117.7s appui A x2 -> (-2929.48, 306.46, -441.13)
+  120.6s appui A x2 -> (1609.59, 116.29, 461.48)
+  233.5s appui B x2 -> (-2929.48, 306.46, -441.13)
+  236.4s appui B x2 -> (1605.89, 116.35, 456.77)
+  284.1s appui MINUS x1 -> (0.00, 16.78, 69.50)
+  288.3s appui A x1 -> (0.00, 16.78, 69.50)
+  291.5s appui B x1 -> (-1.85, 16.58, 69.50)
+  295.0s position (-9.64, 8.57, 69.50) avant acteur (1.0, -0.0019)
+  295.5s position (-10.16, 6.88, 69.51) avant acteur (0.9963, -0.0859)
+  308.0s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+  308.5s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+  334.0s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+  334.5s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+    1.8s appui MINUS x1 -> (0.00, 14.95, 77.00)
+    6.0s appui A x1 -> (0.00, 14.95, 77.00)
+    9.2s appui B x1 -> (0.00, 14.95, 77.00)
+   12.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   13.2s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+   25.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   26.2s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+   51.7s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   52.2s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+    3.0s appui B x2 -> (0.00, 14.95, 77.00)
+    6.2s appui MINUS x1 -> (0.00, 14.95, 77.00)
+   10.4s appui A x1 -> (0.00, 14.95, 77.00)
+   13.4s stick (-1.0, 0.0) 1.0 s
+   15.6s appui A x1 -> (0.00, 14.95, 77.00)
+   18.8s appui B x1 -> (0.00, 14.95, 77.00)
+   31.3s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+   15.6s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   16.1s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+   36.6s position (0.32, 14.95, 77.14) avant acteur (0.0, -1.0)
+   37.1s position (0.00, 14.95, 77.00) avant acteur (0.0, 1.0)
+
+== rf6 J1 (rf6_game.txt)
+[botw-coop] essai rotation : drapeau RotateTo0 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo90 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 300)
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 300)
+[botw-coop] essai drapeau local : hachage=7532e9f2 index 19436, octet 0 -> 1
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21b07284b8 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] rotation : action 21b09c4220 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] essai rotation : drapeau RotateTo90 = 1 (image 9912)
+[botw-coop] rotation : mouvement local 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 0.45 -> 0.45 degres
+...
+[botw-coop] rotation : angle envoye 516353cc 34.20 -> 34.20 degres
+[botw-coop] rotation : angle envoye 516353cc 36.45 -> 36.45 degres
+[botw-coop] rotation : angle envoye 516353cc 38.70 -> 38.70 degres
+[botw-coop] rotation : angle envoye 516353cc 40.95 -> 40.95 degres
+[botw-coop] rotation : angle envoye 516353cc 43.20 -> 43.20 degres
+[botw-coop] rotation : angle envoye 516353cc 45.45 -> 45.45 degres
+[botw-coop] rotation : angle envoye 516353cc 47.70 -> 47.70 degres
+[botw-coop] rotation : angle envoye 516353cc 49.95 -> 49.95 degres
+[botw-coop] rotation : angle envoye 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle envoye 516353cc 54.45 -> 54.45 degres
+[botw-coop] rotation : angle envoye 516353cc 56.70 -> 56.70 degres
+[botw-coop] rotation : angle envoye 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle envoye 516353cc 61.20 -> 61.20 degres
+[botw-coop] rotation : angle envoye 516353cc 63.45 -> 63.45 degres
+[botw-coop] rotation : angle envoye 516353cc 65.70 -> 65.70 degres
+[botw-coop] rotation : angle envoye 516353cc 67.95 -> 67.95 degres
+[botw-coop] rotation : angle envoye 516353cc 70.20 -> 70.20 degres
+[botw-coop] rotation : angle envoye 516353cc 72.45 -> 72.45 degres
+[botw-coop] rotation : angle envoye 516353cc 74.70 -> 74.70 degres
+[botw-coop] rotation : angle envoye 516353cc 76.95 -> 76.95 degres
+[botw-coop] rotation : angle envoye 516353cc 79.20 -> 79.20 degres
+[botw-coop] rotation : angle envoye 516353cc 81.45 -> 81.45 degres
+[botw-coop] rotation : angle envoye 516353cc 83.70 -> 83.70 degres
+[botw-coop] rotation : angle envoye 516353cc 85.95 -> 85.95 degres
+[botw-coop] rotation : angle envoye 516353cc 88.20 -> 88.20 degres
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 10112)
+[botw-coop] rotation : angle envoye 516353cc 90.00 -> 90.00 degres
+[botw-coop] rotation : angle final envoye 516353cc 90.00 -> 90.00 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 90.00 -> 89.55 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 89.55 -> 89.55 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 89.55 -> 87.30 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 82.80 -> 82.80 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 82.80 -> 80.55 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 64.80 -> 64.80 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 64.80 -> 62.55 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 58.05 -> 58.05 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 58.05 -> 55.80 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 51.30 -> 51.30 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 51.30 -> 49.05 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 44.55 -> 44.55 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 44.55 -> 42.30 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 37.80 -> 37.80 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 37.80 -> 35.55 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 31.05 -> 31.05 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 31.05 -> 28.80 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 6.30 -> 6.30 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 6.30 -> 4.05 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 0.00 -> 0.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 2 -> 0, 2/2)
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 0 -> 1, 2/2)
+derniere matrice : [botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b1512ed8 mtx [-1.0000 -0.0000 -0.0000 0.00 | -0.0000 1.0000 -0.0000 0.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 1)
+
+== rf6 J2 (rf6_game2.txt)
+[botw-coop] essai rotation : drapeau RotateTo0 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo90 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 300)
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 300)
+[botw-coop] carte : notre tampon n'est plus actif, il sera repose
+[botw-coop] essai drapeau local : hachage=7532e9f2 index 19436, octet 0 -> 1
+[botw-coop] essai rotation : DungeonRotateTagRemainsFire 21b055d338 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 8.00 | 0.0000 1.0000 -0.0000 -12.00]
+[botw-coop] rotation : action 21b07a1ab8 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+...
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : chute (Demo048_0) dans RemainsFire en (-13.25, -18.14, 69.79), repose armee
+[botw-coop] rotation : angle rejoint 516353cc 90.00 -> 90.00 degres
+[botw-coop] rotation : retour au point sur du jeu vu, (-13.25, -103.98, 69.79) -> (-8.80, 8.07, 69.50)
+[botw-coop] teleportation : chaine acteur -> 2109392c90, vtable attendue, position (-8.80, 8.07, 69.50)
+[botw-coop] teleportation : corps Havok trouve par la chaine acteur
+[botw-coop] teleportation (repose apres chute) : de (-8.80, 8.07, 69.50) vers (0.00, 15.50, 77.00), 13.7 m
+[botw-coop] teleportation : arrivee, position (0.00, 15.50, 77.00)
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 0 -> 2, 2/2)
+[botw-coop] essai rotation : drapeau RotateTo90 = 1 (image 10900)
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 10901)
+[botw-coop] essai rotation : drapeau RotateTo0 = 1 (image 13147)
+[botw-coop] rotation : mouvement local 516353cc 90.00 -> 89.55 degres
+[botw-coop] rotation : angle envoye 516353cc 89.55 -> 89.55 degres
+[botw-coop] rotation : angle envoye 516353cc 87.30 -> 87.30 degres
+[botw-coop] rotation : angle envoye 516353cc 85.05 -> 85.05 degres
+[botw-coop] rotation : angle envoye 516353cc 82.80 -> 82.80 degres
+[botw-coop] rotation : angle envoye 516353cc 80.55 -> 80.55 degres
+[botw-coop] rotation : angle envoye 516353cc 78.30 -> 78.30 degres
+[botw-coop] rotation : angle envoye 516353cc 76.05 -> 76.05 degres
+[botw-coop] rotation : angle envoye 516353cc 73.80 -> 73.80 degres
+[botw-coop] rotation : angle envoye 516353cc 71.55 -> 71.55 degres
+[botw-coop] rotation : angle envoye 516353cc 69.30 -> 69.30 degres
+[botw-coop] rotation : angle envoye 516353cc 67.05 -> 67.05 degres
+[botw-coop] rotation : angle envoye 516353cc 64.80 -> 64.80 degres
+[botw-coop] rotation : angle envoye 516353cc 62.55 -> 62.55 degres
+[botw-coop] rotation : angle envoye 516353cc 60.30 -> 60.30 degres
+[botw-coop] rotation : angle envoye 516353cc 58.05 -> 58.05 degres
+[botw-coop] rotation : angle envoye 516353cc 55.80 -> 55.80 degres
+[botw-coop] rotation : angle envoye 516353cc 53.55 -> 53.55 degres
+[botw-coop] rotation : angle envoye 516353cc 51.30 -> 51.30 degres
+[botw-coop] rotation : angle envoye 516353cc 49.05 -> 49.05 degres
+[botw-coop] rotation : angle envoye 516353cc 46.80 -> 46.80 degres
+[botw-coop] rotation : angle envoye 516353cc 44.55 -> 44.55 degres
+[botw-coop] rotation : angle envoye 516353cc 42.30 -> 42.30 degres
+[botw-coop] rotation : angle envoye 516353cc 40.05 -> 40.05 degres
+[botw-coop] rotation : angle envoye 516353cc 37.80 -> 37.80 degres
+[botw-coop] rotation : angle envoye 516353cc 35.55 -> 35.55 degres
+[botw-coop] rotation : angle envoye 516353cc 33.30 -> 33.30 degres
+[botw-coop] rotation : angle envoye 516353cc 31.05 -> 31.05 degres
+[botw-coop] rotation : angle envoye 516353cc 28.80 -> 28.80 degres
+[botw-coop] rotation : angle envoye 516353cc 26.55 -> 26.55 degres
+[botw-coop] rotation : angle envoye 516353cc 24.30 -> 24.30 degres
+[botw-coop] rotation : angle envoye 516353cc 22.05 -> 22.05 degres
+[botw-coop] rotation : angle envoye 516353cc 19.80 -> 19.80 degres
+[botw-coop] rotation : angle envoye 516353cc 17.55 -> 17.55 degres
+[botw-coop] rotation : angle envoye 516353cc 15.30 -> 15.30 degres
+[botw-coop] rotation : angle envoye 516353cc 13.05 -> 13.05 degres
+[botw-coop] rotation : angle envoye 516353cc 10.80 -> 10.80 degres
+[botw-coop] rotation : angle envoye 516353cc 8.55 -> 8.55 degres
+[botw-coop] rotation : angle envoye 516353cc 6.30 -> 6.30 degres
+[botw-coop] rotation : angle envoye 516353cc 4.05 -> 4.05 degres
+[botw-coop] rotation : angle envoye 516353cc 1.80 -> 1.80 degres
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 13347)
+[botw-coop] rotation : angle envoye 516353cc 0.00 -> 0.00 degres
+[botw-coop] rotation : angle final envoye 516353cc 0.00 -> 0.00 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.00 -> 90.00 degres
+[botw-coop] rotation : pas de rattrapage 0.450 degre par appel
+[botw-coop] rotation : angle rejoint 516353cc 90.00 -> 90.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 1 -> 2, 2/2)
+derniere matrice : [botw-coop] essai rotation : DgnObj_IbutsuFireBody_A_01 21b0e931b8 mtx [0.0000 -1.0000 0.0000 8.00 | -1.0000 -0.0000 -0.0000 8.00 | 0.0000 0.0000 -1.0000 0.00]
+(Demo048_0 demandes : 1)
+

@@ -347,6 +347,24 @@ namespace coop::warp {
         coop::notify::Post(msg);
     }
 
+    bool PlaceAt(float x, float y, float z, const char* why) {
+        coop::game::PlayerState st;
+        if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady() || s_Travelling)
+            return false;
+        const float target[3] = { x, y, z };
+        const float d = Dist(target, st.m_Pos);
+        if (d > MaxDistance)
+            return false;
+        std::memcpy(s_Target, target, sizeof(target));
+        if (!Place(st, s_Target, true))
+            return false;
+        s_HoldLeft = HoldFrames;
+        Logging.Log("[botw-coop] teleportation (%s) : de (%.2f, %.2f, %.2f) vers (%.2f, %.2f, %.2f), %.1f m", why,
+            static_cast<double>(st.m_Pos[0]), static_cast<double>(st.m_Pos[1]), static_cast<double>(st.m_Pos[2]),
+            static_cast<double>(x), static_cast<double>(y), static_cast<double>(z), static_cast<double>(d));
+        return true;
+    }
+
 #ifdef COOP_REMOTE_PAD
     void DebugTravel() {
         s_DebugTravelRequested = true;

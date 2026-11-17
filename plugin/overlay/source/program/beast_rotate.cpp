@@ -1,9 +1,12 @@
 #include "beast_rotate.hpp"
 
+#include "clock.hpp"
 #include "config.hpp"
+#include "cutscene.hpp"
 #include "flags.hpp"
 #include "game.hpp"
 #include "session.hpp"
+#include "warp.hpp"
 
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
@@ -30,6 +33,8 @@ namespace coop::beast_rotate {
         constexpr std::uintptr_t Action_Owner = 0x08;
         constexpr std::uintptr_t Action_Axis = 0x70;
         constexpr std::uintptr_t Action_Angle = 0x80;
+        constexpr std::uintptr_t Action_Speed = 0x88;  /* vitesse visee (TiltAngularSpeed * pi/180), analyse Codex ; rf3 : 0,45 */
+        constexpr float MaxStepCap = 1.0f * 3.14159265f / 180.0f;
         constexpr std::uintptr_t Actor_HashId = 0x640; /* actActor.h 1.5.0, verifie en 1.9.0 (NOTES 5.81) */
 
         /*
@@ -54,11 +59,35 @@ namespace coop::beast_rotate {
             const char* m_Suffix;          /* fin du nom de l'acteur DungeonRotateTag* */
             int m_Count;
             std::uint32_t m_Flags[3];
+            /*
+             * Vah Rudania (NOTES 5.86) : rattrapage a la vitesse du jeu (+0x88), et points surs ou reposer Link
+             * de celui qui suit apres une chute (Demo048_0). Chez celui qui commande, le jeu cree pendant la
+             * rotation les PlayerSetComebackPositionTag de la carte RemainsFire_Static (0, 15, 77) et
+             * (0, 24.5, -68.5) ; chez celui qui suit, non (rotation par applyRotation), et le retour au point sur
+             * le remet a sa derniere position au sol, sur la Creature tournee : boucle (essais rf1 a rf4).
+             */
+            bool m_GameSpeed;
+            int m_SafeCount;
+            float m_Safe[2][3];
         };
         constexpr Beast Beasts[] = {
-            { "RemainsWind", 3, { 0x12ed3309 /* RotHorizontal */, 0xeaf74b05 /* RotLeft */, 0x8759f85d /* RotRight */ } },
-            { "RemainsFire", 2, { 0x4283f75d /* Rotate0 */, 0x3081cad6 /* Rotate90 */, 0 } },
+            { "RemainsWind", 3, { 0x12ed3309 /* RotHorizontal */, 0xeaf74b05 /* RotLeft */, 0x8759f85d /* RotRight */ }, false, 0, {} },
+            { "RemainsFire", 2, { 0x4283f75d /* Rotate0 */, 0x3081cad6 /* Rotate90 */, 0 }, true, 2,
+                { { 0.0f, 15.0f, 77.0f }, { 0.0f, 24.5f, -68.5f } } },
         };
+
+        /*
+         * Repose apres chute (Creatures a points surs). Fenetre ouverte a chaque pas de rattrapage ; dans la
+         * fenetre, un Demo048_0 local arme la repose ; le retour au point sur du jeu se voit comme un saut de
+         * position (plus de RespawnJump metres d'une image a l'autre) ; Link est alors pose au point sur le plus
+         * proche (0,5 m au-dessus), par warp::PlaceAt. Valeurs : choix, pas des mesures.
+         */
+        constexpr std::uint64_t RescueWindowMs = 30000;
+        constexpr std::uint64_t RescueWaitMs = 20000;  /* Demo048_0 sans saut vu : on abandonne */
+        constexpr float RespawnJump = 20.0f;
+        constexpr int MaxRescues = 4;                   /* par fenetre */
+        std::atomic<std::uint64_t> s_RescueUntilMs { 0 };
+        std::atomic<int> s_RescueBeast { -1 };
         constexpr int NumBeasts = sizeof(Beasts) / sizeof(Beasts[0]);
 
         int BeastOf(const char* name) {
@@ -216,14 +245,12 @@ namespace coop::beast_rotate {
                    ...Fire, ...Elec). Les mecanismes des enigmes (DungeonRotateTagContinue, Shuttle, WaterChemical,
                    DungeonRotateTag) tournent seuls chez chaque joueur : non suivis. */
                 o.m_Ok = std::strncmp(name, "DungeonRotateTagRemains", 23) == 0;
-                /* Creatures verifiees seulement : Vah Medoh (rt6 a rt9) et Vah Ruta (rw1).
-                   Vah Rudania exclue (essai rf1) : la rotation de 90 degres suivie chez l'autre emporte bien Link,
-                   mais le sol devient un mur et le retour au point sur (Demo048_0) le replace au meme endroit, en
-                   boucle : joueur bloque. Deux corrections essayees sans succes (NOTES 5.86) : vitesse de
-                   rattrapage = celle du jeu (rf3) et drapeau RemainsFire_RotateTo0/90 ecrit chez celui qui suit (rf4).
+                /* Creatures verifiees seulement : Vah Medoh (rt6 a rt9), Vah Ruta (rw1), Vah Rudania (rf5, avec la
+                   repose apres chute, Beast::m_Safe ; NOTES 5.86).
                    Vah Naboris exclue tant qu'elle n'est pas essayee (essai rn1 : chargement bloque sous Eden). */
-#ifndef COOP_TEST_ROT_ALL /* OUTIL DE TEST : toutes les Creatures (essais Rudania) */
-                if (o.m_Ok && std::strstr(name, "RemainsWind") == nullptr && std::strstr(name, "RemainsWater") == nullptr)
+#ifndef COOP_TEST_ROT_ALL /* OUTIL DE TEST : toutes les Creatures */
+                if (o.m_Ok && std::strstr(name, "RemainsWind") == nullptr && std::strstr(name, "RemainsWater") == nullptr
+                    && std::strstr(name, "RemainsFire") == nullptr)
                     o.m_Ok = false;
 #endif
                 o.m_Beast = o.m_Ok ? BeastOf(name) : -1;
@@ -299,14 +326,28 @@ namespace coop::beast_rotate {
             if (!coop::game::IsWorldReady() || !coop::game::CanReadMemory(action + Action_Axis, 12))
                 return;
             const float diff = t->m_Angle - angle;
-            const float step = diff > MaxStep ? MaxStep : (diff < -MaxStep ? -MaxStep : diff);
+            float maxStep = MaxStep;
+            const bool gameSpeed = e->m_Beast >= 0 && Beasts[e->m_Beast].m_GameSpeed;
+            if (gameSpeed && coop::game::CanReadMemory(action + Action_Speed, 4)) {
+                const float sp = std::fabs(*reinterpret_cast<const float*>(action + Action_Speed));
+                if (std::isfinite(sp) && sp > maxStep)
+                    maxStep = sp < MaxStepCap ? sp : MaxStepCap;
+            }
+            const float step = diff > maxStep ? maxStep : (diff < -maxStep ? -maxStep : diff);
+            if (e->m_Beast >= 0 && Beasts[e->m_Beast].m_SafeCount > 0) {
+                s_RescueBeast.store(e->m_Beast);
+                s_RescueUntilMs.store(coop::clock::NowMs() + RescueWindowMs);
+            }
             const float next = angle + step;
             const float* axis = reinterpret_cast<const float*>(action + Action_Axis);
             const float r[3] = { axis[0] * next, axis[1] * next, axis[2] * next };
             if (!std::isfinite(r[0]) || !std::isfinite(r[1]) || !std::isfinite(r[2]))
                 return;
-            if (e->m_Applied == 0)
+            if (e->m_Applied == 0) {
                 Log("angle recu, rattrapage", hash, angle, t->m_Angle);
+                if (gameSpeed && s_Logs < 200)
+                    Logging.Log("[botw-coop] rotation : pas de rattrapage %.3f degre par appel", static_cast<double>(maxStep * 57.29578f));
+            }
             *anglePtr = next;
             using Apply = void (*)(std::uintptr_t, const float*, bool);
             reinterpret_cast<Apply>(Base() + ApplyRotation)(action, r, next < angle);
@@ -317,6 +358,80 @@ namespace coop::beast_rotate {
                 Log("angle rejoint", hash, next, t->m_Angle);
                 e->m_Applied = 0;
             }
+        }
+
+        /* Fil du jeu, chaque image : repose apres chute chez celui qui suit (voir RescueWindowMs). */
+        void Rescue() {
+            static bool s_Armed = false;          /* Demo048_0 vu, saut de retour attendu */
+            static bool s_Jumped = false;         /* saut vu, pose a faire (reessayee tant que le monde n'est pas pret) */
+            static std::uint64_t s_ArmedMs = 0, s_WatchSinceMs = 0, s_WindowEndMs = 0;
+            static int s_Count = 0;
+            static float s_Prev[3] = {};
+            static bool s_HavePrev = false;
+            const std::uint64_t now = coop::clock::NowMs();
+            const std::uint64_t until = s_RescueUntilMs.load();
+            const int bi = s_RescueBeast.load();
+            if (until != s_WindowEndMs && now < until && s_WindowEndMs <= now) {
+                s_Count = 0; /* nouvelle fenetre */
+                s_WatchSinceMs = now;
+            }
+            s_WindowEndMs = until;
+            if (bi < 0 || (now >= until && !s_Armed && !s_Jumped)) {
+                s_HavePrev = false;
+                return;
+            }
+            coop::game::PlayerState st;
+            if (!coop::game::ReadPlayer(st)) {
+                s_HavePrev = false;
+                return;
+            }
+            const Beast& b = Beasts[bi];
+            if (!s_Armed && !s_Jumped && s_Count < MaxRescues && coop::cutscene::PlayedLocallySinceMs("Demo048_0", s_WatchSinceMs)) {
+                s_Armed = true;
+                s_ArmedMs = now;
+                s_WatchSinceMs = now + 1;
+                Logging.Log("[botw-coop] rotation : chute (Demo048_0) dans %s en (%.2f, %.2f, %.2f), repose armee", b.m_Suffix,
+                    static_cast<double>(st.m_Pos[0]), static_cast<double>(st.m_Pos[1]), static_cast<double>(st.m_Pos[2]));
+            }
+            if (s_Armed && s_HavePrev) {
+                const float dx = st.m_Pos[0] - s_Prev[0], dy = st.m_Pos[1] - s_Prev[1], dz = st.m_Pos[2] - s_Prev[2];
+                if (dx * dx + dy * dy + dz * dz > RespawnJump * RespawnJump) {
+                    s_Armed = false;
+                    s_Jumped = true;
+                    Logging.Log("[botw-coop] rotation : retour au point sur du jeu vu, (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f)",
+                        static_cast<double>(s_Prev[0]), static_cast<double>(s_Prev[1]), static_cast<double>(s_Prev[2]),
+                        static_cast<double>(st.m_Pos[0]), static_cast<double>(st.m_Pos[1]), static_cast<double>(st.m_Pos[2]));
+                } else if (now - s_ArmedMs > RescueWaitMs) {
+                    s_Armed = false;
+                    Logging.Log("[botw-coop] rotation : chute sans retour vu en %lu ms, repose abandonnee", RescueWaitMs);
+                }
+            }
+            if (s_Jumped) {
+                int best = 0;
+                float bestD = 1e30f;
+                for (int i = 0; i < b.m_SafeCount; i++) {
+                    const float dx = st.m_Pos[0] - b.m_Safe[i][0], dy = st.m_Pos[1] - b.m_Safe[i][1], dz = st.m_Pos[2] - b.m_Safe[i][2];
+                    const float d = dx * dx + dy * dy + dz * dz;
+                    if (d < bestD) {
+                        bestD = d;
+                        best = i;
+                    }
+                }
+                if (bestD < 3.0f * 3.0f) {
+                    s_Jumped = false; /* le jeu l'a deja remis sur un point sur */
+                    Logging.Log("[botw-coop] rotation : deja sur un point sur, pas de repose");
+                } else if (coop::warp::PlaceAt(b.m_Safe[best][0], b.m_Safe[best][1] + 0.5f, b.m_Safe[best][2], "repose apres chute")) {
+                    s_Jumped = false;
+                    s_Count++;
+                    s_HavePrev = false; /* notre propre saut n'est pas un retour du jeu */
+                    return;
+                } else if (now - s_ArmedMs > RescueWaitMs) {
+                    s_Jumped = false;
+                    Logging.Log("[botw-coop] rotation : repose impossible (monde pas pret), abandonnee");
+                }
+            }
+            std::memcpy(s_Prev, st.m_Pos, sizeof(s_Prev));
+            s_HavePrev = true;
         }
 
         HOOK_DEFINE_TRAMPOLINE(BaseCalcHook) {
@@ -338,6 +453,8 @@ namespace coop::beast_rotate {
 
     void OnFrame() {
         s_Frames++;
+        if (coop::config::g_BeastRotate)
+            Rescue();
         if (s_Lock.test_and_set(std::memory_order_acquire))
             return;
         /* La file recue est videe meme hors de la Creature (sinon elle se remplit et perd l'angle final). */
