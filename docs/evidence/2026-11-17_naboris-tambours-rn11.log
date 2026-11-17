@@ -1,0 +1,29 @@
+# 2026-11-17 rn11 : les trois tambours de Vah Naboris (J1 commande, J2 suit)
+
+== J1 (build\runs\rn11_game.txt)
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 0 -> 1
+[botw-coop] drapeau change : n.36614 hachage=dedeb1cf 0 -> 1
+[botw-coop] rotation : mouvement local 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 1 -> 0
+[botw-coop] rotation : angle final envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : mouvement local 53ef2929 0.00 -> -0.50 degres
+[botw-coop] drapeau change : n.3109 hachage=1274b151 1 -> 0
+[botw-coop] rotation : angle final envoye 53ef2929 -90.00 -> -90.00 degres
+[botw-coop] rotation : mouvement local cb98e7f9 0.00 -> -0.50 degres
+[botw-coop] drapeau change : n.36614 hachage=dedeb1cf 1 -> 0
+[botw-coop] rotation : angle final envoye cb98e7f9 -90.00 -> -90.00 degres
+
+== J2 (build\runs\rn11_game2.txt)
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] drapeau change : n.3109 hachage=1274b151 0 -> 1
+[botw-coop] rotation : tablette, tambour 0 : quart de tour 0 -> 0
+[botw-coop] rotation : drapeaux d'etat RemainsElec recopies (masque 1 -> 0, 1/1)
+[botw-coop] rotation : tablette, tambour 0 : quart de tour 0 -> 1
+[botw-coop] rotation : tablette, tambour 1 : quart de tour 0 -> 0
+[botw-coop] rotation : drapeaux d'etat RemainsElec recopies (masque 1 -> 0, 1/1)
+[botw-coop] rotation : tablette, tambour 1 : quart de tour 0 -> 1
+[botw-coop] rotation : tablette, tambour 2 : quart de tour 0 -> 0
+[botw-coop] rotation : drapeaux d'etat RemainsElec recopies (masque 1 -> 0, 1/1)
+[botw-coop] rotation : tablette, tambour 2 : quart de tour 0 -> 1
+

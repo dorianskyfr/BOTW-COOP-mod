@@ -84,9 +84,9 @@ namespace coop::beast_rotate {
             /*
              * Partie precise (HashId de l'etiquette), 0 = toutes. Vah Naboris : trois DungeonRotateTagRemainsElec
              * (carte RemainsElectric_Static, CtrlDgnRemainsElectricBodyPart 0/1/2, TiltAngularSpeed 0,5), un
-             * drapeau RemainsElectric_DrumNRotate0 chacune. Partie 0 (4ba1a76b) <-> Drum1Rotate0 : vu en jeu
-             * (essai rn5 : rotation de 4ba1a76b a -90, 9cfbb6b2 1 -> 0 chez J1). Parties 1 et 2 <-> Drum2 et
-             * Drum3 : supposé d'apres l'ordre, non vérifié.
+             * drapeau RemainsElectric_DrumNRotate0 chacune. Vu en jeu : partie 0 (4ba1a76b) <-> Drum1Rotate0
+             * (rn5), partie 1 (53ef2929) <-> Drum2Rotate0 et partie 2 (cb98e7f9) <-> Drum3Rotate0 (rn11 :
+             * rotation a -90, drapeau 1 -> 0 chez J1, recopie et compteur de tablette chez J2).
              */
             std::uint32_t m_PartHash;
             /*
