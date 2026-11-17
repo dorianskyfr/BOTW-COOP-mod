@@ -1,0 +1,453 @@
+# 2026-11-17 Vah Naboris : entree (nom de carte coupe, corrige) et inclinaison partagee (rn4 a rn8, Eden ; rn4 Ryujinx)
+# Extraits : lignes de changement de scene, du module de rotation et des drapeaux de tambour ; Demo048_0.
+
+== rn4 J1 (build/runs/rn4_game.txt) : 2 lignes
+    "Name": "RemainsElectri",
+00:03:30.179 |W| HLE.GuestThread.56 KernelSvc OutputDebugString: [botw-coop] voyage (essai) : vers MainFieldDungeon/RemainsElectric Entrance_1 -> demande
+
+== rn5 J1 (build/runs/rn5_game.txt) : 42 lignes
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] voyage (essai) : vers MainFieldDungeon/RemainsElectric Entrance_1 -> demande
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 0 -> 1
+[botw-coop] rotation : action 21b0f515e0 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b0f54738 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : action 21b0fc8440 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : mouvement local 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -0.50 -> -0.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -4.00 -> -4.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -6.50 -> -6.50 degres
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 1 -> 0
+[botw-coop] rotation : angle envoye 4ba1a76b -10.00 -> -10.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -12.50 -> -12.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -15.00 -> -15.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -17.50 -> -17.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -20.00 -> -20.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -23.00 -> -23.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -26.50 -> -26.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -30.00 -> -30.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -32.50 -> -32.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -35.00 -> -35.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -37.50 -> -37.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -40.00 -> -40.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -43.00 -> -43.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -45.50 -> -45.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -48.50 -> -48.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -51.00 -> -51.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -53.50 -> -53.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -56.00 -> -56.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -59.00 -> -59.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -61.50 -> -61.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -64.00 -> -64.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -66.50 -> -66.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -70.00 -> -70.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -72.50 -> -72.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -76.00 -> -76.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -78.50 -> -78.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -81.00 -> -81.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -84.00 -> -84.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -87.00 -> -87.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : angle final envoye 4ba1a76b -90.00 -> -90.00 degres
+
+== rn5 J2 (build/runs/rn5_game2.txt) : 7 lignes
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] voyage (essai) : vers MainFieldDungeon/RemainsElectric Entrance_1 -> demande
+[botw-coop] rotation : action 21b038c9d8 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : action 21b14d3838 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : action 21b145f0d8 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : angle rejoint 4ba1a76b -90.00 -> -90.00 degres
+
+== rn6 J1 (build/runs/rn6_game.txt) : 60 lignes
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] voyage (essai) : vers MainFieldDungeon/RemainsElectric Entrance_1 -> demande
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 0 -> 1
+[botw-coop] rotation : action 21b18a44b8 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : action 21b18a2bc0 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b1940d68 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : mouvement local 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -0.50 -> -0.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -4.00 -> -4.00 degres
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 1 -> 0
+[botw-coop] rotation : angle envoye 4ba1a76b -8.00 -> -8.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -12.00 -> -12.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -15.00 -> -15.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -19.50 -> -19.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -22.00 -> -22.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -25.50 -> -25.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -31.50 -> -31.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -35.00 -> -35.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -40.00 -> -40.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -45.50 -> -45.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -49.00 -> -49.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -52.50 -> -52.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -55.50 -> -55.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -60.00 -> -60.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -65.50 -> -65.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -71.50 -> -71.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -75.50 -> -75.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -79.00 -> -79.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -83.50 -> -83.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -88.00 -> -88.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : angle final envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : mouvement local 4ba1a76b -90.00 -> -91.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -91.00 -> -91.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -94.00 -> -94.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -98.00 -> -98.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -101.50 -> -101.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -105.00 -> -105.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -108.50 -> -108.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -111.50 -> -111.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -114.50 -> -114.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -118.00 -> -118.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -120.50 -> -120.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -124.00 -> -124.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -127.00 -> -127.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -131.00 -> -131.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -135.00 -> -135.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -139.50 -> -139.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -142.50 -> -142.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -147.00 -> -147.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -151.50 -> -151.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -156.00 -> -156.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -160.50 -> -160.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -163.50 -> -163.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -167.00 -> -167.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -171.50 -> -171.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -175.00 -> -175.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -178.00 -> -178.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 180.00 -> 180.00 degres
+[botw-coop] rotation : angle final envoye 4ba1a76b 180.00 -> 180.00 degres
+
+== rn6 J2 (build/runs/rn6_game2.txt) : 19 lignes
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] voyage (essai) : vers MainFieldDungeon/RemainsElectric Entrance_1 -> demande
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 0 -> 1
+[botw-coop] rotation : action 21b0c58928 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : action 21b0c55790 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b0d03760 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -0.50 -> -0.50 degres
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -0.50 -> -4.00 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsElec recopies (masque 1 -> 0, 1/1)
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -90.00 -> -91.00 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -91.00 -> -91.00 degres
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -91.00 -> -94.00 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b 180.00 -> 180.00 degres
+
+== rn7 J1 (build/runs/rn7_game.txt) : 89 lignes
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] voyage (essai) : vers MainFieldDungeon/RemainsElectric Entrance_1 -> demande
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 0 -> 1
+[botw-coop] rotation : action 21b0e97480 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b0f13838 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : action 21b0e9fe50 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : mouvement local 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -0.50 -> -0.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -3.50 -> -3.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -6.50 -> -6.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -9.00 -> -9.00 degres
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 1 -> 0
+[botw-coop] rotation : angle envoye 4ba1a76b -11.50 -> -11.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -14.00 -> -14.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -17.00 -> -17.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -20.50 -> -20.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -23.00 -> -23.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -26.50 -> -26.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -29.50 -> -29.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -32.50 -> -32.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -35.00 -> -35.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -37.50 -> -37.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -40.50 -> -40.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -43.50 -> -43.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -46.00 -> -46.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -48.50 -> -48.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -51.50 -> -51.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -54.00 -> -54.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -57.50 -> -57.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -60.00 -> -60.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -62.50 -> -62.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -65.00 -> -65.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -67.50 -> -67.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -70.00 -> -70.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -72.50 -> -72.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -75.50 -> -75.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -78.50 -> -78.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -81.00 -> -81.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -84.00 -> -84.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -86.50 -> -86.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -89.00 -> -89.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : angle final envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : mouvement local 4ba1a76b -90.00 -> -90.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -90.50 -> -90.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -93.00 -> -93.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -95.50 -> -95.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -98.50 -> -98.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -101.50 -> -101.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -105.00 -> -105.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -108.50 -> -108.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -111.00 -> -111.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -113.50 -> -113.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -116.00 -> -116.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -118.50 -> -118.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -121.50 -> -121.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -124.00 -> -124.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -127.00 -> -127.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -129.50 -> -129.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -132.50 -> -132.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -135.00 -> -135.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -137.50 -> -137.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -140.00 -> -140.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -143.50 -> -143.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -146.50 -> -146.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -149.50 -> -149.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -152.00 -> -152.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -154.50 -> -154.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -157.00 -> -157.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -159.50 -> -159.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -162.00 -> -162.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -164.50 -> -164.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -167.00 -> -167.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -169.50 -> -169.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -172.00 -> -172.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -174.50 -> -174.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -177.00 -> -177.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -180.00 -> -180.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 180.00 -> 180.00 degres
+[botw-coop] rotation : angle final envoye 4ba1a76b 180.00 -> 180.00 degres
+
+== rn7 J2 (build/runs/rn7_game2.txt) : 77 lignes
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] voyage (essai) : vers MainFieldDungeon/RemainsElectric Entrance_1 -> demande
+[botw-coop] rotation : action 21b1875a80 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b1877378 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : action 21b1948cf8 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -0.50 -> -0.50 degres
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -0.50 -> -3.50 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsElec recopies (masque 1 -> 0, 1/1)
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -90.00 -> -90.50 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -90.50 -> -90.50 degres
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -90.50 -> -93.00 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b 180.00 -> 180.00 degres
+[botw-coop] rotation : mouvement local 4ba1a76b 180.00 -> 179.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 179.50 -> 179.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 175.50 -> 175.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 172.50 -> 172.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 167.00 -> 167.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 163.50 -> 163.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 158.50 -> 158.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 154.00 -> 154.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 149.50 -> 149.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 144.00 -> 144.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 139.50 -> 139.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 135.00 -> 135.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 131.00 -> 131.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 126.50 -> 126.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 119.50 -> 119.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 116.00 -> 116.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 108.00 -> 108.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 102.00 -> 102.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 98.50 -> 98.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 94.50 -> 94.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 89.50 -> 89.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 87.00 -> 87.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 82.00 -> 82.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 78.50 -> 78.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 75.00 -> 75.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 68.50 -> 68.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 63.00 -> 63.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 57.00 -> 57.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 53.50 -> 53.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 47.50 -> 47.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 42.00 -> 42.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 36.00 -> 36.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 31.50 -> 31.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 27.00 -> 27.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 19.50 -> 19.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 15.50 -> 15.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 12.50 -> 12.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 9.00 -> 9.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 1.50 -> 1.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -5.00 -> -5.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -10.00 -> -10.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -14.50 -> -14.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -18.50 -> -18.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -23.50 -> -23.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -26.00 -> -26.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -31.50 -> -31.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -37.50 -> -37.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -42.50 -> -42.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -46.50 -> -46.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -52.50 -> -52.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -56.50 -> -56.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -61.50 -> -61.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -67.00 -> -67.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -70.00 -> -70.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -75.00 -> -75.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -82.50 -> -82.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -88.50 -> -88.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : angle final envoye 4ba1a76b -90.00 -> -90.00 degres
+
+== rn8 J1 (build/runs/rn8_game.txt) : 65 lignes
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] voyage (essai) : vers MainFieldDungeon/RemainsElectric Entrance_1 -> demande
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 0 -> 1
+[botw-coop] rotation : action 21b1330180 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b13ab538 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : action 21b13322d8 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : mouvement local 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b -0.50 -> -90.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -0.50 -> -0.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -4.00 -> -4.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -9.50 -> -9.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -12.00 -> -12.00 degres
+[botw-coop] drapeau change : n.25890 hachage=9cfbb6b2 1 -> 0
+[botw-coop] rotation : angle envoye 4ba1a76b -17.00 -> -17.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -24.50 -> -24.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -27.50 -> -27.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -33.00 -> -33.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -41.00 -> -41.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -45.00 -> -45.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -48.50 -> -48.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -53.00 -> -53.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -58.50 -> -58.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -62.50 -> -62.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -68.00 -> -68.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -71.50 -> -71.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -76.00 -> -76.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -82.00 -> -82.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -84.50 -> -84.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : angle final envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) a la fin du mouvement 4ba1a76b -90.00 -> -0.00 degres
+[botw-coop] rotation : mouvement local 4ba1a76b -90.00 -> -91.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b -91.00 -> -180.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -91.00 -> -91.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -95.00 -> -95.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -97.50 -> -97.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -102.00 -> -102.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -107.50 -> -107.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -111.50 -> -111.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -119.00 -> -119.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -123.50 -> -123.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -127.50 -> -127.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -130.50 -> -130.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -138.50 -> -138.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -141.50 -> -141.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -147.50 -> -147.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -152.50 -> -152.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -157.00 -> -157.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -162.50 -> -162.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -166.00 -> -166.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -169.00 -> -169.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -172.50 -> -172.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -176.50 -> -176.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -179.50 -> -179.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 180.00 -> 180.00 degres
+[botw-coop] rotation : angle final envoye 4ba1a76b 180.00 -> 180.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) a la fin du mouvement 4ba1a76b 180.00 -> -0.00 degres
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b 180.00 -> 179.50 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b 179.50 -> 179.50 degres
+[botw-coop] rotation : cible de l'action (+0xd8) alignee 4ba1a76b -0.00 -> 179.50 degres
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b 179.50 -> 175.00 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) alignee 4ba1a76b 179.50 -> -90.00 degres
+
+== rn8 J2 (build/runs/rn8_game2.txt) : 86 lignes
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] voyage (essai) : vers MainFieldDungeon/RemainsElectric Entrance_1 -> demande
+[botw-coop] rotation : action 21b12860b8 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b1289210 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : action 21b1387c20 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -0.50 -> -0.50 degres
+[botw-coop] rotation : cible de l'action (+0xd8) alignee 4ba1a76b -0.00 -> -0.50 degres
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -0.50 -> -4.00 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -4.00 -> -4.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) alignee 4ba1a76b -0.50 -> -4.00 degres
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -4.00 -> -9.50 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) alignee 4ba1a76b -4.00 -> -90.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsElec recopies (masque 1 -> 0, 1/1)
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -90.00 -> -91.00 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b -91.00 -> -91.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) alignee 4ba1a76b -90.00 -> -91.00 degres
+[botw-coop] rotation : angle recu, rattrapage 4ba1a76b -91.00 -> -95.00 degres
+[botw-coop] rotation : pas de rattrapage 0.500 degre par appel
+[botw-coop] rotation : angle rejoint 4ba1a76b 180.00 -> 180.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) alignee 4ba1a76b -91.00 -> 180.00 degres
+[botw-coop] rotation : mouvement local 4ba1a76b 180.00 -> 179.50 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b 179.50 -> -90.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 179.50 -> 179.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 175.00 -> 175.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 170.50 -> 170.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 167.00 -> 167.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 163.50 -> 163.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 157.50 -> 157.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 153.50 -> 153.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 149.00 -> 149.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 143.00 -> 143.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 138.00 -> 138.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 134.00 -> 134.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 128.50 -> 128.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 123.00 -> 123.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 118.00 -> 118.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 113.00 -> 113.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 106.00 -> 106.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 102.50 -> 102.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 97.00 -> 97.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 93.50 -> 93.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 89.00 -> 89.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 86.50 -> 86.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 79.50 -> 79.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 76.00 -> 76.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 71.50 -> 71.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 65.00 -> 65.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 61.50 -> 61.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 58.00 -> 58.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 51.50 -> 51.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 47.00 -> 47.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 41.50 -> 41.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 38.00 -> 38.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 34.00 -> 34.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 27.00 -> 27.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 21.50 -> 21.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 13.00 -> 13.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 8.00 -> 8.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b 4.00 -> 4.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -2.50 -> -2.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -7.50 -> -7.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -13.00 -> -13.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -17.50 -> -17.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -21.50 -> -21.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -25.50 -> -25.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -30.00 -> -30.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -33.50 -> -33.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -37.50 -> -37.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -46.50 -> -46.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -51.00 -> -51.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -54.50 -> -54.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -60.00 -> -60.00 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -67.50 -> -67.50 degres
+[botw-coop] rotation : angle envoye 4ba1a76b -73.00 -> -73.00 degres
+

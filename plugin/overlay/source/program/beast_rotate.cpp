@@ -35,6 +35,18 @@ namespace coop::beast_rotate {
         constexpr std::uintptr_t Action_Angle = 0x80;
         constexpr std::uintptr_t Action_Speed = 0x88;  /* vitesse visee (TiltAngularSpeed * pi/180), analyse Codex ; rf3 : 0,45 */
         constexpr float MaxStepCap = 1.0f * 3.14159265f / 180.0f;
+#ifdef COOP_TEST_LOG_ROTTAG
+        /* OUTIL DE TEST : cible de l'action (analyse Codex sur la decompilation 1.5.0, NOTES 5.84). Mesure rn8 :
+           pendant un mouvement, c'est bien la cible (J1 : -90 puis -180) ; a la fin du mouvement, 0. L'aligner
+           chez celui qui suit ne change pas la cible de sa commande suivante (calculee ailleurs, a partir de 0). */
+        constexpr std::uintptr_t Action_Target = 0xd8;
+
+        float ReadTarget(std::uintptr_t action) {
+            if (!coop::game::CanReadMemory(action + Action_Target, 4))
+                return NAN;
+            return *reinterpret_cast<const float*>(action + Action_Target);
+        }
+#endif
         constexpr std::uintptr_t Actor_HashId = 0x640; /* actActor.h 1.5.0, verifie en 1.9.0 (NOTES 5.81) */
 
         /*
@@ -69,11 +81,22 @@ namespace coop::beast_rotate {
             bool m_GameSpeed;
             int m_SafeCount;
             float m_Safe[2][3];
+            /*
+             * Partie precise (HashId de l'etiquette), 0 = toutes. Vah Naboris : trois DungeonRotateTagRemainsElec
+             * (carte RemainsElectric_Static, CtrlDgnRemainsElectricBodyPart 0/1/2, TiltAngularSpeed 0,5), un
+             * drapeau RemainsElectric_DrumNRotate0 chacune. Partie 0 (4ba1a76b) <-> Drum1Rotate0 : vu en jeu
+             * (essai rn5 : rotation de 4ba1a76b a -90, 9cfbb6b2 1 -> 0 chez J1). Parties 1 et 2 <-> Drum2 et
+             * Drum3 : supposé d'apres l'ordre, non vérifié.
+             */
+            std::uint32_t m_PartHash;
         };
         constexpr Beast Beasts[] = {
-            { "RemainsWind", 3, { 0x12ed3309 /* RotHorizontal */, 0xeaf74b05 /* RotLeft */, 0x8759f85d /* RotRight */ }, false, 0, {} },
+            { "RemainsWind", 3, { 0x12ed3309 /* RotHorizontal */, 0xeaf74b05 /* RotLeft */, 0x8759f85d /* RotRight */ }, false, 0, {}, 0 },
             { "RemainsFire", 2, { 0x4283f75d /* Rotate0 */, 0x3081cad6 /* Rotate90 */, 0 }, true, 2,
-                { { 0.0f, 15.0f, 77.0f }, { 0.0f, 24.5f, -68.5f } } },
+                { { 0.0f, 15.0f, 77.0f }, { 0.0f, 24.5f, -68.5f } }, 0 },
+            { "RemainsElec", 1, { 0x9cfbb6b2 /* Drum1Rotate0 */, 0, 0 }, true, 0, {}, 0x4ba1a76b },
+            { "RemainsElec", 1, { 0x1274b151 /* Drum2Rotate0 */, 0, 0 }, true, 0, {}, 0x53ef2929 },
+            { "RemainsElec", 1, { 0xdedeb1cf /* Drum3Rotate0 */, 0, 0 }, true, 0, {}, 0xcb98e7f9 },
         };
 
         /*
@@ -90,9 +113,16 @@ namespace coop::beast_rotate {
         std::atomic<int> s_RescueBeast { -1 };
         constexpr int NumBeasts = sizeof(Beasts) / sizeof(Beasts[0]);
 
-        int BeastOf(const char* name) {
+        /* Ecart d'angle le plus court, dans [-pi, pi] : les tambours de Vah Naboris tournent sans butee et le jeu
+           ecrit -180 degres comme 180 (essai rn6 : J1 -90 -> 180 ; sans repli, J2 parti de -91 repartait par 271
+           degres dans l'autre sens). Sans effet pour Medoh, Ruta et Rudania (ecarts de moins de 180 degres). */
+        float AngleDiff(float to, float from) {
+            return std::remainder(to - from, 6.28318531f);
+        }
+
+        int BeastOf(const char* name, std::uint32_t hash) {
             for (int i = 0; i < NumBeasts; i++)
-                if (std::strstr(name, Beasts[i].m_Suffix) != nullptr)
+                if (std::strstr(name, Beasts[i].m_Suffix) != nullptr && (Beasts[i].m_PartHash == 0 || Beasts[i].m_PartHash == hash))
                     return i;
             return -1;
         }
@@ -222,7 +252,7 @@ namespace coop::beast_rotate {
                  */
                 if (busy) {
                     const Target* last = FindTarget(in.m_Hash, false);
-                    if (last != nullptr && last->m_From == in.m_From && std::fabs(last->m_Angle - in.m_Angle) <= Epsilon) {
+                    if (last != nullptr && last->m_From == in.m_From && std::fabs(AngleDiff(last->m_Angle, in.m_Angle)) <= Epsilon) {
                         static int s_ResendLogs = 0;
                         if (s_ResendLogs++ < 20)
                             Log("renvoi d'un ancien angle ignore (notre mouvement est plus recent)", in.m_Hash, e->m_LastSeen, in.m_Angle);
@@ -267,13 +297,14 @@ namespace coop::beast_rotate {
                 o.m_Ok = std::strncmp(name, "DungeonRotateTagRemains", 23) == 0;
                 /* Creatures verifiees seulement : Vah Medoh (rt6 a rt9), Vah Ruta (rw1), Vah Rudania (rf5, avec la
                    repose apres chute, Beast::m_Safe ; NOTES 5.86).
-                   Vah Naboris exclue tant qu'elle n'est pas essayee (essai rn1 : chargement bloque sous Eden). */
+                   Vah Naboris (rn5 a rn6 ; avant, l'outil d'essai n'y entrait pas : nom de carte coupe dans
+                   ChangeStage, NOTES 5.85). */
 #ifndef COOP_TEST_ROT_ALL /* OUTIL DE TEST : toutes les Creatures */
                 if (o.m_Ok && std::strstr(name, "RemainsWind") == nullptr && std::strstr(name, "RemainsWater") == nullptr
-                    && std::strstr(name, "RemainsFire") == nullptr)
+                    && std::strstr(name, "RemainsFire") == nullptr && std::strstr(name, "RemainsElec") == nullptr)
                     o.m_Ok = false;
 #endif
-                o.m_Beast = o.m_Ok ? BeastOf(name) : -1;
+                o.m_Beast = o.m_Ok ? BeastOf(name, ownerHash) : -1;
                 s_Owners[s_OwnerNext] = o;
                 known = &s_Owners[s_OwnerNext];
                 s_OwnerNext = (s_OwnerNext + 1) % MaxOwners;
@@ -309,6 +340,9 @@ namespace coop::beast_rotate {
             if (std::fabs(angle - e->m_LastSeen) > 0.00001f) {
                 if (e->m_OwnMove == 0) {
                     Log("mouvement local", hash, e->m_LastSeen, angle);
+#ifdef COOP_TEST_LOG_ROTTAG
+                    Log("cible de l'action (+0xd8) au debut du mouvement", hash, angle, ReadTarget(action));
+#endif
                     /* Une cible recue avant notre mouvement ne vaut plus. */
                     if (Target* t = FindTarget(hash, false))
                         t->m_Valid = false;
@@ -326,6 +360,10 @@ namespace coop::beast_rotate {
                 e->m_OwnMove--;
                 if (live && e->m_Cooldown == 0 && (std::fabs(angle - e->m_LastSent) > Epsilon || e->m_OwnMove == 0)) {
                     Push(*e, angle, e->m_OwnMove == 0 ? "angle final envoye" : "angle envoye");
+#ifdef COOP_TEST_LOG_ROTTAG
+                    if (e->m_OwnMove == 0)
+                        Log("cible de l'action (+0xd8) a la fin du mouvement", hash, angle, ReadTarget(action));
+#endif
                     e->m_Cooldown = SendCooldown;
                 }
                 return;
@@ -337,7 +375,7 @@ namespace coop::beast_rotate {
             Target* t = FindTarget(hash, false);
             if (t == nullptr || !t->m_Valid)
                 return;
-            if (std::fabs(t->m_Angle - angle) <= Epsilon) {
+            if (std::fabs(AngleDiff(t->m_Angle, angle)) <= Epsilon) {
                 /* Angle deja atteint : drapeaux d'etat de l'emetteur a poser s'ils different des notres. */
                 if (t->m_Mask >= 0 && e->m_Mask >= 0 && t->m_Mask != e->m_Mask)
                     e->m_PendingMask = t->m_Mask;
@@ -345,7 +383,7 @@ namespace coop::beast_rotate {
             }
             if (!coop::game::IsWorldReady() || !coop::game::CanReadMemory(action + Action_Axis, 12))
                 return;
-            const float diff = t->m_Angle - angle;
+            const float diff = AngleDiff(t->m_Angle, angle);
             float maxStep = MaxStep;
             const bool gameSpeed = e->m_Beast >= 0 && Beasts[e->m_Beast].m_GameSpeed;
             if (gameSpeed && coop::game::CanReadMemory(action + Action_Speed, 4)) {
@@ -358,7 +396,8 @@ namespace coop::beast_rotate {
                 s_RescueBeast.store(e->m_Beast);
                 s_RescueUntilMs.store(coop::clock::NowMs() + RescueWindowMs);
             }
-            const float next = angle + step;
+            /* Cible atteinte : on prend sa valeur exacte (meme ecriture que le jeu de l'emetteur, ex. 180 et non -180). */
+            const float next = std::fabs(diff - step) <= Epsilon ? t->m_Angle : angle + step;
             const float* axis = reinterpret_cast<const float*>(action + Action_Axis);
             const float r[3] = { axis[0] * next, axis[1] * next, axis[2] * next };
             if (!std::isfinite(r[0]) || !std::isfinite(r[1]) || !std::isfinite(r[2]))
@@ -370,11 +409,11 @@ namespace coop::beast_rotate {
             }
             *anglePtr = next;
             using Apply = void (*)(std::uintptr_t, const float*, bool);
-            reinterpret_cast<Apply>(Base() + ApplyRotation)(action, r, next < angle);
+            reinterpret_cast<Apply>(Base() + ApplyRotation)(action, r, step < 0.0f);
             e->m_LastSeen = next;
             e->m_Mine = false;
             e->m_Applied++;
-            if (std::fabs(t->m_Angle - next) <= Epsilon) {
+            if (std::fabs(AngleDiff(t->m_Angle, next)) <= Epsilon) {
                 Log("angle rejoint", hash, next, t->m_Angle);
                 e->m_Applied = 0;
             }

@@ -1108,12 +1108,18 @@ namespace coop::game {
         };
         /* Chaines et objets statiques : l'evenement du jeu passe des objets qui lui survivent ; on ne
            sait pas si le jeu garde une reference apres l'appel. */
-        static char s_Map[32], s_Pos[48];
+        /* 64 : "MainFieldDungeon/RemainsElectric" fait 32 caracteres ; avec 32 octets, le nom etait coupe en
+           "RemainsElectri" et le jeu restait en chargement (essais rn1 a rn4, trouve par Codex, NOTES 5.85).
+           Nom trop long : refuse plutot que coupe. */
+        static char s_Map[64], s_Pos[48];
         static SafeString s_M, s_P;
+        if (std::strlen(map) >= sizeof(s_Map) || std::strlen(startPos) >= sizeof(s_Pos))
+            return false;
         std::strncpy(s_Map, map, sizeof(s_Map) - 1);
         std::strncpy(s_Pos, startPos, sizeof(s_Pos) - 1);
         s_M = { vtSlot + 0x10, s_Map };
         s_P = { vtSlot + 0x10, s_Pos };
+        Logging.Log("[botw-coop] changement de scene transmis au jeu : carte \"%s\", point \"%s\"", s_Map, s_Pos);
         reinterpret_cast<void (*)(const SafeString&, const SafeString&, int, bool)>(base + StageChange)(s_M, s_P, 0, false);
         return true;
     }
