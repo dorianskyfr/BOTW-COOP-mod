@@ -89,14 +89,23 @@ namespace coop::beast_rotate {
              * Drum3 : supposé d'apres l'ordre, non vérifié.
              */
             std::uint32_t m_PartHash;
+            /*
+             * Vah Naboris : numero du tambour (CtrlDgnRemainsElectricBodyPart), -1 sinon. La base d'une commande
+             * est un compteur de la tablette, pas l'angle de l'action (enquete Codex, verifiee par Claude au
+             * desassemblage 1.9.0) : UI = *(main+0x1e17020), compteur int UI+0xd54+4*tambour (lecteurs
+             * main+0xe80470.. ; choix d'un quart de tour main+0xdf32d4 : q = q > 2 ? 0 : q+1) ; l'IA
+             * DungeonRotateTag4ElecApp le convertit (main+0x838eb8..) : 0 -> 0, 3 -> 90, 2 -> 180, 1 -> -90 degres.
+             * Chez celui qui suit, il restait a 0 : sa commande suivante faisait 270 degres (essai rn8).
+             */
+            int m_Part;
         };
         constexpr Beast Beasts[] = {
-            { "RemainsWind", 3, { 0x12ed3309 /* RotHorizontal */, 0xeaf74b05 /* RotLeft */, 0x8759f85d /* RotRight */ }, false, 0, {}, 0 },
+            { "RemainsWind", 3, { 0x12ed3309 /* RotHorizontal */, 0xeaf74b05 /* RotLeft */, 0x8759f85d /* RotRight */ }, false, 0, {}, 0, -1 },
             { "RemainsFire", 2, { 0x4283f75d /* Rotate0 */, 0x3081cad6 /* Rotate90 */, 0 }, true, 2,
-                { { 0.0f, 15.0f, 77.0f }, { 0.0f, 24.5f, -68.5f } }, 0 },
-            { "RemainsElec", 1, { 0x9cfbb6b2 /* Drum1Rotate0 */, 0, 0 }, true, 0, {}, 0x4ba1a76b },
-            { "RemainsElec", 1, { 0x1274b151 /* Drum2Rotate0 */, 0, 0 }, true, 0, {}, 0x53ef2929 },
-            { "RemainsElec", 1, { 0xdedeb1cf /* Drum3Rotate0 */, 0, 0 }, true, 0, {}, 0xcb98e7f9 },
+                { { 0.0f, 15.0f, 77.0f }, { 0.0f, 24.5f, -68.5f } }, 0, -1 },
+            { "RemainsElec", 1, { 0x9cfbb6b2 /* Drum1Rotate0 */, 0, 0 }, true, 0, {}, 0x4ba1a76b, 0 },
+            { "RemainsElec", 1, { 0x1274b151 /* Drum2Rotate0 */, 0, 0 }, true, 0, {}, 0x53ef2929, 1 },
+            { "RemainsElec", 1, { 0xdedeb1cf /* Drum3Rotate0 */, 0, 0 }, true, 0, {}, 0xcb98e7f9, 2 },
         };
 
         /*
@@ -133,6 +142,7 @@ namespace coop::beast_rotate {
             int m_Beast = -1;          /* indice dans Beasts, -1 si pas de drapeaux d'etat connus */
             int m_Mask = -1;           /* nos drapeaux d'etat (fil du jeu, OnFrame) */
             int m_PendingMask = -1;    /* drapeaux recus a poser (angle atteint) */
+            int m_PendingQuarter = -1; /* Naboris : compteur de tablette a poser (angle atteint sur un quart de tour) */
             std::uintptr_t m_Action = 0; /* nouvelle action (entree dans la Creature, attente <-> rotation) : on repart de son angle */
             bool m_Seen = false;
             float m_LastSeen = 0;      /* angle a la fin du dernier appel (apres notre ecriture eventuelle) */
@@ -415,6 +425,16 @@ namespace coop::beast_rotate {
             e->m_Applied++;
             if (std::fabs(AngleDiff(t->m_Angle, next)) <= Epsilon) {
                 Log("angle rejoint", hash, next, t->m_Angle);
+                /* Naboris : sur un quart de tour exact (fin de commande de l'emetteur ; les angles intermediaires
+                   du flux n'en sont pas), compteur de tablette correspondant : k quarts -> q = (-k) mod 4. */
+                if (e->m_Beast >= 0 && Beasts[e->m_Beast].m_Part >= 0) {
+                    const float quarter = 1.57079633f;
+                    const float k = std::nearbyint(t->m_Angle / quarter);
+                    if (std::fabs(t->m_Angle - k * quarter) < 0.01f) {
+                        const int ki = static_cast<int>(k);
+                        e->m_PendingQuarter = ((-ki) % 4 + 4) % 4;
+                    }
+                }
                 e->m_Applied = 0;
             }
         }
@@ -547,6 +567,25 @@ namespace coop::beast_rotate {
                         Logging.Log("[botw-coop] rotation : drapeaux d'etat %s recopies (masque %x -> %x, %d/%d)", b.m_Suffix, e.m_Mask,
                             e.m_PendingMask, done, b.m_Count);
                     e.m_PendingMask = -1;
+                }
+                /* Naboris : compteur de quarts de tour de la tablette (voir Beast::m_Part), dans le fil du jeu. */
+                if (e.m_PendingQuarter >= 0 && b.m_Part >= 0) {
+                    constexpr std::uintptr_t UiPtr = 0x1e17020, UiDrumQuarter = 0xd54;
+                    const std::uintptr_t uiSlot = Base() + UiPtr;
+                    const std::uintptr_t ui = coop::game::CanReadMemory(uiSlot, 8) ? *reinterpret_cast<const std::uintptr_t*>(uiSlot) : 0;
+                    const std::uintptr_t q = ui + UiDrumQuarter + 4 * static_cast<std::uintptr_t>(b.m_Part);
+                    if (ui != 0 && coop::game::CanReadMemory(q, 4)) {
+                        auto* p = reinterpret_cast<std::int32_t*>(q);
+                        const std::int32_t old = *p;
+                        if (old >= 0 && old <= 3) {
+                            *p = e.m_PendingQuarter;
+                            if (s_Logs++ < 200)
+                                Logging.Log("[botw-coop] rotation : tablette, tambour %d : quart de tour %d -> %d", b.m_Part, old, e.m_PendingQuarter);
+                        } else if (s_Logs++ < 200) {
+                            Logging.Log("[botw-coop] rotation : tablette, tambour %d : valeur inattendue %d, non modifiee", b.m_Part, old);
+                        }
+                    }
+                    e.m_PendingQuarter = -1;
                 }
                 int mask = 0;
                 for (int i = 0; i < b.m_Count; i++) {

@@ -1,0 +1,95 @@
+# 2026-11-17 Vah Naboris : compteur de quarts de tour (rn9, rn10) et personnage du partenaire recree en boucle (rn9 plantage, rn10 corrige)
+
+== rn9 J1 : 'n'est plus valide' x829, lectures/ecritures memoire invalides x0
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] rotation : action 21b15207f0 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b1523948 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : action 21b15c6490 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : mouvement local 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b -0.50 -> -90.00 degres
+[botw-coop] essai rotation : DynTargetAng 21b1524078 = -90.00, suivants 0 -1577282040
+[botw-coop] rotation : angle final envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) a la fin du mouvement 4ba1a76b -90.00 -> -0.00 degres
+[botw-coop] rotation : mouvement local 4ba1a76b -90.00 -> -90.50 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b -90.50 -> -180.00 degres
+[botw-coop] essai rotation : DynTargetAng 21b1524078 = 180.00, suivants 0 -1577287376
+[botw-coop] rotation : angle final envoye 4ba1a76b 180.00 -> 180.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) a la fin du mouvement 4ba1a76b 180.00 -> -0.00 degres
+[botw-coop] rotation : mouvement local 4ba1a76b 180.00 -> 179.50 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b 179.50 -> 90.00 degres
+[botw-coop] essai rotation : DynTargetAng 21b1524078 = 90.00, suivants 0 -1577289928
+[botw-coop] rotation : angle final envoye 4ba1a76b 90.00 -> 90.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) a la fin du mouvement 4ba1a76b 90.00 -> -0.00 degres
+
+== rn9 J2 : 'n'est plus valide' x612, lectures/ecritures memoire invalides x915975
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree
+
+== rn10 J1 : 'n'est plus valide' x5, lectures/ecritures memoire invalides x0
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.1, attente 30 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.2, attente 60 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.3, attente 120 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.4, attente 240 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.5, attente 480 images)
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] rotation : action 21b0ee6848 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b0f9f410 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : action 21b0f20878 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : mouvement local 4ba1a76b 0.00 -> -0.50 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b -0.50 -> -90.00 degres
+[botw-coop] essai rotation : DynTargetAng 21b0f20fa8 = -90.00, suivants 0 -1583593216
+[botw-coop] rotation : angle final envoye 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) a la fin du mouvement 4ba1a76b -90.00 -> -0.00 degres
+[botw-coop] rotation : mouvement local 4ba1a76b -90.50 -> -92.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b -92.00 -> -180.00 degres
+[botw-coop] essai rotation : DynTargetAng 21b0f20fa8 = 180.00, suivants 0 -1583598784
+[botw-coop] rotation : angle final envoye 4ba1a76b 180.00 -> 180.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) a la fin du mouvement 4ba1a76b 180.00 -> -0.00 degres
+[botw-coop] rotation : angle rejoint 4ba1a76b 179.50 -> 179.50 degres
+[botw-coop] rotation : tablette, tambour 0 : quart de tour 2 -> 2
+[botw-coop] rotation : angle rejoint 4ba1a76b 90.00 -> 90.00 degres
+[botw-coop] rotation : tablette, tambour 0 : quart de tour 2 -> 3
+[botw-coop] rotation : mouvement local 4ba1a76b 89.50 -> 89.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b 89.00 -> 0.00 degres
+[botw-coop] essai rotation : DynTargetAng 21b0f20fa8 = 0.00, suivants 0 -1583569088
+[botw-coop] rotation : angle final envoye 4ba1a76b 0.00 -> 0.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) a la fin du mouvement 4ba1a76b 0.00 -> -0.00 degres
+
+== rn10 J2 : 'n'est plus valide' x5, lectures/ecritures memoire invalides x0
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.1, attente 30 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.2, attente 60 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.3, attente 120 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.4, attente 240 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.5, attente 480 images)
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsElectric", point "Entrance_1"
+[botw-coop] rotation : action 21b0f57038 de DungeonRotateTagRemainsElec (HashId 4ba1a76b) suivie
+[botw-coop] rotation : action 21b0f53ee0 de DungeonRotateTagRemainsElec (HashId 53ef2929) suivie
+[botw-coop] rotation : action 21b1001e48 de DungeonRotateTagRemainsElec (HashId cb98e7f9) suivie
+[botw-coop] rotation : angle rejoint 4ba1a76b -0.50 -> -0.50 degres
+[botw-coop] rotation : tablette, tambour 0 : quart de tour 0 -> 0
+[botw-coop] rotation : angle rejoint 4ba1a76b -90.00 -> -90.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsElec recopies (masque 1 -> 0, 1/1)
+[botw-coop] rotation : tablette, tambour 0 : quart de tour 0 -> 1
+[botw-coop] rotation : angle rejoint 4ba1a76b -92.00 -> -92.00 degres
+[botw-coop] rotation : angle rejoint 4ba1a76b 180.00 -> 180.00 degres
+[botw-coop] rotation : tablette, tambour 0 : quart de tour 1 -> 2
+[botw-coop] rotation : mouvement local 4ba1a76b 180.00 -> 179.50 degres
+[botw-coop] rotation : cible de l'action (+0xd8) au debut du mouvement 4ba1a76b 179.50 -> 90.00 degres
+[botw-coop] essai rotation : DynTargetAng 21b0f57768 = 90.00, suivants 1065353216 -1583563752
+[botw-coop] rotation : angle final envoye 4ba1a76b 90.00 -> 90.00 degres
+[botw-coop] rotation : cible de l'action (+0xd8) a la fin du mouvement 4ba1a76b 90.00 -> -0.00 degres
+[botw-coop] rotation : angle rejoint 4ba1a76b 89.00 -> 89.00 degres
+[botw-coop] rotation : angle rejoint 4ba1a76b 0.00 -> 0.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsElec recopies (masque 0 -> 1, 1/1)
+[botw-coop] rotation : tablette, tambour 0 : quart de tour 3 -> 0
+

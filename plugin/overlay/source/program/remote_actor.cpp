@@ -44,6 +44,13 @@ namespace coop::remote_actor {
         constexpr int PuppetRetries = 4;
         int s_PuppetFailures = 0;
 
+        /* Destructions rapides de suite (personnage retire par le jeu moins de QuickDeathFrames images apres sa
+           creation) et image avant laquelle on ne le recree pas (voir l'etat Alive). */
+        constexpr std::uint64_t QuickDeathFrames = 90;
+        int s_QuickDeaths = 0;
+        std::uint64_t s_AliveSince = 0;
+        std::uint64_t s_IdleUntil = 0;
+
         /* PNJ de repli en place : le Link est redemande a cote toutes les UpgradeEvery images ; s'il
            apparait, il remplace le PNJ (essai bw5 : 4 echecs de suite juste apres un voyage, puis le
            PNJ restait pour toute la session). */
@@ -420,7 +427,7 @@ namespace coop::remote_actor {
                 break;
 
             case State::Idle: {
-                if (!hasTarget)
+                if (!hasTarget || s_Frames < s_IdleUntil)
                     break;
                 /* Trop loin : le jeu ne garde pas d'acteur a cette distance du joueur local. */
                 const float ddx = targetPos[0] - local.m_Pos[0];
@@ -478,6 +485,7 @@ namespace coop::remote_actor {
                 if (actor != 0) {
                     s_Actor = actor;
                     s_State = State::Alive;
+                    s_AliveSince = s_Frames;
                     if (IsPuppet())
                         s_PuppetFailures = 0;
                     s_HasWritten = false;
@@ -521,7 +529,25 @@ namespace coop::remote_actor {
             case State::Alive: {
                 /* L'acteur peut avoir ete detruit par le jeu (distance, changement de zone). */
                 if (!coop::game::IsActorListed(s_Actor) || coop::game::GetActorState(s_Actor) == 3) {
-                    Logging.Log("[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree");
+                    /* Detruit peu apres sa creation (essais rn5 a rn9 : partenaire sauvegarde a un endroit ou le jeu
+                       retire aussitot son personnage, « code -11 ») : sans attente, recree a chaque image, des
+                       centaines de fois, jusqu'a corrompre la memoire du jeu (rn9). Attente croissante (1 s, 2 s, ...
+                       30 s au plus) tant que les destructions rapides se suivent. Valeurs : choix, pas des mesures. */
+                    if (s_Frames - s_AliveSince < QuickDeathFrames)
+                        s_QuickDeaths++;
+                    else
+                        s_QuickDeaths = 0;
+                    std::uint64_t wait = 0;
+                    if (s_QuickDeaths > 0) {
+                        const int shift = s_QuickDeaths - 1 < 5 ? s_QuickDeaths - 1 : 5;
+                        wait = 30ull << shift;
+                        if (wait > 900)
+                            wait = 900;
+                    }
+                    s_IdleUntil = s_Frames + wait;
+                    if (s_QuickDeaths <= 5 || s_QuickDeaths % 20 == 0)
+                        Logging.Log("[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.%d, attente %lu images)",
+                            s_QuickDeaths, wait);
                     s_Actor = 0;
                     s_State = State::Idle;
                     RetryPuppet();
@@ -567,6 +593,7 @@ namespace coop::remote_actor {
                             Logging.Log("[botw-coop] acteur distant : Link apparu apres %lu images, il remplace le PNJ (%s)",
                                 s_Frames - s_UpgradeFrame, ok ? "PNJ retire" : "PNJ non retire");
                             s_Actor = link;
+                            s_AliveSince = s_Frames;
                             ActorName = PuppetNames[s_PuppetVariant];
                             s_PuppetFailures = 0;
                             s_HasWritten = false;
