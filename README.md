@@ -50,7 +50,7 @@ Journal d'avancement : [`PROGRESS.md`](PROGRESS.md). Détails techniques : [`NOT
 
 Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0.2.1, **sur un même PC** (journaux et captures : `docs/evidence/`, détail dans `PROGRESS.md` et `NOTES.md`).
 
-- **Ennemis** : Bokoblin, Moblin (vie, attaques, dégâts), Lézalfos (animations), Lynel (vie, position, animations, y compris celles de son second créneau : cri, dégainer, charge), Hinox (vie, réveil, animations), Gardiens mobiles et fixes (vie et position ; leurs mouvements dépendent de chaque jeu). Le monstre vise le joueur le plus proche de lui. Un ennemi vaincu chez l'un est retiré chez l'autre, y compris quand le jeu l'a fait monter de rang (mode expert, progression de la partie) : le mod lit le drapeau exact de son objet de carte.
+- **Ennemis** : Bokoblin, Moblin (vie, attaques, dégâts), Lézalfos (animations), Lynel (vie, position, animations, y compris celles de son second créneau : cri, dégainer, charge), Hinox (vie, réveil, animations), Gardiens volants (vie et position, vus au même endroit dans les deux jeux), Gardiens fixes et Tourelles du château (suivis ; leurs mouvements dépendent de chaque jeu). Le monstre vise le joueur le plus proche de lui. Un ennemi vaincu chez l'un est retiré chez l'autre, y compris quand le jeu l'a fait monter de rang (mode expert, progression de la partie) : le mod lit le drapeau exact de son objet de carte.
 - **Mode expert** : vérifié (parties chargées depuis une sauvegarde en mode expert).
 - **Lune de sang** : déclenchée par le jeu chez les deux joueurs au même minuit.
 - **Créatures divines** : les deux joueurs entrent ensemble ; énigmes, bornes, coffres et ennemis vaincus partagés (Vah Medoh).
@@ -58,7 +58,7 @@ Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0
 - **DLC** : Épreuve de l'épée et sanctuaires de la Ballade des Prodiges, les deux joueurs entrent ensemble, ennemis vaincus partagés.
 - **Réseau** : relais protégé (mot de passe, connexions limitées, messages invalides ignorés, client trop lent déconnecté).
 
-Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : la rotation d'une Créature divine (non partagée), un boss, une épreuve de l'épée complète, la Ballade des Prodiges jouée, les Gardiens volants, le coffre d'un camp nettoyé par l'autre joueur (groupe 3).
+Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : la rotation d'une Créature divine (non partagée), un boss, une épreuve de l'épée complète, la Ballade des Prodiges jouée, le rayon d'un Gardien qui touche un joueur, le tir des Tourelles, le coffre d'un camp nettoyé par l'autre joueur (groupe 3).
 
 ## Installation simple : le launcher
 

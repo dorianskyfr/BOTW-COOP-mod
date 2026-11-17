@@ -1,0 +1,230 @@
+== gv1_game.txt
+[botw-coop] acteur : Enemy_Guardian_B                         hash=9b38bde2 etat=0 pos=(-32.50, 244.88, -909.37) dist=297.1
+[botw-coop] acteur : Enemy_Guardian_B                         hash=024ae318 etat=0 pos=(-91.76, 269.61, -935.73) dist=265.0
+[botw-coop] acteur : Enemy_Guardian_C                         hash=2134034d etat=0 pos=(-254.00, 304.36, -956.87) dist=276.6
+[botw-coop] acteur : Enemy_Guardian_B                         hash=f51a9468 etat=0 pos=(-251.30, 184.11, -1204.71) dist=112.8
+[botw-coop] acteur : Enemy_Guardian_B                         hash=e8a48932 etat=0 pos=(-153.78, 288.19, -993.12) dist=220.7
+[botw-coop] acteur : Enemy_Guardian_C                         hash=bab75bc6 etat=0 pos=(-362.50, 294.52, -1010.87) dist=295.6
+[botw-coop] acteur : Enemy_Guardian_B                         hash=b73f9315 etat=0 pos=(-55.52, 202.77, -1047.39) dist=162.2
+[botw-coop] acteur : Enemy_Guardian_B                         hash=aa818e4f etat=0 pos=(-209.59, 293.85, -968.16) dist=249.2
+[botw-coop] acteur : Enemy_Guardian_B                         hash=7b95938b etat=0 pos=(-149.93, 275.68, -1033.51) dist=183.0
+[botw-coop] acteur : Enemy_Guardian_B                         hash=6e1f81b9 etat=0 pos=(-91.76, 258.08, -1009.24) dist=200.0
+[botw-coop] acteur : Enemy_Guardian_C                         hash=5792bd7c etat=0 pos=(-40.04, 259.87, -959.92) dist=258.9
+[botw-coop] acteur : Enemy_Guardian_B                         hash=240e89ac etat=0 pos=(-318.21, 287.63, -968.61) dist=288.8
+[botw-coop] acteur : Enemy_Guardian_C                         hash=7e295430 etat=0 pos=(-185.64, 274.77, -1375.07) dist=254.4
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2604187106 -> 7d119152 existe, valeur 0, proprietes 0x27 | objet de carte n.20693 -> 7d119152 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_38462232 -> 994c4ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.25300 -> 994c4ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_557056845 -> 7f2dcce9 existe, valeur 0, proprietes 0x27 | objet de carte n.21027 -> 7f2dcce9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_4112159848 -> 2f5ed976 existe, valeur 0, proprietes 0x27 | objet de carte n.7788 -> 2f5ed976 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3903097138 -> b2648fe2 existe, valeur 0, proprietes 0x27 | objet de carte n.29325 -> b2648fe2 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_3132578758 -> 5fa88972 existe, valeur 0, proprietes 0x27 | objet de carte n.15990 -> 5fa88972 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3074396949 -> d9d8ec0c existe, valeur 0, proprietes 0x27 | objet de carte n.35763 -> d9d8ec0c (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2860617295 -> dd6b6137 existe, valeur 0, proprietes 0x27 | objet de carte n.36367 -> dd6b6137 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2073400203 -> 4e2f7752 existe, valeur 0, proprietes 0x27 | objet de carte n.13079 -> 4e2f7752 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_1847558585 -> 86fd003b existe, valeur 0, proprietes 0x27 | objet de carte n.22222 -> 86fd003b (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_1469234556 -> 1d429637 existe, valeur 0, proprietes 0x27 | objet de carte n.4855 -> 1d429637 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_604932524 -> f08e0c69 existe, valeur 0, proprietes 0x27 | objet de carte n.39566 -> f08e0c69 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2116637744 -> 3dda7870 existe, valeur 0, proprietes 0x27 | objet de carte n.10280 -> 3dda7870 (le meme)
+[botw-coop] acteur : Enemy_Guardian_B                         hash=024ae318 etat=0 pos=(-91.76, 269.61, -935.73) dist=310.5
+[botw-coop] acteur : Enemy_Guardian_C                         hash=2134034d etat=0 pos=(-254.00, 304.36, -956.87) dist=274.5
+[botw-coop] acteur : Enemy_Guardian_B                         hash=f51a9468 etat=1 pos=(-251.30, 184.11, -1204.71) dist=30.2
+[botw-coop] acteur : Enemy_Guardian_B                         hash=e8a48932 etat=0 pos=(-153.78, 288.19, -993.12) dist=246.9
+[botw-coop] acteur : Enemy_Guardian_C                         hash=bab75bc6 etat=0 pos=(-362.50, 294.52, -1010.87) dist=258.3
+[botw-coop] acteur : Enemy_Guardian_B                         hash=b73f9315 etat=0 pos=(-55.52, 202.77, -1047.39) dist=231.4
+[botw-coop] acteur : Enemy_Guardian_B                         hash=aa818e4f etat=0 pos=(-209.59, 293.85, -968.16) dist=259.5
+[botw-coop] acteur : Enemy_Guardian_B                         hash=7b95938b etat=0 pos=(-149.93, 275.68, -1033.51) dist=210.3
+[botw-coop] acteur : Enemy_Guardian_B                         hash=6e1f81b9 etat=0 pos=(-91.76, 258.08, -1009.24) dist=248.7
+[botw-coop] acteur : Enemy_Guardian_C                         hash=5792bd7c etat=0 pos=(-40.04, 259.87, -959.92) dist=315.9
+[botw-coop] acteur : Enemy_Guardian_C                         hash=7e295430 etat=1 pos=(-187.75, 263.95, -1376.11) dist=213.9
+[botw-coop] acteur : Enemy_Guardian_C                         hash=761d5b58 etat=1 pos=(200.05, 210.28, -1160.56) dist=435.7
+[botw-coop] acteur : Enemy_Guardian_B                         hash=cd469e5c etat=0 pos=(-311.85, 215.94, -910.62) dist=297.0
+[botw-coop] acteur : Enemy_Guardian_B                         hash=ffdf9d71 etat=0 pos=(-339.63, 215.73, -1091.27) dist=156.0
+[botw-coop] acteur : Enemy_Guardian_B                         hash=d99bf7c5 etat=0 pos=(-334.63, 240.28, -961.97) dist=263.0
+[botw-coop] acteur : Enemy_Guardian_C                         hash=a709469c etat=0 pos=(-387.50, 148.28, -723.37) dist=494.0
+[botw-coop] acteur : Enemy_Guardian_C                         hash=b28354ae etat=0 pos=(-455.73, 196.48, -1087.69) dist=248.9
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_38462232 -> 994c4ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.25300 -> 994c4ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_557056845 -> 7f2dcce9 existe, valeur 0, proprietes 0x27 | objet de carte n.21027 -> 7f2dcce9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_4112159848 -> 2f5ed976 existe, valeur 0, proprietes 0x27 | objet de carte n.7788 -> 2f5ed976 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3903097138 -> b2648fe2 existe, valeur 0, proprietes 0x27 | objet de carte n.29325 -> b2648fe2 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_3132578758 -> 5fa88972 existe, valeur 0, proprietes 0x27 | objet de carte n.15990 -> 5fa88972 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3074396949 -> d9d8ec0c existe, valeur 0, proprietes 0x27 | objet de carte n.35763 -> d9d8ec0c (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2860617295 -> dd6b6137 existe, valeur 0, proprietes 0x27 | objet de carte n.36367 -> dd6b6137 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2073400203 -> 4e2f7752 existe, valeur 0, proprietes 0x27 | objet de carte n.13079 -> 4e2f7752 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_1847558585 -> 86fd003b existe, valeur 0, proprietes 0x27 | objet de carte n.22222 -> 86fd003b (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_1469234556 -> 1d429637 existe, valeur 0, proprietes 0x27 | objet de carte n.4855 -> 1d429637 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2116637744 -> 3dda7870 existe, valeur 0, proprietes 0x27 | objet de carte n.10280 -> 3dda7870 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_1981635416 -> 8ceba775 existe, valeur 0, proprietes 0x27 | objet de carte n.23201 -> 8ceba775 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3443957340 -> 6780101d existe, valeur 0, proprietes 0x27 | objet de carte n.17205 -> 6780101d (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_4292844913 -> c6541959 existe, valeur 0, proprietes 0x27 | objet de carte n.32629 -> c6541959 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3650877381 -> de1addc7 existe, valeur 0, proprietes 0x27 | objet de carte n.36485 -> de1addc7 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2802402972 -> 5cfa1ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.15510 -> 5cfa1ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_1805862402 -> cd71af71 existe, valeur 0, proprietes 0x27 | objet de carte n.33795 -> cd71af71 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2994951342 -> 776fc5b4 existe, valeur 0, proprietes 0x27 | objet de carte n.19768 -> 776fc5b4 (le meme)
+[botw-coop] position ennemi : releve Enemy_Guardian_B f51a9468 en (-251.30, 184.11, -1204.71)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 7e295430 en (-187.75, 263.95, -1376.11)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 761d5b58 en (200.05, 210.28, -1160.56)
+[botw-coop] acteur : Enemy_Guardian_C                         hash=a709469c etat=0 pos=(-387.50, 148.28, -723.37) dist=458.9
+[botw-coop] acteur : Enemy_Guardian_C                         hash=d2ac17e9 etat=1 pos=(-632.68, 162.16, -414.25) dist=84.7
+[botw-coop] acteur : Enemy_Guardian_C                         hash=9d8f3c22 etat=1 pos=(-702.48, 152.50, -648.36) dist=320.4
+[botw-coop] acteur : Enemy_Guardian_C                         hash=26770fae etat=1 pos=(-834.82, 161.40, -439.36) dist=228.5
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2802402972 -> 5cfa1ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.15510 -> 5cfa1ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_3534493673 -> 66dfd6bc existe, valeur 0, proprietes 0x27 | objet de carte n.17101 -> 66dfd6bc (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2643409954 -> ba5184d9 existe, valeur 0, proprietes 0x27 | objet de carte n.30630 -> ba5184d9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_645337006 -> 5f8bc4f6 existe, valeur 0, proprietes 0x27 | objet de carte n.15961 -> 5f8bc4f6 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_887589490 -> 2987089d existe, valeur 0, proprietes 0x27 | objet de carte n.6848 -> 2987089d (le meme)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, on suit la copie de l'autre joueur (nous a 76.1 m, J2 a 58.9 m)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, notre copie fait foi (nous a 71.8 m, J2 a 80.9 m)
+[botw-coop] position ennemi : releve Enemy_Guardian_C a709469c en (-386.27, 143.96, -718.16)
+[botw-coop] position ennemi : releve Enemy_Guardian_C d2ac17e9 en (-551.22, 150.53, -352.58)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 9d8f3c22 en (-702.48, 152.50, -648.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 26770fae en (-834.82, 161.40, -439.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C a709469c en (-386.27, 143.96, -718.16)
+[botw-coop] position ennemi : releve Enemy_Guardian_C d2ac17e9 en (-551.22, 150.53, -352.58)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 9d8f3c22 en (-702.48, 152.50, -648.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 26770fae en (-834.82, 161.40, -439.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C a709469c en (-386.27, 143.96, -718.16)
+[botw-coop] position ennemi : releve Enemy_Guardian_C d2ac17e9 en (-551.22, 150.53, -352.58)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 9d8f3c22 en (-702.48, 152.50, -648.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 26770fae en (-834.82, 161.40, -439.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C d2ac17e9 en (-632.68, 162.16, -414.25)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 9d8f3c22 en (-702.48, 152.50, -648.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 26770fae en (-834.82, 161.40, -439.36)
+[botw-coop] acteur : Enemy_Guardian_C                         hash=d2ac17e9 etat=1 pos=(-632.68, 162.16, -414.25) dist=84.7
+[botw-coop] acteur : Enemy_Guardian_C                         hash=9d8f3c22 etat=1 pos=(-702.48, 152.50, -648.36) dist=320.4
+[botw-coop] acteur : Enemy_Guardian_C                         hash=a709469c etat=0 pos=(-387.50, 148.28, -723.37) dist=458.9
+[botw-coop] acteur : Enemy_Guardian_C                         hash=26770fae etat=1 pos=(-834.82, 161.40, -439.36) dist=228.5
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_3534493673 -> 66dfd6bc existe, valeur 0, proprietes 0x27 | objet de carte n.17101 -> 66dfd6bc (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2643409954 -> ba5184d9 existe, valeur 0, proprietes 0x27 | objet de carte n.30630 -> ba5184d9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2802402972 -> 5cfa1ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.15510 -> 5cfa1ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_887589490 -> 2987089d existe, valeur 0, proprietes 0x27 | objet de carte n.6848 -> 2987089d (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_645337006 -> 5f8bc4f6 existe, valeur 0, proprietes 0x27 | objet de carte n.15961 -> 5f8bc4f6 (le meme)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, on suit la copie de l'autre joueur (nous a 91.4 m, J2 a 84.7 m)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9 ramene vers la copie de J2, ecart 2.24 m (rc=100), n.3600
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9 ramene vers la copie de J2, ecart 1.10 m (rc=100), n.3900
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+== gv1_game2.txt
+[botw-coop] acteur : Enemy_Guardian_B                         hash=9b38bde2 etat=0 pos=(-32.50, 244.88, -909.37) dist=297.1
+[botw-coop] acteur : Enemy_Guardian_C                         hash=2134034d etat=0 pos=(-254.00, 304.36, -956.87) dist=276.6
+[botw-coop] acteur : Enemy_Guardian_B                         hash=024ae318 etat=0 pos=(-91.76, 269.61, -935.73) dist=265.0
+[botw-coop] acteur : Enemy_Guardian_B                         hash=f51a9468 etat=0 pos=(-251.30, 184.11, -1204.71) dist=112.8
+[botw-coop] acteur : Enemy_Guardian_B                         hash=e8a48932 etat=0 pos=(-153.78, 288.19, -993.12) dist=220.7
+[botw-coop] acteur : Enemy_Guardian_C                         hash=bab75bc6 etat=0 pos=(-362.50, 294.52, -1010.87) dist=295.6
+[botw-coop] acteur : Enemy_Guardian_B                         hash=aa818e4f etat=0 pos=(-209.59, 293.85, -968.16) dist=249.2
+[botw-coop] acteur : Enemy_Guardian_B                         hash=b73f9315 etat=0 pos=(-55.52, 202.77, -1047.39) dist=162.2
+[botw-coop] acteur : Enemy_Guardian_B                         hash=7b95938b etat=0 pos=(-149.93, 275.68, -1033.51) dist=183.0
+[botw-coop] acteur : Enemy_Guardian_B                         hash=6e1f81b9 etat=0 pos=(-91.76, 258.08, -1009.24) dist=200.0
+[botw-coop] acteur : Enemy_Guardian_C                         hash=5792bd7c etat=0 pos=(-40.04, 259.87, -959.92) dist=258.9
+[botw-coop] acteur : Enemy_Guardian_B                         hash=240e89ac etat=0 pos=(-318.21, 287.63, -968.61) dist=288.8
+[botw-coop] acteur : Enemy_Guardian_C                         hash=7e295430 etat=0 pos=(-185.64, 274.77, -1375.07) dist=254.4
+[botw-coop] acteur : Enemy_Guardian_B                         hash=e20d76e1 etat=0 pos=(-146.38, 246.69, -850.85) dist=325.6
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2604187106 -> 7d119152 existe, valeur 0, proprietes 0x27 | objet de carte n.20693 -> 7d119152 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_557056845 -> 7f2dcce9 existe, valeur 0, proprietes 0x27 | objet de carte n.21027 -> 7f2dcce9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_38462232 -> 994c4ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.25300 -> 994c4ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_4112159848 -> 2f5ed976 existe, valeur 0, proprietes 0x27 | objet de carte n.7788 -> 2f5ed976 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3903097138 -> b2648fe2 existe, valeur 0, proprietes 0x27 | objet de carte n.29325 -> b2648fe2 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_3132578758 -> 5fa88972 existe, valeur 0, proprietes 0x27 | objet de carte n.15990 -> 5fa88972 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2860617295 -> dd6b6137 existe, valeur 0, proprietes 0x27 | objet de carte n.36367 -> dd6b6137 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3074396949 -> d9d8ec0c existe, valeur 0, proprietes 0x27 | objet de carte n.35763 -> d9d8ec0c (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2073400203 -> 4e2f7752 existe, valeur 0, proprietes 0x27 | objet de carte n.13079 -> 4e2f7752 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_1847558585 -> 86fd003b existe, valeur 0, proprietes 0x27 | objet de carte n.22222 -> 86fd003b (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_1469234556 -> 1d429637 existe, valeur 0, proprietes 0x27 | objet de carte n.4855 -> 1d429637 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_604932524 -> f08e0c69 existe, valeur 0, proprietes 0x27 | objet de carte n.39566 -> f08e0c69 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2116637744 -> 3dda7870 existe, valeur 0, proprietes 0x27 | objet de carte n.10280 -> 3dda7870 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3792533217 -> f64e9be0 existe, valeur 0, proprietes 0x27 | objet de carte n.40510 -> f64e9be0 (le meme)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, on suit la copie de l'autre joueur (nous a 29.3 m, J1 a 30.2 m)
+[botw-coop] acteur : Enemy_Guardian_C                         hash=2134034d etat=0 pos=(-254.00, 304.36, -956.87) dist=271.1
+[botw-coop] acteur : Enemy_Guardian_B                         hash=024ae318 etat=0 pos=(-91.76, 269.61, -935.73) dist=304.9
+[botw-coop] acteur : Enemy_Guardian_B                         hash=f51a9468 etat=1 pos=(-251.30, 184.11, -1204.71) dist=34.9
+[botw-coop] acteur : Enemy_Guardian_B                         hash=e8a48932 etat=0 pos=(-153.78, 288.19, -993.12) dist=242.0
+[botw-coop] acteur : Enemy_Guardian_C                         hash=bab75bc6 etat=0 pos=(-362.50, 294.52, -1010.87) dist=257.5
+[botw-coop] acteur : Enemy_Guardian_B                         hash=aa818e4f etat=0 pos=(-209.59, 293.85, -968.16) dist=255.4
+[botw-coop] acteur : Enemy_Guardian_B                         hash=b73f9315 etat=0 pos=(-55.52, 202.77, -1047.39) dist=225.3
+[botw-coop] acteur : Enemy_Guardian_B                         hash=7b95938b etat=0 pos=(-149.93, 275.68, -1033.51) dist=205.3
+[botw-coop] acteur : Enemy_Guardian_B                         hash=6e1f81b9 etat=0 pos=(-91.76, 258.08, -1009.24) dist=243.0
+[botw-coop] acteur : Enemy_Guardian_C                         hash=5792bd7c etat=0 pos=(-40.04, 259.87, -959.92) dist=310.1
+[botw-coop] acteur : Enemy_Guardian_C                         hash=7e295430 etat=1 pos=(-187.52, 264.08, -1376.10) dist=216.6
+[botw-coop] acteur : Enemy_Guardian_C                         hash=761d5b58 etat=1 pos=(200.05, 210.38, -1160.53) dist=431.0
+[botw-coop] acteur : Enemy_Guardian_B                         hash=ffdf9d71 etat=0 pos=(-339.63, 215.73, -1091.27) dist=156.4
+[botw-coop] acteur : Enemy_Guardian_B                         hash=cd469e5c etat=0 pos=(-311.85, 215.94, -910.62) dist=294.2
+[botw-coop] acteur : Enemy_Guardian_B                         hash=d99bf7c5 etat=0 pos=(-334.63, 240.28, -961.97) dist=261.0
+[botw-coop] acteur : Enemy_Guardian_C                         hash=6ba34602 etat=0 pos=(-15.02, 208.91, -741.44) dist=496.4
+[botw-coop] acteur : Enemy_Guardian_C                         hash=a709469c etat=0 pos=(-387.50, 148.28, -723.37) dist=491.4
+[botw-coop] acteur : Enemy_Guardian_C                         hash=b28354ae etat=0 pos=(-455.73, 196.48, -1087.69) dist=251.1
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_557056845 -> 7f2dcce9 existe, valeur 0, proprietes 0x27 | objet de carte n.21027 -> 7f2dcce9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_38462232 -> 994c4ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.25300 -> 994c4ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_4112159848 -> 2f5ed976 existe, valeur 0, proprietes 0x27 | objet de carte n.7788 -> 2f5ed976 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3903097138 -> b2648fe2 existe, valeur 0, proprietes 0x27 | objet de carte n.29325 -> b2648fe2 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_3132578758 -> 5fa88972 existe, valeur 0, proprietes 0x27 | objet de carte n.15990 -> 5fa88972 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2860617295 -> dd6b6137 existe, valeur 0, proprietes 0x27 | objet de carte n.36367 -> dd6b6137 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3074396949 -> d9d8ec0c existe, valeur 0, proprietes 0x27 | objet de carte n.35763 -> d9d8ec0c (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_2073400203 -> 4e2f7752 existe, valeur 0, proprietes 0x27 | objet de carte n.13079 -> 4e2f7752 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_1847558585 -> 86fd003b existe, valeur 0, proprietes 0x27 | objet de carte n.22222 -> 86fd003b (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_1469234556 -> 1d429637 existe, valeur 0, proprietes 0x27 | objet de carte n.4855 -> 1d429637 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2116637744 -> 3dda7870 existe, valeur 0, proprietes 0x27 | objet de carte n.10280 -> 3dda7870 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_1981635416 -> 8ceba775 existe, valeur 0, proprietes 0x27 | objet de carte n.23201 -> 8ceba775 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_4292844913 -> c6541959 existe, valeur 0, proprietes 0x27 | objet de carte n.32629 -> c6541959 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3443957340 -> 6780101d existe, valeur 0, proprietes 0x27 | objet de carte n.17205 -> 6780101d (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_B_3650877381 -> de1addc7 existe, valeur 0, proprietes 0x27 | objet de carte n.36485 -> de1addc7 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_1805862402 -> cd71af71 existe, valeur 0, proprietes 0x27 | objet de carte n.33795 -> cd71af71 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2802402972 -> 5cfa1ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.15510 -> 5cfa1ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2994951342 -> 776fc5b4 existe, valeur 0, proprietes 0x27 | objet de carte n.19768 -> 776fc5b4 (le meme)
+[botw-coop] position ennemi : releve Enemy_Guardian_B f51a9468 en (-251.30, 184.11, -1204.71) (on suit l'autre joueur)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 7e295430 en (-187.52, 264.08, -1376.10)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 761d5b58 en (200.05, 210.38, -1160.53)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, notre copie fait foi (nous a 14.5 m, J1 a 9.5 m)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, on suit la copie de l'autre joueur (nous a 84.8 m, J1 a 84.7 m)
+[botw-coop] acteur : Enemy_Guardian_C                         hash=a709469c etat=0 pos=(-387.50, 148.28, -723.37) dist=458.9
+[botw-coop] acteur : Enemy_Guardian_C                         hash=9d8f3c22 etat=1 pos=(-702.48, 152.50, -648.36) dist=320.4
+[botw-coop] acteur : Enemy_Guardian_C                         hash=d2ac17e9 etat=1 pos=(-632.58, 162.06, -414.28) dist=84.6
+[botw-coop] acteur : Enemy_Guardian_C                         hash=26770fae etat=1 pos=(-834.82, 161.40, -439.36) dist=228.5
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2802402972 -> 5cfa1ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.15510 -> 5cfa1ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2643409954 -> ba5184d9 existe, valeur 0, proprietes 0x27 | objet de carte n.30630 -> ba5184d9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_3534493673 -> 66dfd6bc existe, valeur 0, proprietes 0x27 | objet de carte n.17101 -> 66dfd6bc (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_887589490 -> 2987089d existe, valeur 0, proprietes 0x27 | objet de carte n.6848 -> 2987089d (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_645337006 -> 5f8bc4f6 existe, valeur 0, proprietes 0x27 | objet de carte n.15961 -> 5f8bc4f6 (le meme)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, notre copie fait foi (nous a 58.9 m, J1 a 74.9 m)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, on suit la copie de l'autre joueur (nous a 73.7 m, J1 a 75.6 m)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, notre copie fait foi (nous a 81.0 m, J1 a 75.6 m)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, on suit la copie de l'autre joueur (nous a 80.9 m, J1 a 71.8 m)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9 ramene vers la copie de J1, ecart 0.81 m (rc=100), n.5400
+[botw-coop] position ennemi : releve Enemy_Guardian_C a709469c en (-386.27, 143.96, -718.16)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 9d8f3c22 en (-702.48, 152.50, -648.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C d2ac17e9 en (-551.25, 150.53, -352.72) (on suit l'autre joueur)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 26770fae en (-834.82, 161.40, -439.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C a709469c en (-386.27, 143.96, -718.16)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 9d8f3c22 en (-702.48, 152.50, -648.36)
+[botw-coop] position ennemi : releve Enemy_Guardian_C d2ac17e9 en (-551.25, 150.53, -352.72) (on suit l'autre joueur)
+[botw-coop] position ennemi : releve Enemy_Guardian_C 26770fae en (-834.82, 161.40, -439.36)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, notre copie fait foi (nous a 103.9 m, J1 a 98.2 m)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, on suit la copie de l'autre joueur (nous a 84.8 m, J1 a 84.7 m)
+[botw-coop] acteur : Enemy_Guardian_C                         hash=9d8f3c22 etat=1 pos=(-702.48, 152.50, -648.36) dist=320.4
+[botw-coop] acteur : Enemy_Guardian_C                         hash=d2ac17e9 etat=1 pos=(-632.58, 162.06, -414.28) dist=84.6
+[botw-coop] acteur : Enemy_Guardian_C                         hash=a709469c etat=0 pos=(-387.50, 148.28, -723.37) dist=458.9
+[botw-coop] acteur : Enemy_Guardian_C                         hash=26770fae etat=1 pos=(-834.82, 161.40, -439.36) dist=228.5
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2643409954 -> ba5184d9 existe, valeur 0, proprietes 0x27 | objet de carte n.30630 -> ba5184d9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_3534493673 -> 66dfd6bc existe, valeur 0, proprietes 0x27 | objet de carte n.17101 -> 66dfd6bc (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2802402972 -> 5cfa1ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.15510 -> 5cfa1ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_887589490 -> 2987089d existe, valeur 0, proprietes 0x27 | objet de carte n.6848 -> 2987089d (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_645337006 -> 5f8bc4f6 existe, valeur 0, proprietes 0x27 | objet de carte n.15961 -> 5f8bc4f6 (le meme)
+[botw-coop] position ennemi : Enemy_Guardian_C d2ac17e9, notre copie fait foi (nous a 84.6 m, J1 a 90.9 m)
+== gv2_game.txt
+[botw-coop] essai drapeau local : hachage=66dfd6bc index 17101, octet 0 -> 1
+[botw-coop] drapeau change : n.17101 hachage=66dfd6bc 0 -> 1 (envoye, lune de sang)
+[botw-coop] acteur : Enemy_Guardian_C                         hash=a709469c etat=0 pos=(-387.50, 148.28, -723.37) dist=458.9
+[botw-coop] acteur : Enemy_Guardian_C                         hash=9d8f3c22 etat=1 pos=(-702.48, 152.50, -648.36) dist=320.4
+[botw-coop] acteur : Enemy_Guardian_C                         hash=26770fae etat=1 pos=(-834.82, 161.40, -439.36) dist=228.5
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2802402972 -> 5cfa1ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.15510 -> 5cfa1ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2643409954 -> ba5184d9 existe, valeur 0, proprietes 0x27 | objet de carte n.30630 -> ba5184d9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_887589490 -> 2987089d existe, valeur 0, proprietes 0x27 | objet de carte n.6848 -> 2987089d (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_645337006 -> 5f8bc4f6 existe, valeur 0, proprietes 0x27 | objet de carte n.15961 -> 5f8bc4f6 (le meme)
+== gv2_game2.txt
+[botw-coop] drapeau recu : n.17101 hachage=66dfd6bc mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] acteur : Enemy_Guardian_C                         hash=9d8f3c22 etat=1 pos=(-702.48, 152.50, -648.36) dist=320.4
+[botw-coop] acteur : Enemy_Guardian_C                         hash=a709469c etat=0 pos=(-387.50, 148.28, -723.37) dist=458.9
+[botw-coop] acteur : Enemy_Guardian_C                         hash=26770fae etat=1 pos=(-834.82, 161.40, -439.36) dist=228.5
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2643409954 -> ba5184d9 existe, valeur 0, proprietes 0x27 | objet de carte n.30630 -> ba5184d9 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_2802402972 -> 5cfa1ab3 existe, valeur 0, proprietes 0x27 | objet de carte n.15510 -> 5cfa1ab3 (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_887589490 -> 2987089d existe, valeur 0, proprietes 0x27 | objet de carte n.6848 -> 2987089d (le meme)
+[botw-coop] drapeau d'acteur : MainField_Enemy_Guardian_C_645337006 -> 5f8bc4f6 existe, valeur 0, proprietes 0x27 | objet de carte n.15961 -> 5f8bc4f6 (le meme)
