@@ -120,6 +120,11 @@ namespace coop::beast_rotate {
         constexpr int MaxRescues = 4;                   /* par fenetre */
         std::atomic<std::uint64_t> s_RescueUntilMs { 0 };
         std::atomic<int> s_RescueBeast { -1 };
+        /* Etiquette de rotation qui a ouvert la fenetre (adresse + HashId) : la repose n'a lieu que si elle existe
+           encore (relecture Codex : sinon, apres un changement de carte dans la fenetre, Link pouvait etre pose aux
+           coordonnees de Rudania dans une autre Creature). */
+        std::atomic<std::uintptr_t> s_RescueOwner { 0 };
+        std::atomic<std::uint32_t> s_RescueOwnerHash { 0 };
         constexpr int NumBeasts = sizeof(Beasts) / sizeof(Beasts[0]);
 
         /* Ecart d'angle le plus court, dans [-pi, pi] : les tambours de Vah Naboris tournent sans butee et le jeu
@@ -168,7 +173,8 @@ namespace coop::beast_rotate {
         Local s_Locals[MaxLocals];
         Target s_Targets[MaxTargets];
         std::uint64_t s_Clock = 0;
-        std::uint64_t s_Frames = 0;
+        /* Atomique : incremente par OnFrame avant le verrou, lu par DrainIncoming depuis le fil d'OnCalc (relecture Codex). */
+        std::atomic<std::uint64_t> s_Frames { 0 };
         std::atomic_flag s_Lock = ATOMIC_FLAG_INIT;
         /* Classement des acteurs proprietaires deja vus (plusieurs etiquettes alternent dans Vah Ruta et Vah
            Naboris : sans cache, chaque changement relisait et journalisait le nom ; essai rw1 : 200 lignes en
@@ -261,8 +267,12 @@ namespace coop::beast_rotate {
                  * mouvement l'invalide, d'ou la comparaison.
                  */
                 if (busy) {
-                    const Target* last = FindTarget(in.m_Hash, false);
+                    Target* last = FindTarget(in.m_Hash, false);
                     if (last != nullptr && last->m_From == in.m_From && std::fabs(AngleDiff(last->m_Angle, in.m_Angle)) <= Epsilon) {
+                        /* Meme angle mais drapeaux d'etat plus recents (releves toutes les 15 images, apres l'angle) :
+                           on garde les nouveaux drapeaux, sans revalider la cible (relecture Codex). */
+                        if (in.m_Mask >= 0)
+                            last->m_Mask = in.m_Mask;
                         static int s_ResendLogs = 0;
                         if (s_ResendLogs++ < 20)
                             Log("renvoi d'un ancien angle ignore (notre mouvement est plus recent)", in.m_Hash, e->m_LastSeen, in.m_Angle);
@@ -360,6 +370,7 @@ namespace coop::beast_rotate {
                 e->m_OwnMove = OwnMoveHold;
                 e->m_SinceOwn = 0;
                 e->m_Mine = true;
+                e->m_PendingQuarter = -1; /* notre commande fixe elle-meme le compteur de tablette (relecture Codex) */
             }
             e->m_LastSeen = angle;
             if (e->m_Cooldown > 0)
@@ -404,6 +415,8 @@ namespace coop::beast_rotate {
             const float step = diff > maxStep ? maxStep : (diff < -maxStep ? -maxStep : diff);
             if (e->m_Beast >= 0 && Beasts[e->m_Beast].m_SafeCount > 0) {
                 s_RescueBeast.store(e->m_Beast);
+                s_RescueOwner.store(owner);
+                s_RescueOwnerHash.store(hash);
                 s_RescueUntilMs.store(coop::clock::NowMs() + RescueWindowMs);
             }
             /* Cible atteinte : on prend sa valeur exacte (meme ecriture que le jeu de l'emetteur, ex. 180 et non -180). */
@@ -459,6 +472,20 @@ namespace coop::beast_rotate {
                 s_HavePrev = false;
                 return;
             }
+            /* Plus dans la Creature qui a ouvert la fenetre (changement de carte) : tout est annule. */
+            {
+                const std::uintptr_t ow = s_RescueOwner.load();
+                const bool here = ow != 0 && coop::game::IsActorListed(ow) && coop::game::CanReadMemory(ow + Actor_HashId, 4)
+                                  && *reinterpret_cast<const std::uint32_t*>(ow + Actor_HashId) == s_RescueOwnerHash.load();
+                if (!here) {
+                    if (s_Armed || s_Jumped)
+                        Logging.Log("[botw-coop] rotation : repose annulee (plus dans la Creature de la rotation suivie)");
+                    s_Armed = s_Jumped = false;
+                    s_RescueUntilMs.store(0);
+                    s_HavePrev = false;
+                    return;
+                }
+            }
             coop::game::PlayerState st;
             if (!coop::game::ReadPlayer(st)) {
                 s_HavePrev = false;
@@ -513,6 +540,42 @@ namespace coop::beast_rotate {
             s_HavePrev = true;
         }
 
+        /*
+         * Vah Naboris, memoire de commande de l'IA DungeonRotateTag4ElecApp (relecture Codex, verifie au
+         * desassemblage 1.9.0 par Claude) : calc_ a main+0x838de8 (prologue ; seul pointeur vers elle dans une
+         * table de fonctions a main+0x1c51e68) ; tambour = *(int*)*(IA+0x38) ; nouvelle demande comparee a
+         * IA+0x4c (main+0x838e44, egale -> ignoree) ; IA+0x50 code demande, IA+0x48 cible en degres ; la fonction
+         * precedente met +0x48/+0x4c/+0x50 a zero. Chez celui qui suit, +0x4c restait a sa derniere commande
+         * locale : une demande vers cette position aurait ete ignoree. Alignes ici, avant le calc_ du jeu, quand
+         * OnFrame a pose le compteur de tablette. Codes : compteur 0 -> code 0 (0), 3 -> 1 (90), 2 -> 2 (180),
+         * 1 -> 3 (-90 degres).
+         */
+        constexpr std::uintptr_t ElecAppCalc = 0x838de8;
+        std::atomic<int> s_PendingIaCode[3] = { -1, -1, -1 };
+
+        HOOK_DEFINE_TRAMPOLINE(ElecAppCalcHook) {
+            static void Callback(std::uintptr_t ia) {
+                if (ia != 0 && coop::game::CanReadMemory(ia + 0x38, 8)) {
+                    const auto partPtr = *reinterpret_cast<const std::uintptr_t*>(ia + 0x38);
+                    if (partPtr != 0 && coop::game::CanReadMemory(partPtr, 4)) {
+                        const int part = *reinterpret_cast<const std::int32_t*>(partPtr);
+                        if (part >= 0 && part < 3) {
+                            const int code = s_PendingIaCode[part].exchange(-1);
+                            if (code >= 0 && code <= 3 && coop::game::CanReadMemory(ia + 0x48, 12)) {
+                                static const float Degrees[4] = { 0.0f, 90.0f, 180.0f, -90.0f };
+                                const int old = *reinterpret_cast<const std::int32_t*>(ia + 0x4c);
+                                *reinterpret_cast<float*>(ia + 0x48) = Degrees[code];
+                                *reinterpret_cast<std::int32_t*>(ia + 0x4c) = code;
+                                *reinterpret_cast<std::int32_t*>(ia + 0x50) = code;
+                                Logging.Log("[botw-coop] rotation : IA de Naboris, tambour %d : derniere commande %d -> %d", part, old, code);
+                            }
+                        }
+                    }
+                }
+                Orig(ia);
+            }
+        };
+
         HOOK_DEFINE_TRAMPOLINE(BaseCalcHook) {
             static void Callback(std::uintptr_t action) {
                 Orig(action);
@@ -527,6 +590,7 @@ namespace coop::beast_rotate {
 
     void Install() {
         BaseCalcHook::InstallAtOffset(BaseCalc);
+        ElecAppCalcHook::InstallAtOffset(ElecAppCalc);
         Logging.Log("[botw-coop] rotation des Creatures divines : crochet pose sur main+0x%lx", BaseCalc);
     }
 
@@ -548,7 +612,7 @@ namespace coop::beast_rotate {
                 const int q = coop::flags::Query(to[i]);
                 const int v = q < 0 ? q : (q & 1);
                 if (v != s_PrevTo[i] && s_ToLogs++ < 60)
-                    Logging.Log("[botw-coop] essai rotation : drapeau %s = %d (image %lu)", i == 0 ? "RotateTo0" : "RotateTo90", v, s_Frames);
+                    Logging.Log("[botw-coop] essai rotation : drapeau %s = %d (image %lu)", i == 0 ? "RotateTo0" : "RotateTo90", v, s_Frames.load());
                 s_PrevTo[i] = v;
             }
         }
@@ -569,6 +633,8 @@ namespace coop::beast_rotate {
                     e.m_PendingMask = -1;
                 }
                 /* Naboris : compteur de quarts de tour de la tablette (voir Beast::m_Part), dans le fil du jeu. */
+                if (e.m_PendingQuarter >= 0 && (e.m_OwnMove > 0 || e.m_Mine))
+                    e.m_PendingQuarter = -1; /* commande locale entre-temps : elle fait foi */
                 if (e.m_PendingQuarter >= 0 && b.m_Part >= 0) {
                     constexpr std::uintptr_t UiPtr = 0x1e17020, UiDrumQuarter = 0xd54;
                     const std::uintptr_t uiSlot = Base() + UiPtr;
@@ -579,6 +645,8 @@ namespace coop::beast_rotate {
                         const std::int32_t old = *p;
                         if (old >= 0 && old <= 3) {
                             *p = e.m_PendingQuarter;
+                            static const int CodeOfQuarter[4] = { 0, 3, 2, 1 };
+                            s_PendingIaCode[b.m_Part].store(CodeOfQuarter[e.m_PendingQuarter]);
                             if (s_Logs++ < 200)
                                 Logging.Log("[botw-coop] rotation : tablette, tambour %d : quart de tour %d -> %d", b.m_Part, old, e.m_PendingQuarter);
                         } else if (s_Logs++ < 200) {
