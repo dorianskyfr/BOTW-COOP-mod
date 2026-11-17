@@ -213,6 +213,26 @@ namespace coop::beast_rotate {
                         Log("angle recu ignore (nous avons la priorite)", in.m_Hash, e->m_LastSeen, in.m_Angle);
                     continue;
                 }
+                /*
+                 * Renvoi (ResendEvery) pendant notre mouvement : meme angle que le dernier recu du meme joueur. Ce
+                 * n'est pas un nouveau mouvement de sa part, juste son ancien angle ; le prendre pour cible nous
+                 * ramenait a cet angle apres notre commande (essai rf6 : J2 ramene a 90 par un renvoi de J1 parti
+                 * avant que J1 suive, fin J1 0 / J2 90, plus aucun renvoi). La cible garde son angle quand notre
+                 * mouvement l'invalide, d'ou la comparaison.
+                 */
+                if (busy) {
+                    const Target* last = FindTarget(in.m_Hash, false);
+                    if (last != nullptr && last->m_From == in.m_From && std::fabs(last->m_Angle - in.m_Angle) <= Epsilon) {
+                        static int s_ResendLogs = 0;
+                        if (s_ResendLogs++ < 20)
+                            Log("renvoi d'un ancien angle ignore (notre mouvement est plus recent)", in.m_Hash, e->m_LastSeen, in.m_Angle);
+                        continue;
+                    }
+                }
+                /* Le partenaire a donne un angle plus recent que le notre : nous ne le renvoyons plus (sinon, hors
+                   de la Creature, nous continuions a renvoyer notre ancien angle). */
+                if (e != nullptr && e->m_OwnMove == 0)
+                    e->m_Mine = false;
                 Target* t = FindTarget(in.m_Hash, true);
                 t->m_Angle = in.m_Angle;
                 t->m_From = in.m_From;

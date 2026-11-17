@@ -59,7 +59,7 @@ Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0
 - **DLC** : Épreuve de l'épée et sanctuaires de la Ballade des Prodiges, les deux joueurs entrent ensemble, ennemis vaincus partagés.
 - **Réseau** : relais protégé (mot de passe, connexions limitées, messages invalides ignorés, client trop lent déconnecté).
 
-Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; la rotation de Vah Naboris (non essayée : désactivée) ; défaut connu des Créatures : quand l'autre joueur commande juste après celui qui avait commandé, un ancien angle peut ramener sa Créature à l'ancienne position (vu dans Vah Rudania, les deux restent alors différentes) ; à l'image : un boss, une épreuve de l'épée complète, la Ballade des Prodiges jouée, le rayon d'un Gardien qui touche un joueur, le tir des Tourelles, le coffre d'un camp nettoyé par l'autre joueur (groupe 3).
+Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; la rotation de Vah Naboris (non essayée : désactivée) ; à l'image : un boss, une épreuve de l'épée complète, la Ballade des Prodiges jouée, le rayon d'un Gardien qui touche un joueur, le tir des Tourelles, le coffre d'un camp nettoyé par l'autre joueur (groupe 3).
 
 ## Installation simple : le launcher
 
