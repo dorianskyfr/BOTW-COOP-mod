@@ -812,6 +812,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.89 Arme du partenaire : bras de Bokoblin qui flotte (2026-11-17, vu a l'image en `rb2` a `rb5`) - [?] defaut trouve, non corrige
+
+- Vu : J2 porte `Weapon_Sword_019` (874ed0da ; journal de J2 : `position dans le repere de Link (-0.18, 1.53, -0.14)`, comme son fourreau). Chez J1, la copie `CoopWeapon_Stal_Bokoblin_Junior_Arm_Left` flotte a l'horizontale a hauteur de tete, a cote du pantin, au lieu d'etre dans son dos (captures `2026-11-17_arme-partenaire_bras-bokoblin-*.png`). Les autres armes ont ete vues bien placees (README).
+- Aussi : chez J1, les deux objets du partenaire sont retires puis recrees plusieurs fois (14 `retire` en rb5), au fil des changements d'equipement annonces.
+- Cause non trouvee : la copie reprend la liste de modeles de l'arme (`tools/build_puppet.py`) et la meme matrice relative (`weapons.cpp`, `Compose` + `SetActorMtx`). Piste : origine ou axes du modele de bras (piece d'ennemi) differents de ceux d'une arme ordinaire ; je ne peux pas confirmer.
+
 ### 5.88 Boss des Creatures divines (Fleaux) : premier essai (2026-11-17, `rb1`, Eden) - [?] non concluant
 
 - Donnees (cartes des paquets Remains*, `tools/list_pack_map.py`) : Medoh `Enemy_SiteBoss_Bow` (0 ; 24,2 ; 23,5, HashId 2684730666 = a005bd2a), Ruta 2 x `Enemy_SiteBoss_Spear`, Rudania `Enemy_SiteBoss_Lsword`, Naboris `Enemy_SiteBoss_Sword`. Medoh : boss cree par `LinkTagAnd` #3935500389, entrees `Appear_PGanonWind` (89ebcdcd) ET `Appear_PGanonAgain` (2cd9da73) ET NON `Die_PGanonWind` (e08dcc05) ; sa mort envoie l'evenement `Demo712_0` (entree `Die`).
