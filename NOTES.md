@@ -812,6 +812,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.88 Boss des Creatures divines (Fleaux) : premier essai (2026-11-17, `rb1`, Eden) - [?] non concluant
+
+- Donnees (cartes des paquets Remains*, `tools/list_pack_map.py`) : Medoh `Enemy_SiteBoss_Bow` (0 ; 24,2 ; 23,5, HashId 2684730666 = a005bd2a), Ruta 2 x `Enemy_SiteBoss_Spear`, Rudania `Enemy_SiteBoss_Lsword`, Naboris `Enemy_SiteBoss_Sword`. Medoh : boss cree par `LinkTagAnd` #3935500389, entrees `Appear_PGanonWind` (89ebcdcd) ET `Appear_PGanonAgain` (2cd9da73) ET NON `Die_PGanonWind` (e08dcc05) ; sa mort envoie l'evenement `Demo712_0` (entree `Die`).
+- Prefixe `Enemy_` : la vie partagee et le retrait apres defaite (groupe des ennemis) les concernent donc deja, sans traitement particulier ; non essaye.
+- `rb1` (`-DCOOP_TEST_SETLOCAL=0x89ebcdcd -DCOOP_TEST_SETLOCAL2=0x2cd9da73 -DCOOP_TEST_SETLOCAL_ALL`) : [V] chez les deux, `Enemy_SiteBoss_Bow` (a005bd2a), `_R` (86fbcf04) et des `_ChildDevice` existent. Joueurs poses a 17 m : boss et Gardien voisin restent a l'etat 0 (vie non lisible par `LogEnemyLife`, qui demande l'etat 1) ; `Demo025_0` demande au chargement ; la derniere demande `life` n'a pas ete traitee (jeu en pause ou dans un evenement ?). Sans image (affichage en veille), je ne peux pas confirmer l'etat du jeu. A refaire avec l'ecran. Preuve : `docs/evidence/2026-11-17_fleau-medoh-rb1.log`.
+
 ### 5.87 Personnage du partenaire recree en boucle (2026-11-17, essais `cq1`, `rn5` a `rn10`, Eden) - [V] corrige par les journaux
 
 - Vu : depuis `cq1`, la sauvegarde d'essai de J2 recharge en (-2877,96 ; 273,36 ; -574,91) (point de l'outil `tp` d'essai, sauvegarde automatique du jeu). Chez les deux, le personnage du partenaire est detruit par le jeu juste apres sa creation (`deplacement par le corps physique -> code -11`, puis `l'acteur n'est plus valide`) et recree a l'image suivante : 400 a 830 fois par essai (`rn5` a `rn9`). `rn9` : J2 finit par planter (lectures et ecritures memoire invalides par centaines de milliers, chaines du journal corrompues).

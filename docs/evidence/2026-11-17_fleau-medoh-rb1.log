@@ -1,0 +1,38 @@
+# 2026-11-17 rb1 : Fleau de Medoh (Enemy_SiteBoss_Bow) cree chez les deux par Appear_PGanonWind + Appear_PGanonAgain (outil SETLOCAL), non concluant (etat 0)
+
+== J1
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] cinematique : Demo025_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] essai drapeau local : hachage=89ebcdcd index 22735, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=2cd9da73 index 7379, octet 0 -> 1
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsWind", point "Entrance_1"
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] cinematique : Demo025_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] vie : Enemy_Guardian_Mini_Junior_Dark hash=9bb30f8a etat=0 dist=140.3 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] vie : Enemy_SiteBoss_Bow           hash=a005bd2a etat=0 dist=103.3 : pas d'appel (fonctions 79a104 56b240)
+[botw-coop] vie : 11 ennemi(s) a moins de 200 m
+[botw-coop] vie : Enemy_SiteBoss_Bow           hash=a005bd2a etat=0 dist=16.8 : pas d'appel (fonctions 79a104 56b240)
+[botw-coop] vie : Enemy_Guardian_Mini_Junior_Dark hash=9bb30f8a etat=0 dist=58.2 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] vie : 11 ennemi(s) a moins de 200 m
+[botw-coop] vie : Enemy_SiteBoss_Bow           hash=a005bd2a etat=0 dist=16.8 : pas d'appel (fonctions 79a104 56b240)
+[botw-coop] vie : Enemy_Guardian_Mini_Junior_Dark hash=9bb30f8a etat=0 dist=58.2 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] vie : 11 ennemi(s) a moins de 200 m
+
+== J2
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] cinematique : Demo025_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] essai drapeau local : hachage=89ebcdcd index 22735, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=2cd9da73 index 7379, octet 0 -> 1
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsWind", point "Entrance_1"
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] cinematique : Demo025_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] vie : Enemy_Guardian_Mini_Junior_Dark hash=9bb30f8a etat=0 dist=140.3 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] vie : Enemy_SiteBoss_Bow           hash=a005bd2a etat=0 dist=103.3 : pas d'appel (fonctions 79a104 56b240)
+[botw-coop] vie : 11 ennemi(s) a moins de 200 m
+[botw-coop] vie : Enemy_Guardian_Mini_Junior_Dark hash=9bb30f8a etat=0 dist=58.2 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] vie : Enemy_SiteBoss_Bow           hash=a005bd2a etat=0 dist=16.9 : pas d'appel (fonctions 79a104 56b240)
+[botw-coop] vie : 11 ennemi(s) a moins de 200 m
+[botw-coop] vie : Enemy_Guardian_Mini_Junior_Dark hash=9bb30f8a etat=0 dist=58.2 : pas d'appel (fonctions 58137c 56b240)
+[botw-coop] vie : Enemy_SiteBoss_Bow           hash=a005bd2a etat=0 dist=16.9 : pas d'appel (fonctions 79a104 56b240)
+[botw-coop] vie : 11 ennemi(s) a moins de 200 m
+
