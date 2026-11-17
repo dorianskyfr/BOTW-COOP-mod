@@ -1,0 +1,246 @@
+== rf1_game (J1, Vah Rudania)
+[botw-coop] rotation des Creatures divines : crochet pose sur main+0x6333e8
+[botw-coop] essai drapeau local : hachage=7532e9f2 index 19436, octet 0 -> 1
+[botw-coop] rotation : action 21b0bd5bb0 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] rotation : mouvement local 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle envoye 516353cc 2.70 -> 2.70 degres
+[botw-coop] rotation : angle envoye 516353cc 4.95 -> 4.95 degres
+[botw-coop] rotation : angle envoye 516353cc 7.20 -> 7.20 degres
+[botw-coop] rotation : angle envoye 516353cc 9.45 -> 9.45 degres
+[botw-coop] rotation : angle envoye 516353cc 11.70 -> 11.70 degres
+[botw-coop] rotation : angle envoye 516353cc 13.95 -> 13.95 degres
+[botw-coop] rotation : angle envoye 516353cc 16.20 -> 16.20 degres
+[botw-coop] rotation : angle envoye 516353cc 18.45 -> 18.45 degres
+[botw-coop] rotation : angle envoye 516353cc 20.70 -> 20.70 degres
+[botw-coop] rotation : angle envoye 516353cc 22.95 -> 22.95 degres
+[botw-coop] rotation : angle envoye 516353cc 25.20 -> 25.20 degres
+[botw-coop] rotation : angle envoye 516353cc 27.45 -> 27.45 degres
+[botw-coop] rotation : angle envoye 516353cc 29.70 -> 29.70 degres
+[botw-coop] rotation : angle envoye 516353cc 31.95 -> 31.95 degres
+[botw-coop] rotation : angle envoye 516353cc 34.20 -> 34.20 degres
+[botw-coop] rotation : angle envoye 516353cc 36.45 -> 36.45 degres
+[botw-coop] rotation : angle envoye 516353cc 38.70 -> 38.70 degres
+[botw-coop] rotation : angle envoye 516353cc 40.95 -> 40.95 degres
+[botw-coop] rotation : angle envoye 516353cc 43.20 -> 43.20 degres
+[botw-coop] rotation : angle envoye 516353cc 45.45 -> 45.45 degres
+[botw-coop] rotation : angle envoye 516353cc 47.70 -> 47.70 degres
+[botw-coop] rotation : angle envoye 516353cc 49.95 -> 49.95 degres
+[botw-coop] rotation : angle envoye 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle envoye 516353cc 54.45 -> 54.45 degres
+[botw-coop] rotation : angle envoye 516353cc 56.70 -> 56.70 degres
+[botw-coop] rotation : angle envoye 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle envoye 516353cc 61.20 -> 61.20 degres
+[botw-coop] rotation : angle envoye 516353cc 63.45 -> 63.45 degres
+[botw-coop] rotation : angle envoye 516353cc 65.70 -> 65.70 degres
+[botw-coop] rotation : angle envoye 516353cc 67.95 -> 67.95 degres
+[botw-coop] rotation : angle envoye 516353cc 70.20 -> 70.20 degres
+[botw-coop] rotation : angle envoye 516353cc 72.45 -> 72.45 degres
+[botw-coop] rotation : angle envoye 516353cc 74.70 -> 74.70 degres
+[botw-coop] rotation : angle envoye 516353cc 76.95 -> 76.95 degres
+[botw-coop] rotation : angle envoye 516353cc 79.20 -> 79.20 degres
+[botw-coop] rotation : angle envoye 516353cc 81.45 -> 81.45 degres
+[botw-coop] rotation : angle envoye 516353cc 83.70 -> 83.70 degres
+[botw-coop] rotation : angle envoye 516353cc 85.95 -> 85.95 degres
+[botw-coop] rotation : angle envoye 516353cc 88.20 -> 88.20 degres
+[botw-coop] rotation : angle envoye 516353cc 90.00 -> 90.00 degres
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] rotation : angle final envoye 516353cc 90.00 -> 90.00 degres
+== rf1_game2 (J2)
+[botw-coop] rotation des Creatures divines : crochet pose sur main+0x6333e8
+[botw-coop] essai drapeau local : hachage=7532e9f2 index 19436, octet 0 -> 1
+[botw-coop] rotation : action 21b05c4ce8 de DungeonRotateTagRemainsFire (HashId 516353cc) suivie
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.00 -> 0.45 degres
+[botw-coop] rotation : angle rejoint 516353cc 0.45 -> 0.45 degres
+[botw-coop] rotation : angle recu, rattrapage 516353cc 0.45 -> 2.70 degres
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] rotation : angle rejoint 516353cc 90.00 -> 90.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 1 -> 2, 2/2)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] cinematique : Demo048_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+== rw1_relay (Vah Ruta, trompe 79030d33)
+08:25:52.903 joueur 1 : inclinaison de Creature divine n.1 = 79030d33 -0.00009
+08:25:53.105 joueur 1 : inclinaison de Creature divine n.2 = 79030d33 -0.00183
+08:25:53.205 joueur 1 : inclinaison de Creature divine n.3 = 79030d33 -0.00576
+08:25:53.407 joueur 1 : inclinaison de Creature divine n.4 = 79030d33 -0.01187
+08:25:53.609 joueur 1 : inclinaison de Creature divine n.5 = 79030d33 -0.02016
+08:25:53.715 joueur 1 : inclinaison de Creature divine n.6 = 79030d33 -0.03063
+08:25:53.921 joueur 1 : inclinaison de Creature divine n.7 = 79030d33 -0.04328
+08:25:54.022 joueur 1 : inclinaison de Creature divine n.8 = 79030d33 -0.05812
+08:25:54.223 joueur 1 : inclinaison de Creature divine n.9 = 79030d33 -0.07514
+08:25:54.424 joueur 1 : inclinaison de Creature divine n.10 = 79030d33 -0.09434
+08:25:54.525 joueur 1 : inclinaison de Creature divine n.11 = 79030d33 -0.11572
+08:25:54.726 joueur 1 : inclinaison de Creature divine n.12 = 79030d33 -0.13928
+08:25:54.927 joueur 1 : inclinaison de Creature divine n.13 = 79030d33 -0.16502
+08:25:55.028 joueur 1 : inclinaison de Creature divine n.14 = 79030d33 -0.19295
+08:25:55.229 joueur 1 : inclinaison de Creature divine n.15 = 79030d33 -0.22305
+08:25:55.430 joueur 1 : inclinaison de Creature divine n.16 = 79030d33 -0.25534
+08:25:55.530 joueur 1 : inclinaison de Creature divine n.17 = 79030d33 -0.28972
+08:25:55.731 joueur 1 : inclinaison de Creature divine n.18 = 79030d33 -0.32463
+08:25:55.932 joueur 1 : inclinaison de Creature divine n.19 = 79030d33 -0.35954
+08:25:56.033 joueur 1 : inclinaison de Creature divine n.20 = 79030d33 -0.39444
+08:28:10.202 joueur 1 : inclinaison de Creature divine n.100 = 79030d33 -2.00713
+== rt10 (non-regression Vah Medoh apres cache des proprietaires)
+-- rt10_game
+[botw-coop] rotation des Creatures divines : crochet pose sur main+0x6333e8
+[botw-coop] rotation : action 21b1a2d670 de DungeonRotateTagRemainsWind (HashId bb50a14c) suivie
+[botw-coop] rotation : mouvement local bb50a14c 0.00 -> 0.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 0.10 -> 0.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 0.60 -> 0.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 1.10 -> 1.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 1.60 -> 1.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 2.10 -> 2.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 2.60 -> 2.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 3.10 -> 3.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 3.60 -> 3.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 4.10 -> 4.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 4.60 -> 4.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 5.10 -> 5.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 5.60 -> 5.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 6.10 -> 6.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 6.60 -> 6.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 7.10 -> 7.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 7.60 -> 7.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 8.10 -> 8.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 8.60 -> 8.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 9.10 -> 9.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 9.60 -> 9.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 10.10 -> 10.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 10.60 -> 10.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 11.10 -> 11.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 11.60 -> 11.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 12.10 -> 12.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 12.60 -> 12.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 13.10 -> 13.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 13.60 -> 13.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 14.10 -> 14.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 14.60 -> 14.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 15.10 -> 15.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 15.60 -> 15.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 16.10 -> 16.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 16.60 -> 16.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 17.10 -> 17.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 17.60 -> 17.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 18.10 -> 18.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 18.60 -> 18.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 19.10 -> 19.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 19.60 -> 19.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 20.10 -> 20.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 20.60 -> 20.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 21.10 -> 21.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 21.60 -> 21.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 22.10 -> 22.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 22.60 -> 22.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 23.10 -> 23.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 23.60 -> 23.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 24.10 -> 24.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 24.60 -> 24.60 degres
+[botw-coop] rotation : angle envoye bb50a14c 25.00 -> 25.00 degres
+[botw-coop] rotation : angle final envoye bb50a14c 25.00 -> 25.00 degres
+-- rt10_game2
+[botw-coop] rotation des Creatures divines : crochet pose sur main+0x6333e8
+[botw-coop] rotation : action 21b1c84d38 de DungeonRotateTagRemainsWind (HashId bb50a14c) suivie
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 0.00 -> 0.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 0.10 -> 0.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 0.10 -> 0.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 1.10 -> 1.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 1.10 -> 1.60 degres
+[botw-coop] rotation : drapeaux d'etat RemainsWind recopies (masque 1 -> 0, 3/3)
+[botw-coop] rotation : angle rejoint bb50a14c 1.60 -> 1.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 1.60 -> 2.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 2.60 -> 2.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 2.60 -> 3.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 3.10 -> 3.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 3.10 -> 3.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 4.10 -> 4.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 4.10 -> 4.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 4.60 -> 4.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 4.60 -> 5.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 5.60 -> 5.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 5.60 -> 6.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 6.10 -> 6.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 6.10 -> 6.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 7.10 -> 7.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 7.10 -> 7.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 7.60 -> 7.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 7.60 -> 8.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 8.60 -> 8.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 8.60 -> 9.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 9.10 -> 9.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 9.10 -> 9.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 10.10 -> 10.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 10.10 -> 10.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 11.10 -> 11.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 11.10 -> 11.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 11.60 -> 11.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 11.60 -> 12.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 12.60 -> 12.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 12.60 -> 13.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 13.10 -> 13.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 13.10 -> 13.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 14.10 -> 14.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 14.10 -> 14.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 14.60 -> 14.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 14.60 -> 15.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 15.60 -> 15.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 15.60 -> 16.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 16.10 -> 16.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 16.10 -> 16.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 17.10 -> 17.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 17.10 -> 17.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 17.60 -> 17.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 17.60 -> 18.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 18.60 -> 18.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 18.60 -> 19.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 19.10 -> 19.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 19.10 -> 19.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 20.10 -> 20.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 20.10 -> 20.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 20.60 -> 20.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 20.60 -> 21.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 21.60 -> 21.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 21.60 -> 22.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 22.60 -> 22.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 22.60 -> 23.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 23.10 -> 23.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 23.10 -> 23.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 24.10 -> 24.10 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 24.10 -> 24.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 24.60 -> 24.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 24.60 -> 25.00 degres
+[botw-coop] rotation : angle rejoint bb50a14c 25.00 -> 25.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsWind recopies (masque 0 -> 2, 3/3)

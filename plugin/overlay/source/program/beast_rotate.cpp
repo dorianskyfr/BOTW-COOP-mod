@@ -95,13 +95,24 @@ namespace coop::beast_rotate {
             bool m_Valid = false;
             std::uint64_t m_Stamp = 0;
         };
-        constexpr int MaxLocals = 4, MaxTargets = 8;
+        constexpr int MaxLocals = 8, MaxTargets = 16; /* Vah Naboris : plusieurs parties DungeonRotateTagRemainsElec */
         Local s_Locals[MaxLocals];
         Target s_Targets[MaxTargets];
         std::uint64_t s_Clock = 0;
         std::uint64_t s_Frames = 0;
         std::atomic_flag s_Lock = ATOMIC_FLAG_INIT;
-        std::uintptr_t s_LastOwner = 0;
+        /* Classement des acteurs proprietaires deja vus (plusieurs etiquettes alternent dans Vah Ruta et Vah
+           Naboris : sans cache, chaque changement relisait et journalisait le nom ; essai rw1 : 200 lignes en
+           quelques secondes, le reste du journal du module perdu). */
+        struct Owner {
+            std::uintptr_t m_Actor = 0;
+            std::uint32_t m_Hash = 0;  /* adresse reutilisee par un autre acteur (changement de carte) : on reclasse */
+            bool m_Ok = false;
+            int m_Beast = -1;
+        };
+        constexpr int MaxOwners = 16;
+        Owner s_Owners[MaxOwners];
+        int s_OwnerNext = 0;
         bool s_LastOwnerOk = false;
         int s_LastBeast = -1;
         std::uint32_t s_Logs = 0;
@@ -188,18 +199,41 @@ namespace coop::beast_rotate {
             const auto owner = *reinterpret_cast<const std::uintptr_t*>(action + Action_Owner);
             if (owner == 0 || !coop::game::CanReadMemory(owner + Actor_HashId, 4))
                 return;
-            if (owner != s_LastOwner) {
+            const std::uint32_t ownerHash = *reinterpret_cast<const std::uint32_t*>(owner + Actor_HashId);
+            const Owner* known = nullptr;
+            for (const Owner& o : s_Owners)
+                if (o.m_Actor == owner && o.m_Hash == ownerHash)
+                    known = &o;
+            if (known == nullptr) {
                 const char* name = coop::game::GetActorName(owner);
                 /* Nom pas encore lisible (debut de partie) : on ne retient pas de refus, on reessaiera. */
                 if (name == nullptr || name[0] == '\0')
                     return;
-                s_LastOwner = owner;
-                s_LastOwnerOk = std::strncmp(name, "DungeonRotateTag", 16) == 0;
-                s_LastBeast = s_LastOwnerOk ? BeastOf(name) : -1;
-                if (s_Logs++ < 200)
+                Owner o;
+                o.m_Actor = owner;
+                o.m_Hash = ownerHash;
+                /* Seules les parties commandees par l'appli de la tablette (DungeonRotateTagRemainsWind, ...Water,
+                   ...Fire, ...Elec). Les mecanismes des enigmes (DungeonRotateTagContinue, Shuttle, WaterChemical,
+                   DungeonRotateTag) tournent seuls chez chaque joueur : non suivis. */
+                o.m_Ok = std::strncmp(name, "DungeonRotateTagRemains", 23) == 0;
+                /* Creatures verifiees seulement : Vah Medoh (rt6 a rt9) et Vah Ruta (rw1).
+                   Vah Rudania exclue (essai rf1) : la rotation de 90 degres suivie chez l'autre emporte bien Link,
+                   mais le sol devient un mur et le retour au point sur (Demo048_0) le replace au meme endroit, en
+                   boucle : joueur bloque. A reprendre (points de retour selon l'etat de rotation).
+                   Vah Naboris exclue tant qu'elle n'est pas essayee (essai rn1 : chargement bloque sous Eden). */
+                if (o.m_Ok && std::strstr(name, "RemainsWind") == nullptr && std::strstr(name, "RemainsWater") == nullptr)
+                    o.m_Ok = false;
+                o.m_Beast = o.m_Ok ? BeastOf(name) : -1;
+                s_Owners[s_OwnerNext] = o;
+                known = &s_Owners[s_OwnerNext];
+                s_OwnerNext = (s_OwnerNext + 1) % MaxOwners;
+                static int s_OwnerLogs = 0;
+                if (s_OwnerLogs++ < 40)
                     Logging.Log("[botw-coop] rotation : action %lx de %s (HashId %08x) %s", action, name,
-                        *reinterpret_cast<const std::uint32_t*>(owner + Actor_HashId), s_LastOwnerOk ? "suivie" : "ignoree");
+                        *reinterpret_cast<const std::uint32_t*>(owner + Actor_HashId), o.m_Ok ? "suivie" : "ignoree");
             }
+            s_LastOwnerOk = known->m_Ok;
+            s_LastBeast = known->m_Beast;
             if (!s_LastOwnerOk)
                 return;
             const std::uint32_t hash = *reinterpret_cast<const std::uint32_t*>(owner + Actor_HashId);

@@ -812,6 +812,18 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.85 Inclinaison : Vah Ruta, Vah Rudania, Vah Naboris (2026-11-17, essais `rw1`, `rf1`, `rn1`, Eden) - [V] Ruta ; Rudania et Naboris exclues
+
+- Paquets `Pack/RemainsWater|Fire|Electric.pack` extraits de la copie du jeu (`romfs-extract`). Applis de la tablette : `IsGet_App_WaterRelic` 75253bb4, `IsGet_App_FireRelic` 7532e9f2, `IsGet_App_ElectricRelic` 0c7b0a99 (posees par l'outil, `-DCOOP_TEST_SETLOCAL_ALL`). Etiquettes : Ruta `DungeonRotateTagRemainsWater` (trompe, IA `DungeonRotateTag4WaterApp`, action `DungeonRotate2Target`, derivee de `DungeonRotateBase`, angle aussi a +0x80 : main+0x6324cc-0x6324e0) plus des mecanismes `WaterChemical(B)` et `DungeonRotateTag` ; Rudania `DungeonRotateTagRemainsFire` (TiltAngle 90) ; Naboris plusieurs `DungeonRotateTagRemainsElec` (parties du corps) plus `Shuttle`, `Continue`. Toutes les actions `DungeonRotate*` appellent `DungeonRotateBase::calc_` puis `applyRotation` (7 appels dans le desassemblage).
+- Module : ne suit plus que les etiquettes `DungeonRotateTagRemains*` (les mecanismes tournent seuls chez chacun) ; table locale 8, cibles 16 ; cache des proprietaires (adresse + HashId) : sans lui le journal du module saturait (essai `rw1` : 200 lignes « action ... suivie/ignoree »).
+- Commande de la tablette : choisir la position au stick, A (selection), B (executer) ; Ruta : « Move Trunk », une dizaine de positions.
+- [V] `rw1` Ruta : J1 leve la trompe ; relais `inclinaison de Creature divine ... = 79030d33 -0.28972 ... -0.39444` ; mini-carte de J2 : trompe levee comme chez J1 (captures). Journal du plugin muet (sature, corrige depuis).
+- **Rudania exclue** (`rf1`) : J1 tourne de 90 degres, J2 suit (`angle rejoint 516353cc 90.00`, `drapeaux d'etat RemainsFire recopies (masque 1 -> 2)`) et son Link est bien emporte (position (-8,85 ; 8,03) = l'entree (0 ; 16,78) tournee de 90 degres autour du pivot (0 ; 8)), mais le sol devient un mur, il tombe et `Demo048_0` (`Demo_Abyss`, `Demo_PlayerRestart` : retour au point sur) le replace en boucle : J2 bloque. Chez J1 (rotation du jeu), une seule chute et retour normal. Supposé : point de retour lie a l'etat de rotation, mis a jour par le chemin du jeu et pas par notre `applyRotation`. A reprendre.
+- **Naboris exclue** (`rn1`) : l'outil `goto_tp 9003` demande `MainFieldDungeon/RemainsElectric Entrance_1`, les deux jeux restent sur l'ecran de chargement plus de 4 min (heure figee). Non essayee.
+- Le partage ne vaut donc que pour Vah Medoh et Vah Ruta (liste dans `beast_rotate.cpp`).
+- [V] `rt10` (non-regression Medoh apres le cache des proprietaires) : `mouvement local`, `angle final envoye 25.00` ; J2 `angle rejoint 25.00`, `masque 0 -> 2`. Relais 111/111.
+- Preuve : `2026-11-17_rotation-autres-creatures.log`.
+
 ### 5.84 Inclinaison des Creatures divines partagee (2026-11-17, essais `rt2` a `rt6`, Eden, Vah Medoh) - [V] journaux et image
 
 - **Comment le jeu incline Vah Medoh** : carte de la tablette (`-`), « Divine Beast Controls » (A : Tilt, B : Execute), disponible avec `IsGet_App_WindRelic` (a5ab9adf) et `RemainsWind_AccessDownload` (ec9664be), poses par l'outil `-DCOOP_TEST_SETLOCAL/SETLOCAL2` (essai `rt3`). Le jeu pose alors `RemainsWind_Rotate` 1 puis 0, `RotHorizontal` 1 -> 0, `RotLeft` 0 -> 1.
