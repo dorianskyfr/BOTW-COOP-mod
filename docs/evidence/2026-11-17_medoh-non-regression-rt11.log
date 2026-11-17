@@ -1,0 +1,98 @@
+﻿Preuve : non-regression Vah Medoh apres la repose de Rudania (rt11, Eden, 2026-11-17, commit 23ac9cc + outils).
+
+== pilote (rt11_pilot.log)
+  283.4s position (0.00, 3.38, -77.70) avant acteur (-0.0, -1.0)
+  285.1s appui MINUS x1 -> (0.00, 3.38, -77.70)
+  289.3s appui A x1 -> (0.00, 3.38, -77.70)
+  292.5s appui B x1 -> (0.00, 3.38, -77.70)
+  308.0s position (0.00, 3.38, -77.70) avant acteur (-0.0, -1.0)
+  308.5s position (0.00, 3.38, -77.70) avant acteur (-0.0, -1.0)
+  324.0s position (0.00, 3.38, -77.70) avant acteur (-0.0, -1.0)
+  324.5s position (0.00, 3.38, -77.70) avant acteur (-0.0, -1.0)
+
+== J1 (rt11_game.txt)
+[botw-coop] essai rotation : drapeau RotateTo0 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo90 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 300)
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 300)
+[botw-coop] essai rotation : DungeonRotateTagRemainsWind 21b19cdb28 mtx [-1.0000 -0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00 | 0.0000 -1.0000 0.0000 -4.50]
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c95330 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 1.0000 0.0000 0.00 | 0.0000 0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0dea990 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 1.0000 0.0000 0.00 | 0.0000 0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c4fa98 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 1.0000 0.0000 0.00 | 0.0000 0.0000 1.0000 0.00]
+[botw-coop] rotation : action 21b1a84cd0 de DungeonRotateTagRemainsWind (HashId bb50a14c) suivie
+[botw-coop] rotation : mouvement local bb50a14c 0.00 -> 0.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 0.10 -> 0.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 0.60 -> 0.60 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c95330 mtx [0.9998 0.0175 -0.0000 -0.00 | -0.0175 0.9998 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0dea990 mtx [0.9998 0.0175 -0.0000 -0.00 | -0.0175 0.9998 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c4fa98 mtx [0.9998 0.0175 -0.0000 -0.00 | -0.0175 0.9998 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle envoye bb50a14c 1.10 -> 1.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 1.60 -> 1.60 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c95330 mtx [0.9994 0.0349 -0.0000 -0.00 | -0.0349 0.9994 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0dea990 mtx [0.9994 0.0349 -0.0000 -0.00 | -0.0349 0.9994 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c4fa98 mtx [0.9994 0.0349 -0.0000 -0.00 | -0.0349 0.9994 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle envoye bb50a14c 2.10 -> 2.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 2.60 -> 2.60 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c95330 mtx [0.9986 0.0523 -0.0000 -0.00 | -0.0523 0.9986 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0dea990 mtx [0.9986 0.0523 -0.0000 -0.00 | -0.0523 0.9986 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c4fa98 mtx [0.9986 0.0523 -0.0000 -0.00 | -0.0523 0.9986 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle envoye bb50a14c 3.10 -> 3.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 3.60 -> 3.60 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c95330 mtx [0.9976 0.0698 -0.0000 -0.00 | -0.0698 0.9976 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0dea990 mtx [0.9976 0.0698 -0.0000 -0.00 | -0.0698 0.9976 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c4fa98 mtx [0.9976 0.0698 -0.0000 -0.00 | -0.0698 0.9976 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle envoye bb50a14c 4.10 -> 4.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 4.60 -> 4.60 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c95330 mtx [0.9962 0.0872 -0.0000 -0.00 | -0.0872 0.9962 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0dea990 mtx [0.9962 0.0872 -0.0000 -0.00 | -0.0872 0.9962 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c4fa98 mtx [0.9962 0.0872 -0.0000 -0.00 | -0.0872 0.9962 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle envoye bb50a14c 5.10 -> 5.10 degres
+[botw-coop] rotation : angle envoye bb50a14c 5.60 -> 5.60 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c95330 mtx [0.9945 0.1045 -0.0000 -0.00 | -0.1045 0.9945 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0dea990 mtx [0.9945 0.1045 -0.0000 -0.00 | -0.1045 0.9945 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c4fa98 mtx [0.9945 0.1045 -0.0000 -0.00 | -0.1045 0.9945 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+(Demo048_0 : 0)
+
+== J2 (rt11_game2.txt)
+[botw-coop] essai rotation : drapeau RotateTo0 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo90 = -2 (image 1)
+[botw-coop] essai rotation : drapeau RotateTo0 = 0 (image 300)
+[botw-coop] essai rotation : drapeau RotateTo90 = 0 (image 300)
+[botw-coop] carte : notre tampon n'est plus actif, il sera repose
+[botw-coop] essai rotation : DungeonRotateTagRemainsWind 21b1a31438 mtx [-1.0000 -0.0000 0.0000 0.00 | 0.0000 -0.0000 -1.0000 0.00 | 0.0000 -1.0000 0.0000 -4.50]
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c70ac0 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 1.0000 0.0000 0.00 | 0.0000 0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0e5e990 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 1.0000 0.0000 0.00 | 0.0000 0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c54878 mtx [1.0000 0.0000 0.0000 0.00 | 0.0000 1.0000 0.0000 0.00 | 0.0000 0.0000 1.0000 0.00]
+[botw-coop] rotation : action 21b1ae2830 de DungeonRotateTagRemainsWind (HashId bb50a14c) suivie
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 0.00 -> 0.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 0.10 -> 0.10 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c70ac0 mtx [1.0000 0.0017 -0.0000 -0.00 | -0.0017 1.0000 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0e5e990 mtx [1.0000 0.0017 -0.0000 -0.00 | -0.0017 1.0000 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c54878 mtx [1.0000 0.0017 -0.0000 -0.00 | -0.0017 1.0000 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 0.10 -> 0.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 1.10 -> 1.10 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c70ac0 mtx [0.9998 0.0192 -0.0000 -0.00 | -0.0192 0.9998 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0e5e990 mtx [0.9998 0.0192 -0.0000 -0.00 | -0.0192 0.9998 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c54878 mtx [0.9998 0.0192 -0.0000 -0.00 | -0.0192 0.9998 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 1.10 -> 1.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 1.60 -> 1.60 degres
+[botw-coop] rotation : drapeaux d'etat RemainsWind recopies (masque 1 -> 0, 3/3)
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 1.60 -> 2.10 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c70ac0 mtx [0.9994 0.0358 -0.0000 -0.00 | -0.0358 0.9994 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0e5e990 mtx [0.9994 0.0358 -0.0000 -0.00 | -0.0358 0.9994 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c54878 mtx [0.9994 0.0358 -0.0000 -0.00 | -0.0358 0.9994 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle rejoint bb50a14c 2.60 -> 2.60 degres
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 2.60 -> 3.10 degres
+[botw-coop] rotation : angle rejoint bb50a14c 3.10 -> 3.10 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c70ac0 mtx [0.9985 0.0541 -0.0000 -0.00 | -0.0541 0.9985 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0e5e990 mtx [0.9985 0.0541 -0.0000 -0.00 | -0.0541 0.9985 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c54878 mtx [0.9985 0.0541 -0.0000 -0.00 | -0.0541 0.9985 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 3.10 -> 3.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 4.10 -> 4.10 degres
+[botw-coop] essai rotation : DgnObj_IbutsuWindBody_A_01 21b0c70ac0 mtx [0.9974 0.0715 -0.0000 -0.00 | -0.0715 0.9974 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingL_A_01 21b0e5e990 mtx [0.9974 0.0715 -0.0000 -0.00 | -0.0715 0.9974 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] essai rotation : DgnObj_IbutsuWindWingR_A_01 21b0c54878 mtx [0.9974 0.0715 -0.0000 -0.00 | -0.0715 0.9974 0.0000 0.00 | 0.0000 -0.0000 1.0000 0.00]
+[botw-coop] rotation : angle recu, rattrapage bb50a14c 4.10 -> 4.60 degres
+[botw-coop] rotation : angle rejoint bb50a14c 4.60 -> 4.60 degres
+(Demo048_0 : 0)
+
