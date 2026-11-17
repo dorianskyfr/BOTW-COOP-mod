@@ -23,6 +23,12 @@ namespace coop::flags {
      */
     int Query(std::uint32_t hash);
 
+    /*
+     * Met un drapeau booleen local a 0 ou 1 (fil du jeu), sans l'envoyer. Pour les drapeaux d'etat non
+     * sauvegardes recopies d'un autre module (inclinaison des Creatures divines, beast_rotate.cpp).
+     */
+    bool SetLocalState(std::uint32_t hash, bool value);
+
     /* Hachage du drapeau booleen d'indice index dans la table du jeu ; 0 si illisible. Fil du jeu. */
     std::uint32_t HashOfBoolIndex(int index);
 

@@ -80,6 +80,35 @@ namespace coop::status {
                 *reinterpret_cast<int*>(godPtr) = 80;
         }
 #endif
+#ifdef COOP_TEST_LOG_ROTTAG
+        /* OUTIL DE TEST : matrice de l'etiquette de rotation de Vah Medoh (DungeonRotateTagRemainsWind, HashId
+           3142623564, placee en (0, 0, -4.5) dans RemainsWind_Static), journalisee quand elle change : pour voir
+           si c'est elle qui porte l'inclinaison de la Creature. */
+        if (s_Frames % 10 == 0 && coop::game::IsWorldReady()) {
+            constexpr int N = 4;
+            static const char* const names[N] = { "DungeonRotateTagRemainsWind", "DgnObj_IbutsuWindBody_A_01",
+                "DgnObj_IbutsuWindWingL_A_01", "DgnObj_IbutsuWindWingR_A_01" };
+            static const float spots[N][3] = { { 0.0f, 0.0f, -4.5f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
+            static float s_Prev[N][12] = {};
+            static int s_RotLogs = 0;
+            for (int k = 0; k < N; k++) {
+                const auto actor = coop::game::FindActor(names[k], spots[k], 60.0f);
+                if (actor == 0)
+                    continue;
+                float m[12];
+                coop::game::GetActorMtx(actor, m);
+                bool changed = false;
+                for (int i = 0; i < 12; i++)
+                    changed |= std::fabs(m[i] - s_Prev[k][i]) > 0.0005f;
+                if (changed && s_RotLogs++ < 600) {
+                    Logging.Log("[botw-coop] essai rotation : %s %lx mtx [%.4f %.4f %.4f %.2f | %.4f %.4f %.4f %.2f | %.4f %.4f %.4f %.2f]",
+                        names[k], actor, m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10], m[11]);
+                    for (int i = 0; i < 12; i++)
+                        s_Prev[k][i] = m[i];
+                }
+            }
+        }
+#endif
         if (++s_Frames % 15 != 0)
             return;
         int life = -1, maxLife = -1;

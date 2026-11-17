@@ -14,6 +14,7 @@
  *   enemy_pos=0                  coupe le partage de la position des ennemis (actif par defaut)
  *   enemy_anim=0|1|2             animations des ennemis (voir g_EnemyAnim)
  *   cutscene=0                   coupe les cinematiques partagees ; cutscene_range=<metres> (50 par defaut)
+ *   beast_rotate=0               coupe le partage de l'inclinaison des Creatures divines
  *   partner_range=<metres>       distance de creation du Link du partenaire (250 par defaut)
  *   cutscene_tp=0                le partenaire trop loin ne rejoint pas le joueur pour une cinematique
  *   rewards=0                    pas d'embleme ni de competence donnes a la reception de la progression
@@ -51,6 +52,9 @@ namespace coop::config {
     /* Cinematiques partagees (cutscene.cpp, NOTES 5.58) : rejouees chez le partenaire a moins de
        g_CutsceneRangeM metres (choix, pas une mesure), sinon un bandeau. */
     inline bool g_Cutscene = true;
+
+    /* Inclinaison des Creatures divines partagee (beast_rotate.cpp, NOTES 5.84). beast_rotate=0 la coupe. */
+    inline bool g_BeastRotate = true;
 
     /* Distance maximale a laquelle le Link du partenaire est cree (remote_actor.cpp, NOTES 5.61). */
 #ifndef COOP_PARTNER_RANGE

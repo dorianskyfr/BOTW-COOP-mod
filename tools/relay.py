@@ -131,20 +131,24 @@ def auth_digest(challenge, password):
 #         retransmise telle quelle : le Link du partenaire la joue.
 #   DEMO : cinematique demarree chez un joueur (evenement, point d'entree), retransmise telle quelle ;
 #          l'autre la rejoue s'il est proche, sinon il voit un bandeau.
+#   DROT : inclinaison d'une Creature divine (HashId de l'acteur DungeonRotateTag*, angle en radians),
+#          retransmise telle quelle ; l'autre fait pivoter sa Creature jusqu'a cet angle. Un plugin plus
+#          ancien ignore cette ligne (pas de changement de version).
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
-                "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1}
+                "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1, "DROT": 2}
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur, et une 5e : son climat
 #   (le relais rend aux autres le climat du joueur de reference de la meteo, avec sa meteo).
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
 # GIFT peut porter 2 valeurs de plus : le bonus de l'arme (bits WeaponModifier en hexadecimal, valeur).
 # EAS peut porter une 3e valeur : le creneau de la sequence (protocole 5 ; absent = creneau 0).
-OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2, "EAS": 1}
+# DROT peut porter une 3e valeur : les drapeaux d'etat de la Creature chez l'emetteur (bits, hexadecimal).
+OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2, "EAS": 1, "DROT": 1}
 
 # Nature de chaque valeur, valeurs facultatives comprises : f nombre fini, i entier, x hexadecimal,
 # n nom d'acteur. Une ligne dont une valeur ne correspond pas est ignoree (jamais retransmise).
 FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi", "FLAGR": "xi", "LIFE": "xi",
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
-               "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i"}
+               "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i", "DROT": "xfx"}
 
 
 def valid_fields(kind, values):
@@ -719,6 +723,10 @@ def main():
                             log(f"joueur {client.pid} : position d'ennemi n.{client.emtx} = {parts[1]} a {parts[2]} m de lui")
                     elif parts[0] == "DEMO":
                         log(f"joueur {client.pid} : cinematique {payload}")
+                    elif parts[0] == "DROT":
+                        client.drot = getattr(client, "drot", 0) + 1
+                        if client.drot <= 20 or client.drot % 100 == 0:
+                            log(f"joueur {client.pid} : inclinaison de Creature divine n.{client.drot} = {payload}")
                     elif parts[0] == "EAS":
                         client.eas = getattr(client, "eas", 0) + 1
                         if client.eas <= 20 or client.eas % 200 == 0:

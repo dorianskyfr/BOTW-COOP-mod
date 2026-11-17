@@ -2,6 +2,7 @@
 #include <lib/log/logger_mgr.hpp>
 
 #include "anim_state.hpp"
+#include "beast_rotate.hpp"
 #include "cutscene.hpp"
 #include "dynsym.hpp"
 #include "game.hpp"
@@ -45,6 +46,8 @@ extern "C" void exl_main(void* x0, void* x1) {
         coop::revive::Install();
         /* Cinematiques partagees. */
         coop::cutscene::Install();
+        /* Inclinaison des Creatures divines partagee. */
+        coop::beast_rotate::Install();
     }
 
     /* Thread reseau + sonde d'etat. */

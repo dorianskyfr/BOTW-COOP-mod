@@ -7,6 +7,7 @@
 #include "weapons.hpp"
 
 #include "clock.hpp"
+#include "beast_rotate.hpp"
 #include "cutscene.hpp"
 #include "dynsym.hpp"
 #include "enemy_life.hpp"
@@ -223,6 +224,8 @@ namespace coop::input_inject {
                 coop::enemy_life::OnFrame();
                 COOP_PART();
                 coop::cutscene::OnFrame();
+                COOP_PART();
+                coop::beast_rotate::OnFrame();
                 COOP_PART();
                 coop::objects::OnFrame();
                 COOP_PART();

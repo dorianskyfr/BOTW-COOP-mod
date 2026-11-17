@@ -152,6 +152,15 @@ def main():
                 p.pad(buttons=combo(args[0]), ms=600)
                 time.sleep(0.2)
             p.log(f"maintien {args[0]} {s} s -> {p.fmt()}")
+        elif op == "stick":
+            # stick LX LY SECONDES [BOUTON] : stick gauche brut (-1..1), pour les menus (commande d'une Creature divine).
+            lx, ly, s = float(args[0]), float(args[1]), float(args[2])
+            b = combo(args[3]) if len(args) > 3 else 0
+            end = time.time() + s
+            while time.time() < end:
+                p.pad(buttons=b, lx=lx * STICK, ly=ly * STICK, ms=600)
+                time.sleep(0.2)
+            p.log(f"stick ({lx}, {ly}) {s} s")
         elif op == "holdpress":
             # holdpress TENU BOUTON n [ecart] : TENU maintenu (ex. ZL, verrouillage) pendant n appuis de BOUTON.
             held, b = combo(args[0]), combo(args[1])

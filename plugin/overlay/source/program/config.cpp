@@ -55,6 +55,8 @@ namespace coop::config {
                 g_EnemyAnim = flag;
             if (std::sscanf(line, "cutscene=%u", &flag) == 1)
                 g_Cutscene = flag != 0;
+            if (std::sscanf(line, "beast_rotate=%u", &flag) == 1)
+                g_BeastRotate = flag != 0;
             if (std::sscanf(line, "cutscene_range=%u", &flag) == 1 && flag <= 1000)
                 g_CutsceneRangeM = static_cast<int>(flag);
             if (std::sscanf(line, "cutscene_tp=%u", &flag) == 1)

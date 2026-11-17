@@ -6,6 +6,7 @@
 #include "gear.hpp"
 #include "weapons.hpp"
 #include "config.hpp"
+#include "beast_rotate.hpp"
 #include "cutscene.hpp"
 #include "enemy_life.hpp"
 #include "flags.hpp"
@@ -354,6 +355,15 @@ namespace coop::net_probe {
                 coop::anim_state::g_RemoteActions.fetch_add(1, std::memory_order_release);
             } else if (coop::cutscene::Demo dm; std::sscanf(line, "DEMO %d %47s %47s", &dm.m_From, dm.m_Event, dm.m_Entry) == 3) {
                 coop::cutscene::g_Incoming.Push(dm);
+            } else if (coop::beast_rotate::Msg bm; std::sscanf(line, "DROT %d %x %f %x", &bm.m_From, &bm.m_Hash, &bm.m_Angle,
+                           reinterpret_cast<unsigned*>(&bm.m_Mask)) >= 3) {
+                /* 4e valeur facultative : drapeaux d'etat (bits) ; absente = inconnue (-1). Au-dela de 8 bits : ignoree. */
+                if (bm.m_Mask < -1 || bm.m_Mask > 0xff)
+                    bm.m_Mask = -1;
+                /* Inclinaison d'une Creature divine (radians) ; bornee a +-4 pi. File pleine : message perdu,
+                   l'emetteur renvoie son angle toutes les 4 s (beast_rotate.cpp). */
+                if (bm.m_Hash != 0 && std::isfinite(bm.m_Angle) && std::fabs(bm.m_Angle) < 12.6f)
+                    coop::beast_rotate::g_Incoming.Push(bm);
             } else if (unsigned lifeHash = 0; std::sscanf(line, "LIFE %d %x %d", &id, &lifeHash, &m_days) == 3) {
                 if (m_days >= 0)
                     coop::enemy_life::g_Incoming.Push({ lifeHash, static_cast<std::uint32_t>(m_days) });
@@ -714,6 +724,14 @@ namespace coop::net_probe {
                     for (int n = 0; n < 4 && used + 112 < sizeof(posBuf) && coop::cutscene::g_Outgoing.Pop(dm); n++)
                         used += static_cast<std::size_t>(std::snprintf(posBuf + used, sizeof(posBuf) - used,
                             "DEMO %s %s\n", dm.m_Event, dm.m_Entry[0] ? dm.m_Entry : dm.m_Event));
+                    /* Inclinaison des Creatures divines (DROT). */
+                    coop::beast_rotate::Msg bm;
+                    for (int n = 0; n < 4 && used + 48 < sizeof(posBuf) && coop::beast_rotate::g_Outgoing.Pop(bm); n++)
+                        used += static_cast<std::size_t>(bm.m_Mask >= 0
+                            ? std::snprintf(posBuf + used, sizeof(posBuf) - used, "DROT %08x %.5f %x\n", bm.m_Hash,
+                                  static_cast<double>(bm.m_Angle), static_cast<unsigned>(bm.m_Mask))
+                            : std::snprintf(posBuf + used, sizeof(posBuf) - used, "DROT %08x %.5f\n", bm.m_Hash,
+                                  static_cast<double>(bm.m_Angle)));
                     if (used > 0 && !SendAll(s_Fd, posBuf, used))
                         Disconnect("echec d'envoi");
                 }

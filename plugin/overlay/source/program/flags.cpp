@@ -582,6 +582,24 @@ namespace coop::flags {
         return (value ? 1 : 0) | (props << 8);
     }
 
+    bool SetLocalState(std::uint32_t hash, bool value) {
+        if (s_Param == 0 || !s_LayoutKnown)
+            return false;
+        PtrArray bools {};
+        if (!Read(s_Param + Param_BoolFlags, bools) || bools.m_Num <= 0 || bools.m_Num > MaxBools
+            || !coop::game::CanReadMemory(bools.m_Buffer, 8ull * bools.m_Num))
+            return false;
+        std::uintptr_t flag = 0;
+        const int idx = FindByHash(bools, hash, flag);
+        if (idx < 0 || !coop::game::CanReadMemory(flag + s_ValueOffset, 1))
+            return false;
+        /* Bit 0 : valeur ; les autres bits de l'octet portent la categorie (NOTES 5.46), gardes. */
+        auto* byte = reinterpret_cast<std::uint8_t*>(flag + s_ValueOffset);
+        *byte = value ? static_cast<std::uint8_t>(*byte | 1) : static_cast<std::uint8_t>(*byte & ~1);
+        s_LastBool[idx] = value ? 1 : 0; /* pas de « drapeau change » pour cette ecriture */
+        return true;
+    }
+
     std::uint32_t HashOfBoolIndex(int index) {
         if (s_Param == 0 || !s_LayoutKnown || index < 0)
             return 0;
@@ -742,7 +760,13 @@ namespace coop::flags {
 #define COOP_TEST_SETLOCAL_AFTER 160 /* echanges, 2 par seconde */
 #endif
                 static int s_SetCountdown = COOP_TEST_SETLOCAL_AFTER;
-                if (inGame && s_HaveSnapshot && coop::session::g_LocalId == 1 && s_SetCountdown > 0 && --s_SetCountdown == 0) {
+#ifdef COOP_TEST_SETLOCAL_ALL
+                /* -DCOOP_TEST_SETLOCAL_ALL : chaque joueur pose les drapeaux (essai rt7 : appli de la Creature chez les deux). */
+                const bool setter = true;
+#else
+                const bool setter = coop::session::g_LocalId == 1;
+#endif
+                if (inGame && s_HaveSnapshot && setter && s_SetCountdown > 0 && --s_SetCountdown == 0) {
                     /* -DCOOP_TEST_SETLOCAL2=0x... : un second drapeau pose en meme temps (essai cp2 : les deux
                        noms d'un camp, avec et sans zero devant). */
 #ifdef COOP_TEST_SETLOCAL2
