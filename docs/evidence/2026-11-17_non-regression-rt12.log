@@ -1,0 +1,46 @@
+# 2026-11-17 rt12 : non-regression Medoh (deux sens) et Rudania (repose) apres les changements du module de rotation (renvoi, AngleDiff, Naboris)
+
+== J1 (build/runs/rt12_game.txt)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.1, attente 30 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.2, attente 60 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.3, attente 120 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.4, attente 240 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.5, attente 480 images)
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsWind", point "Entrance_1"
+[botw-coop] rotation : mouvement local bb50a14c 0.00 -> 0.10 degres
+[botw-coop] rotation : angle final envoye bb50a14c 25.00 -> 25.00 degres
+[botw-coop] rotation : drapeaux d'etat RemainsWind recopies (masque 2 -> 0, 3/3)
+[botw-coop] rotation : drapeaux d'etat RemainsWind recopies (masque 0 -> 1, 3/3)
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsFire", point "Entrance_1"
+[botw-coop] rotation : mouvement local 516353cc 0.00 -> 0.45 degres
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] rotation : angle final envoye 516353cc 90.00 -> 90.00 degres
+(derniers angle rejoint)
+[botw-coop] rotation : angle rejoint bb50a14c 0.90 -> 0.90 degres
+[botw-coop] rotation : angle rejoint bb50a14c 0.40 -> 0.40 degres
+[botw-coop] rotation : angle rejoint bb50a14c 0.00 -> 0.00 degres
+
+== J2 (build/runs/rt12_game2.txt)
+[botw-coop] carte : notre tampon n'est plus actif, il sera repose
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.1, attente 30 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.2, attente 60 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.3, attente 120 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.4, attente 240 images)
+[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.5, attente 480 images)
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsWind", point "Entrance_1"
+[botw-coop] rotation : drapeaux d'etat RemainsWind recopies (masque 1 -> 0, 3/3)
+[botw-coop] rotation : drapeaux d'etat RemainsWind recopies (masque 0 -> 2, 3/3)
+[botw-coop] rotation : mouvement local bb50a14c 25.00 -> 24.90 degres
+[botw-coop] rotation : angle final envoye bb50a14c 0.00 -> 0.00 degres
+[botw-coop] changement de scene transmis au jeu : carte "MainFieldDungeon/RemainsFire", point "Entrance_1"
+[botw-coop] evenement demande : Demo048_0 / Demo048_0 -> accepte
+[botw-coop] rotation : chute (Demo048_0) dans RemainsFire en (-13.30, -17.93, 69.80), repose armee
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 1 -> 0, 2/2)
+[botw-coop] rotation : retour au point sur du jeu vu, (-13.30, -103.68, 69.80) -> (-8.80, 8.07, 69.50)
+[botw-coop] teleportation (repose apres chute) : de (-8.80, 8.07, 69.50) vers (0.00, 15.50, 77.00), 13.7 m
+[botw-coop] rotation : drapeaux d'etat RemainsFire recopies (masque 0 -> 2, 2/2)
+(derniers angle rejoint)
+[botw-coop] rotation : angle rejoint 516353cc 52.20 -> 52.20 degres
+[botw-coop] rotation : angle rejoint 516353cc 58.95 -> 58.95 degres
+[botw-coop] rotation : angle rejoint 516353cc 90.00 -> 90.00 degres
+
