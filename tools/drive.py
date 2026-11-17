@@ -216,6 +216,13 @@ def main():
             # Essai : le plugin pose Link devant le premier coffre de la sauvegarde de test (face au sud).
             p.pad(buttons=1 << 51, ms=300)
             p.log("chest : Link pose devant le premier coffre")
+        elif op == "weaken":
+            # Essai : le plugin met a 1 point de vie tous les ennemis actifs a moins de R metres (defaut 30).
+            # weaken R 0 : vie mise a 0 (essai de la mort normale).
+            radius = int(float(args[0])) if args else 30
+            zero = len(args) > 1 and args[1] == "0"
+            p.pad(buttons=1 << 60, lx=radius, ly=-1 if zero else 0, ms=300)
+            p.log(f"weaken : ennemis a moins de {radius} m mis a {0 if zero else 1} point de vie")
         elif op == "chestnear":
             # Essai sans ecran : le plugin pose Link a 1,6 m du coffre (TBox_*) le plus proche, cote +Z (1) ou -Z (-1).
             side = float(args[0]) if args else 1.0

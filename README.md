@@ -36,6 +36,7 @@ Journal d'avancement : [`PROGRESS.md`](PROGRESS.md). Détails techniques : [`NOT
 - Ennemis : points de vie, position et animations (le joueur le plus proche de l'ennemi fait foi, l'autre voit la même chose ; vérifié sur des Bokoblin, combat à l'épée compris : coups, fuite et mort vus par les deux joueurs). `enemy_pos=0` et `enemy_anim=0` dans `romfs\botw-coop.txt` coupent ces partages.
 - **Cinématiques partagées** : quand une vraie cinématique démarre chez un joueur (liste tirée de votre jeu à l'installation : 63 cinématiques), elle démarre aussi chez l'autre s'il est à moins de 50 m ; plus loin, il rejoint le joueur (téléportation, ou voyage du jeu au-delà de 250 m) puis la voit ; s'il ne peut pas s'approcher, il voit « Joueur N regarde une cinématique ». Les événements du jeu (Game Over, coffre, chargement, aides) ne sont jamais partagés. Vérifié avec la cinématique de la lune de sang, pas encore avec une cinématique de l'histoire. `cutscene=0` coupe, `cutscene_range=<mètres>` change la distance, `cutscene_tp=0` coupe le déplacement.
 - **Coffres : un chacun.** Chaque joueur ouvre son propre coffre et en reçoit le contenu ; un coffre ouvert par l'autre reste fermé chez soi. Avec `share_groups=1,2,4,6,8`, on revient au coffre commun : ouvert par l'un, il apparaît ouvert chez l'autre et disparaît à moins de 3 m.
+- **Camps d'ennemis** : quand un joueur nettoie un camp, les ennemis disparaissent chez l'autre et son coffre du camp s'ouvre aussi ; chacun prend le sien. Vérifié à l'image sur deux camps (Bokoblins et Lézalfos).
 - **Journaux** : en cas de souci, bouton « Journaux à envoyer » du launcher : une archive est créée sur le Bureau (journaux du jeu et du serveur, sans le mot de passe).
 - Messages dans le bandeau du jeu quand l'autre joueur arrive ou part, et à la connexion.
 - **Téléportation vers l'autre joueur** : maintenir le clic du stick gauche 1,5 s. Jusqu'à 250 m, Link arrive à côté de lui ; plus loin, le jeu fait un voyage (chargement) vers le sanctuaire ou la tour le plus proche de lui, puis Link le rejoint. Un clic court accroupit Link comme d'habitude.
@@ -59,7 +60,7 @@ Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0
 - **DLC** : Épreuve de l'épée et sanctuaires de la Ballade des Prodiges, les deux joueurs entrent ensemble, ennemis vaincus partagés.
 - **Réseau** : relais protégé (mot de passe, connexions limitées, messages invalides ignorés, client trop lent déconnecté).
 
-Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; la rotation de Vah Naboris (non essayée : désactivée) ; à l'image : un boss, une épreuve de l'épée complète, la Ballade des Prodiges jouée, le rayon d'un Gardien qui touche un joueur, le tir des Tourelles, le coffre d'un camp nettoyé par l'autre joueur (groupe 3).
+Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : un boss, une épreuve de l'épée complète, la Ballade des Prodiges jouée, le rayon d'un Gardien qui touche un joueur, le tir des Tourelles.
 
 ## Installation simple : le launcher
 

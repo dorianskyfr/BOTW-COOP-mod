@@ -318,9 +318,16 @@ namespace coop::input_inject {
                         const auto cmd4 = pad.m_Commands.load(std::memory_order_acquire);
                         if (cmd4 != s_LastHurt) {
                             s_LastHurt = cmd4;
-                            coop::enemy_life::DebugHurtNearest(5);
+                            /* Champ X du stick > 0 : tous les ennemis a moins de X m mis a 1 point de vie. */
+                            const int radius = pad.m_StickLX.load();
+                            if (radius > 0)
+                                coop::enemy_life::DebugWeakenAll(static_cast<float>(radius), pad.m_StickLY.load() < 0 ? 0 : 1);
+                            else
+                                coop::enemy_life::DebugHurtNearest(5);
                         }
                         buttons &= ~(1ull << 60);
+                        pad.m_StickLX.store(0);
+                        pad.m_StickLY.store(0);
                     }
                     /* Bit 57 : vie locale mise a 1 cœur (essai de l'alerte « en danger »). */
                     if ((buttons >> 57) & 1) {

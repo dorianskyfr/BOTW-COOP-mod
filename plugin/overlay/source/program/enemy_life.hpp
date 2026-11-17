@@ -18,6 +18,8 @@ namespace coop::enemy_life {
 
     /* Outil de test : enleve `amount` points de vie a l'ennemi de carte actif le plus proche. */
     void DebugHurtNearest(int amount);
+    /* Outil de test : ennemis actifs a moins de radius m mis a value points de vie (1, ou 0 pour essayer la mort). */
+    void DebugWeakenAll(float radius, int value);
 
     /* Change::m_Hash = Actor::mHashId, Change::m_Value = points de vie. */
     inline coop::flags::Queue g_Outgoing; /* fil du jeu -> fil reseau */

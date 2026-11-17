@@ -523,6 +523,47 @@ namespace coop::enemy_life {
         return true;
     }
 
+    /* Outil de test : vie de tous les ennemis de carte actifs a moins de radius m mise a 1 (le joueur les acheve
+       ensuite, une bombe par exemple : mort normale, drapeaux et camp traites par le jeu). */
+    namespace {
+        struct Weaken {
+            float m_Pos[3];
+            float m_Radius;
+            int m_Count;
+            int m_Value;
+        };
+        bool OnActorWeaken(const coop::game::ActorInfo& info, void* user) {
+            auto* w = static_cast<Weaken*>(user);
+            if (info.m_HashId == 0 || info.m_Name == nullptr || std::strncmp(info.m_Name, "Enemy_", 6) != 0
+                || coop::game::GetActorState(info.m_Actor) != 1)
+                return false;
+            const float dx = info.m_Pos[0] - w->m_Pos[0], dy = info.m_Pos[1] - w->m_Pos[1], dz = info.m_Pos[2] - w->m_Pos[2];
+            if (dx * dx + dy * dy + dz * dz > w->m_Radius * w->m_Radius)
+                return false;
+            int life = 0, maxLife = 0;
+            std::uintptr_t lifePtr = 0;
+            if (!coop::game::GetEnemyLife(info.m_Actor, life, maxLife, lifePtr) || life <= w->m_Value)
+                return false;
+            std::memcpy(reinterpret_cast<void*>(lifePtr), &w->m_Value, sizeof(w->m_Value));
+            w->m_Count++;
+            Logging.Log("[botw-coop] vie ennemi : OUTIL DE TEST, %s %08x %d -> %d", info.m_Name, info.m_HashId, life, w->m_Value);
+            return false;
+        }
+    }
+
+    void DebugWeakenAll(float radius, int value) {
+        coop::game::PlayerState player;
+        if (!coop::game::ReadPlayer(player))
+            return;
+        Weaken w {};
+        std::memcpy(w.m_Pos, player.m_Pos, sizeof(w.m_Pos));
+        w.m_Radius = radius;
+        w.m_Value = value < 0 ? 0 : value;
+        coop::game::ForEachListedActor(OnActorWeaken, &w);
+        Logging.Log("[botw-coop] vie ennemi : OUTIL DE TEST, %d ennemi(s) a moins de %.0f m mis a %d point(s) de vie", w.m_Count,
+            static_cast<double>(radius), w.m_Value);
+    }
+
     void DebugHurtNearest(int amount) {
         coop::game::PlayerState player;
         if (!coop::game::ReadPlayer(player))

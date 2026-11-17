@@ -1,0 +1,77 @@
+# 2026-11-17 Camps d'ennemis nettoyes par l'autre joueur : cq5 (groupe 3 actif) et cq6 (reglage par defaut 1,2,6,8)
+
+== cq5 J1
+-- LibraryApplet.login_share_applet_mode: HLE
+[botw-coop] config: liste blanche lue : 33379 drapeaux (progression 430, objets de carte 29905, portes logiques 485, coffres 1608, Koroks 900, receptacles 22, enigmes des Creatures divines 29), groupes actifs 0x14e
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Bokoblin_Dark b5cc87dc 720 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Bokoblin_Dark a77224ce 720 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Bokoblin_Guard_Middle f73159bf 72 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Bokoblin_Guard_Middle 71a52b11 72 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Bokoblin_Guard_Middle 3c6d8a1a 72 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Bokoblin_Guard_Middle 2168baa2 72 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Bokoblin_Dark 12f830d4 720 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Keese f4206f0e 1 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Keese 35aeb0ce 1 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, 9 ennemi(s) a moins de 45 m mis a 0 point(s) de vie
+[botw-coop] drapeau change : n.24417 hachage=942e27a9 0 -> 1 (envoye)
+[botw-coop] essai coffre : Link pose a 1,6 m du coffre TBox_Field_Enemy (-2826.58, 355.37, -716.22), cote +Z, en (-2826.30, 355.67, -714.65)
+
+== cq5 J2
+-- LibraryApplet.login_share_applet_mode: HLE
+[botw-coop] config: liste blanche lue : 33379 drapeaux (progression 430, objets de carte 29905, portes logiques 485, coffres 1608, Koroks 900, receptacles 22, enigmes des Creatures divines 29), groupes actifs 0x14e
+[botw-coop] drapeau recu : n.24417 hachage=942e27a9 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 3e28f6cd) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 5811c360) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau a59cc75c) -> retire ici
+[botw-coop] objet : Enemy_Keese pris, ouvert ou vaincu par l'autre joueur (drapeau 9fc2d8bc) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Dark pris, ouvert ou vaincu par l'autre joueur (drapeau da1300f2) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Dark pris, ouvert ou vaincu par l'autre joueur (drapeau c5b95305) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 9477803f) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Dark pris, ouvert ou vaincu par l'autre joueur (drapeau 435703f7) -> retire ici
+[botw-coop] essai coffre : Link pose a 1,6 m du coffre TBox_Field_Enemy (-2826.58, 355.37, -716.22), cote +Z, en (-2826.30, 355.67, -714.65)
+[botw-coop] objet : Enemy_Keese pris, ouvert ou vaincu par l'autre joueur (drapeau 8d436323) -> retire ici
+
+== cq6 J1
+-- LibraryApplet.login_share_applet_mode: HLE
+[botw-coop] config: liste blanche lue : 33379 drapeaux (progression 430, objets de carte 29905, portes logiques 485, coffres 1608, Koroks 900, receptacles 22, enigmes des Creatures divines 29), groupes actifs 0x146
+[botw-coop] objet : Enemy_Lizalfos_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 603abd81) -> retire ici
+[botw-coop] sauvetage : refuse (partenaire trop loin, distance 192 m, vie du partenaire 80 quarts, -1 inconnue) -> Game Over
+[botw-coop] sauvetage : refuse (partenaire trop loin, distance 222 m, vie du partenaire 80 quarts, -1 inconnue) -> Game Over
+[botw-coop] objet : Item_Fruit_A pris, ouvert ou vaincu par l'autre joueur (drapeau 25d27928) -> retire ici
+[botw-coop] objet : Item_Fruit_A pris, ouvert ou vaincu par l'autre joueur (drapeau 69d84778) -> retire ici
+[botw-coop] objet : Item_Fruit_A pris, ouvert ou vaincu par l'autre joueur (drapeau dc75b3f9) -> retire ici
+[botw-coop] objet : Item_Fruit_A pris, ouvert ou vaincu par l'autre joueur (drapeau 36385a8f) -> retire ici
+[botw-coop] objet : Item_Fruit_A pris, ouvert ou vaincu par l'autre joueur (drapeau 9e5bf1c8) -> retire ici
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Lizalfos_Guard_Middle 006aec9b 120 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Lizalfos_Middle f1ca4ca1 120 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, 2 ennemi(s) a moins de 60 m mis a 0 point(s) de vie
+[botw-coop] drapeau change : n.40983 hachage=f951af24 0 -> 1
+
+== cq6 J2
+-- LibraryApplet.login_share_applet_mode: HLE
+[botw-coop] config: liste blanche lue : 33379 drapeaux (progression 430, objets de carte 29905, portes logiques 485, coffres 1608, Koroks 900, receptacles 22, enigmes des Creatures divines 29), groupes actifs 0x146
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 9477803f) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Dark pris, ouvert ou vaincu par l'autre joueur (drapeau 435703f7) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Dark pris, ouvert ou vaincu par l'autre joueur (drapeau da1300f2) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau a59cc75c) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 5811c360) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 3e28f6cd) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Dark pris, ouvert ou vaincu par l'autre joueur (drapeau c5b95305) -> retire ici
+[botw-coop] objet : Enemy_Lizalfos_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 1d3090ef) -> retire ici
+[botw-coop] sauvetage : refuse (partenaire sans vie connue ou mort, distance -1 m, vie du partenaire 0 quarts, -1 inconnue) -> Game Over
+[botw-coop] objet : Enemy_Keese pris, ouvert ou vaincu par l'autre joueur (drapeau 8d436323) -> retire ici
+[botw-coop] objet : Enemy_Keese pris, ouvert ou vaincu par l'autre joueur (drapeau 9fc2d8bc) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Dark pris, ouvert ou vaincu par l'autre joueur (drapeau da1300f2) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 9477803f) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Dark pris, ouvert ou vaincu par l'autre joueur (drapeau 435703f7) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau a59cc75c) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 5811c360) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Dark pris, ouvert ou vaincu par l'autre joueur (drapeau c5b95305) -> retire ici
+[botw-coop] objet : Enemy_Bokoblin_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 3e28f6cd) -> retire ici
+[botw-coop] objet : Enemy_Lizalfos_Guard_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 109f90f0) -> retire ici
+[botw-coop] objet : Enemy_Lizalfos_Middle pris, ouvert ou vaincu par l'autre joueur (drapeau 0ab737ea) -> retire ici
+[botw-coop] drapeau change : n.40983 hachage=f951af24 0 -> 1
+[botw-coop] essai coffre : Link pose a 1,6 m du coffre TBox_Field_Enemy (1292.25, 135.71, 655.77), cote +Z, en (1291.06, 136.01, 656.84)
+[botw-coop] essai coffre : Link pose a 1,6 m du coffre TBox_Field_Enemy (1292.25, 135.71, 655.77), cote -Z, en (1293.45, 136.01, 654.71)
+[botw-coop] essai coffre : Link pose a 1,6 m du coffre TBox_Field_Enemy (1292.25, 135.71, 655.77), cote +Z, en (1291.06, 136.01, 656.84)
+
