@@ -1,0 +1,33 @@
+# 2026-11-17 rb2 a rb5 : Fleau de Medoh, demarrage du combat par l'unite centrale (non atteint)
+
+== rb2 J1
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] essai drapeau local : hachage=89ebcdcd index 22735, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=2cd9da73 index 7379, octet 0 -> 1
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] vie : Enemy_SiteBoss_Bow           hash=a005bd2a etat=0 dist=16.8 : pas d'appel (fonctions 79a104 56b240)
+
+== rb3 J1
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] essai drapeau local : hachage=c1959ed3 index 31831, octet 0 -> 1
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsWind -> accepte
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsWind -> accepte
+
+== rb4 J1
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] essai drapeau local : hachage=c1959ed3 index 31831, octet 0 -> 1
+[botw-coop] essai drapeau entier : hachage=978537d6 trouve, 5 -> 5
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsWind -> accepte
+
+== rb5 J1
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+[botw-coop] essai drapeau local : hachage=c1959ed3 index 31831, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=f12238cd index 39671, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=f89e7227 index 40876, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=814048a3 index 21378, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=8e1c9b59 index 23399, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=522c9804 index 13736, octet 0 -> 1
+[botw-coop] evenement demande : Demo025_0 / Demo025_0 -> accepte
+

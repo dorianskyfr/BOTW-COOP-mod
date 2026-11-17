@@ -769,7 +769,10 @@ namespace coop::flags {
                 if (inGame && s_HaveSnapshot && setter && s_SetCountdown > 0 && --s_SetCountdown == 0) {
                     /* -DCOOP_TEST_SETLOCAL2=0x... : un second drapeau pose en meme temps (essai cp2 : les deux
                        noms d'un camp, avec et sans zero devant). */
-#ifdef COOP_TEST_SETLOCAL2
+#if defined(COOP_TEST_SETLOCAL_LIST)
+                    /* -DCOOP_TEST_SETLOCAL_LIST=0x..,0x.. : liste en plus (essai rb5 : les 5 terminaux de Vah Medoh). */
+                    const std::uint32_t hashes[] = { static_cast<std::uint32_t>(COOP_TEST_SETLOCAL), COOP_TEST_SETLOCAL_LIST };
+#elif defined(COOP_TEST_SETLOCAL2)
                     const std::uint32_t hashes[] = { static_cast<std::uint32_t>(COOP_TEST_SETLOCAL), static_cast<std::uint32_t>(COOP_TEST_SETLOCAL2) };
 #else
                     const std::uint32_t hashes[] = { static_cast<std::uint32_t>(COOP_TEST_SETLOCAL) };
@@ -786,6 +789,32 @@ namespace coop::flags {
                         Logging.Log("[botw-coop] essai drapeau local : hachage=%08x index %d, octet %d -> %d",
                             static_cast<unsigned>(hash), i, before, after);
                     }
+#ifdef COOP_TEST_SETINT
+                    /* -DCOOP_TEST_SETINT=0x... -DCOOP_TEST_SETINT_VALUE=n : drapeau entier pose en meme temps (essai rb4 :
+                       Counter_TerminalWind, lu par l'evenement Demo044_0 pour lancer le combat contre le Fleau).
+                       Gabarit des drapeaux entiers : valeur +0x18, hachage +0x1c (SetNumberOfDaysFlag). */
+                    {
+                        PtrArray ints {};
+                        std::uintptr_t found = 0;
+                        if (Read(s_Param + Param_S32Flags, ints) && ints.m_Num > 0 && ints.m_Num <= 8192
+                            && coop::game::CanReadMemory(ints.m_Buffer, 8ull * ints.m_Num))
+                            for (int k = 0; k < ints.m_Num && found == 0; k++) {
+                                std::uintptr_t fl = 0;
+                                std::uint32_t h = 0;
+                                if (Read(ints.m_Buffer + 8ull * k, fl) && coop::game::CanReadMemory(fl, 0x20) && Read(fl + 0x1c, h)
+                                    && h == static_cast<std::uint32_t>(COOP_TEST_SETINT))
+                                    found = fl;
+                            }
+                        std::int32_t before = -9999;
+                        if (found != 0) {
+                            Read(found + 0x18, before);
+                            const std::int32_t v = COOP_TEST_SETINT_VALUE;
+                            std::memcpy(reinterpret_cast<void*>(found + 0x18), &v, 4);
+                        }
+                        Logging.Log("[botw-coop] essai drapeau entier : hachage=%08x %s, %d -> %d", static_cast<unsigned>(COOP_TEST_SETINT),
+                            found != 0 ? "trouve" : "INTROUVABLE", before, static_cast<int>(COOP_TEST_SETINT_VALUE));
+                    }
+#endif
                 }
             }
 #endif
