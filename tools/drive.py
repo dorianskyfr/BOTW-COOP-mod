@@ -216,6 +216,11 @@ def main():
             # Essai : le plugin pose Link devant le premier coffre de la sauvegarde de test (face au sud).
             p.pad(buttons=1 << 51, ms=300)
             p.log("chest : Link pose devant le premier coffre")
+        elif op == "chestnear":
+            # Essai sans ecran : le plugin pose Link a 1,6 m du coffre (TBox_*) le plus proche, cote +Z (1) ou -Z (-1).
+            side = float(args[0]) if args else 1.0
+            p.pad(buttons=1 << 51, lx=1, ly=side, ms=300)
+            p.log(f"chestnear : Link pose pres du coffre le plus proche, cote {'+Z' if side > 0 else '-Z'}")
         elif op == "demo":
             # Essai : le plugin demande au jeu la cinematique de lune de sang (Demo011_0), annoncee au partenaire.
             p.pad(buttons=1 << 52, ms=300)

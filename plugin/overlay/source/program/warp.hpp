@@ -36,6 +36,8 @@ namespace coop::warp {
     void DebugTravel();
     /* Essai combat : Link pose a `distance` metres du Bokoblin actif le plus proche, de son cote. */
     void DebugApproachEnemy(float distance);
+    /* Essai coffre sans ecran : Link pose a 1,6 m du coffre le plus proche, cote +Z (side > 0) ou -Z. */
+    void DebugGoToNearestChest(float side);
     /* Essai coffre : Link pose devant le premier coffre de la sauvegarde de test (NOTES 5.8). */
     void DebugGoToFirstChest();
     /* Essai : voyage du jeu vers le point de voyage le plus proche de (x, z). */

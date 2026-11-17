@@ -115,6 +115,8 @@ namespace coop::game {
      * metres de `pos`, different de `exclude`. 0 si aucun.
      */
     std::uintptr_t FindActor(const char* name, const float pos[3], float radius, std::uintptr_t exclude = 0);
+    /* Acteur le plus proche de pos dont le nom commence par prefix (outils d'essai), 0 si aucun. */
+    std::uintptr_t FindActorByPrefix(const char* prefix, const float pos[3], float radius);
 
     /* Un acteur de la liste d'ActorCreator, tel que vu par ForEachListedActor. */
     struct ActorInfo {

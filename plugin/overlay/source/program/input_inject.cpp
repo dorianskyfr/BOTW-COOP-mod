@@ -408,9 +408,16 @@ namespace coop::input_inject {
                         const auto cmd12 = pad.m_Commands.load(std::memory_order_acquire);
                         if (cmd12 != s_LastChest) {
                             s_LastChest = cmd12;
-                            coop::warp::DebugGoToFirstChest();
+                            /* Champ X du stick non nul : coffre le plus proche (champ Y : cote), sinon le premier coffre. */
+                            const float lx = static_cast<float>(pad.m_StickLX.load()), ly = static_cast<float>(pad.m_StickLY.load());
+                            if (lx > 0.5f)
+                                coop::warp::DebugGoToNearestChest(ly);
+                            else
+                                coop::warp::DebugGoToFirstChest();
                         }
                         buttons &= ~(1ull << 51);
+                        pad.m_StickLX.store(0);
+                        pad.m_StickLY.store(0);
                     }
                     /* Bit 52 : cinematique de lune de sang demandee au jeu local, annoncee au partenaire (essai). */
                     if ((buttons >> 52) & 1) {

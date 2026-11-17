@@ -465,6 +465,41 @@ namespace coop::warp {
             static_cast<double>(s_Target[0]), static_cast<double>(s_Target[1]), static_cast<double>(s_Target[2]));
     }
 
+    void DebugGoToNearestChest(float side) {
+        /* Essai coffre sans ecran : Link pose a 1,6 m du coffre (TBox_*) le plus proche (300 m), le long de l'axe
+           avant (+Z, side > 0) ou arriere (-Z) de sa matrice, a la hauteur du coffre + 0,3 m. L'axe avant du coffre
+           n'est pas mesure : essayer les deux cotes ; drive.py goto vers le coffre pour que Link lui fasse face. */
+        coop::game::PlayerState st;
+        if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0 || !coop::game::IsWorldReady())
+            return;
+        const auto chest = coop::game::FindActorByPrefix("TBox_", st.m_Pos, 300.0f);
+        if (chest == 0) {
+            Logging.Log("[botw-coop] essai coffre : aucun coffre (TBox_*) a moins de 300 m");
+            return;
+        }
+        float m[12];
+        coop::game::GetActorMtx(chest, m);
+        const float s = side < 0.0f ? -1.0f : 1.0f;
+        float fx = m[2] * s, fz = m[10] * s;
+        const float len = std::sqrt(fx * fx + fz * fz);
+        if (len < 0.01f) {
+            fx = 0.0f;
+            fz = s;
+        } else {
+            fx /= len;
+            fz /= len;
+        }
+        s_Target[0] = m[3] + fx * 1.6f;
+        s_Target[1] = m[7] + 0.3f;
+        s_Target[2] = m[11] + fz * 1.6f;
+        if (!Place(st, s_Target, true))
+            return;
+        s_HoldLeft = 2;
+        Logging.Log("[botw-coop] essai coffre : Link pose a 1,6 m du coffre %s (%.2f, %.2f, %.2f), cote %s, en (%.2f, %.2f, %.2f)",
+            coop::game::GetActorName(chest), static_cast<double>(m[3]), static_cast<double>(m[7]), static_cast<double>(m[11]),
+            s > 0 ? "+Z" : "-Z", static_cast<double>(s_Target[0]), static_cast<double>(s_Target[1]), static_cast<double>(s_Target[2]));
+    }
+
     void DebugApproachEnemy(float distance) {
         coop::game::PlayerState st;
         float e[3];

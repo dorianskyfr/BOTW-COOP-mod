@@ -580,6 +580,28 @@ namespace coop::game {
         return found;
     }
 
+    std::uintptr_t FindActorByPrefix(const char* prefix, const float pos[3], float radius) {
+        if (s_ActorNameOffset == 0 || prefix == nullptr)
+            return 0;
+        const std::size_t n = std::strlen(prefix);
+        std::uintptr_t found = 0;
+        float best = radius * radius;
+        ForEachActor([&](std::uintptr_t actor) {
+            if (std::strncmp(reinterpret_cast<const char*>(actor + s_ActorNameOffset), prefix, n) != 0)
+                return false;
+            float p[3];
+            GetActorPos(actor, p);
+            const float dx = p[0] - pos[0], dy = p[1] - pos[1], dz = p[2] - pos[2];
+            const float d2 = dx * dx + dy * dy + dz * dz;
+            if (d2 <= best) {
+                best = d2;
+                found = actor;
+            }
+            return false;
+        });
+        return found;
+    }
+
     void ForEachListedActor(bool (*fn)(const ActorInfo& info, void* user), void* user) {
         if (s_ActorNameOffset == 0)
             return;
