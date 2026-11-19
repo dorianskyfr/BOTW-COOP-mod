@@ -112,7 +112,6 @@ namespace coop::weapons {
 
         /* ---- Dons ---- */
 
-        constexpr float GiftRange = 3.0f;  /* arme lachee a moins de 3 m du partenaire */
         constexpr int LetGoScans = 100;    /* surveillee 10 s apres avoir quitte Link */
 
         struct Held {
@@ -239,12 +238,300 @@ namespace coop::weapons {
             return y >= 0.30f && y <= 2.2f && x * x + z * z <= 0.9f * 0.9f;
         }
 
+        /* ---- Objets au sol partages (NOTES 5.95) ----
+         * Un objet lache par un joueur (arme, bouclier, arc, materiau pose) qui s'immobilise au sol est
+         * annonce (GDRP) : le partenaire cree le meme acteur au meme endroit, avec la meme durabilite.
+         * Les deux copies sont suivies ; celle qui disparait pres de son joueur (ramassee) est annoncee
+         * (GPCK) et l'autre est retiree. Le bonus d'une arme n'est pas porte par l'acteur (voir plus
+         * haut) : la copie du partenaire n'en a pas. */
+        constexpr int MaxDrops = 16;
+        constexpr float DropShareRange = 120.0f;  /* partenaire a moins de 120 m : sa zone est chargee */
+        constexpr float DropLoadRange = 150.0f;   /* a la reception : on ne cree que pres de soi */
+        constexpr float PickRange = 3.5f;         /* disparu a moins de 3,5 m du joueur : ramasse */
+        constexpr int DropWaitScans = 100;        /* creation attendue 10 s au plus */
+        constexpr int MaxBefore = 8;
+
+        struct Drop {
+            std::uintptr_t m_Actor = 0;
+            int m_Owner = 0;               /* joueur qui l'a lache */
+            std::uint32_t m_Id = 0;        /* numero donne par ce joueur */
+            char m_Name[48] = {};
+            float m_Pos[3] = {};
+            bool m_Pending = false;        /* copie demandee au jeu, pas encore trouvee */
+            bool m_Cancelled = false;      /* ramassee chez l'autre avant d'exister ici */
+            bool m_Dying = false;          /* destruction demandee : reste exclue tant qu'elle est listee (relecture Codex) */
+            int m_Wait = 0;
+            int m_Value = 0;
+            int m_InPouch = -1;            /* exemplaires de ce nom dans l'inventaire au releve precedent, -1 inconnu */
+            int m_GoneScans = 0;           /* releves depuis sa disparition pres de nous, inventaire pas encore change */
+            std::uintptr_t m_Before[MaxBefore] = {};  /* acteurs du meme nom deja la avant la demande */
+            int m_BeforeN = 0;
+        };
+        Drop s_Drops[MaxDrops];
+        std::uint32_t s_NextDropId = 1;
+        int s_DropLogs = 0;
+
+        /* Inventaire relu pour confirmer un ramassage (relecture Codex : la seule proximite donnait de faux
+           ramassages, objet pose sur une pente a cote de Link). Arme, arc, bouclier : un exemplaire par
+           entree ; fleches, materiaux, plats : le nombre de la pile. */
+        constexpr int DropPouchMax = 420;  /* l'inventaire entier (420 entrees au plus, relecture Codex) */
+        coop::game::PouchEntry s_DropPouch[DropPouchMax];
+
+        int CountInPouch(const char* name, int n) {
+            int count = 0;
+            for (int i = 0; i < n; i++)
+                if (std::strcmp(s_DropPouch[i].m_Name, name) == 0) {
+                    const int type = s_DropPouch[i].m_Type;
+                    count += (type == 0 || type == 1 || type == 3) ? 1 : s_DropPouch[i].m_Value;
+                }
+            return count;
+        }
+
+        /* Destruction demandee : l'entree garde l'acteur (exclu des recherches) jusqu'a sa disparition. */
+        void MarkDying(Drop& d) {
+            const std::uintptr_t actor = d.m_Actor;
+            d = Drop {};
+            d.m_Actor = actor;
+            d.m_Dying = true;
+        }
+
+        bool DropTracked(std::uintptr_t actor) {
+            for (const Drop& d : s_Drops)
+                if (actor != 0 && d.m_Actor == actor)
+                    return true;
+            return false;
+        }
+
+        struct SameNameCtx {
+            const char* m_Name;
+            float m_Pos[3];
+            const Drop* m_Skip;   /* demande en cours : ignore ses m_Before et les copies deja suivies */
+            std::uintptr_t m_Found[MaxBefore];
+            int m_Count;
+        };
+
+        bool CollectSameName(const coop::game::ActorInfo& info, void* user) {
+            auto& ctx = *static_cast<SameNameCtx*>(user);
+            if (std::strcmp(info.m_Name, ctx.m_Name) != 0)
+                return false;
+            const float dx = info.m_Pos[0] - ctx.m_Pos[0], dy = info.m_Pos[1] - ctx.m_Pos[1], dz = info.m_Pos[2] - ctx.m_Pos[2];
+            if (dx * dx + dy * dy + dz * dz > 4.0f * 4.0f)
+                return false;
+            if (ctx.m_Skip != nullptr) {
+                for (int k = 0; k < ctx.m_Skip->m_BeforeN; k++)
+                    if (ctx.m_Skip->m_Before[k] == info.m_Actor)
+                        return false;
+                if (DropTracked(info.m_Actor))
+                    return false;
+            }
+            if (ctx.m_Count < MaxBefore)
+                ctx.m_Found[ctx.m_Count++] = info.m_Actor;
+            return ctx.m_Count >= MaxBefore;
+        }
+
+        Drop* FreeDrop() {
+            for (Drop& d : s_Drops)
+                if (d.m_Actor == 0 && !d.m_Pending)
+                    return &d;
+            return nullptr;
+        }
+
+        /* Copie d'un objet lache par le partenaire : creee pres de nous seulement. */
+        void ReceiveDrop(const Gift& g) {
+            coop::game::PlayerState st;
+            if (!coop::game::ReadPlayer(st))
+                return;
+            const float dx = g.m_Pos[0] - st.m_Pos[0], dy = g.m_Pos[1] - st.m_Pos[1], dz = g.m_Pos[2] - st.m_Pos[2];
+            const float dist = std::sqrt(dx * dx + dy * dy + dz * dz);
+            if (dist > DropLoadRange) {
+                if (s_DropLogs++ < 40)
+                    Logging.Log("[botw-coop] objet au sol : %s lache par le joueur %d a %.0f m de nous, pas de copie", g.m_Name, g.m_From,
+                        static_cast<double>(dist));
+                return;
+            }
+            Drop* d = FreeDrop();
+            if (d == nullptr)
+                return;
+            *d = Drop {};
+            d->m_Owner = g.m_Owner;
+            d->m_Id = g.m_DropId;
+            std::memcpy(d->m_Name, g.m_Name, sizeof(d->m_Name));
+            d->m_Name[sizeof(d->m_Name) - 1] = '\0';
+            std::memcpy(d->m_Pos, g.m_Pos, sizeof(d->m_Pos));
+            d->m_Value = g.m_Value;
+            SameNameCtx ctx { d->m_Name, { g.m_Pos[0], g.m_Pos[1], g.m_Pos[2] }, nullptr, {}, 0 };
+            coop::game::ForEachListedActor(CollectSameName, &ctx);
+            std::memcpy(d->m_Before, ctx.m_Found, sizeof(d->m_Before));
+            d->m_BeforeN = ctx.m_Count;
+            /* 30 cm plus haut : l'objet retombe sur le sol au lieu d'y etre enfonce. */
+            const float at[3] = { g.m_Pos[0], g.m_Pos[1] + 0.3f, g.m_Pos[2] };
+            d->m_Pending = coop::game::RequestCreateActorAwake(d->m_Name, at);
+            Logging.Log("[botw-coop] objet au sol : %s (valeur %d) lache par le joueur %d en (%.1f, %.1f, %.1f), a %.1f m de nous : copie %s",
+                d->m_Name, d->m_Value, g.m_From, static_cast<double>(g.m_Pos[0]), static_cast<double>(g.m_Pos[1]),
+                static_cast<double>(g.m_Pos[2]), static_cast<double>(dist), d->m_Pending ? "demandee" : "REFUSEE");
+            if (!d->m_Pending)
+                *d = Drop {};
+            else if (dist < 40.0f) {
+                char msg[96];
+                if (const char* item = coop::config::ItemNameFor(Crc32(g.m_Name)))
+                    std::snprintf(msg, sizeof(msg), "Joueur %d a lâché : %s", g.m_From, item);
+                else
+                    std::snprintf(msg, sizeof(msg), "Joueur %d a lâché %s", g.m_From, GiftLabel(g.m_Name));
+                coop::notify::Post(msg);
+            }
+        }
+
+        /* Le partenaire a ramasse un objet partage : notre copie est retiree. */
+        void ReceivePick(const Gift& g) {
+            for (Drop& d : s_Drops) {
+                if ((d.m_Actor == 0 && !d.m_Pending) || d.m_Owner != g.m_Owner || d.m_Id != g.m_DropId)
+                    continue;
+                if (d.m_Pending) {
+                    d.m_Cancelled = true;
+                    Logging.Log("[botw-coop] objet au sol : %s ramasse par le joueur %d avant que notre copie n'existe", d.m_Name, g.m_From);
+                    return;
+                }
+                const bool alive = coop::game::IsActorListed(d.m_Actor) && coop::game::GetActorState(d.m_Actor) != 3
+                    && std::strcmp(coop::game::GetActorName(d.m_Actor), d.m_Name) == 0;
+                const bool deleted = alive && coop::game::DeleteActor(d.m_Actor);
+                Logging.Log("[botw-coop] objet au sol : %s ramasse par le joueur %d -> notre copie %s", d.m_Name, g.m_From,
+                    deleted ? "retiree" : (alive ? "NON RETIREE" : "deja absente"));
+                char msg[96];
+                if (const char* item = coop::config::ItemNameFor(Crc32(d.m_Name)))
+                    std::snprintf(msg, sizeof(msg), "Joueur %d a ramassé : %s", g.m_From, item);
+                else
+                    std::snprintf(msg, sizeof(msg), "Joueur %d a ramassé %s", g.m_From, GiftLabel(d.m_Name));
+                coop::notify::Post(msg);
+                if (deleted)
+                    MarkDying(d);
+                else
+                    d = Drop {};
+                return;
+            }
+        }
+
+        /* Suivi des objets partages (les notres et les copies), 10 fois par seconde. */
+        /* Inventaire lu au plus une fois par releve, seulement si un objet partage est a portee. */
+        int PouchNow(int& n) {
+            if (n < 0)
+                n = coop::game::ReadPouch(s_DropPouch, DropPouchMax);
+            return n < 0 ? 0 : n;
+        }
+
+        void UpdateDrops(const float link[12]) {
+            const float* me = &link[0];
+            int pouchN = -1;
+            for (Drop& d : s_Drops) {
+                if (d.m_Dying) {
+                    if (!coop::game::IsActorListed(d.m_Actor))
+                        d = Drop {};
+                    continue;
+                }
+                if (d.m_Pending) {
+                    SameNameCtx ctx { d.m_Name, { d.m_Pos[0], d.m_Pos[1], d.m_Pos[2] }, &d, {}, 0 };
+                    coop::game::ForEachListedActor(CollectSameName, &ctx);
+                    if (ctx.m_Count > 0) {
+                        d.m_Pending = false;
+                        d.m_Actor = ctx.m_Found[0];
+                        if (d.m_Cancelled) {
+                            coop::game::DeleteActor(d.m_Actor);
+                            Logging.Log("[botw-coop] objet au sol : copie de %s retiree des sa creation (deja ramasse)", d.m_Name);
+                            MarkDying(d);
+                            continue;
+                        }
+                        /* Nombre de reference des maintenant : ramassee avant le releve suivant, elle serait
+                           sinon perdue de vue sans annonce (relecture Codex). */
+                        d.m_InPouch = CountInPouch(d.m_Name, PouchNow(pouchN));
+                        int life = 0;
+                        const bool weapon = std::strncmp(d.m_Name, "Weapon_", 7) == 0;
+                        const bool set = weapon && coop::game::SetActorLifeValue(d.m_Actor, d.m_Value);
+                        coop::game::GetActorLifeValue(d.m_Actor, life);
+                        Logging.Log("[botw-coop] objet au sol : copie de %s creee (%d releve(s)), durabilite %s -> %d", d.m_Name, d.m_Wait,
+                            weapon ? (set ? "ecrite" : "NON ECRITE") : "sans objet", life);
+                    } else if (++d.m_Wait > DropWaitScans) {
+                        Logging.Log("[botw-coop] objet au sol : copie de %s introuvable apres 10 s, abandon", d.m_Name);
+                        d = Drop {};
+                    }
+                    continue;
+                }
+                if (d.m_Actor == 0)
+                    continue;
+                const bool listed = coop::game::IsActorListed(d.m_Actor) && coop::game::GetActorState(d.m_Actor) != 3
+                    && std::strcmp(coop::game::GetActorName(d.m_Actor), d.m_Name) == 0;
+                bool worn = false;
+                if (listed) {
+                    float m[12], rel[12];
+                    coop::game::GetActorMtx(d.m_Actor, m);
+                    Relative(link, m, rel);
+                    worn = IsWornRel(rel); /* dans les mains ? a confirmer par l'inventaire */
+                    if (!worn) {
+                        d.m_Pos[0] = m[3];
+                        d.m_Pos[1] = m[7];
+                        d.m_Pos[2] = m[11];
+                    }
+                }
+                const float dx = d.m_Pos[0] - me[3], dy = d.m_Pos[1] - me[7], dz = d.m_Pos[2] - me[11];
+                const float dist = std::sqrt(dx * dx + dy * dy + dz * dz);
+                if (listed && !worn) {
+                    d.m_GoneScans = 0;
+                    if (dist < 4.0f) /* a portee de main : nombre d'exemplaires avant un eventuel ramassage */
+                        d.m_InPouch = CountInPouch(d.m_Name, PouchNow(pouchN));
+                    continue;
+                }
+                if (dist > PickRange) {
+                    if (listed)
+                        continue;
+                    if (s_DropLogs++ < 40)
+                        Logging.Log("[botw-coop] objet au sol : %s disparu a %.0f m de nous (pas ramasse ici), non annonce", d.m_Name,
+                            static_cast<double>(dist));
+                    d = Drop {};
+                    continue;
+                }
+                /* Disparu (ou dans les mains) pres de nous : ramasse seulement si l'inventaire en a gagne un
+                   exemplaire. Le jeu peut le compter une image apres : jusqu'a 1 s d'attente. */
+                const int now = CountInPouch(d.m_Name, PouchNow(pouchN));
+                if (d.m_InPouch < 0 || now <= d.m_InPouch) {
+                    if (++d.m_GoneScans <= 10)
+                        continue;
+                    if (listed) {
+                        d.m_GoneScans = 0; /* toujours la (pente a cote de Link) : on continue de la suivre */
+                        continue;
+                    }
+                    if (s_DropLogs++ < 40)
+                        Logging.Log("[botw-coop] objet au sol : %s disparu pres de nous sans entrer dans l'inventaire (%d -> %d), non annonce",
+                            d.m_Name, d.m_InPouch, now);
+                    d = Drop {};
+                    continue;
+                }
+                {
+                    Gift pick;
+                    pick.m_Kind = Gift::Kind::Pick;
+                    pick.m_DropId = d.m_Id;
+                    pick.m_Owner = d.m_Owner;
+                    std::memcpy(pick.m_Name, d.m_Name, sizeof(pick.m_Name));
+                    if (!g_GiftOut.Push(pick))
+                        continue; /* file pleine : au releve suivant */
+                    Logging.Log("[botw-coop] objet au sol : %s (n.%x du joueur %d) ramasse ici, a %.1f m, inventaire %d -> %d -> annonce",
+                        d.m_Name, d.m_Id, d.m_Owner, static_cast<double>(dist), d.m_InPouch, now);
+                }
+                d = Drop {};
+            }
+        }
+
         /* Dons recus du partenaire : ajoutes a l'inventaire. */
         void ApplyIncomingGifts() {
             if (!coop::game::IsWorldReady())
                 return;
             Gift g;
             while (g_GiftIn.Pop(g)) {
+                if (g.m_Kind == Gift::Kind::Drop) {
+                    ReceiveDrop(g);
+                    continue;
+                }
+                if (g.m_Kind == Gift::Kind::Pick) {
+                    ReceivePick(g);
+                    continue;
+                }
                 int before = -1, after = -1;
                 coop::game::WeaponBonus bonus { g.m_BonusFlags, g.m_BonusValue };
                 const bool ok = coop::game::AddInventoryItem(g.m_Name, g.m_Value, before, after, &bonus);
@@ -301,29 +588,46 @@ namespace coop::weapons {
                         continue;
                     lg.m_FromPouch = TakeRemoved(lg.m_Name, lg.m_Bonus);
                 }
-                if (!partner || lg.m_Still < StillScans)
+                if (!partner || lg.m_Still < StillScans || coop::session::g_LocalId == 0 || DropTracked(lg.m_Actor))
                     continue;
+                /* Immobile au sol : partage avec le partenaire s'il est assez pres pour que la zone soit
+                   chargee chez lui (avant : retire et donne dans son inventaire a moins de 3 m, NOTES 5.38). */
                 const float dx = m[3] - last.m_Mtx[3], dy = m[7] - last.m_Mtx[7], dz = m[11] - last.m_Mtx[11];
-                if (dx * dx + dy * dy + dz * dz > GiftRange * GiftRange)
+                const float toPartner = std::sqrt(dx * dx + dy * dy + dz * dz);
+                if (toPartner > DropShareRange) {
+                    if (s_DropLogs++ < 40)
+                        Logging.Log("[botw-coop] objet au sol : %s lache a %.0f m du partenaire, non partage", lg.m_Name,
+                            static_cast<double>(toPartner));
+                    lg = LetGo {};
+                    continue;
+                }
+                Drop* d = FreeDrop();
+                if (d == nullptr)
                     continue;
                 Gift g;
+                g.m_Kind = Gift::Kind::Drop;
                 std::strncpy(g.m_Name, lg.m_Name, sizeof(g.m_Name) - 1);
                 /* Arme : sa durabilite ; materiau : un exemplaire (un acteur = un objet). */
                 if (std::strncmp(lg.m_Name, "Weapon_", 7) != 0 || !coop::game::GetActorLifeValue(lg.m_Actor, g.m_Value) || g.m_Value <= 0)
                     g.m_Value = 1;
-                g.m_BonusFlags = lg.m_Bonus.m_Flags;
-                g.m_BonusValue = lg.m_Bonus.m_Value;
+                g.m_DropId = s_NextDropId;
+                g.m_Owner = coop::session::g_LocalId;
+                std::memcpy(g.m_Pos, &lg.m_Pos[0], sizeof(g.m_Pos));
                 if (!g_GiftOut.Push(g))
                     continue; /* file pleine : on reessaiera au releve suivant */
-                coop::game::DeleteActor(lg.m_Actor);
-                Logging.Log("[botw-coop] don : %s (valeur %d, bonus %x/%d) donne au joueur %d, a %.1f m de lui", g.m_Name, g.m_Value,
-                    g.m_BonusFlags, g.m_BonusValue, coop::session::g_Remote.Id(), static_cast<double>(std::sqrt(dx * dx + dy * dy + dz * dz)));
-                char msg[96];
-                if (const char* item = coop::config::ItemNameFor(Crc32(g.m_Name)))
-                    std::snprintf(msg, sizeof(msg), "Don au joueur %d : %s", coop::session::g_Remote.Id(), item);
-                else
-                    std::snprintf(msg, sizeof(msg), "Vous avez donné %s au joueur %d", GiftLabel(g.m_Name), coop::session::g_Remote.Id());
-                coop::notify::Post(msg);
+                s_NextDropId++;
+                *d = Drop {};
+                d->m_Actor = lg.m_Actor;
+                d->m_Owner = g.m_Owner;
+                d->m_Id = g.m_DropId;
+                std::memcpy(d->m_Name, g.m_Name, sizeof(d->m_Name));
+                std::memcpy(d->m_Pos, g.m_Pos, sizeof(d->m_Pos));
+                d->m_Value = g.m_Value;
+                int pouchN = -1;
+                d->m_InPouch = CountInPouch(d->m_Name, PouchNow(pouchN));
+                Logging.Log("[botw-coop] objet au sol : %s (valeur %d, bonus %x/%d) lache en (%.1f, %.1f, %.1f), partage n.%x, partenaire a %.1f m",
+                    g.m_Name, g.m_Value, lg.m_Bonus.m_Flags, lg.m_Bonus.m_Value, static_cast<double>(g.m_Pos[0]), static_cast<double>(g.m_Pos[1]),
+                    static_cast<double>(g.m_Pos[2]), g.m_DropId, static_cast<double>(toPartner));
                 lg = LetGo {};
             }
         }
@@ -527,6 +831,7 @@ namespace coop::weapons {
         }
 
         HandleLetGo(link);
+        UpdateDrops(link);
 
         int before = 0;
         for (int k = 0; k < Slots; k++)

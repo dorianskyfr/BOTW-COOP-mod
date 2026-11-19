@@ -304,6 +304,23 @@ namespace coop::net_probe {
                     gift.m_Value = 1, gift.m_BonusFlags = 0, gift.m_BonusValue = 0;
                 if ((weapon || item) && gift.m_Value > 0)
                     coop::weapons::g_GiftIn.Push(gift);
+            } else if (coop::weapons::Gift drop; std::sscanf(line, "GDRP %d %x %47s %f %f %f %d", &id, &drop.m_DropId, drop.m_Name,
+                           &drop.m_Pos[0], &drop.m_Pos[1], &drop.m_Pos[2], &drop.m_Value) == 7) {
+                /* Objet lache au sol par le partenaire : recree au meme endroit dans le fil du jeu. Noms
+                   Weapon_* et Item_* seulement, position finie et bornee (la carte fait ~12 km). */
+                drop.m_Kind = coop::weapons::Gift::Kind::Drop;
+                drop.m_From = drop.m_Owner = id;
+                const bool named = std::strncmp(drop.m_Name, "Weapon_", 7) == 0 || std::strncmp(drop.m_Name, "Item_", 5) == 0;
+                bool sane = true;
+                for (const float v : drop.m_Pos)
+                    sane = sane && std::isfinite(v) && std::fabs(v) < 20000.0f;
+                if (named && sane && drop.m_Value > 0 && drop.m_Value < 1000000)
+                    coop::weapons::g_GiftIn.Push(drop);
+            } else if (coop::weapons::Gift pick; std::sscanf(line, "GPCK %d %x %d", &id, &pick.m_DropId, &pick.m_Owner) == 3) {
+                /* Le partenaire a ramasse un objet partage au sol : notre copie est retiree (fil du jeu). */
+                pick.m_Kind = coop::weapons::Gift::Kind::Pick;
+                pick.m_From = id;
+                coop::weapons::g_GiftIn.Push(pick);
             } else if (int meal = 0; std::sscanf(line, "MEAL %d %d", &id, &meal) == 2) {
                 /* Repas du partenaire : soin applique dans le fil du jeu (status.cpp), 30 cœurs au plus. */
                 if (meal > 0 && meal <= 120) {
@@ -600,9 +617,16 @@ namespace coop::net_probe {
 
                 /* Dons d'armes (weapons.hpp). */
                 for (coop::weapons::Gift gift; Live() && coop::weapons::g_GiftOut.Pop(gift);) {
-                    char msg[96];
-                    const int len = std::snprintf(msg, sizeof(msg), "GIFT %s %d %x %d\n", gift.m_Name, gift.m_Value,
-                        static_cast<unsigned>(gift.m_BonusFlags), static_cast<int>(gift.m_BonusValue));
+                    char msg[128];
+                    int len = 0;
+                    if (gift.m_Kind == coop::weapons::Gift::Kind::Drop)
+                        len = std::snprintf(msg, sizeof(msg), "GDRP %x %s %.2f %.2f %.2f %d\n", static_cast<unsigned>(gift.m_DropId), gift.m_Name,
+                            static_cast<double>(gift.m_Pos[0]), static_cast<double>(gift.m_Pos[1]), static_cast<double>(gift.m_Pos[2]), gift.m_Value);
+                    else if (gift.m_Kind == coop::weapons::Gift::Kind::Pick)
+                        len = std::snprintf(msg, sizeof(msg), "GPCK %x %d\n", static_cast<unsigned>(gift.m_DropId), gift.m_Owner);
+                    else
+                        len = std::snprintf(msg, sizeof(msg), "GIFT %s %d %x %d\n", gift.m_Name, gift.m_Value,
+                            static_cast<unsigned>(gift.m_BonusFlags), static_cast<int>(gift.m_BonusValue));
                     if (len > 0 && !SendAll(s_Fd, msg, static_cast<std::size_t>(len)))
                         Disconnect("echec d'envoi");
                 }

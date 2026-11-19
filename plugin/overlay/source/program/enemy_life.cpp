@@ -329,7 +329,15 @@ namespace coop::enemy_life {
                     t->m_HurtFrame.store(s_Frames, std::memory_order_release); /* mort chez nous : son IA joue la fin */
 
             if (e->m_Pending >= 0) {
-                const int wanted = e->m_Pending < 1 ? 1 : e->m_Pending;
+                /* Jamais moins de 1 : la mort passe par le drapeau de l'ennemi (objects.cpp). Sauf les Fleaux
+                   (Enemy_SiteBoss_*) : ils n'ont pas de drapeau de carte (« ABSENT de la table », essai bc2) ;
+                   tue chez J1, le Fleau du chateau restait a 1 point chez J2 pendant que J1 passait au Fleau
+                   suivant (NOTES 5.94). Leur vie peut donc tomber a 0 : chaque jeu joue sa mort et sa suite. */
+                /* Meme chose pour Ganon (Enemy_Ganon, Enemy_GanonBeast) : tenu a 1 point chez J2, il restait en
+                   combat pendant que J1 passait a la suite (essai bc3). */
+                const bool deathByLife = std::strncmp(info.m_Name, "Enemy_SiteBoss_", 15) == 0
+                    || std::strcmp(info.m_Name, "Enemy_Ganon") == 0 || std::strcmp(info.m_Name, "Enemy_GanonBeast") == 0;
+                const int wanted = e->m_Pending < 1 ? (deathByLife ? 0 : 1) : e->m_Pending;
                 e->m_Pending = -1;
                 if (life > wanted) {
                     std::memcpy(reinterpret_cast<void*>(lifePtr), &wanted, sizeof(wanted));

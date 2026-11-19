@@ -812,6 +812,42 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.94 Boss a deux : les Fleaux et Ganon au chateau d'Hyrule (2026-11-19, essais `bm2`, `bc1` a `bc4`, Eden) - [V] image et journaux
+
+- Medoh (`bm2`) : le terminal (54,6 ; 2 ; 6,5) est sous la Malice, l'unite centrale ne propose plus rien (etat laisse par les drapeaux poses a la main en rb5). Une vraie progression des Creatures demande les yeux de Malice et les enigmes : pas faisable de facon fiable par l'outil d'essai.
+- Chateau (cartes `E-4_Static.smubin` de `Pack/TitleBG.pack`) : `Enemy_SiteBoss_{Bow,Spear,Lsword,Sword}_Castle` crees par des `LinkTagAnd` a drapeau de sauvegarde `LastBossCurseGanon{Wind,Water,Fire,Electric}GenerateFlag` (0f1d1862, 8a1ea8ee, d683c3a9, d3076cbe). Evenement `HyruleCastle` (`Event/HyruleCastle.sbeventpack`) : entree `BossRoom0`, `GenBossAndCallDemo`, `Demo140_0`/`Demo141_x`, signal `CurseGanon_Wind_Start_FirstHalf`.
+  - `bc1` (drapeau Wind pose a la main, `-DCOOP_TEST_SETLOCAL=0x0f1d1862`) : Fleau cree mais reste a l'etat 0, sans combat. Ne pas poser ce drapeau soi-meme.
+  - `bc2` (sans drapeau, sauvegarde ou aucune Creature n'est liberee ; `goto_tp -254 -1070` puis `tp -245 306 -1060` dans le Sanctum) : le jeu deroule lui-meme `BossRoom0` -> cocon de Ganon -> Fleau du Vent, chez les deux (image : titre « Windblight Ganon », barre de vie). Synchro active : position (`ramene vers la copie de J2`), role, sequences (`rejoue "Wait_From_DemoEnd"`), vie partagee (`2000 -> 1995` chez les deux).
+- **Defaut corrige** (`bc2`) : tue chez J1 (`weaken 40 0`), le Fleau restait a 1 point chez J2 (« jamais moins de 1 », et pas de drapeau de carte : `AocField_Enemy_SiteBoss_Bow_Castle_3605150055 -> ABSENT de la table`) ; J1 passait au Fleau de l'Eau, J2 restait face au Fleau du Vent (image). Correctif (`enemy_life.cpp`) : la vie annoncee peut tomber a 0 pour `Enemy_SiteBoss_*`, `Enemy_Ganon`, `Enemy_GanonBeast`.
+  - [V] `bc3` : les 4 Fleaux tues chez J1 meurent aussi chez J2 (`2000 -> 0 (annonce par l'autre joueur)`) ; les deux jeux passent ensemble au Fleau suivant (titres Waterblight, Fireblight a l'image ; drapeaux 8a1ea8ee, d683c3a9 poses par chaque jeu) puis a la cinematique de Zelda et a Ganon (`Enemy_Ganon` 067c1183, 8000 points, synchronise chez les deux).
+  - `bc3`, Ganon (avant extension du correctif a Ganon) : vie mise a 0 chez J1 pendant sa presentation ; J2 le garde a 1 et continue le combat (image) ; chez J1 `HyruleCastle / GanonDead -> refuse` (mort pendant la presentation ?).
+  - [V] `bc4` (correctif etendu a Ganon) : les 4 Fleaux tues chez J1 a 45 s d'intervalle, morts chez J2 ; Ganon en combat chez les deux, puis tue chez J1 apres sa presentation (`weaken 80 0`) : chez J2 `Enemy_Ganon 067c1183 8000 -> 0 (annonce par l'autre joueur)`. Les deux jeux jouent la meme scene de mort (sequences `Wait_For_DemoEnd`, `Power_Demo` rejouees de part et d'autre) puis la meme cinematique dans le Sanctum (image, les deux Link places au meme point par le jeu).
+  - Observe, non explique : `HyruleCastle / GanonDead -> refuse` journalise ~70 fois chez J1 apres la mort ; la cinematique a quand meme eu lieu chez les deux. Les roles de Ganon changent souvent (81 changements en 30 s, il se deplace vite entre les deux joueurs) sans effet visible.
+  - **Non verifie** : la suite (Ganon bete du Fleau, plaine d'Hyrule) ; les Fleaux dans les Creatures divines.
+  - Preuves : `docs/evidence/2026-11-19_boss-chateau_bc4.log`, `2026-11-19_ganon-mort_J1-J2_bc4_{a,b,c}.png` (J1 a gauche, J2 a droite).
+
+### 5.95 Objets lâchés partagés au sol (2026-11-19, essai `gd1`, Eden) - [V] image et journaux
+
+- Demande : un objet lâché doit rester par terre, visible par l'autre joueur, qui peut le ramasser ; pour tous les objets. Remplace le don direct (5.38 : objet retiré et mis dans l'inventaire du partenaire à moins de 3 m).
+- Fonctionnement (`weapons.cpp`) : l'objet lâché (arme, arc, bouclier sortis de l'inventaire ; matériau tenu puis posé) est suivi comme avant ; immobile 1 s et partenaire à moins de 120 m -> `GDRP <n> <nom> <x> <y> <z> <durabilité>`. Le partenaire, s'il est à moins de 150 m, crée le même acteur 30 cm plus haut (`RequestCreateActorAwake`), le retrouve (même nom à moins de 4 m, absent avant la demande) et lui écrit la durabilité (`SetActorLifeValue` : même pointeur que `getLife`, case 87). Chaque copie est suivie ; si elle disparaît (ou revient dans les mains) à moins de 3,5 m de son joueur, `GPCK <n> <joueur qui l'a lâché>` : l'autre retire sa copie. Disparue loin du joueur (zone déchargée) : rien n'est annoncé.
+- Relais : `GDRP` (`xnfffi`) et `GPCK` (`xi`) retransmis, valeurs contrôlées (position finie, nom `Weapon_*`/`Item_*` côté plugin). `test_relay.py` 116/116. Un plugin plus ancien ignore ces lignes.
+- [V] `gd1` : J1 lâche la hache de bûcheron par le menu -> `partage n.1, partenaire a 2.2 m` ; chez J2 `copie de Weapon_Lsword_032 creee, durabilite ecrite -> 3000` (même valeur que chez J1), le jeu propose « Take Woodcutter's Axe » (image). J2, sac d'armes plein : le jeu refuse (« You can't carry any more melee weapons »), la copie reste. J1 reprend sa hache -> `ramasse ici -> annonce` ; chez J2 `ramasse par le joueur 1 -> notre copie retiree` (acteur disparu de la liste). Herbe d'Hyrule tenue puis posée par J1 -> copie chez J2 ; J2 la ramasse -> retirée chez J1.
+- Relecture Codex (2 passes) :
+  - 1re passe, 3 remarques P2 :
+    - **Retenue :** une copie tout juste détruite pouvait être reprise par une autre copie en attente. Elle reste désormais exclue tant qu'elle figure dans la liste du jeu.
+    - **Retenue :** un objet posé sur une pente à côté de Link comptait comme ramassé. Le ramassage est maintenant confirmé par l'inventaire : il faut un exemplaire de plus de ce nom, avec jusqu'à 1 s d'attente.
+    - **Rejetée :** l'arbitrage de deux ramassages simultanés. On ne sait pas retirer un objet d'un inventaire ; c'est une limite connue.
+  - 2e passe, 2 remarques P2, retenues toutes les deux :
+    - l'inventaire était lu tronqué à 200 entrées, il est maintenant lu en entier (420) ;
+    - le compte de référence est pris dès le lâcher et dès la création de la copie.
+  - [V] `gd2` et `gd3` : hache reprise par J1 (« inventaire 0 -> 1 -> annonce ») ; herbe ramassée par J2 (« inventaire 1 -> 2 ») ; copie retirée de l'autre côté. J2 à 42 m reçoit la copie.
+- Limites :
+  - Le bonus d'une arme (« Attaque + ») n'est pas porté par l'acteur au sol : la copie du partenaire n'en a pas, seul l'original le garde.
+  - Deux ramassages dans la même fraction de seconde donneraient un objet à chacun (non essayé).
+  - Un objet qui disparaît près de son joueur sans entrer dans son inventaire n'est pas annoncé (par exemple une arme en bois brûlée) : la copie de l'autre joueur reste.
+- **Non vérifié** : arc, bouclier, objet lancé (et non lâché par le menu), objet qui roule loin ; deux PC.
+- Preuves : `docs/evidence/2026-11-19_objets-au-sol_gd1.log` et les captures `2026-11-19_objets-au-sol_*_gd1.png`.
+
 ### 5.93 Ennemis sous latence simulee ; bilan periodique des roles (2026-11-19, essais `lt1`, `lt2`, Eden) - [V] journaux
 
 - Relais `--lag 200 --jitter 80` (200 a 280 ms par ligne, ordre garde), groupe de Lezalfos et d'Octoroks volants pres de (-2660 ; -880), joueurs a ~6 m l'un de l'autre. [V] `lt1` : positions ramenees, ecart median 0,22 a 0,66 m (1,48 m au plus) ; un seul changement de role par ennemi ; sequences rejouees (10 chez J1, 40 chez J2) et attaques de la copie suivie bloquees (7 et 34). Rien a corriger.

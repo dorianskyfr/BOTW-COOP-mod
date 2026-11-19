@@ -1027,6 +1027,25 @@ namespace coop::game {
         return true;
     }
 
+    bool SetActorLifeValue(std::uintptr_t actor, int value) {
+        /* Meme pointeur que GetActorLifeValue (getLife renvoie s32*, decomp actActor.h) ; la vie des
+           ennemis s'ecrit deja ainsi (enemy_life.cpp). Pour une arme : sa durabilite (a verifier par
+           relecture apres ramassage, essai gd1). */
+        int old = 0;
+        if (value <= 0 || !GetActorLifeValue(actor, old))
+            return false;
+        const auto& info = exl::util::GetMainModuleInfo();
+        const auto vtable = Peek<std::uintptr_t>(actor);
+        const auto fnLife = Peek<std::uintptr_t>(vtable + 87 * 8);
+        if (fnLife < info.m_Total.m_Start || fnLife >= info.m_Total.m_Start + info.m_Total.m_Size)
+            return false;
+        const auto ptr = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(fnLife)(actor);
+        if (ptr < actor || ptr >= actor + 0x4000 || !CanRead(ptr, 4))
+            return false;
+        *reinterpret_cast<std::int32_t*>(ptr) = value;
+        return true;
+    }
+
     namespace {
         constexpr std::uintptr_t PauseMenuDataMgrSlot = 0x1d67af0;
         constexpr std::uintptr_t ItemList = 0x68;              /* sead::OffsetList : noeud debut/fin, compte +0x10, decalage +0x14 */

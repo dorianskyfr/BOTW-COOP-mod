@@ -206,6 +206,8 @@ namespace coop::game {
 
     /* Valeur de getLife (case 87) d'un acteur ; pour une arme, sa durabilite. Fil du jeu. */
     bool GetActorLifeValue(std::uintptr_t actor, int& value);
+    /* Ecrit cette meme valeur (meme pointeur rendu par getLife). value > 0. Fil du jeu. */
+    bool SetActorLifeValue(std::uintptr_t actor, int value);
 
     /* Bonus d'une arme (WeaponModifierInfo du jeu) : bits WeaponModifier, valeur. flags = 0 : aucun. */
     struct WeaponBonus {

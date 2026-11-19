@@ -137,8 +137,13 @@ def auth_digest(challenge, password):
 #   EDST : distance a un ennemi de carte du joueur qui suit la copie de l'autre (hachage d'objet, metres),
 #          retransmise telle quelle ; sans elle, chacun comparait sa distance a une distance perimee de
 #          l'autre et les deux pouvaient se suivre l'un l'autre (NOTES 5.91). Ignoree par un plugin plus ancien.
+#   GDRP : objet lache au sol (numero hexadecimal donne par l'emetteur, nom d'acteur, position, durabilite),
+#          retransmis tel quel ; l'autre cree le meme objet au meme endroit (NOTES 5.95).
+#   GPCK : objet partage ramasse (numero, joueur qui l'avait lache), retransmis tel quel ; l'autre retire
+#          sa copie. Les deux sont ignores par un plugin plus ancien.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
-                "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1, "DROT": 2, "EDST": 2}
+                "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1, "DROT": 2, "EDST": 2,
+                "GDRP": 6, "GPCK": 2}
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur, et une 5e : son climat
 #   (le relais rend aux autres le climat du joueur de reference de la meteo, avec sa meteo).
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
@@ -151,7 +156,8 @@ OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2, "EAS": 1, "DROT": 1}
 # n nom d'acteur. Une ligne dont une valeur ne correspond pas est ignoree (jamais retransmise).
 FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi", "FLAGR": "xi", "LIFE": "xi",
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
-               "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i", "DROT": "xfx", "EDST": "xf"}
+               "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i", "DROT": "xfx", "EDST": "xf",
+               "GDRP": "xnfffi", "GPCK": "xi"}
 
 
 def valid_fields(kind, values):

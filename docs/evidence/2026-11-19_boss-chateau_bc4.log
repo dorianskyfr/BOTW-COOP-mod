@@ -1,0 +1,59 @@
+== J1 (t_sw1), essai bc4
+[botw-coop] net: nifm::Initialize -> 0x0, socket::Initialize -> 0x0
+[botw-coop] drapeau change : n.34272 hachage=d064adb3 1 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_SiteBoss_Bow_Castle d6e23967 2000 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, 1 ennemi(s) a moins de 40 m mis a 0 point(s) de vie
+[botw-coop] vie ennemi : Enemy_SiteBoss_Bow_Castle d6e23967 2000 -> 0 chez nous (max 2000), annonce, n.1
+[botw-coop] drapeau change : n.2529 hachage=0f1d1862 1 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_SiteBoss_Spear_Castle 3c8a1e17 2000 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, 1 ennemi(s) a moins de 40 m mis a 0 point(s) de vie
+[botw-coop] vie ennemi : Enemy_SiteBoss_Spear_Castle 3c8a1e17 2000 -> 0 chez nous (max 2000), annonce, n.2
+[botw-coop] drapeau change : n.22762 hachage=8a1ea8ee 1 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_SiteBoss_Lsword_Castle 1a4839f9 2000 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, 1 ennemi(s) a moins de 40 m mis a 0 point(s) de vie
+[botw-coop] vie ennemi : Enemy_SiteBoss_Lsword_Castle 1a4839f9 2000 -> 0 chez nous (max 2000), annonce, n.3
+[botw-coop] drapeau change : n.35250 hachage=d683c3a9 1 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_SiteBoss_Sword_Castle f0201e89 2000 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, 1 ennemi(s) a moins de 40 m mis a 0 point(s) de vie
+[botw-coop] vie ennemi : Enemy_SiteBoss_Sword_Castle f0201e89 2000 -> 0 chez nous (max 2000), annonce, n.4
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_Ganon 067c1183 8000 -> 0
+[botw-coop] vie ennemi : OUTIL DE TEST, 1 ennemi(s) a moins de 80 m mis a 0 point(s) de vie
+[botw-coop] vie ennemi : Enemy_Ganon 067c1183 8000 -> 0 chez nous (max 8000), annonce, n.5
+[botw-coop] animation ennemi : 067c1183 creneau 0 banque 0 "Wait_For_DemoEnd" (fait foi)
+[botw-coop] drapeau change : n.34686 hachage=d3076cbe 1 -> 0
+[botw-coop] evenement demande : HyruleCastle / GanonDead -> refuse
+   (x35 de plus)
+[botw-coop] animation ennemi : 067c1183 creneau 0 banque 0 "Power_Demo" (fait foi)
+[botw-coop] evenement demande : HyruleCastle / GanonDead -> refuse
+   (x35 de plus)
+[botw-coop] animation ennemi : Enemy_Ganon 067c1183 rejoue "Power_Demo" creneau 0 (annonce par J2), n.4
+[botw-coop] drapeau change : n.25157 hachage=986f0046 1 -> 0
+[botw-coop] drapeau change : n.39998 hachage=f32b647f 1 -> 0
+== J2 (t_sw1b), essai bc4
+[botw-coop] net: nifm::Initialize -> 0x0, socket::Initialize -> 0x0
+[botw-coop] drapeau change : n.29501 hachage=b371c60f 1 -> 0
+[botw-coop] animation ennemi : Enemy_SiteBoss_Bow_Castle d6e23967 rejoue "Damage_Last_Loop" creneau 0 (annonce par J1), n.2
+[botw-coop] vie ennemi : Enemy_SiteBoss_Bow_Castle d6e23967 2000 -> 0 (annonce par l'autre joueur), n.1
+[botw-coop] drapeau change : n.34272 hachage=d064adb3 1 -> 0
+[botw-coop] animation ennemi : Enemy_SiteBoss_Spear_Castle 3c8a1e17 rejoue "Damage_Last_Loop" creneau 0 (annonce par J1), n.3
+[botw-coop] vie ennemi : Enemy_SiteBoss_Spear_Castle 3c8a1e17 2000 -> 0 (annonce par l'autre joueur), n.2
+[botw-coop] drapeau change : n.2529 hachage=0f1d1862 1 -> 0
+[botw-coop] animation ennemi : Enemy_SiteBoss_Lsword_Castle 1a4839f9 rejoue "Wait" creneau 0 (annonce par J1), n.4
+[botw-coop] animation ennemi : Enemy_SiteBoss_Lsword_Castle 1a4839f9 rejoue "Attack_Rotate" creneau 0 (annonce par J1), n.5
+[botw-coop] animation ennemi : Enemy_SiteBoss_Lsword_Castle 1a4839f9 rejoue "Damage_Last" creneau 0 (annonce par J1), n.6
+[botw-coop] vie ennemi : Enemy_SiteBoss_Lsword_Castle 1a4839f9 2000 -> 0 (annonce par l'autre joueur), n.3
+[botw-coop] animation ennemi : Enemy_SiteBoss_Lsword_Castle 1a4839f9 rejoue "Damage_Last_Loop" creneau 0 (annonce par J1), n.7
+[botw-coop] drapeau change : n.22762 hachage=8a1ea8ee 1 -> 0
+[botw-coop] animation ennemi : Enemy_SiteBoss_Sword_Castle f0201e89 rejoue "Wait_From_DemoEnd" creneau 0 (annonce par J1), n.8
+[botw-coop] animation ennemi : Enemy_SiteBoss_Sword_Castle f0201e89 rejoue "Run_Loop_R" creneau 0 (annonce par J1), n.9
+[botw-coop] animation ennemi : Enemy_SiteBoss_Sword_Castle f0201e89 rejoue "Damage_Last" creneau 0 (annonce par J1), n.10
+[botw-coop] vie ennemi : Enemy_SiteBoss_Sword_Castle f0201e89 2000 -> 0 (annonce par l'autre joueur), n.4
+[botw-coop] animation ennemi : Enemy_SiteBoss_Sword_Castle f0201e89 rejoue "Damage_Last_Loop" creneau 0 (annonce par J1), n.11
+[botw-coop] drapeau change : n.35250 hachage=d683c3a9 1 -> 0
+[botw-coop] vie ennemi : Enemy_Ganon 067c1183 8000 -> 0 (annonce par l'autre joueur), n.5
+[botw-coop] animation ennemi : Enemy_Ganon 067c1183 rejoue "Wait_For_DemoEnd" creneau 0 (annonce par J1), n.12
+[botw-coop] animation ennemi : 067c1183 creneau 0 banque 0 "Wait_For_DemoEnd" (copie suivie)
+[botw-coop] animation ennemi : 067c1183 "Wait_For_DemoEnd" laissee a notre IA (coup recu chez nous)
+[botw-coop] drapeau change : n.34686 hachage=d3076cbe 1 -> 0
+[botw-coop] animation ennemi : Enemy_Ganon 067c1183 rejoue "Power_Demo" creneau 0 (annonce par J1), n.16
+[botw-coop] animation ennemi : 067c1183 creneau 0 banque 0 "Power_Demo" (fait foi)

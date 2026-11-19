@@ -61,9 +61,9 @@ namespace coop::weapons {
     inline PoseSlot g_Remote[Slots];
 
     /*
-     * Dons (NOTES 5.38) : une arme portee par le joueur local, lachee ou lancee, qui reste dans le
-     * monde et passe a moins de 3 m du partenaire dans les 10 s, est retiree du monde et envoyee
-     * (GIFT <nom> <durabilite>) ; le partenaire la recoit dans son inventaire.
+     * Dons (NOTES 5.38, plus envoyes depuis 5.95, encore recus d'un plugin plus ancien) : GIFT <nom>
+     * <durabilite> ajoutait l'objet a l'inventaire du partenaire. Depuis 5.95, la meme file porte les
+     * objets laches au sol (Drop) et ramasses (Pick).
      */
     struct Gift {
         char m_Name[48] = {};
@@ -71,6 +71,16 @@ namespace coop::weapons {
         int m_From = 0;
         std::uint32_t m_BonusFlags = 0;  /* bonus de l'arme (WeaponModifier), 0 = aucun */
         std::int32_t m_BonusValue = 0;
+        /*
+         * Objets au sol partages (NOTES 5.95) : Drop = objet lache immobile au sol, recree au meme endroit
+         * chez le partenaire (GDRP <id> <nom> <x> <y> <z> <durabilite>) ; Pick = l'un des deux a ramasse
+         * l'objet (GPCK <id> <joueur qui l'a lache>), l'autre retire sa copie. Gift : ancien don direct.
+         */
+        enum class Kind : std::uint8_t { Gift, Drop, Pick };
+        Kind m_Kind = Kind::Gift;
+        std::uint32_t m_DropId = 0;  /* numero donne par le joueur qui a lache l'objet */
+        int m_Owner = 0;             /* joueur qui a lache l'objet (Pick) */
+        float m_Pos[3] = {};
     };
 
     /* File a un ecrivain et un lecteur (fils differents). */
@@ -93,7 +103,7 @@ namespace coop::weapons {
             return true;
         }
     private:
-        static constexpr std::uint32_t Size = 8;
+        static constexpr std::uint32_t Size = 16;
         Gift m_Items[Size];
         std::atomic<std::uint32_t> m_Head { 0 }, m_Tail { 0 };
     };
