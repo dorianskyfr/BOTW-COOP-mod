@@ -83,12 +83,20 @@ def main():
         if frame is not None:
             break
         time.sleep(0.1)
+    img = None
+    if frame is not None:
+        img = Image.fromarray(frame[:, :, [2, 1, 0]])
+    else:
+        # Repli (2026-11-19) : sur l'ecran virtuel Parsec, dxcam ne rend aucune image alors que la copie
+        # d'ecran GDI (PIL ImageGrab) montre bien les fenetres d'Eden (capture verifiee a l'oeil).
+        from PIL import ImageGrab
+        img = ImageGrab.grab(bbox=(rect.left, rect.top, rect.right, rect.bottom), all_screens=True)
+        print("dxcam sans image : copie d'ecran GDI")
     user32.SetWindowPos(wt.HWND(hwnd), wt.HWND(-2), 0, 0, 0, 0, SWP)  # plus "toujours au-dessus"
-    if frame is None:
+    if img is None:
         print("aucune image obtenue")
         return 1
 
-    img = Image.fromarray(frame[:, :, [2, 1, 0]])
     if img.width > max_width:
         img = img.resize((max_width, img.height * max_width // img.width))
     img.save(out)

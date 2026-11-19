@@ -1,0 +1,68 @@
+﻿== wa1_game.txt
+5440: [botw-coop] armes : emplacement 0 = Weapon_Sword_019 (874ed0da), position dans le repere de Link (-0.20, 1.33, -0.08)
+5441: [botw-coop] armes : emplacement 1 = Weapon_Sheath_019 (e58064c3), position dans le repere de Link (-0.20, 1.33, -0.08)
+5465: [botw-coop] acteur distant : CREE apres 2 images, acteur=21af6cb3a8 nom="CoopPlayer" pos=(1293.42, 135.67, 655.66)
+5476: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5478: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+5481: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.1, attente 30 images)
+5485: [botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+5486: [botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+5489: [botw-coop] acteur distant : CREE apres 1 images, acteur=21af6cb3a8 nom="CoopPlayer" pos=(1293.42, 135.67, 655.66)
+5496: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5499: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+5506: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.2, attente 60 images)
+5510: [botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+5511: [botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+5517: [botw-coop] acteur distant : CREE apres 1 images, acteur=21af6cc890 nom="CoopPlayer" pos=(1293.42, 135.67, 655.66)
+5524: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5527: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+5537: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.3, attente 120 images)
+5541: [botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+5542: [botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+5551: [botw-coop] acteur distant : CREE apres 1 images, acteur=21af6cc890 nom="CoopPlayer" pos=(1293.42, 135.67, 655.66)
+5556: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.4, attente 240 images)
+5573: [botw-coop] acteur distant : CREE apres 1 images, acteur=21af6cc890 nom="CoopPlayer" pos=(1293.42, 135.67, 655.66)
+5579: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.5, attente 480 images)
+5605: [botw-coop] acteur distant : CREE apres 1 images, acteur=21af6cdd78 nom="CoopPlayer" pos=(1293.42, 135.67, 655.66)
+5612: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5615: [botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+5668: [botw-coop] acteur distant : CREE apres 1 images, acteur=21af6d0748 nom="CoopPlayer" pos=(1432.21, 120.57, 619.76)
+5675: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5680: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+== wa1_game2.txt
+5381: [botw-coop] armes : emplacement 0 = Weapon_Sword_019 (874ed0da), position dans le repere de Link (-0.18, 1.52, -0.16)
+5382: [botw-coop] armes : emplacement 1 = Weapon_Sheath_019 (e58064c3), position dans le repere de Link (-0.18, 1.52, -0.16)
+5425: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b0d728a0 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5434: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5436: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+5441: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.1, attente 30 images)
+5445: [botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+5446: [botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+5456: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b0d728a0 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5464: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5467: [botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) detruit par le jeu, il sera recree
+5468: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+5472: [botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) detruit par le jeu, il sera recree
+5476: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5478: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+5481: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.2, attente 60 images)
+5485: [botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+5486: [botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+5492: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b0d728a0 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5499: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.3, attente 120 images)
+5518: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b0d7db78 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5526: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5528: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+5531: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.4, attente 240 images)
+5535: [botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+5536: [botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+5568: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b0d728a0 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5575: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.5, attente 480 images)
+5638: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b0d728a0 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5646: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5649: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+5659: [botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+5660: [botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+5781: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b07d2760 nom="CoopPlayer" pos=(1431.83, 123.05, 621.58)
+5791: [botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+5793: [botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)

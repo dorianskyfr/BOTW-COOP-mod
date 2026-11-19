@@ -124,13 +124,13 @@ def aslist_size(romfs, table, ours_len):
     return max(base, -(-base * ours_len // pause_len) + 1024)
 
 
-def actor_link(template, model_user):
+def actor_link(template, model_user, as_user=NAME):
     pio = oead.aamp.ParameterIO.from_binary(template)
     lt = pio.objects["LinkTarget"]
     for key in ("PhysicsUser", "AttentionUser", "ChemicalUser", "ElinkUser", "SlinkUser", "XlinkUser"):
         lt.params[key] = oead.aamp.Parameter("Dummy")  # chaine simple, type des champs de l'ActorLink du jeu
     lt.params["ModelUser"] = oead.aamp.Parameter(model_user)
-    lt.params["ASUser"] = oead.aamp.Parameter(NAME)  # les pieces d'armure jouent les sequences du pantin
+    lt.params["ASUser"] = oead.aamp.Parameter(as_user)  # par defaut, les sequences du pantin (pieces d'armure)
     lt.params["ActorScale"] = oead.aamp.Parameter(1.0)
     return pio.to_binary()
 
@@ -167,9 +167,10 @@ KINDS = {
 
 
 def model_lists(romfs, prefix):
-    """{acteur du jeu: (nom de la liste de modeles, contenu)} pour les packs extraits ; et les ecartes."""
+    """{acteur du jeu: (nom de la liste de modeles, contenu)} pour les packs extraits ; les ecartes ; et
+    {acteur du jeu: (animation, nom du .bas, contenu, nom de l'ASList)} des armes a pose « Equiped » (bone_pose)."""
     pack_dir = os.path.join(romfs, "Actor", "Pack")
-    pieces, skipped = {}, []
+    pieces, skipped, poses = {}, [], {}
     for fn in sorted(os.listdir(pack_dir)):
         if not fn.startswith(prefix) or not fn.endswith(".sbactorpack"):
             continue
@@ -183,7 +184,59 @@ def model_lists(romfs, prefix):
             continue
         model = lists[0].name[len("Actor/ModelList/"):-len(".bmodellist")]
         pieces[piece] = (model, bytes(lists[0].data))
-    return pieces, skipped
+        if prefix == "Weapon_" and not piece.startswith("Weapon_Bow_"):
+            # Arcs ecartes : Weapon_Bow_027 est marque BoneWeapon mais joue l'animation commune des arcs.
+            pose = bone_pose(sarc)
+            if pose is not None:
+                poses[piece] = pose
+    return pieces, skipped, poses
+
+
+# Armes faites d'un morceau d'ennemi (NOTES 5.89, constate sur la RomFS 1.9.0 de l'utilisateur le
+# 2026-11-19) : Weapon_Sword_019, Weapon_Sword_020 et Weapon_Lsword_019 ont un modele a squelette et
+# leur propre liste de sequences (Break, Equiped, Null). « Equiped » joue le clip Arm_L_Weapon de
+# <arme>_Animation, qui replie le bras ; sans lui, le modele reste dans sa pose de repos (bras tendu a
+# l'horizontale, vu flottant chez J1 en rb2 a rb5). Leur copie CoopWeapon_ recoit donc une liste de
+# sequences a elle : « Wait » (la sequence que joue l'IA du moine, DemoWaitNpc) -> ce .bas « Equiped ».
+def bone_pose(sarc):
+    files = {f.name: bytes(f.data) for f in sarc.get_files()}
+    links = [n for n in files if n.startswith("Actor/ActorLink/")]
+    if len(links) != 1:
+        return None
+    tags = oead.aamp.ParameterIO.from_binary(files[links[0]]).objects.get("Tags")
+    # Seules les armes marquees BoneWeapon (les arcs ont tous une sequence « Equiped » et sont bien montres).
+    if tags is None or "BoneWeapon" not in [str(p.v) for p in tags.params.values()]:
+        return None
+    lists = [n for n in files if n.startswith("Actor/ASList/")]
+    if len(lists) != 1:
+        return None
+    pio = oead.aamp.ParameterIO.from_binary(files[lists[0]])
+    anims = [str(o.params["Anim"].v) for o in pio.lists["AddReses"].objects.values()]
+    for d in pio.lists["ASDefines"].objects.values():
+        if str(d.params["Name"].v) != "Equiped":
+            continue
+        bas_name = f"Actor/AS/{d.params['Filename'].v}.bas"
+        if len(anims) == 1 and bas_name in files:
+            return anims[0], bas_name, files[bas_name], lists[0]
+    return None
+
+
+def pose_as_list(anim, actor):
+    """Liste de sequences d'une copie d'arme-os : son animation, une sequence « Wait »."""
+    pio = oead.aamp.ParameterIO()
+    pio.type = "xml"
+    add = oead.aamp.ParameterList()
+    res = oead.aamp.ParameterObject()
+    res.params["Anim"] = oead.aamp.Parameter(oead.FixedSafeString64(anim))
+    add.objects["AddRes_0"] = res
+    defines = oead.aamp.ParameterList()
+    d = oead.aamp.ParameterObject()
+    d.params["Name"] = oead.aamp.Parameter(oead.FixedSafeString64("Wait"))
+    d.params["Filename"] = oead.aamp.Parameter(oead.FixedSafeString64(f"{actor}_Wait"))
+    defines.objects["ASDefine_0"] = d
+    pio.lists["AddReses"] = add
+    pio.lists["ASDefines"] = defines
+    return pio.to_binary()
 
 
 # Teintures (mesure du 2026-11-15 sur la RomFS 1.9.0 de l'utilisateur, NOTES 5.53) : les modeles
@@ -285,8 +338,9 @@ def main(romfs, out):
     dyed_rows = []          # (nom "piece.kk", acteur teint)
     anims_cache = {}
     no_model = set()
+    posed = {}              # copie d'arme-os -> (nom de l'ASList du jeu, nom du .bas du jeu), pour les tailles
     for prefix, (actor_prefix, _, _) in KINDS.items():
-        pieces, skipped = model_lists(romfs, prefix)
+        pieces, skipped, poses = model_lists(romfs, prefix)
         pieces_by_kind[prefix], skipped_by_kind[prefix] = pieces, skipped
         for piece, (model, data) in sorted(pieces.items()):
             gear = f"{actor_prefix}{model}"
@@ -313,8 +367,17 @@ def main(romfs, out):
                     continue
                 if len(name) >= GEAR_NAME_LEN:
                     raise SystemExit(f"nom trop long : {name}")
-                gfiles = dict(common)
-                gfiles[f"Actor/ActorLink/{name}.bxml"] = actor_link(monk_link, name)
+                pose = poses.get(piece)
+                if pose is not None:
+                    anim, bas_name, bas, src_list = pose
+                    gfiles = {k: v for k, v in common.items() if not k.startswith(("Actor/AS/", "Actor/ASList/"))}
+                    gfiles[f"Actor/ActorLink/{name}.bxml"] = actor_link(monk_link, name, as_user=name)
+                    gfiles[f"Actor/ASList/{name}.baslist"] = pose_as_list(anim, name)
+                    gfiles[f"Actor/AS/{name}_Wait.bas"] = bas
+                    posed[name] = (src_list, bas_name)
+                else:
+                    gfiles = dict(common)
+                    gfiles[f"Actor/ActorLink/{name}.bxml"] = actor_link(monk_link, name)
                 gfiles[f"Actor/ModelList/{name}.bmodellist"] = mlist
                 gear_packs[name] = (piece, model, write_pack(out, name, gfiles))
     if no_model:
@@ -381,6 +444,14 @@ def main(romfs, out):
             mlist = oead.Sarc(gpack).get_file(f"Actor/ModelList/{gear}.bmodellist").data
             base_size += max(0, len(mlist) - grown) + 256
         sizes[f"Actor/ModelList/{gear}.bmodellist"] = base_size
+    for gear, (src_list, bas_name) in posed.items():
+        # Notre liste (1 sequence) est plus courte que celle de l'arme (3) : la taille de celle-ci suffit.
+        ours = len(oead.Sarc(gear_packs[gear][2]).get_file(f"Actor/ASList/{gear}.baslist").data)
+        src = read_sarc(os.path.join(romfs, "Actor", "Pack", f"{gear_packs[gear][0]}.sbactorpack")).get_file(src_list)
+        if ours > len(src.data):
+            raise SystemExit(f"{gear} : liste de sequences plus longue que celle du jeu ({ours} > {len(src.data)})")
+        sizes[f"Actor/ASList/{gear}.baslist"] = table.get_size(src_list)
+        sizes[f"Actor/AS/{gear}_Wait.bas"] = table.get_size(bas_name)
     for name, size in sizes.items():
         if size <= 0:
             raise SystemExit(f"taille inconnue pour {name}")
@@ -414,6 +485,7 @@ def main(romfs, out):
         print(f"{prefix}* : {len(pieces_by_kind[prefix])} acteurs du jeu, {n_actors} acteurs {actor_prefix}*, "
               f"ecartes {skipped_by_kind[prefix]}")
     print(f"teintures : {len(dyed_rows)} pieces teintes ({len(dyed_rows) // len(DYES)} pieces teintables)")
+    print(f"armes-os avec pose « Equiped » : {sorted(posed)}")
     print(f"{len(sizes)} tailles en tout")
     for name, size in list(sizes.items())[:len(SEQUENCES) + 7]:
         print(f"  {size:8} {name}")
