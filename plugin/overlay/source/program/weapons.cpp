@@ -437,6 +437,12 @@ namespace coop::weapons {
                 continue; /* pas porte : au sol, lance, ou ailleurs */
             }
             const char* name = coop::game::GetActorName(near.m_Actors[i]);
+#if defined(COOP_TEST_WPN_AS)
+            /* Essai (jamais dans la build a jouer) : le bras de Bokoblin porte est annonce au partenaire comme
+               bras de Lezalfos (1) ou de Moblin (2), meme pose : verifie leur copie sans passer par le menu. */
+            if (std::strcmp(name, "Weapon_Sword_019") == 0)
+                name = COOP_TEST_WPN_AS == 1 ? "Weapon_Sword_020" : "Weapon_Lsword_019";
+#endif
             p.m_Crc = Crc32(name);
             found[n] = p;
             std::strncpy(names[n], name, sizeof(names[n]) - 1);
