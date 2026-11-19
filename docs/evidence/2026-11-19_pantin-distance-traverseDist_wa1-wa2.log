@@ -1,0 +1,168 @@
+﻿== wa1_game.txt (avant/apres traverseDist : wa1 sans, wa2 avec)
+5295: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5298: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5305: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5308: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5316: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5319: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5322: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5325: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5328: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5331: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5334: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5337: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5340: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5345: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5348: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5351: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5354: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5362: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5368: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5371: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5378: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5387: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.08, 121.56, 619.96) avant=(0.83, 0.55) envois=36 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5395: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.08, 121.56, 619.96) avant=(0.83, 0.55) envois=86 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5405: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=136 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5423: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=186 | distant=J2 actif=1 pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) recus=44
+5434: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=236 | distant=J2 actif=1 pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) recus=94
+5450: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=286 | distant=J2 actif=1 pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) recus=144
+5455: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=336 | distant=J2 actif=1 pos=(1292.12, 135.67, 656.03) avant=(0.85, -0.52) recus=193
+5458: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=386 | distant=J2 actif=1 pos=(1292.12, 135.67, 656.03) avant=(0.85, -0.52) recus=243
+5462: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=436 | distant=J2 actif=1 pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) recus=293
+5464: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (1293.42, 135.67, 655.66)
+5465: [botw-coop] acteur distant : CREE apres 2 images, acteur=21af6cb3a8 nom="CoopPlayer" pos=(1293.42, 135.67, 655.66)
+5473: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=486 | distant=J2 actif=1 pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) recus=343
+5481: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.1, attente 30 images)
+5488: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (1293.42, 135.67, 655.66)
+5489: [botw-coop] acteur distant : CREE apres 1 images, acteur=21af6cb3a8 nom="CoopPlayer" pos=(1293.42, 135.67, 655.66)
+5504: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=536 | distant=J2 actif=1 pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) recus=393
+5506: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.2, attente 60 images)
+5514: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=586 | distant=J2 actif=1 pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) recus=443
+5516: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (1293.42, 135.67, 655.66)
+vivant (nombre de bilans) : 16
+== wa1_game2.txt (avant/apres traverseDist : wa1 sans, wa2 avec)
+5220: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5223: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5230: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5233: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5242: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5245: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5248: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5251: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5254: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5257: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5260: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5263: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5266: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5271: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5279: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5284: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J1 actif=1 pos=(1430.08, 121.56, 619.96) avant=(0.83, 0.55) recus=19
+5291: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J1 actif=1 pos=(1430.08, 121.56, 619.96) avant=(0.83, 0.55) recus=70
+5298: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=119
+5307: [botw-coop] coop: moi=J2 connecte en jeu pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) envois=31 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=172
+5354: [botw-coop] coop: moi=J2 connecte en jeu pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) envois=81 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=222
+5363: [botw-coop] coop: moi=J2 connecte en jeu pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) envois=131 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=272
+5373: [botw-coop] coop: moi=J2 connecte en jeu pos=(1291.36, 135.67, 656.39) avant=(0.85, -0.52) envois=181 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=323
+5376: [botw-coop] coop: moi=J2 connecte en jeu pos=(1292.12, 135.67, 656.03) avant=(0.85, -0.52) envois=231 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=373
+5394: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) envois=281 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=423
+5399: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) envois=331 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=473
+5405: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) envois=381 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=523
+5416: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) envois=431 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=573
+5423: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) envois=481 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=623
+5424: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (1430.09, 121.56, 619.93)
+5425: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b0d728a0 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5441: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.1, attente 30 images)
+5453: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (1430.09, 121.56, 619.93)
+5455: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) envois=531 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=673
+5456: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b0d728a0 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5481: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.2, attente 60 images)
+5489: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) envois=581 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=724
+5491: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (1430.09, 121.56, 619.93)
+5492: [botw-coop] acteur distant : CREE apres 1 images, acteur=21b0d728a0 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5499: [botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.3, attente 120 images)
+5503: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.42, 135.67, 655.66) avant=(0.85, -0.52) envois=631 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=774
+vivant (nombre de bilans) : 14
+== wa2_game.txt (avant/apres traverseDist : wa1 sans, wa2 avec)
+5310: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5317: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5320: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5323: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5332: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5335: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5338: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5341: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5344: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5347: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5350: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5353: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5356: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5361: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5364: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5367: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5375: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5378: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5385: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5392: [botw-coop] coop: moi=J1 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5398: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.08, 121.56, 619.96) avant=(0.83, 0.55) envois=26 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5408: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.08, 121.56, 619.96) avant=(0.83, 0.55) envois=76 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5417: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=126 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5434: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=176 | distant=J2 actif=1 pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) recus=27
+5448: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=226 | distant=J2 actif=1 pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) recus=77
+5466: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=276 | distant=J2 actif=1 pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) recus=127
+5469: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=326 | distant=J2 actif=1 pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) recus=176
+5474: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=376 | distant=J2 actif=1 pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) recus=226
+5477: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=426 | distant=J2 actif=1 pos=(1292.91, 135.67, 656.15) avant=(0.85, -0.52) recus=276
+5480: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=476 | distant=J2 actif=1 pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) recus=326
+5482: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (1293.54, 135.67, 656.06)
+5483: [botw-coop] acteur distant : CREE apres 1 images, acteur=21aface3b8 nom="CoopPlayer" pos=(1293.54, 135.67, 656.06)
+5498: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=526 | distant=J2 actif=1 pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) recus=376
+5501: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=576 | distant=J2 actif=1 pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) recus=426
+5506: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=626 | distant=J2 actif=1 pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) recus=476
+5509: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=676 | distant=J2 actif=1 pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) recus=526
+5514: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=726 | distant=J2 actif=1 pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) recus=576
+5517: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=776 | distant=J2 actif=1 pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) recus=626
+5522: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=826 | distant=J2 actif=1 pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) recus=677
+5525: [botw-coop] coop: moi=J1 connecte en jeu pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) envois=876 | distant=J2 actif=1 pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) recus=727
+vivant (nombre de bilans) : 13
+== wa2_game2.txt (avant/apres traverseDist : wa1 sans, wa2 avec)
+5233: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5240: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5243: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5246: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5255: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5258: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5261: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5264: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5267: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5270: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5273: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5276: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5279: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5284: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J0 actif=0 pos=(0.00, 0.00, 0.00) avant=(0.00, 1.00) recus=0
+5293: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J1 actif=1 pos=(1430.08, 121.56, 619.96) avant=(0.83, 0.55) recus=1
+5300: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J1 actif=1 pos=(1430.08, 121.56, 619.96) avant=(0.83, 0.55) recus=50
+5307: [botw-coop] coop: moi=J2 connecte hors jeu pos=(0.00, 0.00, 0.00) avant=(0.00, 0.00) envois=0 | distant=J1 actif=1 pos=(1430.08, 121.56, 619.96) avant=(0.83, 0.55) recus=105
+5312: [botw-coop] coop: moi=J2 connecte en jeu pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) envois=5 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=153
+5324: [botw-coop] coop: moi=J2 connecte en jeu pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) envois=55 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=203
+5369: [botw-coop] coop: moi=J2 connecte en jeu pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) envois=105 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=253
+5383: [botw-coop] coop: moi=J2 connecte en jeu pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) envois=155 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=303
+5388: [botw-coop] coop: moi=J2 connecte en jeu pos=(1290.90, 135.67, 656.60) avant=(0.85, -0.52) envois=205 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=354
+5398: [botw-coop] coop: moi=J2 connecte en jeu pos=(1292.20, 135.67, 656.27) avant=(0.85, -0.52) envois=255 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=404
+5407: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=305 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=454
+5414: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=355 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=504
+5426: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=405 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=554
+5434: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=455 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=604
+5440: [botw-coop] acteur distant : creation de "CoopPlayer" demandee en (1430.09, 121.56, 619.93)
+5441: [botw-coop] acteur distant : CREE apres 2 images, acteur=21b0f03ce0 nom="CoopPlayer" pos=(1430.09, 121.56, 619.93)
+5456: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=505 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=654
+5467: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=555 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=704
+5478: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=605 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=754
+5487: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=655 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=803
+5492: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=705 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=853
+5500: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=755 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=903
+5513: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=805 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=953
+5520: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=855 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=1003
+5529: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=905 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=1053
+5538: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=955 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=1103
+5545: [botw-coop] coop: moi=J2 connecte en jeu pos=(1293.54, 135.67, 656.06) avant=(0.85, -0.52) envois=1005 | distant=J1 actif=1 pos=(1430.09, 121.56, 619.93) avant=(0.83, 0.55) recus=1153
+vivant (nombre de bilans) : 12

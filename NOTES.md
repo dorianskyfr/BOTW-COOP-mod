@@ -812,6 +812,14 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.90 Partenaire loin : son personnage detruit des sa creation (2026-11-19, `wa1`, `wa2`, Eden) - [V] corrige par les journaux
+
+- Vu (releve des journaux de tous les essais recents, `build/runs/*_game*.txt`) : le personnage du partenaire est detruit par le jeu juste apres sa creation chaque fois qu'il est cree a 140-190 m du joueur (rn5 a rn12, rt12, cq2 a cq6, rb1 a rb5, wa1 : 5 a 10 destructions rapides par essai depuis l'attente croissante de 5.87, des centaines avant) ; jamais quand les joueurs sont proches. La sixieme creation de wa1 n'etait pas vivante non plus (journal limite apres 5). C'est la cause de 5.87 et des `retire` repetes des armes (5.89).
+- Cause probable : l'entree ActorInfo de `CoopPlayer` (copiee du moine `Npc_DungeonPriest001`) n'a pas de `traverseDist`, que portent les acteurs du jeu (80 pour une arme, 150 pour un Bokoblin, 200 pour la plupart des PNJ, 99999 pour les Fleaux ; releve de `ActorInfo.product.sbyml` 1.9.0). Je ne peux pas confirmer la valeur par defaut du jeu ni le code qui retire l'acteur ; seul l'essai ci-dessous le montre.
+- Correctif (`tools/build_puppet.py`, `TRAVERSE_DIST`) : `traverseDist` = 99999 sur l'entree du pantin, donc aussi ses copies, ses pieces d'armure et ses armes.
+- [V] `wa2` (memes sauvegardes que wa1, joueurs a 141 m, sans changement du plugin) : une seule creation chez chacun, puis `vivant etat=1` tout l'essai (14 bilans chez J1, 13 chez J2), aucune destruction ; wa1 (avant) : 5 destructions rapides chez chacun. Preuve : `docs/evidence/2026-11-19_pantin-distance-traverseDist_wa1-wa2.log`. L'attente croissante de 5.87 reste en place, par securite.
+- Non verifie : distances bien plus grandes (le pantin y est de toute facon trop petit pour etre vu) ; a l'image a 141 m.
+
 ### 5.89 Arme du partenaire : bras de Bokoblin qui flotte (2026-11-17, vu a l'image en `rb2` a `rb5` ; corrige le 2026-11-19, `wa1`) - [V] corrige, vu a l'image
 
 - Vu : J2 porte `Weapon_Sword_019` (874ed0da ; journal de J2 : `position dans le repere de Link (-0.18, 1.53, -0.14)`, comme son fourreau). Chez J1, la copie `CoopWeapon_Stal_Bokoblin_Junior_Arm_Left` flotte a l'horizontale a hauteur de tete, a cote du pantin, au lieu d'etre dans son dos (captures `2026-11-17_arme-partenaire_bras-bokoblin-*.png`). Les autres armes ont ete vues bien placees (README).

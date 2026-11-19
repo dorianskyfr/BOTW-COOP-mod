@@ -66,6 +66,7 @@ SEQUENCES = {
 }
 
 PUPPET_VARIANTS = {"CoopPlayer2": 700000, "CoopPlayerS": 560000}  # nom -> tas (NOTES 5.55)
+TRAVERSE_DIST = 99999.0  # ActorInfo traverseDist du pantin et de ses pieces (NOTES 5.90)
 INST_SIZE = 700000  # tas de l'acteur ; Link du menu pause : 557256 (ActorInfo 1.9.0). 1200000 ne changeait rien a l'echec du surf (cp8)
 
 
@@ -398,6 +399,10 @@ def main(romfs, out):
             del entry[k]
     entry["name"] = NAME
     entry["instSize"] = oead.S32(INST_SIZE)
+    # Distance de retrait (NOTES 5.90) : l'entree du moine n'a pas de traverseDist ; le pantin cree a plus de
+    # ~140 m du joueur etait detruit aussitot (essais rn5 a rn12, cq*, rb*, wa1), jamais de pres. Valeur prise
+    # parmi celles du jeu (99999 : Enemy_SiteBoss_*, DgnObj_RemainsTerminalBody_A).
+    entry["traverseDist"] = oead.F32(TRAVERSE_DIST)
     pos, crc = insert_actor(actors, hashes, entry)
     for variant, inst in PUPPET_VARIANTS.items():
         ventry = oead.byml.Hash({k: v for k, v in entry.items()})
