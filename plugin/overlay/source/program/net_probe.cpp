@@ -346,6 +346,11 @@ namespace coop::net_probe {
                            &pm.m_Mtx[8], &pm.m_Mtx[9], &pm.m_Mtx[10], &pm.m_Mtx[11]) == 15) {
                 if (SaneMtx(pm.m_Mtx, 100000.0f) && std::isfinite(pm.m_Dist) && pm.m_Dist >= 0.0f && pm.m_Dist < 100000.0f)
                     coop::enemy_life::g_PosIncoming.Push(pm);
+            } else if (coop::enemy_life::PosMsg dm; std::sscanf(line, "EDST %d %x %f", &dm.m_FromId, &dm.m_Hash, &dm.m_Dist) == 3) {
+                /* Distance de celui qui suit la copie de l'autre (NOTES 5.91) : pas de matrice. */
+                dm.m_DistOnly = true;
+                if (std::isfinite(dm.m_Dist) && dm.m_Dist >= 0.0f && dm.m_Dist < 100000.0f)
+                    coop::enemy_life::g_PosIncoming.Push(dm);
             } else if (coop::enemy_life::SeqMsg sm; std::sscanf(line, "EAS %d %x %47s %d", &sm.m_FromId, &sm.m_Hash, sm.m_Name, &sm.m_Slot) >= 3) {
                 /* Creneau absent (3 valeurs) : 0. Hors de 0..1 : ignore. */
                 if (sm.m_Slot >= 0 && sm.m_Slot < coop::enemy_life::SeqSlots)
@@ -707,6 +712,11 @@ namespace coop::net_probe {
                     std::size_t used = 0;
                     coop::enemy_life::PosMsg pm;
                     for (int n = 0; n < 12 && coop::enemy_life::g_PosOutgoing.Pop(pm); n++) {
+                        if (pm.m_DistOnly) {
+                            used += static_cast<std::size_t>(std::snprintf(posBuf + used, sizeof(posBuf) - used,
+                                "EDST %08x %.2f\n", pm.m_Hash, static_cast<double>(pm.m_Dist)));
+                            continue;
+                        }
                         const float* m = pm.m_Mtx;
                         used += static_cast<std::size_t>(std::snprintf(posBuf + used, sizeof(posBuf) - used,
                             "EMTX %08x %.2f %.5f %.5f %.5f %.3f %.5f %.5f %.5f %.3f %.5f %.5f %.5f %.3f\n", pm.m_Hash, static_cast<double>(pm.m_Dist),

@@ -35,6 +35,10 @@ namespace coop::enemy_life {
             float         m_SentPos[3] = {};
             std::uint64_t m_SentFrame = 0;
             bool          m_Following = false;
+            /* NOTES 5.91 : l'autre suit notre copie (son dernier message est un EDST), et quand. */
+            bool          m_RemoteFollowing = false;
+            std::uint64_t m_RemoteDistFrame = 0;
+            std::uint64_t m_DistSentFrame = 0;
 
             /* Animations, par creneau : derniere sequence annoncee par l'autre joueur, et celle rejouee ici. */
             char          m_RemoteSeq[SeqSlots][48] = {};
@@ -178,6 +182,111 @@ namespace coop::enemy_life {
         float s_PlayerPos[3] = {};
         bool s_HavePlayer = false;
 
+        /*
+         * Rayons des Gardiens (NOTES 5.91, essai gl1) : chaque jeu garde l'IA de ses ennemis, et le Gardien
+         * ne passe pas par les sequences d'animation (bloquees sur une copie suivie). Chez celui qui suit,
+         * la copie tirait donc sur son propre Link alors que le joueur le plus proche (qui fait foi) etait
+         * l'autre : le Gardien attaquait les deux joueurs a la fois. Le tir est un acteur GuardianBeam (vu
+         * dans les deux mondes en gl1) ; celui dont le Gardien le plus proche est une copie suivie est retire.
+         */
+        struct BeamSeen {
+            std::uintptr_t m_Actor = 0;
+            float          m_Pos[3] = {};
+        };
+        struct GuardianSeen {
+            std::uint32_t m_Hash = 0;
+            float         m_Pos[3] = {};
+            bool          m_Following = false;
+        };
+        constexpr int   MaxBeams = 8, MaxGuardians = 24;
+        constexpr float BeamOwnerRadius = 120.0f; /* au-dela, aucun Gardien n'est tenu pour le tireur (choix) */
+        BeamSeen     s_Beams[MaxBeams];
+        GuardianSeen s_Guardians[MaxGuardians];
+        int          s_BeamCount = 0, s_GuardianCount = 0;
+        std::uint64_t  s_BeamsRemoved = 0;
+        /* Rayons en vol (relecture Codex 2026-11-19) : le tireur est fixe a la premiere image ou le rayon est
+           vu tire (pres du canon, 3,8 m en gl4), pas recalcule pendant le vol ; une entree disparait des que
+           son rayon n'est plus vu tire (une adresse reutilisee par un rayon suivant repart de zero). */
+        struct BeamTrack {
+            std::uintptr_t m_Actor = 0;
+            std::uint32_t  m_Owner = 0;   /* 0 : aucun Gardien a moins de BeamOwnerRadius */
+            float          m_OwnerDist = 0;
+            std::uint64_t  m_SeenFrame = 0;
+            bool           m_Removed = false;
+        };
+        BeamTrack s_BeamTracks[MaxBeams];
+
+        void NoteGuardian(const coop::game::ActorInfo& info, bool following) {
+            if (s_GuardianCount >= MaxGuardians || std::strncmp(info.m_Name, "Enemy_Guardian", 14) != 0)
+                return;
+            GuardianSeen& g = s_Guardians[s_GuardianCount++];
+            g.m_Hash = info.m_HashId;
+            std::memcpy(g.m_Pos, info.m_Pos, sizeof(g.m_Pos));
+            g.m_Following = following;
+        }
+
+        void HandleBeams() {
+            /* Entrees dont le rayon n'est plus vu tire a cette image : effacees (fin du vol, retrait, rechargement). */
+            for (auto& tr : s_BeamTracks) {
+                bool seen = false;
+                for (int b = 0; b < s_BeamCount && !seen; b++)
+                    seen = s_Beams[b].m_Actor == tr.m_Actor;
+                if (!seen)
+                    tr = BeamTrack {};
+            }
+            for (int b = 0; b < s_BeamCount; b++) {
+                const BeamSeen& beam = s_Beams[b];
+                BeamTrack* tr = nullptr;
+                for (auto& t : s_BeamTracks)
+                    if (t.m_Actor == beam.m_Actor)
+                        tr = &t;
+                if (tr == nullptr) {
+                    /* Premiere image ou ce rayon est vu tire : son tireur est le Gardien le plus proche, maintenant. */
+                    for (auto& t : s_BeamTracks)
+                        if (t.m_Actor == 0) {
+                            tr = &t;
+                            break;
+                        }
+                    if (tr == nullptr)
+                        continue; /* plus de MaxBeams rayons en vol : ignore (choix) */
+                    *tr = BeamTrack {};
+                    tr->m_Actor = beam.m_Actor;
+                    float best = BeamOwnerRadius * BeamOwnerRadius;
+                    for (int g = 0; g < s_GuardianCount; g++) {
+                        const float dx = s_Guardians[g].m_Pos[0] - beam.m_Pos[0], dy = s_Guardians[g].m_Pos[1] - beam.m_Pos[1],
+                                    dz = s_Guardians[g].m_Pos[2] - beam.m_Pos[2];
+                        const float d2 = dx * dx + dy * dy + dz * dz;
+                        if (d2 < best) {
+                            best = d2;
+                            tr->m_Owner = s_Guardians[g].m_Hash;
+                        }
+                    }
+                    tr->m_OwnerDist = std::sqrt(best);
+                    static int s_SeenLogs = 0;
+                    if (s_SeenLogs++ < 30)
+                        Logging.Log("[botw-coop] rayon de Gardien tire en (%.1f, %.1f, %.1f) : tireur %08x a %.1f m (%d Gardien(s) notes)",
+                            static_cast<double>(beam.m_Pos[0]), static_cast<double>(beam.m_Pos[1]), static_cast<double>(beam.m_Pos[2]),
+                            tr->m_Owner, static_cast<double>(tr->m_OwnerDist), s_GuardianCount);
+                }
+                tr->m_SeenFrame = s_FrameNow.load(std::memory_order_relaxed);
+                if (tr->m_Owner == 0 || tr->m_Removed)
+                    continue;
+                /* Role actuel du tireur (il peut changer pendant le vol). */
+                bool following = false;
+                for (int g = 0; g < s_GuardianCount; g++)
+                    if (s_Guardians[g].m_Hash == tr->m_Owner)
+                        following = s_Guardians[g].m_Following;
+                if (!following)
+                    continue;
+                const bool ok = coop::game::DeleteActor(beam.m_Actor);
+                tr->m_Removed = true; /* retrait demande (deleteLater) : pas de second appel */
+                s_BeamsRemoved++;
+                if (s_BeamsRemoved <= 20 || s_BeamsRemoved % 50 == 0)
+                    Logging.Log("[botw-coop] rayon de Gardien : tir de la copie suivie %08x (a %.1f m au tir) %s, n.%lu",
+                        tr->m_Owner, static_cast<double>(tr->m_OwnerDist), ok ? "retire" : "NON retire", s_BeamsRemoved);
+            }
+        }
+
         constexpr int Capacity = 128;
         Entry s_Entries[Capacity];
         int s_Next = 0;
@@ -244,6 +353,17 @@ namespace coop::enemy_life {
 
         /* Passe « position », a chaque image : suit la copie de l'autre joueur ou envoie la notre. */
         bool OnActorPos(const coop::game::ActorInfo& info, void*) {
+            if (info.m_Name != nullptr && std::strcmp(info.m_Name, "GuardianBeam") == 0) {
+                /* Les rayons au repos sont en (0, 0, 0) (essai gl3 : 11 chez J1 des le chargement, une reserve
+                   creee avec les Gardiens) ; seul un rayon tire a une vraie position. */
+                const float a = std::fabs(info.m_Pos[0]) + std::fabs(info.m_Pos[1]) + std::fabs(info.m_Pos[2]);
+                if (a < 1.0f || s_BeamCount >= MaxBeams)
+                    return false;
+                s_Beams[s_BeamCount].m_Actor = info.m_Actor;
+                std::memcpy(s_Beams[s_BeamCount].m_Pos, info.m_Pos, sizeof(info.m_Pos));
+                s_BeamCount++;
+                return false;
+            }
             if (info.m_HashId == 0 || info.m_Name == nullptr || std::strncmp(info.m_Name, "Enemy_", 6) != 0)
                 return false;
             const float dx = info.m_Pos[0] - s_PlayerPos[0], dy = info.m_Pos[1] - s_PlayerPos[1], dz = info.m_Pos[2] - s_PlayerPos[2];
@@ -276,9 +396,16 @@ namespace coop::enemy_life {
                s'arretent seules : celui qui suit n'envoie rien, donc apres ~3 s plus rien n'est « frais ». */
             /* Entree : l'autre plus pres de 2 m, ou egalite et plus petit identifiant ; sortie : nous plus
                pres de 4 m (gd5 : un seul seuil a 2 m faisait encore basculer le joueur 2). */
-            const bool follow = fresh && (e->m_RemoteDist < dist - PosHysteresis
+            bool follow = fresh && (e->m_RemoteDist < dist - PosHysteresis
                 || (e->m_RemoteDist <= dist + PosHysteresis && e->m_RemoteFrom < localId)
                 || (e->m_Following && e->m_RemoteDist <= dist + 2.0f * PosHysteresis));
+            /* Les deux se suivaient l'un l'autre (essai gl4, Gardien a ~11 et ~13 m : chacun comparait sa
+               distance a une distance perimee de l'autre, celui qui suit n'envoyant plus rien ; plus personne
+               ne faisait foi pendant ~3 s). Si l'autre annonce qu'il suit (EDST recent), le plus petit
+               identifiant fait foi. */
+            const bool remoteFollows = e->m_RemoteFollowing && s_Frames - e->m_RemoteDistFrame < PosStaleFrames;
+            if (follow && remoteFollows && localId < e->m_RemoteFrom)
+                follow = false;
             if (coop::config::g_EnemyAnim != 0) {
                 Tracked* t = Track(info.m_HashId, coop::game::GetActorASList(info.m_Actor), follow, s_Frames);
                 for (int s = 0; s < SeqSlots; s++) {
@@ -318,6 +445,19 @@ namespace coop::enemy_life {
                         info.m_Name, info.m_HashId, follow ? "on suit la copie de l'autre joueur" : "notre copie fait foi",
                         static_cast<double>(dist), e->m_RemoteFrom, static_cast<double>(e->m_RemoteDist));
             }
+            NoteGuardian(info, follow);
+
+            if (follow && (s_Frames - e->m_DistSentFrame >= PosKeepAlive || e->m_DistSentFrame == 0)) {
+                /* Celui qui suit annonce sa distance (EDST) : l'autre compare a une valeur a jour. */
+                PosMsg dm;
+                dm.m_Hash = info.m_HashId;
+                dm.m_Dist = dist;
+                dm.m_DistOnly = true;
+                if (g_PosOutgoing.Push(dm))
+                    e->m_DistSentFrame = s_Frames;
+            }
+            if (!follow)
+                e->m_DistSentFrame = 0; /* au prochain passage a « suivre », annonce immediate */
 
             if (follow) {
                 const float ex = e->m_RemoteMtx[3] - info.m_Pos[0], ey = e->m_RemoteMtx[7] - info.m_Pos[1], ez = e->m_RemoteMtx[11] - info.m_Pos[2];
@@ -376,9 +516,13 @@ namespace coop::enemy_life {
             if (!ready)
                 continue;
             Entry* e = Find(pm.m_Hash, true);
-            std::memcpy(e->m_RemoteMtx, pm.m_Mtx, sizeof(e->m_RemoteMtx));
             e->m_RemoteDist = pm.m_Dist;
             e->m_RemoteFrom = pm.m_FromId;
+            e->m_RemoteDistFrame = s_Frames;
+            e->m_RemoteFollowing = pm.m_DistOnly;
+            if (pm.m_DistOnly)
+                continue; /* EDST : l'autre suit notre copie ; sa matrice n'a pas de sens */
+            std::memcpy(e->m_RemoteMtx, pm.m_Mtx, sizeof(e->m_RemoteMtx));
             e->m_RemoteFrame = s_Frames;
         }
         SeqMsg sm;
@@ -397,7 +541,9 @@ namespace coop::enemy_life {
         s_HavePlayer = ready && coop::game::ReadPlayer(player);
         if (s_HavePlayer && coop::session::g_LocalId != 0 && coop::config::g_EnemyPos) {
             std::memcpy(s_PlayerPos, player.m_Pos, sizeof(s_PlayerPos));
+            s_BeamCount = s_GuardianCount = 0;
             coop::game::ForEachListedActor(OnActorPos, nullptr);
+            HandleBeams();
         }
 
         if (s_Frames % 6 != 0)

@@ -35,6 +35,8 @@ namespace coop::enemy_life {
         int           m_FromId = 0;
         float         m_Dist = 0;
         float         m_Mtx[12] = {};
+        /* Vrai : message EDST, distance seule, envoye par celui qui suit la copie de l'autre (NOTES 5.91). */
+        bool          m_DistOnly = false;
     };
 
     /* File a un producteur et un consommateur, sans verrou (meme principe que flags::Queue). */
