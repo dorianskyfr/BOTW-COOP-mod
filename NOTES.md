@@ -812,6 +812,11 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.92 Heure : ecart tolere ramene de 8 a 4 minutes de jeu (2026-11-19, essai `tm1`, Eden) - [V] journaux
+
+- Vu a l'image (`gl1`) : horloges 06:00 PM chez J1, 05:55 PM chez J2. Mesure dans les journaux (`monde: ok ... heure=` local contre heure recue de la session, chez celui qui la recoit, hors phase de chargement) : ecart median 0,13 a 0,30 unite (`wa2`, `gl1`, `gl5`, `gl6` ; 1 unite = 4 min), 90e centile 0,14 a 0,37. L'horloge du jeu s'affiche par pas de 5 min : un ecart d'environ 1 min suffit a montrer 5 min de difference. Pas de defaut de synchro.
+- Changement quand meme (`world_sync.cpp`, `MaxDrift` 2 -> 1) : borne le pire cas a 4 min au lieu de 8. [V] `tm1` (5 min en jeu) : 2 recalages chez J2 comme avant, ecart median 0,04, 90e centile 0,07 ; aucun effet de bord vu dans les journaux.
+
 ### 5.91 Rayon des Gardiens : il visait les deux joueurs a la fois (2026-11-19, essais `gl1` a `gl5`, Eden) - [V] journaux et image
 
 - Vu (`gl1`, image, Gardien `Enemy_Guardian_A` e0fd0fdd pres du sanctuaire 073) : chaque jeu garde l'IA de ses ennemis ; la copie suivie du Gardien tirait sur son propre Link. J1 a 15 m faisait foi, J2 a 18 m suivait : le rayon a touche J2 (explosion, Link a terre, herbe en feu, capture `2026-11-19_rayon-gardien_avant_gl1.png`) pendant que le Gardien de J1 visait J1. Pour les Bokoblin, le blocage des sequences d'attaque de la copie suivie suffit ; le Gardien ne passe presque pas par les sequences (5.74).

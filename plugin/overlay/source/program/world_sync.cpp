@@ -16,8 +16,9 @@ namespace coop::world_sync {
 
         /* Une journee = 360 unites (15 par heure). */
         constexpr float DayLength = 360.0f;
-        /* Ecart tolere avant de recaler : 2 unites = 8 minutes de jeu. */
-        constexpr float MaxDrift = 2.0f;
+        /* Ecart tolere avant de recaler : 1 unite = 4 minutes de jeu. (2 unites avant le 2026-11-19 : les deux
+           horloges affichaient jusqu'a 8 min d'ecart, vu a l'image en gl1 ; NOTES 5.92.) */
+        constexpr float MaxDrift = 1.0f;
         /* On ne recale pas plus d'une fois toutes les 150 images (~5 s). */
         constexpr std::uint64_t MinFramesBetweenAdjust = 150;
 
