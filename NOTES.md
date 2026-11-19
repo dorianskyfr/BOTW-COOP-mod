@@ -812,6 +812,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Supposé, non vérifié : que le jeu pose bien `IsGet_PlayerStole2` quand le vieil homme donne la paravoile (nom repris de botw-coop ; il faudrait une sauvegarde juste avant ou juste apres).
 - Preuves : `docs/evidence/2026-11-14_garde-paravoile_pg1-pg2.log`, `docs/evidence/2026-11-15_paravoile-obtenue-pg3.txt`.
 
+### 5.93 Ennemis sous latence simulee ; bilan periodique des roles (2026-11-19, essais `lt1`, `lt2`, Eden) - [V] journaux
+
+- Relais `--lag 200 --jitter 80` (200 a 280 ms par ligne, ordre garde), groupe de Lezalfos et d'Octoroks volants pres de (-2660 ; -880), joueurs a ~6 m l'un de l'autre. [V] `lt1` : positions ramenees, ecart median 0,22 a 0,66 m (1,48 m au plus) ; un seul changement de role par ennemi ; sequences rejouees (10 chez J1, 40 chez J2) et attaques de la copie suivie bloquees (7 et 34). Rien a corriger.
+- Ecart pantin / vrai partenaire : `lu`/`pos` du pantin a moins de 0,4 m de sa cible dans tous les essais du jour. Les 4,2 m vus en gl1 venaient de deux listes d'acteurs prises a ~5 s d'intervalle pendant que J2 etait projete : artefact de mesure.
+- Outil de diagnostic (build a jouer comprise) : les changements de role ne sont journalises que 60 fois par session ; `enemy_life.cpp` ecrit maintenant toutes les 900 images `ennemis : bilan N suivi(s), M fait(s) foi chez nous, K changement(s) de role ... rayon(s) de Gardien retire(s)`. [V] `lt2` : J1 `0 suivi(s), 3 fait(s) foi`, J2 `3 suivi(s), 0 fait(s) foi` (12 changements a l'arrivee, puis 0).
+- Piege d'essai : `tp` refuse au-dela de 250 m (point de chargement des sauvegardes d'essai maintenant en (-2900 ; -560)) ; passer par (-2800 ; -700).
+
 ### 5.92 Heure : ecart tolere ramene de 8 a 4 minutes de jeu (2026-11-19, essai `tm1`, Eden) - [V] journaux
 
 - Vu a l'image (`gl1`) : horloges 06:00 PM chez J1, 05:55 PM chez J2. Mesure dans les journaux (`monde: ok ... heure=` local contre heure recue de la session, chez celui qui la recoit, hors phase de chargement) : ecart median 0,13 a 0,30 unite (`wa2`, `gl1`, `gl5`, `gl6` ; 1 unite = 4 min), 90e centile 0,14 a 0,37. L'horloge du jeu s'affiche par pas de 5 min : un ecart d'environ 1 min suffit a montrer 5 min de difference. Pas de defaut de synchro.

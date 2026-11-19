@@ -179,6 +179,10 @@ namespace coop::enemy_life {
         constexpr float         PosDeadZone = 0.15f;     /* ecart tolere sans correction */
         constexpr float         PosSnap = 10.0f;         /* au-dela : saut direct */
         std::uint64_t s_PosSent = 0, s_PosApplied = 0, s_PosLogs = 0;
+        /* Bilan periodique (les changements de role ne sont journalises que 60 fois par session) : changements
+           depuis le dernier bilan, ennemis suivis / faisant foi a la derniere image. */
+        std::uint64_t s_RoleChanges = 0, s_RoleChangesTotal = 0;
+        int s_FollowedNow = 0, s_LeadNow = 0;
         float s_PlayerPos[3] = {};
         bool s_HavePlayer = false;
 
@@ -440,12 +444,14 @@ namespace coop::enemy_life {
             }
             if (follow != e->m_Following) {
                 e->m_Following = follow;
+                s_RoleChanges++;
                 if (s_PosLogs++ < 60)
                     Logging.Log("[botw-coop] position ennemi : %s %08x, %s (nous a %.1f m, J%d a %.1f m)",
                         info.m_Name, info.m_HashId, follow ? "on suit la copie de l'autre joueur" : "notre copie fait foi",
                         static_cast<double>(dist), e->m_RemoteFrom, static_cast<double>(e->m_RemoteDist));
             }
             NoteGuardian(info, follow);
+            (follow ? s_FollowedNow : s_LeadNow)++;
 
             if (follow && (s_Frames - e->m_DistSentFrame >= PosKeepAlive || e->m_DistSentFrame == 0)) {
                 /* Celui qui suit annonce sa distance (EDST) : l'autre compare a une valeur a jour. */
@@ -542,8 +548,15 @@ namespace coop::enemy_life {
         if (s_HavePlayer && coop::session::g_LocalId != 0 && coop::config::g_EnemyPos) {
             std::memcpy(s_PlayerPos, player.m_Pos, sizeof(s_PlayerPos));
             s_BeamCount = s_GuardianCount = 0;
+            s_FollowedNow = s_LeadNow = 0;
             coop::game::ForEachListedActor(OnActorPos, nullptr);
             HandleBeams();
+            if (s_Frames % 900 == 0 && (s_RoleChanges != 0 || s_FollowedNow + s_LeadNow != 0)) {
+                s_RoleChangesTotal += s_RoleChanges;
+                Logging.Log("[botw-coop] ennemis : bilan %d suivi(s), %d fait(s) foi chez nous, %lu changement(s) de role depuis le dernier bilan (%lu en tout), %lu rayon(s) de Gardien retire(s)",
+                    s_FollowedNow, s_LeadNow, s_RoleChanges, s_RoleChangesTotal, s_BeamsRemoved);
+                s_RoleChanges = 0;
+            }
         }
 
         if (s_Frames % 6 != 0)

@@ -1,0 +1,92 @@
+﻿== lt1_game.txt
+6102: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimNotice" creneau 0 (annonce par J2), n.1
+6104: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "FloatWait" creneau 0 (annonce par J2), n.2
+6117: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimAttackWater" creneau 0 (annonce par J2), n.3
+6127: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "FloatWait" creneau 0 (annonce par J2), n.4
+6135: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimAttackWater" creneau 0 (annonce par J2), n.5
+6151: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "FloatWait" creneau 0 (annonce par J2), n.6
+6158: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimAttackWater" creneau 0 (annonce par J2), n.7
+6177: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "FloatWait" creneau 0 (annonce par J2), n.8
+6190: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimAttackWater" creneau 0 (annonce par J2), n.9
+6201: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "Die" creneau 0 (annonce par J2), n.10
+== lt1_game2.txt
+5962: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "Swim" creneau 0 (annonce par J1), n.1
+6001: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Find" creneau 0 (annonce par J1), n.2
+6003: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Find" creneau 0 (annonce par J1), n.3
+6019: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Wait" creneau 0 (annonce par J1), n.4
+6020: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Wait" creneau 0 (annonce par J1), n.5
+6032: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "Turn" creneau 0 (annonce par J1), n.6
+6033: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimMove" creneau 0 (annonce par J1), n.7
+6036: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimJumpStart" creneau 0 (annonce par J1), n.8
+6040: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimJump" creneau 0 (annonce par J1), n.9
+6042: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Turn" creneau 0 (annonce par J1), n.10
+6047: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.11
+6051: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimJumpEnd" creneau 0 (annonce par J1), n.12
+6057: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimMove" creneau 0 (annonce par J1), n.13
+6060: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "Swim" creneau 0 (annonce par J1), n.14
+6077: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Turn" creneau 0 (annonce par J1), n.15
+6079: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.16
+6100: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Turn" creneau 0 (annonce par J1), n.17
+6106: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.18
+6139: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Turn" creneau 0 (annonce par J1), n.19
+6143: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.20
+6146: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "RaiseEye" creneau 0 (annonce par J1), n.21
+6152: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Water" creneau 0 (annonce par J1), n.22
+6156: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Water" creneau 0 (annonce par J1), n.23
+6175: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Wait" creneau 0 (annonce par J1), n.24
+6178: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Wait" creneau 0 (annonce par J1), n.25
+6183: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Notice" creneau 0 (annonce par J1), n.26
+6187: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "SignalStart" creneau 0 (annonce par J1), n.27
+6193: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Signal" creneau 0 (annonce par J1), n.28
+6199: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "FlyUp" creneau 0 (annonce par J1), n.29
+6200: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "FlyUp" creneau 0 (annonce par J1), n.30
+6201: [botw-coop] animation ennemi : Enemy_AirOctarock 94767be7 rejoue "FlyUp" creneau 0 (annonce par J1), n.31
+6202: [botw-coop] animation ennemi : Enemy_AirOctarock c7ec2063 rejoue "FlyUp" creneau 0 (annonce par J1), n.32
+6231: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "SignalEnd" creneau 0 (annonce par J1), n.33
+6233: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.34
+6246: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "FlyUpEnd" creneau 0 (annonce par J1), n.35
+6247: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "FlyUpEnd" creneau 0 (annonce par J1), n.36
+6248: [botw-coop] animation ennemi : Enemy_AirOctarock 94767be7 rejoue "FlyUpEnd" creneau 0 (annonce par J1), n.37
+6249: [botw-coop] animation ennemi : Enemy_AirOctarock c7ec2063 rejoue "FlyUpEnd" creneau 0 (annonce par J1), n.38
+6255: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Search" creneau 0 (annonce par J1), n.39
+6257: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Wait" creneau 0 (annonce par J1), n.40
+== lt2_game.txt
+6109: [botw-coop] ennemis : bilan 0 suivi(s), 3 fait(s) foi chez nous, 0 changement(s) de role depuis le dernier bilan (0 en tout), 0 rayon(s) de Gardien retire(s)
+== lt2_game2.txt
+5902: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "Swim" creneau 0 (annonce par J1), n.1
+5934: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Find" creneau 0 (annonce par J1), n.2
+5935: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Find" creneau 0 (annonce par J1), n.3
+5956: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Wait" creneau 0 (annonce par J1), n.4
+5957: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Wait" creneau 0 (annonce par J1), n.5
+5965: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimMove" creneau 0 (annonce par J1), n.6
+5968: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimJumpStart" creneau 0 (annonce par J1), n.7
+5978: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimJump" creneau 0 (annonce par J1), n.8
+5982: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Turn" creneau 0 (annonce par J1), n.9
+5986: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.10
+5990: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimJumpEnd" creneau 0 (annonce par J1), n.11
+6002: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "Die" creneau 0 (annonce par J1), n.12
+6006: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Notice" creneau 0 (annonce par J1), n.13
+6013: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Escape" creneau 0 (annonce par J1), n.14
+6015: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.15
+6017: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Turn" creneau 0 (annonce par J1), n.16
+6021: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.17
+6044: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "ArrowReload" creneau 0 (annonce par J1), n.18
+6052: [botw-coop] ennemis : bilan 5 suivi(s), 0 fait(s) foi chez nous, 12 changement(s) de role depuis le dernier bilan (12 en tout), 0 rayon(s) de Gardien retire(s)
+6055: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "ArrowDraw" creneau 0 (annonce par J1), n.19
+6058: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "ArrowShoot" creneau 0 (annonce par J1), n.20
+6060: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Thunder" creneau 0 (annonce par J1), n.21
+6064: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.22
+6073: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "ArrowReload" creneau 0 (annonce par J1), n.23
+6077: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "ArrowDraw" creneau 0 (annonce par J1), n.24
+6096: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "ArrowShoot" creneau 0 (annonce par J1), n.25
+6100: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.26
+6104: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "ArrowReload" creneau 0 (annonce par J1), n.27
+6109: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "ArrowDraw" creneau 0 (annonce par J1), n.28
+6113: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "ArrowShoot" creneau 0 (annonce par J1), n.29
+6140: [botw-coop] animation ennemi : Enemy_AirOctarock 94767be7 rejoue "Find" creneau 0 (annonce par J1), n.30
+6144: [botw-coop] animation ennemi : Enemy_AirOctarock 94767be7 rejoue "Wait" creneau 0 (annonce par J1), n.31
+6186: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Thunder" creneau 0 (annonce par J1), n.32
+6187: [botw-coop] animation ennemi : Enemy_AirOctarock 94767be7 rejoue "Thunder" creneau 0 (annonce par J1), n.33
+6188: [botw-coop] animation ennemi : Enemy_AirOctarock c7ec2063 rejoue "Thunder" creneau 0 (annonce par J1), n.34
+6212: [botw-coop] ennemis : bilan 3 suivi(s), 0 fait(s) foi chez nous, 0 changement(s) de role depuis le dernier bilan (12 en tout), 0 rayon(s) de Gardien retire(s)
+11:58:25.847 essai de latence : 200 ms + jusqu'a 80 ms au hasard sur chaque ligne envoyee
