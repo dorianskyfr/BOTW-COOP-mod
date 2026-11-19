@@ -1,0 +1,74 @@
+﻿== ne1_game.txt
+6255: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814, on suit la copie de l'autre joueur (nous a 18.0 m, J2 a 13.5 m)
+6259: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.86 m (rc=1), n.1
+6260: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.72 m (rc=1), n.2
+6261: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.63 m (rc=1), n.3
+6262: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.56 m (rc=1), n.4
+6264: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.51 m (rc=1), n.5
+6265: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.48 m (rc=1), n.6
+6266: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.28 m (rc=1), n.7
+6268: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.17 m (rc=1), n.8
+6269: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.24 m (rc=1), n.9
+6270: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J2, ecart 0.29 m (rc=1), n.10
+6295: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814, notre copie fait foi (nous a 10.6 m, J2 a 14.7 m)
+== ne1_game2.txt
+6059: [botw-coop] position ennemi : Enemy_AirOctarock 13d0b0a4, on suit la copie de l'autre joueur (nous a 47.4 m, J1 a 47.3 m)
+6060: [botw-coop] position ennemi : Enemy_AirOctarock 404aeb20, on suit la copie de l'autre joueur (nous a 41.8 m, J1 a 41.8 m)
+6061: [botw-coop] position ennemi : Enemy_AirOctarock 404aeb20 ramene vers la copie de J1, ecart 0.18 m (rc=100), n.1
+6062: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "Swim" creneau 0 (annonce par J1), n.1
+6063: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814, on suit la copie de l'autre joueur (nous a 58.4 m, J1 a 57.3 m)
+6066: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J1, ecart 0.81 m (rc=1), n.2
+6067: [botw-coop] position ennemi : Enemy_AirOctarock 94767be7, on suit la copie de l'autre joueur (nous a 51.5 m, J1 a 51.5 m)
+6068: [botw-coop] position ennemi : Enemy_AirOctarock c7ec2063, on suit la copie de l'autre joueur (nous a 46.5 m, J1 a 46.4 m)
+6069: [botw-coop] position ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09, on suit la copie de l'autre joueur (nous a 46.2 m, J1 a 46.1 m)
+6070: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J1, ecart 0.57 m (rc=1), n.3
+6073: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J1, ecart 0.55 m (rc=1), n.4
+6074: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J1, ecart 0.36 m (rc=1), n.5
+6075: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J1, ecart 0.21 m (rc=1), n.6
+6079: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J1, ecart 0.76 m (rc=1), n.7
+6080: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J1, ecart 0.46 m (rc=1), n.8
+6082: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J1, ecart 0.24 m (rc=1), n.9
+6089: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814 ramene vers la copie de J1, ecart 0.17 m (rc=1), n.10
+6101: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Find" creneau 0 (annonce par J1), n.2
+6106: [botw-coop] position ennemi : Enemy_AirOctarock 13d0b0a4, notre copie fait foi (nous a 22.7 m, J1 a 45.9 m)
+6107: [botw-coop] position ennemi : Enemy_AirOctarock c7ec2063, notre copie fait foi (nous a 33.0 m, J1 a 45.0 m)
+6110: [botw-coop] position ennemi : Enemy_AirOctarock 13d0b0a4, on suit la copie de l'autre joueur (nous a 22.7 m, J1 a 14.6 m)
+6112: [botw-coop] position ennemi : Enemy_AirOctarock c7ec2063, on suit la copie de l'autre joueur (nous a 33.0 m, J1 a 24.6 m)
+6119: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Wait" creneau 0 (annonce par J1), n.3
+6131: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimJumpStart" creneau 0 (annonce par J1), n.4
+6141: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimJump" creneau 0 (annonce par J1), n.5
+6146: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Turn" creneau 0 (annonce par J1), n.6
+6150: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.7
+6152: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimJumpEnd" creneau 0 (annonce par J1), n.8
+6153: [botw-coop] position ennemi : Enemy_AirOctarock 94767be7 ramene vers la copie de J1, ecart 0.22 m (rc=100), n.300
+6161: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "SwimMove" creneau 0 (annonce par J1), n.9
+6164: [botw-coop] animation ennemi : Enemy_Lizalfos_Middle 2fb41814 rejoue "Swim" creneau 0 (annonce par J1), n.10
+6169: [botw-coop] position ennemi : Enemy_AirOctarock 94767be7 ramene vers la copie de J1, ecart 0.69 m (rc=100), n.600
+6174: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Find" creneau 0 (annonce par J1), n.11
+6177: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Wait" creneau 0 (annonce par J1), n.12
+6179: [botw-coop] position ennemi : Enemy_AirOctarock 404aeb20 ramene vers la copie de J1, ecart 0.33 m (rc=100), n.900
+6180: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814, notre copie fait foi (nous a 13.5 m, J1 a 17.7 m)
+6182: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Turn" creneau 0 (annonce par J1), n.13
+6186: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Water" creneau 0 (annonce par J1), n.14
+6188: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.15
+6193: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "Wait" creneau 0 (annonce par J1), n.16
+6194: [botw-coop] position ennemi : Enemy_AirOctarock 13d0b0a4 ramene vers la copie de J1, ecart 0.37 m (rc=100), n.1200
+6200: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Notice" creneau 0 (annonce par J1), n.17
+6202: [botw-coop] position ennemi : Enemy_AirOctarock 13d0b0a4 ramene vers la copie de J1, ecart 0.61 m (rc=100), n.1500
+6209: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "SignalStart" creneau 0 (annonce par J1), n.18
+6211: [botw-coop] position ennemi : Enemy_Lizalfos_Middle 2fb41814, on suit la copie de l'autre joueur (nous a 14.3 m, J1 a 10.6 m)
+6218: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Signal" creneau 0 (annonce par J1), n.19
+6221: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "FlyUp" creneau 0 (annonce par J1), n.20
+6222: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "FlyUp" creneau 0 (annonce par J1), n.21
+6223: [botw-coop] animation ennemi : Enemy_AirOctarock 94767be7 rejoue "FlyUp" creneau 0 (annonce par J1), n.22
+6224: [botw-coop] animation ennemi : Enemy_AirOctarock c7ec2063 rejoue "FlyUp" creneau 0 (annonce par J1), n.23
+6229: [botw-coop] position ennemi : Enemy_AirOctarock c7ec2063 ramene vers la copie de J1, ecart 1.55 m (rc=100), n.1800
+6235: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "SignalEnd" creneau 0 (annonce par J1), n.24
+6240: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Turn" creneau 0 (annonce par J1), n.25
+6244: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "FlyUpEnd" creneau 0 (annonce par J1), n.26
+6245: [botw-coop] animation ennemi : Enemy_AirOctarock 404aeb20 rejoue "FlyUpEnd" creneau 0 (annonce par J1), n.27
+6246: [botw-coop] animation ennemi : Enemy_AirOctarock 94767be7 rejoue "FlyUpEnd" creneau 0 (annonce par J1), n.28
+6247: [botw-coop] animation ennemi : Enemy_AirOctarock c7ec2063 rejoue "FlyUpEnd" creneau 0 (annonce par J1), n.29
+6248: [botw-coop] animation ennemi : Enemy_Lizalfos_Guard_Middle_LongVisibility f9edfb09 rejoue "Wait" creneau 0 (annonce par J1), n.30
+6250: [botw-coop] position ennemi : Enemy_AirOctarock 13d0b0a4 ramene vers la copie de J1, ecart 0.67 m (rc=100), n.2100
+6255: [botw-coop] animation ennemi : Enemy_AirOctarock 13d0b0a4 rejoue "Wait" creneau 0 (annonce par J1), n.31
