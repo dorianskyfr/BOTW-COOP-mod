@@ -53,6 +53,12 @@ RULES = [
     (2, re.compile(r"^" + MAPS + r"_(?!Npc_)(?!LinkTag)[A-Za-z][A-Za-z0-9_]*_\d+$")),
 ]
 
+# Jamais partages : l'epee de legende (Weapon_Sword_070) posee sur la carte. Retiree du socle chez l'un,
+# elle disparaissait chez l'autre (objet de carte « pris », groupe 2), qui ne pouvait plus l'obtenir.
+# Chacun la retire dans son monde (comme les receptacles, un chacun). Socle : MainField F-2, HashId
+# 2427157272 (431,7 ; 250,5 ; -2111,0).
+EXCLUDE = re.compile(r"^" + MAPS + r"_Weapon_Sword_070_\d+$")
+
 # Drapeaux lus par le plugin pour ses gardes (jamais partages eux-memes).
 GUARDS = ["IsGet_PlayerStole2", "FirstTouchdown"]
 
@@ -65,6 +71,8 @@ def main(tsv, out):
     cands = [r for r in rows if r["type"] == "bool_data" and r["IsSave"] == "True"]
     chosen, per_group, samples = {}, Counter(), {}
     for r in cands:
+        if EXCLUDE.match(r["name"]):
+            continue
         for g, rx in RULES:
             if rx.match(r["name"]) and (g == 1 or r["IsProgramWritable"] == "True"):
                 h = int(r["crc32"], 16)

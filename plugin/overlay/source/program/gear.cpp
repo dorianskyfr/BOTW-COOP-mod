@@ -146,7 +146,10 @@ namespace coop::gear {
                 s_ReadyFrames = 0;
                 return;
             }
-            if (++s_ReadyFrames < 600)
+#ifndef COOP_TEST_GIVE_AFTER
+#define COOP_TEST_GIVE_AFTER 600 /* images en jeu avant le don d'essai ; plus long : le temps de faire de la place */
+#endif
+            if (++s_ReadyFrames < COOP_TEST_GIVE_AFTER)
                 return;
             s_Given = true;
             struct Item {

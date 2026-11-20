@@ -1103,6 +1103,52 @@ namespace coop::game {
         return n;
     }
 
+    bool PatchPouchWeapon(const char* name, int value, const WeaponBonus& bonus, int& oldValue) {
+        /*
+         * Meme liste et memes champs que ReadPouch (valeur +0x20, bonus : valeur +0x80, bits +0x88). Cible :
+         * une arme (type 0, 1 ou 3) de ce nom sans bonus, de preference a la durabilite attendue (la copie
+         * tout juste ramassee) ; a defaut la derniere trouvee. Ecrit le bonus et la durabilite.
+         */
+        oldValue = -1;
+        if (s_Offsets == nullptr || name == nullptr || bonus.m_Flags == 0)
+            return false;
+        const auto mgr = PauseMenuDataMgr();
+        if (mgr == 0)
+            return false;
+        const std::uintptr_t head = mgr + ItemList;
+        const int count = Peek<std::int32_t>(mgr + ItemListCount);
+        const int offset = Peek<std::int32_t>(mgr + ItemListCount + 4);
+        if (count < 0 || count > 1000 || offset != 8)
+            return false;
+        std::uintptr_t best = 0;
+        bool exact = false;
+        std::uintptr_t node = Peek<std::uintptr_t>(head + 8);
+        for (int guard = 0; node != head && guard <= count; guard++) {
+            if (node == 0 || !CanRead(node - 8, 0x90))
+                return false;
+            const std::uintptr_t item = node - 8;
+            const int type = Peek<std::int32_t>(item + 0x18);
+            const auto str = Peek<std::uintptr_t>(item + 0x30);
+            if ((type == 0 || type == 1 || type == 3) && Peek<std::uint32_t>(item + 0x88) == 0 && str != 0 && CanRead(str, 48)
+                && std::strncmp(reinterpret_cast<const char*>(str), name, 47) == 0) {
+                const bool same = Peek<std::int32_t>(item + 0x20) == value;
+                if (!exact || same) {
+                    best = item;
+                    exact = same;
+                }
+            }
+            node = Peek<std::uintptr_t>(node + 8);
+        }
+        if (best == 0)
+            return false;
+        oldValue = Peek<std::int32_t>(best + 0x20);
+        if (value > 0)
+            *reinterpret_cast<std::int32_t*>(best + 0x20) = value;
+        *reinterpret_cast<std::int32_t*>(best + 0x80) = bonus.m_Value;
+        *reinterpret_cast<std::uint32_t*>(best + 0x88) = bonus.m_Flags;
+        return true;
+    }
+
     /*
      * Tampons de la carte. D'apres botw-coop (reverse-engineering.md, « Map stamps ») ; reecrit et
      * reverifie sur notre image 1.9.0 (capstone, NOTES 5.43) : gestionnaire = global main+0x1e17ef8 ;

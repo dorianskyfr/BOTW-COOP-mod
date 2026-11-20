@@ -80,6 +80,7 @@ namespace coop::weapons {
         Kind m_Kind = Kind::Gift;
         std::uint32_t m_DropId = 0;  /* numero donne par le joueur qui a lache l'objet */
         int m_Owner = 0;             /* joueur qui a lache l'objet (Pick) */
+        int m_Reason = 0;            /* Pick : 0 ramasse, 1 detruit (disparu pres de son joueur sans entrer dans l'inventaire) */
         float m_Pos[3] = {};
     };
 

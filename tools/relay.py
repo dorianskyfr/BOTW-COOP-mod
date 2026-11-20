@@ -150,14 +150,16 @@ STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2
 # GIFT peut porter 2 valeurs de plus : le bonus de l'arme (bits WeaponModifier en hexadecimal, valeur).
 # EAS peut porter une 3e valeur : le creneau de la sequence (protocole 5 ; absent = creneau 0).
 # DROT peut porter une 3e valeur : les drapeaux d'etat de la Creature chez l'emetteur (bits, hexadecimal).
-OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2, "EAS": 1, "DROT": 1}
+# GDRP peut porter 2 valeurs de plus : le bonus de l'arme (bits hexadecimaux, valeur) ; GPCK une 3e : 0 ramasse,
+#   1 detruit (NOTES 5.96).
+OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2, "EAS": 1, "DROT": 1, "GDRP": 2, "GPCK": 1}
 
 # Nature de chaque valeur, valeurs facultatives comprises : f nombre fini, i entier, x hexadecimal,
 # n nom d'acteur. Une ligne dont une valeur ne correspond pas est ignoree (jamais retransmise).
 FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi", "FLAGR": "xi", "LIFE": "xi",
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
                "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i", "DROT": "xfx", "EDST": "xf",
-               "GDRP": "xnfffi", "GPCK": "xi"}
+               "GDRP": "xnfffixi", "GPCK": "xii"}
 
 
 def valid_fields(kind, values):

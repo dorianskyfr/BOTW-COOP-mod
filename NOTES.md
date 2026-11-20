@@ -846,6 +846,19 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - Deux ramassages dans la même fraction de seconde donneraient un objet à chacun (non essayé).
   - Un objet qui disparaît près de son joueur sans entrer dans son inventaire n'est pas annoncé (par exemple une arme en bois brûlée) : la copie de l'autre joueur reste.
 - **Non vérifié** : arc, bouclier, objet lancé (et non lâché par le menu), objet qui roule loin ; deux PC.
+
+### 5.96 Épée de légende chacun la sienne ; bonus et destruction des objets au sol (2026-11-20, essais `gd4` à `gd6`, Eden) - en cours, arrêté à la demande de l'utilisateur
+
+- Épée de légende : son socle (MainField F-2, `Weapon_Sword_070`, HashId 2427157272, drapeau `MainField_Weapon_Sword_070_2427157272` = 99774386) était un objet de carte du groupe 2, donc partagé. Retirée chez l'un, elle disparaissait du socle chez l'autre, qui ne pouvait plus l'avoir. Correctif : exclue de la liste blanche (`build_sync_flags.py`, `EXCLUDE`, avec les emplacements `AocField_Weapon_Sword_070_*`) et des drapeaux privés du plugin (`flags.cpp`). [V] `gd4` (`-DCOOP_TEST_SETLOCAL=0x99774386`, témoin `0xf0143def`) : chez J1 `99774386 0 -> 1` sans « envoye », le témoin `f0143def ... (envoye)` est reçu par J2.
+- Objets au sol :
+  - `GDRP` porte le bonus de l'arme (8e et 9e valeurs) ; quand on ramasse une copie, le bonus et la durabilité sont écrits sur l'arme de l'inventaire (`PatchPouchWeapon`, champs +0x20, +0x80, +0x88 lus par `ReadPouch`).
+  - Un objet qui disparaît près de son joueur sans entrer dans son inventaire (brûlé…) est annoncé `GPCK ... 1` (détruit) : l'autre copie est retirée.
+  - Deux ramassages simultanés sont journalisés `DOUBLON`, mais pas empêchés.
+  - Relais 119/119.
+- [V] `gd4`/`gd5` : armes et arc lâchés par J2, copies chez J1 (même durabilité).
+- **Non vérifié** :
+  - le bonus posé sur la copie ramassée ; l'essai `gd6` a été arrêté avant (`-DCOOP_TEST_GIVE -DCOOP_TEST_BONUS -DCOOP_TEST_GIVE_AFTER=7000` : faire de la place avant le don d'essai) ;
+  - l'annonce « détruit ».
 - Preuves : `docs/evidence/2026-11-19_objets-au-sol_gd1.log` et les captures `2026-11-19_objets-au-sol_*_gd1.png`.
 
 ### 5.93 Ennemis sous latence simulee ; bilan periodique des roles (2026-11-19, essais `lt1`, `lt2`, Eden) - [V] journaux

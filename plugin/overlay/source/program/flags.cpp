@@ -86,6 +86,12 @@ namespace coop::flags {
             Crc32("IsSaveByAuto"), Crc32("FirstTips"), Crc32("DoSnatchDisplay"),
             Crc32("HasAoCVer1"), Crc32("HasAoCVer2"), Crc32("HasAoCVer3"),
             Crc32("WM_DaytimeFlag"), Crc32("WM_IsMorningA"), Crc32("climateFirst"),
+            /* Epee de legende sur son socle (F-2) et ses emplacements du DLC : chacun la retire dans son
+               monde ; partage, le drapeau « pris » la faisait disparaitre chez l'autre (NOTES 5.96). Aussi
+               exclue de la liste blanche (build_sync_flags.py) ; ici pour une liste plus ancienne. */
+            Crc32("MainField_Weapon_Sword_070_2427157272"), Crc32("AocField_Weapon_Sword_070_753456110"),
+            Crc32("AocField_Weapon_Sword_070_1103301631"), Crc32("AocField_Weapon_Sword_070_1177494317"),
+            Crc32("AocField_Weapon_Sword_070_3293659694"),
         };
 
         constexpr std::uint8_t Prop_Writable = 0x2; /* FlagProperties::PropertyFlag (gdtFlag.h) */

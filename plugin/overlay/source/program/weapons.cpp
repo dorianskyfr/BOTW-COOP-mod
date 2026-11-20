@@ -266,9 +266,21 @@ namespace coop::weapons {
             int m_GoneScans = 0;           /* releves depuis sa disparition pres de nous, inventaire pas encore change */
             std::uintptr_t m_Before[MaxBefore] = {};  /* acteurs du meme nom deja la avant la demande */
             int m_BeforeN = 0;
+            coop::game::WeaponBonus m_Bonus;  /* bonus de l'arme lachee, pose sur l'objet quand on ramasse la copie */
         };
         Drop s_Drops[MaxDrops];
         std::uint32_t s_NextDropId = 1;
+
+        /* Objets partages ramasses ici dans les 5 dernieres secondes : un GPCK de l'autre pour l'un d'eux
+           veut dire qu'il a ete ramasse des deux cotes (doublon, journalise). */
+        struct Picked {
+            int m_Owner = 0;
+            std::uint32_t m_Id = 0;
+            std::uint64_t m_Scan = 0;
+        };
+        Picked s_Picked[8];
+        int s_PickedNext = 0;
+        std::uint64_t s_DropScans = 0;
         int s_DropLogs = 0;
 
         /* Inventaire relu pour confirmer un ramassage (relecture Codex : la seule proximite donnait de faux
@@ -359,6 +371,8 @@ namespace coop::weapons {
             d->m_Name[sizeof(d->m_Name) - 1] = '\0';
             std::memcpy(d->m_Pos, g.m_Pos, sizeof(d->m_Pos));
             d->m_Value = g.m_Value;
+            if (std::strncmp(g.m_Name, "Weapon_", 7) == 0)
+                d->m_Bonus = coop::game::WeaponBonus { g.m_BonusFlags, g.m_BonusValue };
             SameNameCtx ctx { d->m_Name, { g.m_Pos[0], g.m_Pos[1], g.m_Pos[2] }, nullptr, {}, 0 };
             coop::game::ForEachListedActor(CollectSameName, &ctx);
             std::memcpy(d->m_Before, ctx.m_Found, sizeof(d->m_Before));
@@ -366,8 +380,8 @@ namespace coop::weapons {
             /* 30 cm plus haut : l'objet retombe sur le sol au lieu d'y etre enfonce. */
             const float at[3] = { g.m_Pos[0], g.m_Pos[1] + 0.3f, g.m_Pos[2] };
             d->m_Pending = coop::game::RequestCreateActorAwake(d->m_Name, at);
-            Logging.Log("[botw-coop] objet au sol : %s (valeur %d) lache par le joueur %d en (%.1f, %.1f, %.1f), a %.1f m de nous : copie %s",
-                d->m_Name, d->m_Value, g.m_From, static_cast<double>(g.m_Pos[0]), static_cast<double>(g.m_Pos[1]),
+            Logging.Log("[botw-coop] objet au sol : %s (valeur %d, bonus %x/%d) lache par le joueur %d en (%.1f, %.1f, %.1f), a %.1f m de nous : copie %s",
+                d->m_Name, d->m_Value, d->m_Bonus.m_Flags, d->m_Bonus.m_Value, g.m_From, static_cast<double>(g.m_Pos[0]), static_cast<double>(g.m_Pos[1]),
                 static_cast<double>(g.m_Pos[2]), static_cast<double>(dist), d->m_Pending ? "demandee" : "REFUSEE");
             if (!d->m_Pending)
                 *d = Drop {};
@@ -383,6 +397,10 @@ namespace coop::weapons {
 
         /* Le partenaire a ramasse un objet partage : notre copie est retiree. */
         void ReceivePick(const Gift& g) {
+            for (const Picked& p : s_Picked)
+                if (p.m_Owner == g.m_Owner && p.m_Id == g.m_DropId && p.m_Scan != 0 && s_DropScans - p.m_Scan <= 50)
+                    Logging.Log("[botw-coop] objet au sol : %s (n.%x du joueur %d) ramasse aussi par le joueur %d au meme moment : DOUBLON",
+                        g.m_Name, g.m_DropId, g.m_Owner, g.m_From);
             for (Drop& d : s_Drops) {
                 if ((d.m_Actor == 0 && !d.m_Pending) || d.m_Owner != g.m_Owner || d.m_Id != g.m_DropId)
                     continue;
@@ -394,14 +412,17 @@ namespace coop::weapons {
                 const bool alive = coop::game::IsActorListed(d.m_Actor) && coop::game::GetActorState(d.m_Actor) != 3
                     && std::strcmp(coop::game::GetActorName(d.m_Actor), d.m_Name) == 0;
                 const bool deleted = alive && coop::game::DeleteActor(d.m_Actor);
-                Logging.Log("[botw-coop] objet au sol : %s ramasse par le joueur %d -> notre copie %s", d.m_Name, g.m_From,
+                Logging.Log("[botw-coop] objet au sol : %s %s par le joueur %d -> notre copie %s", d.m_Name,
+                    g.m_Reason == 1 ? "detruit (disparu pres de lui sans entrer dans son inventaire)" : "ramasse", g.m_From,
                     deleted ? "retiree" : (alive ? "NON RETIREE" : "deja absente"));
-                char msg[96];
-                if (const char* item = coop::config::ItemNameFor(Crc32(d.m_Name)))
-                    std::snprintf(msg, sizeof(msg), "Joueur %d a ramassé : %s", g.m_From, item);
-                else
-                    std::snprintf(msg, sizeof(msg), "Joueur %d a ramassé %s", g.m_From, GiftLabel(d.m_Name));
-                coop::notify::Post(msg);
+                if (g.m_Reason != 1) {
+                    char msg[96];
+                    if (const char* item = coop::config::ItemNameFor(Crc32(d.m_Name)))
+                        std::snprintf(msg, sizeof(msg), "Joueur %d a ramassé : %s", g.m_From, item);
+                    else
+                        std::snprintf(msg, sizeof(msg), "Joueur %d a ramassé %s", g.m_From, GiftLabel(d.m_Name));
+                    coop::notify::Post(msg);
+                }
                 if (deleted)
                     MarkDying(d);
                 else
@@ -421,6 +442,7 @@ namespace coop::weapons {
         void UpdateDrops(const float link[12]) {
             const float* me = &link[0];
             int pouchN = -1;
+            s_DropScans++;
             for (Drop& d : s_Drops) {
                 if (d.m_Dying) {
                     if (!coop::game::IsActorListed(d.m_Actor))
@@ -487,20 +509,15 @@ namespace coop::weapons {
                     d = Drop {};
                     continue;
                 }
-                /* Disparu (ou dans les mains) pres de nous : ramasse seulement si l'inventaire en a gagne un
-                   exemplaire. Le jeu peut le compter une image apres : jusqu'a 1 s d'attente. */
+                /* Disparu (ou dans les mains) pres de nous : ramasse si l'inventaire en a gagne un exemplaire
+                   (le jeu peut le compter une image apres : jusqu'a 1 s d'attente). Disparu sans entrer dans
+                   l'inventaire (arme en bois brulee...) : detruit, annonce aussi pour que l'autre copie parte. */
                 const int now = CountInPouch(d.m_Name, PouchNow(pouchN));
-                if (d.m_InPouch < 0 || now <= d.m_InPouch) {
-                    if (++d.m_GoneScans <= 10)
-                        continue;
-                    if (listed) {
-                        d.m_GoneScans = 0; /* toujours la (pente a cote de Link) : on continue de la suivre */
-                        continue;
-                    }
-                    if (s_DropLogs++ < 40)
-                        Logging.Log("[botw-coop] objet au sol : %s disparu pres de nous sans entrer dans l'inventaire (%d -> %d), non annonce",
-                            d.m_Name, d.m_InPouch, now);
-                    d = Drop {};
+                const bool gained = d.m_InPouch >= 0 && now > d.m_InPouch;
+                if (!gained && ++d.m_GoneScans <= 10)
+                    continue;
+                if (!gained && listed) {
+                    d.m_GoneScans = 0; /* toujours la (pente a cote de Link) : on continue de la suivre */
                     continue;
                 }
                 {
@@ -508,11 +525,26 @@ namespace coop::weapons {
                     pick.m_Kind = Gift::Kind::Pick;
                     pick.m_DropId = d.m_Id;
                     pick.m_Owner = d.m_Owner;
+                    pick.m_Reason = gained ? 0 : 1;
                     std::memcpy(pick.m_Name, d.m_Name, sizeof(pick.m_Name));
                     if (!g_GiftOut.Push(pick))
                         continue; /* file pleine : au releve suivant */
-                    Logging.Log("[botw-coop] objet au sol : %s (n.%x du joueur %d) ramasse ici, a %.1f m, inventaire %d -> %d -> annonce",
-                        d.m_Name, d.m_Id, d.m_Owner, static_cast<double>(dist), d.m_InPouch, now);
+                    if (gained) {
+                        Logging.Log("[botw-coop] objet au sol : %s (n.%x du joueur %d) ramasse ici, a %.1f m, inventaire %d -> %d -> annonce",
+                            d.m_Name, d.m_Id, d.m_Owner, static_cast<double>(dist), d.m_InPouch, now);
+                        s_Picked[s_PickedNext++ % 8] = Picked { d.m_Owner, d.m_Id, s_DropScans };
+                    } else {
+                        Logging.Log("[botw-coop] objet au sol : %s (n.%x du joueur %d) disparu a %.1f m sans entrer dans l'inventaire (%d -> %d) : "
+                            "detruit -> annonce", d.m_Name, d.m_Id, d.m_Owner, static_cast<double>(dist), d.m_InPouch, now);
+                    }
+                    /* Copie d'une arme a bonus ramassee : le jeu l'a rangee sans bonus, on le lui donne (une seule
+                       fois : apres l'annonce, l'entree est videe). */
+                    if (gained && d.m_Owner != coop::session::g_LocalId && d.m_Bonus.m_Flags != 0) {
+                        int oldValue = -1;
+                        const bool ok = coop::game::PatchPouchWeapon(d.m_Name, d.m_Value, d.m_Bonus, oldValue);
+                        Logging.Log("[botw-coop] objet au sol : bonus %x/%d %s sur %s dans l'inventaire (durabilite %d -> %d)",
+                            d.m_Bonus.m_Flags, d.m_Bonus.m_Value, ok ? "pose" : "NON POSE (arme introuvable)", d.m_Name, oldValue, d.m_Value);
+                    }
                 }
                 d = Drop {};
             }
@@ -612,6 +644,8 @@ namespace coop::weapons {
                     g.m_Value = 1;
                 g.m_DropId = s_NextDropId;
                 g.m_Owner = coop::session::g_LocalId;
+                g.m_BonusFlags = lg.m_Bonus.m_Flags; /* repose sur la copie quand le partenaire la ramasse */
+                g.m_BonusValue = lg.m_Bonus.m_Value;
                 std::memcpy(g.m_Pos, &lg.m_Pos[0], sizeof(g.m_Pos));
                 if (!g_GiftOut.Push(g))
                     continue; /* file pleine : on reessaiera au releve suivant */

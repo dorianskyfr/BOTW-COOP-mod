@@ -233,6 +233,10 @@ namespace coop::game {
        Renvoie le nombre d'objets lus, -1 si l'inventaire est illisible. Fil du jeu. */
     int ReadPouch(PouchEntry* out, int max, std::uint32_t typeMask = 0xffffffffu);
 
+    /* Arme de l'inventaire de ce nom, sans bonus (de preference de durabilite `value`) : lui donne ce bonus
+       et cette durabilite (value > 0). oldValue : sa durabilite avant. false si aucune. Fil du jeu. */
+    bool PatchPouchWeapon(const char* name, int value, const WeaponBonus& bonus, int& oldValue);
+
     /* Voyage du jeu (changement de lieu avec chargement) : carte "MainField/A-1", point "StartPos_CDungeon118".
        Le jeu peut l'ignorer pendant les ~20 s qui suivent un chargement. Fil du jeu. */
     bool ChangeStage(const char* map, const char* startPos);
