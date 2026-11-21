@@ -916,6 +916,21 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.06 Doublon d'une arme équipée d'office retiré (2026-11-21, essais `ue1` à `ue4`, Eden) - [V] image et journaux ; ramassage simultané réel non vérifié
+
+- Limite de 5.97 : ramassée les mains vides, l'arme est équipée d'office par le jeu, et `removeItem` ne prend jamais un objet équipé. Le doublon restait.
+- `uking::ui::PauseMenuDataMgr::removeWeaponIfEquipped(this, const SafeString&)` (décomp `uiPauseMenuDataMgr.cpp` ; en 1.5.0 à 0x970a04, juste après `removeItem` à 0x9704bc) retrouvée en 1.9.0 à main+0xd93658, la fonction qui suit `removeItem`. Désassemblage :
+  - verrou this+0x28 ;
+  - vérification du joueur (main+0xcc6fd0) ;
+  - parcours de la liste this+0x68 : premier objet de ce nom dont l'octet +0x24 (équipé) est non nul ;
+  - destruction.
+- `RemoveInventoryItem` (`game.cpp`) : si l'objet visé est équipé, elle appelle cette fonction. Elle retire aussi l'acteur tenu (`ue1` : sans cela, Link gardait l'arme en main). C'est l'acteur de ce nom porté par Link : à moins de 0,9 m de son axe, entre 0,3 et 2,2 m au-dessus de ses pieds, comme le relevé des objets portés. Un objet du même nom posé au sol n'est jamais pris (relecture Codex).
+- [V] Outil d'essai `-DCOOP_TEST_REMOVE_EQUIPPED` (`drive.py unequiptest`, bouton 46) : retire l'arme équipée par ce même chemin.
+  - `ue2` : `Weapon_Sword_019 retiree OUI (objets 18 -> 17)`, acteur tenu retiré ; au menu, plus d'arme équipée ni dans le dos de Link (image `2026-11-21_arme-equipee-retiree_avant-apres-menu_ue2.png`) ; le jeu continue.
+  - `ue3`, `ue4` : même résultat par le vrai chemin, arme en main ou dans le dos.
+- **Non vérifié** : un vrai ramassage simultané où le jeu équipe d'office l'arme ramassée (le chemin appelé est le même).
+- Relecture **Codex**, 1 remarque P2, retenue (acteur tenu identifié par sa position sur Link, pas seulement par son nom).
+
 ### 6.05 Explosion des bombes recréée chez l'autre : c'était le moment de l'annonce (2026-11-21, essais `bw1`, `bs3`, `bx4` à `bx8`, Eden) - [V] image et journaux
 
 - `bw1` (outil `-DCOOP_TEST_BOMB_WATCH`, tout acteur nouveau à moins de 40 m de notre bombe) : à l'explosion, **aucun acteur nouveau**. La gerbe vient de la bombe elle-même.

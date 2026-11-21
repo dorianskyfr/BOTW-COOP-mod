@@ -236,6 +236,10 @@ def main():
             # Essai combat : le plugin pose Link a 12 m du Bokoblin actif le plus proche.
             p.pad(buttons=1 << 53, ms=300)
             p.log("approach : Link pose a 12 m du Bokoblin le plus proche")
+        elif op == "unequiptest":
+            # Essai (COOP_TEST_REMOVE_EQUIPPED) : le plugin retire l'arme equipee de l'inventaire.
+            p.pad(buttons=1 << 46, ms=300)
+            p.log("unequiptest : retrait de l'arme equipee demande")
         elif op == "bombtest":
             # Essai (COOP_TEST_BOMB_SELF) : un appui cree une bombe devant Link, le suivant la fait exploser.
             p.pad(buttons=1 << 47, ms=300)

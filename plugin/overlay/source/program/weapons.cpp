@@ -433,7 +433,7 @@ namespace coop::weapons {
                     if (p.m_Item == removed)
                         p.m_Item = item;
             Logging.Log("[botw-coop] objet au sol : %s ramasse aussi par le joueur %d (qui l'avait lache) au meme moment : DOUBLON, "
-                "notre exemplaire %s%s (objets %d -> %d)", name, from, ok ? "retire de l'inventaire" : "NON RETIRE (equipe ou introuvable)",
+                "notre exemplaire %s%s (objets %d -> %d)", name, from, ok ? "retire de l'inventaire" : "NON RETIRE (introuvable)",
                 weapon && item == 0 ? " (arme precise inconnue : une de ce nom)" : "", before, after);
             char msg[96];
             if (const char* label = coop::config::ItemNameFor(Crc32(name)))
@@ -858,6 +858,16 @@ namespace coop::weapons {
                 Logging.Log("[botw-coop] objet au sol : chargement, %d objet(s) partage(s) oublie(s) sans annonce", n);
         }
         ApplyIncomingGifts();
+#ifdef COOP_TEST_REMOVE_EQUIPPED
+        {
+            static int s_Seen = 0;
+            const int n = g_TestRemoveEquipped.load(std::memory_order_acquire);
+            if (n != s_Seen && coop::game::IsWorldReady()) {
+                s_Seen = n;
+                coop::game::DebugRemoveEquippedWeapon();
+            }
+        }
+#endif
         if (++s_LocalFrames % ScanEvery != 0)
             return;
         coop::game::PlayerState st;

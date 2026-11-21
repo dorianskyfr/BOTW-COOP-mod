@@ -1360,6 +1360,33 @@ namespace coop::game {
         return true;
     }
 
+#ifdef COOP_TEST_REMOVE_EQUIPPED
+    /* Essai (NOTES 6.06) : retire l'arme equipee (type 0) par le meme chemin que le doublon d'un ramassage simultane. */
+    void DebugRemoveEquippedWeapon() {
+        const auto mgr = PauseMenuDataMgr();
+        if (mgr == 0)
+            return;
+        PouchEntry entries[64];
+        const int n = ReadPouch(entries, 64, 1u << 0);
+        for (int i = 0; i < n; i++) {
+            if (!entries[i].m_Equipped)
+                continue;
+            std::uintptr_t items[32];
+            const int k = ListPouchWeapons(entries[i].m_Name, items, 32);
+            for (int j = 0; j < k; j++) {
+                if (Peek<std::uint8_t>(items[j] + 0x24) == 0)
+                    continue;
+                int before = -1, after = -1;
+                const bool ok = RemoveInventoryItem(entries[i].m_Name, items[j], before, after);
+                Logging.Log("[botw-coop] essai arme equipee : %s retiree %s (objets %d -> %d)", entries[i].m_Name, ok ? "OUI" : "NON",
+                    before, after);
+                return;
+            }
+        }
+        Logging.Log("[botw-coop] essai arme equipee : aucune arme equipee trouvee (%d armes)", n);
+    }
+#endif
+
     bool RemoveInventoryItem(const char* name, std::uintptr_t target, int& before, int& after, std::uintptr_t* removed) {
         /*
          * uking::ui::PauseMenuDataMgr::removeItem(this, const SafeString& nom) a main+0xd93320 : fonction qui cite
@@ -1370,7 +1397,7 @@ namespace coop::game {
          * saveToGameData, deverrouillage.
          * target (arme, arc, bouclier) : l'objet precis a retirer. removeItem prenant le premier non equipe de ce
          * nom, on echange d'abord sa durabilite (+0x20) et son bonus (+0x80, +0x88) avec ceux de target : c'est
-         * bien la copie en trop qui disparait. target equipe : rien n'est fait (false). Fil du jeu.
+         * bien la copie en trop qui disparait. target equipe : removeWeaponIfEquipped (ci-dessous). Fil du jeu.
          */
         constexpr std::uintptr_t RemoveItem = 0xd93320;
         constexpr std::uintptr_t SafeStringVtableSlot = 0x1d66260;
@@ -1396,7 +1423,61 @@ namespace coop::game {
                 if (first == 0 && Peek<std::uint8_t>(items[i] + 0x24) == 0)
                     first = items[i];
             }
-            if (!listed || first == 0 || Peek<std::uint8_t>(target + 0x24) != 0)
+            if (!listed)
+                return false;
+            if (Peek<std::uint8_t>(target + 0x24) != 0) {
+                /*
+                 * target equipe (le jeu equipe d'office une arme ramassee les mains vides, NOTES 5.97) : removeItem ne
+                 * prend jamais un objet equipe. uking::ui::PauseMenuDataMgr::removeWeaponIfEquipped(this, const
+                 * SafeString&) a main+0xd93658 (NOTES 6.06) : en 1.5.0 elle suit removeItem (decomp
+                 * data/uking_functions.csv, 0x970a04 apres 0x9704bc) ; en 1.9.0, la fonction qui suit removeItem prend
+                 * le verrou this+0x28, verifie le joueur (main+0xcc6fd0), parcourt la liste this+0x68 et retient le
+                 * premier objet de ce nom dont l'octet +0x24 (equipe) est non nul, puis le detruit. Un seul objet est
+                 * equipe par type : c'est target.
+                 */
+                constexpr std::uintptr_t RemoveWeaponIfEquipped = 0xd93658;
+                struct SafeString {
+                    std::uintptr_t m_Vtable;
+                    const char* m_Str;
+                } eq { vtSlot + 0x10, name };
+                if (removed != nullptr)
+                    *removed = target;
+                before = Peek<std::int32_t>(mgr + ItemListCount);
+                reinterpret_cast<void (*)(std::uintptr_t, const SafeString&)>(base + RemoveWeaponIfEquipped)(mgr, eq);
+                after = Peek<std::int32_t>(mgr + ItemListCount);
+                if (after >= before)
+                    return false;
+                /* L'arme reste sinon dans la main de Link (essai ue1). On retire aussi l'acteur tenu (essai ue2 : retire,
+                   plus d'arme au menu, pas de plantage) : le plus proche de ce nom porte par Link, c'est-a-dire a moins de
+                   0,9 m de son axe et entre 0,3 et 2,2 m au-dessus de ses pieds, comme le releve des objets portes
+                   (weapons.cpp, MaxFlat/MinHeight/MaxHeight). Un objet de ce nom pose au sol n'est jamais pris
+                   (relecture Codex). */
+                PlayerState st;
+                if (ReadPlayer(st)) {
+                    std::uintptr_t held = 0;
+                    float best = 1e9f;
+                    ForEachActor([&](std::uintptr_t actor) {
+                        if (std::strncmp(reinterpret_cast<const char*>(actor + s_ActorNameOffset), name, 63) != 0)
+                            return false;
+                        float p[3];
+                        GetActorPos(actor, p);
+                        const float dx = p[0] - st.m_Pos[0], dz = p[2] - st.m_Pos[2], dy = p[1] - st.m_Pos[1];
+                        const float flat = dx * dx + dz * dz;
+                        if (flat > 0.9f * 0.9f || dy < 0.30f || dy > 2.2f)
+                            return false;
+                        if (flat < best) {
+                            best = flat;
+                            held = actor;
+                        }
+                        return false;
+                    });
+                    const bool gone = held != 0 && DeleteActor(held);
+                    Logging.Log("[botw-coop] objet au sol : arme equipee %s retiree de l'inventaire, acteur tenu %s", name,
+                        held == 0 ? "introuvable" : gone ? "retire" : "NON retire");
+                }
+                return true;
+            }
+            if (first == 0)
                 return false;
             if (removed != nullptr)
                 *removed = first;  /* c'est cet objet que removeItem detruit (il prend les valeurs de target) */

@@ -294,6 +294,18 @@ namespace coop::input_inject {
                         }
                         buttons &= ~(1ull << 63);
                     }
+#ifdef COOP_TEST_REMOVE_EQUIPPED
+                    /* Bit 46 : essai, retire l'arme equipee (weapons.cpp, game::DebugRemoveEquippedWeapon). */
+                    if ((buttons >> 46) & 1) {
+                        static std::uint64_t s_LastRemove = 0;
+                        const auto cmdR = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmdR != s_LastRemove) {
+                            s_LastRemove = cmdR;
+                            coop::weapons::g_TestRemoveEquipped.fetch_add(1, std::memory_order_release);
+                        }
+                        buttons &= ~(1ull << 46);
+                    }
+#endif
 #ifdef COOP_TEST_BOMB_SELF
                     /* Bit 47 : essai bombe seule (bombs.cpp) : un appui cree, le suivant fait exploser. */
                     if ((buttons >> 47) & 1) {

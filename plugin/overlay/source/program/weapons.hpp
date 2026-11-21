@@ -117,6 +117,9 @@ namespace coop::weapons {
     /* Releve des objets portes par le joueur local, dons. Fil du jeu, chaque image. */
     void OnFrameLocal();
 
+    /* Essai (COOP_TEST_REMOVE_EQUIPPED) : appuis du bouton d'essai 46, lus par le fil du jeu. */
+    inline std::atomic<int> g_TestRemoveEquipped { 0 };
+
     /* Objets du partenaire, poses sur le pantin (puppetMtx : sa matrice de cette image). */
     void OnFramePuppet(const float puppetMtx[12]);
 

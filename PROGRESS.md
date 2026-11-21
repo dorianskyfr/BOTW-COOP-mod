@@ -113,7 +113,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 - **Objets lâchés au sol** :
   - partagés si le partenaire est à moins de 120 m ;
   - un objet lâché après la dernière sauvegarde puis rechargé se retrouve dans l'inventaire, et la copie de l'autre reste (choix : pas de perte) ;
-  - ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre se le voit retirer (NOTES 5.97), sauf si le jeu a équipé l'arme d'office (mains vides) : le doublon reste alors.
+  - ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre se le voit retirer (NOTES 5.97), y compris si le jeu a équipé l'arme d'office (NOTES 6.06 ; mécanisme vérifié par un outil d'essai, pas encore par un vrai ramassage simultané).
 - **Bombes de la tablette** (NOTES 5.99, 6.05) : l'explosion est recréée chez l'autre (vue de près, pas encore de loin) ; elle peut blesser le joueur proche dans son propre monde ; une copie prise dans une explosion chez soi n'est pas recréée avant la bombe suivante ; ramasser la copie de la bombe de l'autre n'est pas essayé.
 - **Arbitrage par le serveur** (NOTES 6.00) : seulement pour le rôle des ennemis ; vérifié par les journaux, pas à l'image. Avec un relais plus ancien, chaque jeu reprend l'ancienne règle locale.
 - **Gardiens miniatures des sanctuaires** : pas suivis par le mod (chacun les siens).
