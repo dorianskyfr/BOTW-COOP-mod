@@ -892,6 +892,44 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - Gemini : 7 remarques, toutes rejetées après vérification dans le code (« return manquant » : les deux appels suivants testent déjà le monde ; « adresses en dur » : tout le mod est fixé sur 1.9.0 ; « ne sauve que les épées » : +0x68 est la liste entière ; etc.). Une seule est juste : le doublon par rechargement, voir les limites.
 - Limite : un joueur qui lâche un objet après sa dernière sauvegarde puis recharge le retrouve dans son inventaire, et la copie de l'autre reste. Choix assumé : sinon un objet lâché avant la sauvegarde serait perdu pour les deux.
 
+### 6.00 Le serveur arbitre le rôle des ennemis (2026-11-21, essai `em1`, Eden) - [V] journaux
+
+- Avant : chaque jeu décidait seul s'il faisait foi pour un ennemi ou suivait la copie de l'autre, en comparant sa distance à la dernière distance reçue de l'autre, souvent périmée. Les deux pouvaient se suivre l'un l'autre (`gl4`) ou se passer la main plusieurs fois par seconde (`gd4`) ; il avait fallu des correctifs (marge, `EDST`, plus petit identifiant).
+- Maintenant (`tools/relay.py`) :
+  - le serveur garde la dernière distance de chaque joueur à chaque ennemi, lue dans les messages qui passent déjà (`EMTX` de celui qui fait foi, `EDST` de celui qui suit) ;
+  - il donne la main au plus proche ; le propriétaire la garde tant que l'autre n'est pas plus près de 2 m ; une distance de plus de 3 s ne compte plus ; un joueur qui se déconnecte perd tout de suite ses ennemis ;
+  - il l'annonce aux deux : `EOWN <joueur qui fait foi> <hachage> <numéro>`, à chaque changement et chaque seconde. Le numéro vient d'un compteur commun, il ne fait que monter.
+- Plugin (`enemy_life.cpp`) : un bail reçu depuis moins de ~3 s décide (on suit seulement si l'autre fait foi et que sa copie est fraîche) ; sinon, ancienne règle locale (relais plus ancien, pas de nouvelles). Un plugin plus ancien ignore `EOWN` : pas de changement de version du protocole.
+- Pas d'arbitrage des ramassages au sol : la règle actuelle (celui qui a lâché l'objet le garde) est appliquée à l'identique par les deux jeux, sans désaccord possible ; un arbitre n'ajouterait qu'un aller-retour. Le cas encore ouvert (arme équipée d'office par le jeu) ne dépend pas de qui décide.
+- Essai `em1` (deux Eden, ennemis de la falaise près de (-3048 ; 85 ; -567)) :
+  - le serveur passe la main au plus proche, marge respectée (exemples : `J1 34.8 m, J2 41.9 m` -> J1 ; `J1 74.2 m, J2 37.8 m` -> J2) ;
+  - les deux jeux appliquent la même décision : Bokoblin `e0ef9dd0`, J1 « fait foi » (bail n.9) alors que J2 est 1 m plus près (dans la marge), J2 « suit la copie de l'autre joueur ».
+  - Non vu à l'image.
+- Relais : 128/128 essais (7 nouveaux : premier joueur, marge, reprise de la main, rappel chaque seconde).
+- Relectures :
+  - **Codex, 2 remarques, retenues** : P1, un client lent déconnecté pendant un rappel de bail pouvait faire supprimer deux fois le même bail (`KeyError`, relais arrêté) : retraits sans erreur, bail revu seulement s'il existe encore ; P2, un ennemi oublié puis revu repartait au bail 1, refusé par le plugin : compteur commun, et le plugin accepte tout bail quand le sien est périmé (redémarrage du serveur).
+  - **Gemini** : premier passage arrêté par son délai de 10 min (pas une relecture). Second passage (modèle Flash Medium), 5 remarques.
+    - Retenues : juste après un changement de main, celui qui ne fait plus foi attend la copie de l'autre sans envoyer sa position comme s'il faisait foi (il n'annonce que sa distance) ; un bail dont le propriétaire se déconnecte, sans autre distance fraîche, n'a plus de propriétaire.
+    - Rejetées après vérification :
+      - « `EDST zz` arrête le relais » : la ligne est validée (`valid_fields`) avant d'arriver là ; l'essai qui l'envoie passe ;
+      - « rafale de baux chaque seconde » : seuls les baux avec une distance de moins de 3 s sont rappelés ;
+      - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
+- Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
+
+### 6.01 Explosion des bombes montrée chez l'autre (2026-11-21, essai `bm6`, Eden) - [V] journaux, pas à l'image
+
+- Acteur `Explode` (paquet `Actor/Pack/Explode.sbactorpack` de `Pack/TitleBG.pack`) : pas de modèle, IA `BombExplode`, capteur d'attaque `AtkExplode`. [V] `bm5` : la bombe de la tablette n'en crée pas en explosant ; elle explose elle-même.
+- L'émetteur annonce « explosée » (16e valeur de `BOMB`) quand sa bombe disparaît pendant que le monde est chargé, avec sa dernière place. Le partenaire crée `Explode` à cet endroit, une fois par bombe, s'il est à moins de 200 m.
+- [V] `bm6` (journaux) : deux bombes de J1 explosées, chez J2 `explosee en (-2879,3 ; 284,5 ; -461,9), explosion creee` puis `(-2926,2 ; 301,1 ; -455,7)`. Les deux fois la bombe avait roulé en contrebas, hors du champ : l'explosion n'est pas vue à l'image.
+- **Je ne peux pas confirmer** : la force de cette explosion (dégâts aux ennemis et au joueur proche) ni son apparence comparée à celle d'une vraie bombe. Les dégâts aux ennemis restent cohérents : la vie partagée est une valeur absolue (`LIFE`), les deux jeux convergent vers la même.
+- Une bombe qui disparaît sans exploser, monde chargé, serait aussi montrée comme une explosion (cas non trouvé dans les essais).
+- Relais : `BOMB` accepte une 16e valeur (0/1), 129/129 essais.
+- Relecture **Codex**, 3 remarques P2.
+  - Retenues : explosion arrivée pendant la création de la copie, perdue (montrée maintenant) ; numéro de bombe réutilisé après un redémarrage du partenaire, explosion pas montrée (mémoire remise à zéro à chaque nouvelle bombe).
+  - Rejetée : « `BOMB` à 16 valeurs incompatible avec l'ancien relais » : `BOMB` n'a jamais été publié (l'ancien relais ne le transmettait pas du tout), et le launcher installe relais et plugin ensemble.
+- Ces deux corrections sont compilées mais pas réessayées en jeu.
+- Preuves : `docs/evidence/2026-11-21_bombes-explosion_bm6.log`.
+
 ### 5.99 Bombes de la tablette montrées au partenaire ; rayons des Gardiens miniatures (2026-11-21, essais `bm1` à `bm4`, `gm2`, Eden) - [V] image et journaux
 
 - **Problème signalé** : quand un joueur sort une bombe, l'autre ne la voit pas. [V] `bm1` : la bombe de J1 est un acteur `RemoteBomb` (1,8 m au-dessus de Link), J2 n'en a aucun.

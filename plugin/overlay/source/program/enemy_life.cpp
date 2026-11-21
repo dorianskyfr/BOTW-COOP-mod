@@ -39,6 +39,10 @@ namespace coop::enemy_life {
             bool          m_RemoteFollowing = false;
             std::uint64_t m_RemoteDistFrame = 0;
             std::uint64_t m_DistSentFrame = 0;
+            /* Bail donne par le serveur (EOWN, NOTES 6.00) : joueur qui fait foi, numero, image de reception. */
+            int           m_LeaseOwner = 0;
+            std::uint32_t m_LeaseEpoch = 0;
+            std::uint64_t m_LeaseFrame = 0;
 
             /* Animations, par creneau : derniere sequence annoncee par l'autre joueur, et celle rejouee ici. */
             char          m_RemoteSeq[SeqSlots][48] = {};
@@ -447,6 +451,16 @@ namespace coop::enemy_life {
             const bool remoteFollows = e->m_RemoteFollowing && s_Frames - e->m_RemoteDistFrame < PosStaleFrames;
             if (follow && remoteFollows && localId < e->m_RemoteFrom)
                 follow = false;
+            /* Serveur arbitre (NOTES 6.00) : s'il a donne un bail recent pour cet ennemi, c'est lui qui decide.
+               Les deux jeux suivent la meme decision ; la regle locale ci-dessus ne sert plus qu'avec un relais
+               plus ancien ou sans nouvelles du serveur depuis ~3 s. On ne suit que si la copie de l'autre est fraiche. */
+            const bool leased = e->m_LeaseFrame != 0 && s_Frames - e->m_LeaseFrame < PosStaleFrames;
+            if (leased)
+                follow = e->m_LeaseOwner != localId && fresh;
+            /* L'autre fait foi d'apres le serveur mais sa copie n'est pas encore arrivee (juste apres un changement de
+               main) : notre IA garde la main en attendant, mais on n'envoie pas notre position comme si on faisait foi ;
+               on annonce seulement notre distance (relecture Gemini). */
+            const bool waitingForOwner = leased && e->m_LeaseOwner != localId && !fresh;
             if (coop::config::g_EnemyAnim != 0) {
                 Tracked* t = Track(info.m_HashId, coop::game::GetActorASList(info.m_Actor), follow, s_Frames);
                 for (int s = 0; s < SeqSlots; s++) {
@@ -490,7 +504,7 @@ namespace coop::enemy_life {
             NoteGuardian(info, follow);
             (follow ? s_FollowedNow : s_LeadNow)++;
 
-            if (follow && (s_Frames - e->m_DistSentFrame >= PosKeepAlive || e->m_DistSentFrame == 0)) {
+            if ((follow || waitingForOwner) && (s_Frames - e->m_DistSentFrame >= PosKeepAlive || e->m_DistSentFrame == 0)) {
                 /* Celui qui suit annonce sa distance (EDST) : l'autre compare a une valeur a jour. */
                 PosMsg dm;
                 dm.m_Hash = info.m_HashId;
@@ -499,8 +513,10 @@ namespace coop::enemy_life {
                 if (g_PosOutgoing.Push(dm))
                     e->m_DistSentFrame = s_Frames;
             }
-            if (!follow)
+            if (!follow && !waitingForOwner)
                 e->m_DistSentFrame = 0; /* au prochain passage a « suivre », annonce immediate */
+            if (waitingForOwner)
+                return false;
 
             if (follow) {
                 const float ex = e->m_RemoteMtx[3] - info.m_Pos[0], ey = e->m_RemoteMtx[7] - info.m_Pos[1], ez = e->m_RemoteMtx[11] - info.m_Pos[2];
@@ -558,7 +574,26 @@ namespace coop::enemy_life {
         for (int n = 0; n < 64 && g_PosIncoming.Pop(pm); n++) {
             if (!ready)
                 continue;
-            Entry* e = Find(pm.m_Hash, true);
+            /* Un bail ne cree pas d'entree (la table est partagee avec les vies) : l'entree vient de notre releve
+               ou d'un EMTX ; le serveur rappelle chaque bail une fois par seconde. */
+            Entry* e = Find(pm.m_Hash, !pm.m_Lease);
+            if (e == nullptr)
+                continue;
+            if (pm.m_Lease) {
+                /* Un bail plus ancien qu'un bail encore valable est ignore (garde-fou). Si le notre est perime, tout bail
+                   est accepte : le serveur a pu redemarrer et recompter depuis 1 (relecture Codex). */
+                const bool current = e->m_LeaseFrame != 0 && s_Frames - e->m_LeaseFrame < PosStaleFrames;
+                if (current && pm.m_Epoch < e->m_LeaseEpoch)
+                    continue;
+                static int s_LeaseLogs = 0;
+                if ((e->m_LeaseOwner != pm.m_FromId || e->m_LeaseFrame == 0) && s_LeaseLogs++ < 40)
+                    Logging.Log("[botw-coop] position ennemi : %08x, le serveur donne la main a J%d (bail n.%u)", pm.m_Hash, pm.m_FromId,
+                        pm.m_Epoch);
+                e->m_LeaseOwner = pm.m_FromId;
+                e->m_LeaseEpoch = pm.m_Epoch;
+                e->m_LeaseFrame = s_Frames;
+                continue;
+            }
             e->m_RemoteDist = pm.m_Dist;
             e->m_RemoteFrom = pm.m_FromId;
             e->m_RemoteDistFrame = s_Frames;

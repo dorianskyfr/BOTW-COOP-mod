@@ -15,7 +15,9 @@
  *   BOMB <emplacement 0 ronde / 1 cube> <type 0..4> <numero> <matrice 3x4 monde> ;
  * - partenaire : le meme acteur cree au meme endroit (poignee de creation), pose a chaque image ; retire quand
  *   le type passe a 0 (bombe explosee ou rangee), quand le numero change ou sans nouvelles depuis ~3 s.
- *   L'explosion elle-meme n'est pas montree chez l'autre : la copie disparait.
+ * - bombe disparue monde charge (explosion) : type 0 avec le drapeau « explosee » et sa derniere place ; le
+ *   partenaire y cree l'acteur Explode (meme paquet TitleBG.pack : pas de modele, IA BombExplode, capteur
+ *   d'attaque AtkExplode), une fois par bombe.
  */
 namespace coop::bombs {
 
@@ -24,6 +26,8 @@ namespace coop::bombs {
     struct State {
         std::uint32_t m_Kind = 0;   /* 0 aucune, 1..4 : type (bombs.cpp, Names) */
         std::uint32_t m_Serial = 0; /* numero de la bombe chez l'emetteur, change a chaque nouvelle bombe */
+        /* Type 0 seulement : la bombe m_Serial vient de disparaitre, monde charge (explosee) ; m_Mtx = sa derniere place. */
+        std::uint32_t m_Exploded = 0;
         float m_Mtx[12] = {};
     };
 

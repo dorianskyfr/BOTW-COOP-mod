@@ -97,6 +97,13 @@ MAX_MOON_FLAGS = 200000
 MAX_LIVES = 20000
 WPN_SLOTS = 6
 BOMB_SLOTS = 2  # bombe ronde, bombe cube (plugin, bombs.hpp)
+# Arbitrage du role des ennemis (NOTES 6.00) ; reglages choisis, alignes sur le plugin (enemy_life.cpp :
+# PosHysteresis 2 m, PosStaleFrames ~3 s, envoi au moins une fois par seconde).
+LEASE_FRESH = 3.0     # s : une distance plus vieille ne compte plus
+LEASE_MARGIN = 2.0    # m : l'autre doit etre plus pres de 2 m pour prendre la main
+LEASE_RESEND = 1.0    # s : rappel du bail de chaque ennemi annonce
+LEASE_FORGET = 10.0   # s : ennemi oublie sans nouvelle distance
+MAX_LEASES = 4096     # borne de memoire (un client ne peut pas la faire grossir sans fin)
 STATE_INTERVAL = 0.25
 STATE_BATCH = 100
 
@@ -143,7 +150,7 @@ def auth_digest(challenge, password):
 #   GPCK : objet partage ramasse (numero, joueur qui l'avait lache), retransmis tel quel ; l'autre retire
 #          sa copie. Les deux sont ignores par un plugin plus ancien.
 #   BOMB : bombe de la tablette (emplacement 0 ronde / 1 cube, type 0 aucune .. 4, numero de la bombe chez
-#          l'emetteur, matrice 3x4 monde),
+#          l'emetteur, matrice 3x4 monde ; 16e valeur facultative : 1 = bombe explosee),
 #          retransmise telle quelle ; l'autre montre la meme bombe (NOTES 5.99). Ignoree par un plugin plus ancien.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
                 "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1, "DROT": 2, "EDST": 2,
@@ -156,14 +163,14 @@ STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2
 # DROT peut porter une 3e valeur : les drapeaux d'etat de la Creature chez l'emetteur (bits, hexadecimal).
 # GDRP peut porter 2 valeurs de plus : le bonus de l'arme (bits hexadecimaux, valeur) ; GPCK une 3e : 0 ramasse,
 #   1 detruit (NOTES 5.96).
-OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2, "EAS": 1, "DROT": 1, "GDRP": 2, "GPCK": 1}
+OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2, "EAS": 1, "DROT": 1, "GDRP": 2, "GPCK": 1, "BOMB": 1}
 
 # Nature de chaque valeur, valeurs facultatives comprises : f nombre fini, i entier, x hexadecimal,
 # n nom d'acteur. Une ligne dont une valeur ne correspond pas est ignoree (jamais retransmise).
 FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi", "FLAGR": "xi", "LIFE": "xi",
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
                "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i", "DROT": "xfx", "EDST": "xf",
-               "GDRP": "xnfffixi", "GPCK": "xii", "BOMB": "iii" + "f" * 12}
+               "GDRP": "xnfffixi", "GPCK": "xii", "BOMB": "iii" + "f" * 12 + "i"}
 
 
 def valid_fields(kind, values):
@@ -466,6 +473,78 @@ def main():
             fields.append(str(authority.climate))
         return f"TIME 0 {' '.join(fields)}\n"
 
+    # Arbitrage du role des ennemis (NOTES 6.00). Pour chaque ennemi annonce, le serveur garde la derniere
+    # distance de chaque joueur (EMTX de celui qui fait foi, EDST de celui qui suit) et donne la main au plus
+    # proche, avec une marge : le proprietaire la garde tant que l'autre n'est pas plus pres de LEASE_MARGIN.
+    # Il l'annonce a tous : EOWN <joueur qui fait foi> <hachage> <numero du bail>, a chaque changement et
+    # chaque seconde. Avant, chaque jeu decidait seul, avec la distance souvent perimee de l'autre : les deux
+    # pouvaient se suivre l'un l'autre (essai gl4) ou se passer la main plusieurs fois par seconde (gd4).
+    leases = {}  # hachage -> Lease
+
+    class Lease:
+        __slots__ = ("owner", "epoch", "reports")
+
+        def __init__(self):
+            self.owner = None
+            self.epoch = 0
+            self.reports = {}  # joueur -> (distance, instant)
+
+    def lease_broadcast(h, lease):
+        line = f"EOWN {lease.owner} {h:08x} {lease.epoch}\n"
+        for other in list(clients.values()):
+            if not other.pilot:
+                send(other, line)
+
+    def lease_decide(h, lease, now, resend=False):
+        online = {c.pid for c in clients.values() if not c.pilot}
+        fresh = {pid: d for pid, (d, t) in lease.reports.items() if pid in online and now - t <= LEASE_FRESH}
+        if not fresh:
+            return
+        best = min(fresh, key=lambda pid: (fresh[pid], pid))
+        owner = lease.owner
+        if owner not in fresh or (best != owner and fresh[best] < fresh[owner] - LEASE_MARGIN):
+            # Numero pris dans un compteur commun a tous les ennemis : un ennemi oublie puis revu repart plus
+            # haut, jamais a 1 (sinon le plugin, qui ignore un bail plus ancien, le refusait ; relecture Codex).
+            lease_epoch[0] += 1
+            lease.owner = best
+            lease.epoch = lease_epoch[0]
+            lease_changes[0] += 1
+            if lease_changes[0] <= 40 or lease_changes[0] % 200 == 0:
+                where = ", ".join(f"J{pid} {d:.1f} m" for pid, d in sorted(fresh.items()))
+                log(f"ennemi {h:08x} : la main passe a J{best} (bail n.{lease.epoch} ; {where})")
+            lease_broadcast(h, lease)
+        elif resend:
+            lease_broadcast(h, lease)
+
+    lease_changes = [0]
+    lease_epoch = [0]
+
+    def lease_report(client, h, dist, now):
+        if client.pilot or not (0.0 <= dist < 100000.0):
+            return
+        lease = leases.get(h)
+        if lease is None:
+            if len(leases) >= MAX_LEASES:
+                return
+            lease = leases[h] = Lease()
+        lease.reports[client.pid] = (dist, now)
+        lease_decide(h, lease, now)
+
+    # Un envoi peut deconnecter un client trop lent (send -> drop), qui retire alors ses distances et des
+    # baux pendant qu'on les parcourt : chaque bail est revu seulement s'il existe encore, et les retraits
+    # ne lèvent pas d'erreur (relecture Codex : KeyError qui arretait le relais).
+    def lease_tick(now):
+        for h, lease in list(leases.items()):
+            if leases.get(h) is not lease:
+                continue
+            for pid, (_, t) in list(lease.reports.items()):
+                if now - t > LEASE_FORGET:
+                    lease.reports.pop(pid, None)
+            if not lease.reports:
+                leases.pop(h, None)
+                continue
+            lease_decide(h, lease, now, resend=True)
+
     def drop(client, why, announce=True):
         nonlocal clock_owner
         if client.sock not in clients:
@@ -480,6 +559,18 @@ def main():
         client.pending.clear()
         if clock_owner is client:
             clock_owner = None
+        # Ennemis qu'il tenait : la main passe tout de suite a un joueur encore en ligne.
+        for h, lease in list(leases.items()):
+            if leases.get(h) is not lease:
+                continue
+            lease.reports.pop(client.pid, None)
+            if not lease.reports:
+                leases.pop(h, None)
+            elif lease.owner == client.pid:
+                # Personne d'autre n'a de distance fraiche : plus de proprietaire, le prochain qui annonce
+                # l'ennemi le prend (relecture Gemini).
+                lease.owner = None
+                lease_decide(h, lease, time.monotonic())
         # Un jeu refuse n'est jamais entre dans la session : rien a annoncer aux autres.
         if client.pilot or not announce or not entered(client):
             return
@@ -487,6 +578,7 @@ def main():
             send(other, f"BYE {client.pid}\n")
 
     ticks = 0
+    last_lease_tick = time.monotonic()
     while True:
         # Etat complet demande par un joueur : 100 lignes par quart de seconde, pour
         # ne pas deborder la file de reception du plugin (vidée a ~500 drapeaux/s).
@@ -503,6 +595,9 @@ def main():
         ticks += 1
         if ticks % 20 == 0:
             save_state()
+        if now - last_lease_tick >= LEASE_RESEND:
+            last_lease_tick = now
+            lease_tick(now)
         timeout = 0.25
         for c in clients.values():
             deadline = entry_deadline(c)
@@ -736,6 +831,9 @@ def main():
                         client.emtx = getattr(client, "emtx", 0) + 1
                         if client.emtx == 1 or client.emtx % 200 == 0:
                             log(f"joueur {client.pid} : position d'ennemi n.{client.emtx} = {parts[1]} a {parts[2]} m de lui")
+                        lease_report(client, int(parts[1], 16), float(parts[2]), time.monotonic())
+                    elif parts[0] == "EDST":
+                        lease_report(client, int(parts[1], 16), float(parts[2]), time.monotonic())
                     elif parts[0] == "DEMO":
                         log(f"joueur {client.pid} : cinematique {payload}")
                     elif parts[0] == "DROT":

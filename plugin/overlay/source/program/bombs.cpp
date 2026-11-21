@@ -47,6 +47,10 @@ namespace coop::bombs {
         /* Nos bombes : acteur reconnu et numero annonce (change a chaque nouvelle bombe). */
         std::uintptr_t s_Own[Slots] = {};
         std::uint32_t  s_OwnSerial[Slots] = {};
+        float          s_OwnMtx[Slots][12] = {};
+        bool           s_OwnExploded[Slots] = {};
+        /* Derniere bombe du partenaire dont l'explosion a ete montree (une seule fois par bombe). */
+        std::uint32_t  s_ShownExplosion[Slots] = {};
         int            s_Logs = 0;
 
         bool Log() { return s_Logs++ < 80; }
@@ -130,16 +134,23 @@ namespace coop::bombs {
                 if (r.m_Actor[s] != s_Own[s]) {
                     if (r.m_Actor[s] != 0)
                         s_OwnSerial[s]++;
+                    /* Disparue pendant que le monde est charge (ScanLocal ne tourne qu'alors) : explosion. */
+                    s_OwnExploded[s] = r.m_Actor[s] == 0 && s_Own[s] != 0;
                     if (Log())
                         Logging.Log("[botw-coop] bombe : notre %s %s (n.%u)", s == 0 ? "bombe ronde" : "bombe cube",
-                            r.m_Actor[s] != 0 ? Names[r.m_Kind[s]] : "a disparu (explosee ou rangee)", s_OwnSerial[s]);
+                            r.m_Actor[s] != 0 ? Names[r.m_Kind[s]] : "a disparu (explosee)", s_OwnSerial[s]);
                 }
                 s_Own[s] = r.m_Actor[s];
                 State st;
                 st.m_Kind = r.m_Kind[s];
                 st.m_Serial = s_OwnSerial[s];
-                if (r.m_Actor[s] != 0)
+                if (r.m_Actor[s] != 0) {
                     coop::game::GetActorMtx(r.m_Actor[s], st.m_Mtx);
+                    std::memcpy(s_OwnMtx[s], st.m_Mtx, sizeof(st.m_Mtx));
+                } else if (s_OwnExploded[s]) {
+                    st.m_Exploded = 1;
+                    std::memcpy(st.m_Mtx, s_OwnMtx[s], sizeof(st.m_Mtx));
+                }
                 g_Local[s].Store(st);
             }
         }
@@ -164,8 +175,25 @@ namespace coop::bombs {
                 s_RemoteCount[s] = count;
                 s_RemoteChanged[s] = s_Frames;
             }
-            if (s_Frames - s_RemoteChanged[s] > StaleFrames || want.m_Kind >= KindCount)
+            const bool stale = s_Frames - s_RemoteChanged[s] > StaleFrames;
+            if (stale || want.m_Kind >= KindCount)
                 want.m_Kind = 0;
+            /* Explosion annoncee de la bombe qu'on montrait (meme numero) : l'acteur Explode a sa derniere place,
+               une seule fois par bombe, si elle est assez pres de nous. */
+            /* Aussi pendant la creation de la copie : sinon l'explosion etait perdue (relecture Codex). */
+            if (want.m_Kind == 0 && !stale && want.m_Exploded != 0 && c.m_Kind != 0 && want.m_Serial == c.m_Serial
+                && want.m_Serial != s_ShownExplosion[s]) {
+                s_ShownExplosion[s] = want.m_Serial;
+                const float at[3] = { want.m_Mtx[3], want.m_Mtx[7], want.m_Mtx[11] };
+                const float dx = at[0] - player[0], dy = at[1] - player[1], dz = at[2] - player[2];
+                if (dx * dx + dy * dy + dz * dz <= ShowRadius * ShowRadius) {
+                    const bool ok = coop::game::RequestCreateActorAwake("Explode", at);
+                    if (Log())
+                        Logging.Log("[botw-coop] bombe du partenaire : %s n.%u explosee en (%.1f, %.1f, %.1f), explosion %s", Names[c.m_Kind],
+                            want.m_Serial, static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]),
+                            ok ? "creee" : "REFUSEE");
+                }
+            }
             if (want.m_Kind == 0)
                 want.m_Serial = 0;
 
@@ -197,6 +225,10 @@ namespace coop::bombs {
                 c.m_Kind = want.m_Kind;
                 c.m_Serial = want.m_Serial;
                 c.m_State = want.m_Kind != 0 ? CopyState::Wanted : CopyState::None;
+                /* Nouvelle bombe : son explosion pourra etre montree, meme si son numero a deja servi (partenaire qui a
+                   relance son jeu et recompte depuis 1 ; relecture Codex). */
+                if (want.m_Kind != 0)
+                    s_ShownExplosion[s] = 0;
             }
 
             switch (c.m_State) {
@@ -254,6 +286,7 @@ namespace coop::bombs {
                 }
             for (int s = 0; s < Slots; s++) {
                 s_Own[s] = 0;
+                s_OwnExploded[s] = false; /* disparue avec le chargement : pas une explosion */
                 State st;
                 st.m_Serial = s_OwnSerial[s];
                 g_Local[s].Store(st);

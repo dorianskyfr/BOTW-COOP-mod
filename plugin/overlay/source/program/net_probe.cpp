@@ -345,15 +345,17 @@ namespace coop::net_probe {
                 /* Bombe de la tablette du partenaire : emplacement (0 ronde, 1 cube), type (0 aucune), matrice monde
                    3x4 (bombs.hpp). Position bornee comme GDRP (la carte fait ~12 km). */
                 int slot = -1;
-                unsigned kind = 0, serial = 0;
+                unsigned kind = 0, serial = 0, exploded = 0;
                 coop::bombs::State b;
                 float* o = b.m_Mtx;
-                if (std::sscanf(line, "BOMB %d %d %u %u %f %f %f %f %f %f %f %f %f %f %f %f", &id, &slot, &kind, &serial,
-                        &o[0], &o[1], &o[2], &o[3], &o[4], &o[5], &o[6], &o[7], &o[8], &o[9], &o[10], &o[11]) == 16
+                /* 16e valeur facultative : 1 = bombe explosee (bombs.hpp). */
+                if (std::sscanf(line, "BOMB %d %d %u %u %f %f %f %f %f %f %f %f %f %f %f %f %u", &id, &slot, &kind, &serial,
+                        &o[0], &o[1], &o[2], &o[3], &o[4], &o[5], &o[6], &o[7], &o[8], &o[9], &o[10], &o[11], &exploded) >= 16
                     && slot >= 0 && slot < coop::bombs::Slots && kind < static_cast<unsigned>(coop::bombs::KindCount)
                     && SaneMtx(o, 20000.0f)) {
                     b.m_Kind = kind;
                     b.m_Serial = serial;
+                    b.m_Exploded = (kind == 0 && exploded == 1) ? 1u : 0u;
                     coop::bombs::g_Remote[slot].Store(b);
                 }
             } else if (std::strncmp(line, "WPN ", 4) == 0) {
@@ -386,6 +388,11 @@ namespace coop::net_probe {
                 dm.m_DistOnly = true;
                 if (std::isfinite(dm.m_Dist) && dm.m_Dist >= 0.0f && dm.m_Dist < 100000.0f)
                     coop::enemy_life::g_PosIncoming.Push(dm);
+            } else if (coop::enemy_life::PosMsg lm; std::sscanf(line, "EOWN %d %x %u", &lm.m_FromId, &lm.m_Hash, &lm.m_Epoch) == 3) {
+                /* Arbitrage du serveur (NOTES 6.00) : joueur qui fait foi pour cet ennemi. */
+                lm.m_Lease = true;
+                if (lm.m_FromId > 0 && lm.m_FromId < 1000)
+                    coop::enemy_life::g_PosIncoming.Push(lm);
             } else if (coop::enemy_life::SeqMsg sm; std::sscanf(line, "EAS %d %x %47s %d", &sm.m_FromId, &sm.m_Hash, sm.m_Name, &sm.m_Slot) >= 3) {
                 /* Creneau absent (3 valeurs) : 0. Hors de 0..1 : ignore. */
                 if (sm.m_Slot >= 0 && sm.m_Slot < coop::enemy_life::SeqSlots)
@@ -708,11 +715,12 @@ namespace coop::net_probe {
                         const float* o = b.m_Mtx;
                         char bomb[256];
                         const int len = std::snprintf(bomb, sizeof(bomb),
-                            "BOMB %d %u %u %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n", k, static_cast<unsigned>(b.m_Kind),
+                            "BOMB %d %u %u %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %u\n", k, static_cast<unsigned>(b.m_Kind),
                             static_cast<unsigned>(b.m_Serial),
                             static_cast<double>(o[0]), static_cast<double>(o[1]), static_cast<double>(o[2]), static_cast<double>(o[3]),
                             static_cast<double>(o[4]), static_cast<double>(o[5]), static_cast<double>(o[6]), static_cast<double>(o[7]),
-                            static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]));
+                            static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]),
+                            static_cast<unsigned>(b.m_Exploded));
                         if (len > 0 && len < static_cast<int>(sizeof(bomb)) && !SendAll(s_Fd, bomb, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }

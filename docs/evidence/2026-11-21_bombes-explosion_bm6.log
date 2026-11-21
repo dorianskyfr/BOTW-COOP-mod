@@ -1,0 +1,29 @@
+﻿=== relais bm6 ===
+14:48:45.449 joueur 1 : bombe 0 = type 0 n.0 (position 0.000 0.000 0.000)
+14:48:45.449 joueur 1 : bombe 1 = type 0 n.0 (position 0.000 0.000 0.000)
+14:49:01.124 joueur 2 : bombe 0 = type 0 n.0 (position 0.000 0.000 0.000)
+14:49:01.124 joueur 2 : bombe 1 = type 0 n.0 (position 0.000 0.000 0.000)
+14:51:45.807 joueur 1 : bombe 0 = type 1 n.1 (position -2929.483 306.459 -441.134)
+14:52:15.014 joueur 1 : bombe 0 = type 0 n.1 (position -2879.280 284.492 -461.894)
+14:52:32.499 joueur 1 : bombe 0 = type 1 n.2 (position -2930.212 306.446 -436.336)
+14:53:04.229 joueur 1 : bombe 0 = type 0 n.2 (position -2926.152 301.087 -455.657)
+=== J1 ===
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.1)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.1)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.2)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.2)
+=== J2 ===
+[botw-coop] bombe du partenaire : RemoteBomb n.1 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.1 explosee en (-2879.3, 284.5, -461.9), explosion creee
+[botw-coop] bombe du partenaire : RemoteBomb retiree (explosee, rangee ou plus de nouvelles)
+[botw-coop] bombe du partenaire : RemoteBomb n.2 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.2 explosee en (-2926.2, 301.1, -455.7), explosion creee
+[botw-coop] bombe du partenaire : RemoteBomb retiree (explosee, rangee ou plus de nouvelles)
+=== bm7 (version finale, apres relecture) ===
+=== J1 ===
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.1)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.1)
+=== J2 ===
+[botw-coop] bombe du partenaire : RemoteBomb n.1 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.1 explosee en (-2927.3, 303.0, -453.5), explosion creee
+[botw-coop] bombe du partenaire : RemoteBomb retiree (explosee, rangee ou plus de nouvelles)

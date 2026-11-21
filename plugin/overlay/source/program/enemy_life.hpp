@@ -37,6 +37,10 @@ namespace coop::enemy_life {
         float         m_Mtx[12] = {};
         /* Vrai : message EDST, distance seule, envoye par celui qui suit la copie de l'autre (NOTES 5.91). */
         bool          m_DistOnly = false;
+        /* Vrai : message EOWN du serveur (NOTES 6.00) : m_FromId = joueur qui fait foi pour cet ennemi,
+           m_Epoch = numero du bail (augmente a chaque changement de main). Pas de matrice ni de distance. */
+        bool          m_Lease = false;
+        std::uint32_t m_Epoch = 0;
     };
 
     /* File a un producteur et un consommateur, sans verrou (meme principe que flags::Queue). */
