@@ -5,6 +5,7 @@
 #include "status.hpp"
 #include "gear.hpp"
 #include "weapons.hpp"
+#include "bombs.hpp"
 
 #include "clock.hpp"
 #include "beast_rotate.hpp"
@@ -215,6 +216,7 @@ namespace coop::input_inject {
                 COOP_PART();
                 coop::weapons::OnFrameLocal();
                 COOP_PART();
+                coop::bombs::OnFrame(); /* compte dans la part suivante (liste des parts inchangee) */
                 coop::remote_actor::OnFrame();
                 COOP_PART();
                 coop::world_sync::OnFrame();

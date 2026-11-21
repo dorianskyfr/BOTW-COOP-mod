@@ -892,6 +892,35 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - Gemini : 7 remarques, toutes rejetées après vérification dans le code (« return manquant » : les deux appels suivants testent déjà le monde ; « adresses en dur » : tout le mod est fixé sur 1.9.0 ; « ne sauve que les épées » : +0x68 est la liste entière ; etc.). Une seule est juste : le doublon par rechargement, voir les limites.
 - Limite : un joueur qui lâche un objet après sa dernière sauvegarde puis recharge le retrouve dans son inventaire, et la copie de l'autre reste. Choix assumé : sinon un objet lâché avant la sauvegarde serait perdu pour les deux.
 
+### 5.99 Bombes de la tablette montrées au partenaire ; rayons des Gardiens miniatures (2026-11-21, essais `bm1` à `bm4`, `gm2`, Eden) - [V] image et journaux
+
+- **Problème signalé** : quand un joueur sort une bombe, l'autre ne la voit pas. [V] `bm1` : la bombe de J1 est un acteur `RemoteBomb` (1,8 m au-dessus de Link), J2 n'en a aucun.
+- Acteurs : `RemoteBomb`, `RemoteBomb2`, `RemoteBombCube`, `RemoteBombCube2` (paquets `Actor/Pack/<nom>.sbactorpack` dans `Pack/TitleBG.pack`, RomFS 1.9.0).
+- Méthode (`bombs.cpp`) :
+  - chaque joueur relève ses bombes toutes les 3 images (une ronde, une cube au plus) et le fil réseau envoie `BOMB <emplacement> <type> <numéro> <matrice 3x4 monde>`, 10 fois par seconde tant qu'il y en a une, puis encore 2 s après sa disparition, puis une fois par seconde ;
+  - l'autre crée le même acteur (poignée de création), le pose chaque image (`SetActorBodyTransform`), le retire quand le type passe à 0, quand le numéro change ou sans nouvelles depuis ~3 s ;
+  - les copies (vivantes ou en cours de retrait) ne sont jamais renvoyées.
+- Essais :
+  - [V] `bm2` : la copie suit la bombe lancée par J1 jusqu'à sa position finale (70,3 ; 4,5 ; 53,5 chez les deux). Défaut trouvé : la copie retirée, encore listée quelques images, était prise pour une bombe à soi et renvoyée ; aller-retour sans fin toutes les 3 s. Corrigé (liste des copies en cours de retrait).
+  - [V] `bm3`, dehors : J2 voit la bombe tenue par J1 au-dessus de son personnage (image) ; les deux joueurs ont chacun une bombe, chacun voit les deux (image) ; explosion : la copie disparaît, plus d'aller-retour.
+  - [V] `bm4`, après relectures : copies créées en 1 image par la poignée, retirées à l'explosion des deux côtés, nouvelle bombe (n.2) recréée chez l'autre (journaux, image).
+- **Limites** :
+  - l'explosion n'est pas montrée chez l'autre : sa copie disparaît. Les dégâts aux ennemis passent par la vie partagée des ennemis ;
+  - une copie prise dans une explosion chez soi est détruite (`bm3` : copie à 0,5 m de la bombe de J1) et n'est pas recréée avant la bombe suivante ;
+  - non vérifié : ramasser la copie de la bombe de l'autre (le jeu propose « Prendre » sur les bombes posées).
+- Relectures :
+  - **Codex, 3 remarques P2, retenues** : la copie pouvait être confondue avec notre propre bombe pendant sa création (identifiée désormais par sa poignée) ; rayon de Gardien au repos réexaminé à chaque image ; emplacement `BOMB` borné à 0..1 dans le relais.
+  - **Gemini, 8 remarques.**
+    - Retenues : même confusion pendant la création, et rayon de 8 m pour retrouver la copie (réglées par la poignée) ; retrait au type 0 retardé jusqu'à 1 s ; copie détruite jamais recréée pour une bombe suivante du même type (numéro ajouté) ; rayon au repos gardé en suivi.
+    - Rejetées : « état distant gardé pendant un chargement » : c'est l'état actuel du partenaire, qu'il renvoie 10 fois par seconde ; « `IsGuardianShot` trop large » : seuls les tirs nommés `GuardianMini*Beam*` existent dans les paquets des Gardiens miniatures.
+- Relais : `BOMB` (15 valeurs), 121/121 essais.
+- **Rayons de Gardien** (`enemy_life.cpp`) :
+  - le tir suivi n'est plus seulement `GuardianBeam` : aussi `GuardianBeamCannon`, `GuardianBeam_RemainsWind` et les tirs des Gardiens miniatures (`GuardianMiniBeam*`, `GuardianMiniLineBeam*`, `GuardianMiniFinalBeam*`, noms relevés dans leurs paquets) ;
+  - un rayon à moins de 1 m de son Gardien est au repos (`gm1` : les `GuardianMiniLineBeam_Junior` d'un Gardien miniature endormi sont exactement à sa position) et n'est jamais retiré.
+  - `gm2` (sanctuaire 122) : les Gardiens miniatures ne sont pas suivis par le mod (aucune position d'ennemi échangée) ; aucun tir n'est retiré, aucune régression vue.
+  - **Non vérifié** : le tir du Gardien volant et celui des Tourelles (leurs paquets ne nomment pas leur tir ; ils n'ont pas tiré pendant les essais).
+- Preuves : `docs/evidence/2026-11-21_bombes_bm2-bm4.log`, captures `2026-11-21_bombes_*.png` (J1 à gauche, J2 à droite).
+
 ### 5.98 Ganon bête du Fléau : combat final à deux (2026-11-21, essai `bf1`, Eden) - [V] image et journaux
 
 - Enchaînement complet depuis le Sanctum, sans drapeau posé à la main :

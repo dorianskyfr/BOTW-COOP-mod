@@ -5,6 +5,7 @@
 #include "status.hpp"
 #include "gear.hpp"
 #include "weapons.hpp"
+#include "bombs.hpp"
 #include "config.hpp"
 #include "beast_rotate.hpp"
 #include "cutscene.hpp"
@@ -340,6 +341,21 @@ namespace coop::net_probe {
                 coop::gear::g_Remote[0].store(g0);
                 coop::gear::g_Remote[1].store(g1);
                 coop::gear::g_Remote[2].store(g2);
+            } else if (std::strncmp(line, "BOMB ", 5) == 0) {
+                /* Bombe de la tablette du partenaire : emplacement (0 ronde, 1 cube), type (0 aucune), matrice monde
+                   3x4 (bombs.hpp). Position bornee comme GDRP (la carte fait ~12 km). */
+                int slot = -1;
+                unsigned kind = 0, serial = 0;
+                coop::bombs::State b;
+                float* o = b.m_Mtx;
+                if (std::sscanf(line, "BOMB %d %d %u %u %f %f %f %f %f %f %f %f %f %f %f %f", &id, &slot, &kind, &serial,
+                        &o[0], &o[1], &o[2], &o[3], &o[4], &o[5], &o[6], &o[7], &o[8], &o[9], &o[10], &o[11]) == 16
+                    && slot >= 0 && slot < coop::bombs::Slots && kind < static_cast<unsigned>(coop::bombs::KindCount)
+                    && SaneMtx(o, 20000.0f)) {
+                    b.m_Kind = kind;
+                    b.m_Serial = serial;
+                    coop::bombs::g_Remote[slot].Store(b);
+                }
             } else if (std::strncmp(line, "WPN ", 4) == 0) {
                 /* Objet porte par le partenaire : emplacement, CRC32 du nom, matrice 3x4 dans son repere (weapons.hpp). */
                 int slot = -1;
@@ -674,6 +690,30 @@ namespace coop::net_probe {
                             static_cast<double>(o[4]), static_cast<double>(o[5]), static_cast<double>(o[6]), static_cast<double>(o[7]),
                             static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]));
                         if (len > 0 && len < static_cast<int>(sizeof(wpn)) && !SendAll(s_Fd, wpn, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
+                }
+
+                /* Bombes de la tablette (bombs.hpp) : a chaque envoi quand il y en a une et pendant 2 s apres sa
+                   disparition (le partenaire retire sa copie sans attendre, relecture Gemini), puis une fois par seconde. */
+                if (inGame && Live()) {
+                    static int s_BombQuiet[coop::bombs::Slots] = {};
+                    for (int k = 0; k < coop::bombs::Slots && Live(); k++) {
+                        coop::bombs::State b;
+                        if (!coop::bombs::g_Local[k].TryLoad(b))
+                            continue;
+                        s_BombQuiet[k] = b.m_Kind != 0 ? 0 : s_BombQuiet[k] + 1;
+                        if (b.m_Kind == 0 && s_BombQuiet[k] > 20 && tick % 10 != 4)
+                            continue;
+                        const float* o = b.m_Mtx;
+                        char bomb[256];
+                        const int len = std::snprintf(bomb, sizeof(bomb),
+                            "BOMB %d %u %u %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n", k, static_cast<unsigned>(b.m_Kind),
+                            static_cast<unsigned>(b.m_Serial),
+                            static_cast<double>(o[0]), static_cast<double>(o[1]), static_cast<double>(o[2]), static_cast<double>(o[3]),
+                            static_cast<double>(o[4]), static_cast<double>(o[5]), static_cast<double>(o[6]), static_cast<double>(o[7]),
+                            static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]));
+                        if (len > 0 && len < static_cast<int>(sizeof(bomb)) && !SendAll(s_Fd, bomb, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
                 }

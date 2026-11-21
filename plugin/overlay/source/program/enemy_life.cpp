@@ -266,6 +266,19 @@ namespace coop::enemy_life {
                         }
                     }
                     tr->m_OwnerDist = std::sqrt(best);
+                    /* Rayon colle a son Gardien : acteur de tir au repos, pas un tir (essai gm1 : les
+                       GuardianMiniLineBeam_Junior d'un Gardien miniature endormi sont exactement a sa position).
+                       Jamais retire : sinon le Gardien de la copie suivie perdrait son arme pour de bon. Un tir
+                       de Gardien Stalker est vu a 3,8 m du canon (gl4). Pas garde en suivi : il est reexamine a
+                       chaque image, au cas ou il partirait en tir sans quitter la liste (relecture Codex). */
+                    if (tr->m_Owner != 0 && tr->m_OwnerDist < 1.0f) {
+                        static int s_IdleLogs = 0;
+                        if (s_IdleLogs++ < 10)
+                            Logging.Log("[botw-coop] rayon de Gardien colle a son tireur %08x (%.2f m) : au repos, ignore", tr->m_Owner,
+                                static_cast<double>(tr->m_OwnerDist));
+                        *tr = BeamTrack {};
+                        continue;
+                    }
                     static int s_SeenLogs = 0;
                     if (s_SeenLogs++ < 30)
                         Logging.Log("[botw-coop] rayon de Gardien tire en (%.1f, %.1f, %.1f) : tireur %08x a %.1f m (%d Gardien(s) notes)",
@@ -363,9 +376,25 @@ namespace coop::enemy_life {
             return false;
         }
 
+        /*
+         * Acteurs de tir des Gardiens (noms des sbactorpack de la RomFS 1.9.0, 2026-11-21) : GuardianBeam (vu en
+         * gl1, Gardien Stalker), GuardianBeamCannon, GuardianBeam_RemainsWind ; Gardiens miniatures des sanctuaires
+         * (references dans Enemy_Guardian_Mini_*.sbactorpack) : GuardianMiniBeam*, GuardianMiniLineBeam*,
+         * GuardianMiniFinalBeam* (variantes _Junior, _Middle, _Senior). Les Tourelles (B) et Gardiens volants (C)
+         * ne nomment pas leur tir dans leur paquet : je ne peux pas confirmer lequel ils utilisent, d'ou le
+         * prefixe. Le proprietaire reste le Gardien (Enemy_Guardian*) le plus proche.
+         */
+        bool IsGuardianShot(const char* name) {
+            if (name == nullptr)
+                return false;
+            if (std::strncmp(name, "GuardianBeam", 12) == 0)
+                return true;
+            return std::strncmp(name, "GuardianMini", 12) == 0 && std::strstr(name, "Beam") != nullptr;
+        }
+
         /* Passe « position », a chaque image : suit la copie de l'autre joueur ou envoie la notre. */
         bool OnActorPos(const coop::game::ActorInfo& info, void*) {
-            if (info.m_Name != nullptr && std::strcmp(info.m_Name, "GuardianBeam") == 0) {
+            if (IsGuardianShot(info.m_Name)) {
                 /* Les rayons au repos sont en (0, 0, 0) (essai gl3 : 11 chez J1 des le chargement, une reserve
                    creee avec les Gardiens) ; seul un rayon tire a une vraie position. */
                 const float a = std::fabs(info.m_Pos[0]) + std::fabs(info.m_Pos[1]) + std::fabs(info.m_Pos[2]);

@@ -105,7 +105,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 - **Deux joueurs** au plus (un seul joueur distant géré).
 - **Choix de conception** :
   - chacun joue dans son propre monde ;
-  - sont partagés : la présence, l'heure, les jours, la météo (même climat), la progression (sanctuaires, tours, Créatures divines, Koroks, coffres, réceptacles), les objets pris sur la carte, les ennemis (vie, position, animations, mort ; le joueur le plus proche fait foi), les objets lâchés au sol, les repas ;
+  - sont partagés : la présence, l'heure, les jours, la météo (même climat), la progression (sanctuaires, tours, Créatures divines, Koroks, coffres, réceptacles), les objets pris sur la carte, les ennemis (vie, position, animations, mort ; le joueur le plus proche fait foi), les objets lâchés au sol, les repas, les bombes de la tablette (vues chez l'autre) ;
   - restent à chacun : l'inventaire, la santé, l'équipement, l'épée de légende ;
   - les récompenses sont données aux deux.
 - Le Link du partenaire porte son armure et ses armes et joue ses actions (attaques, tirs, sauts, parades, NOTES 5.59). C'est un personnage du jeu : il a une collision (on ne le traverse pas) ; l'invite « Parler » est retirée. Il est créé jusqu'à 250 m (`partner_range`).
@@ -114,6 +114,8 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
   - partagés si le partenaire est à moins de 120 m ;
   - un objet lâché après la dernière sauvegarde puis rechargé se retrouve dans l'inventaire, et la copie de l'autre reste (choix : pas de perte) ;
   - ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre se le voit retirer (NOTES 5.97), sauf si le jeu a équipé l'arme d'office (mains vides) : le doublon reste alors.
+- **Bombes de la tablette** (NOTES 5.99) : l'explosion n'est pas montrée chez l'autre (sa copie disparaît) ; une copie prise dans une explosion chez soi n'est pas recréée avant la bombe suivante ; ramasser la copie de la bombe de l'autre n'est pas essayé.
+- **Gardiens miniatures des sanctuaires** : pas suivis par le mod (chacun les siens).
 - **Pas vus en jeu** :
   - les Fléaux dans les Créatures divines (il faudrait une vraie progression) ; Ganon bête du Fléau vu jusqu'à la fin, mais tué par l'outil d'essai, pas à l'arc de lumière ;
   - le rayon d'un Gardien volant, le tir des Tourelles ;
@@ -147,6 +149,8 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 **2026-11-17 (suite)** — Inclinaison des Créatures divines (NOTES §5.84) : trouvée dans le code du jeu (désassemblé par Claude, analysé par Codex) et partagée. Quand un joueur penche Vah Medoh, la Créature de l'autre suit au même angle, et ses drapeaux d'état sont recopiés pour qu'il puisse la commander à son tour. Vérifié dans les deux sens (rt6 à rt8, journaux et captures). Relecture adversaire Codex : 4 défauts corrigés. Les autres Créatures ne sont pas essayées.
 
 **2026-11-21** — Épée de légende (NOTES §5.96) : retirée chez l'un, elle disparaissait du socle chez l'autre ; chacun a maintenant la sienne. Objets au sol : le bonus d'une arme suit la copie ramassée par l'autre joueur (vu à l'image : « Attack Up + 10 ») ; un objet détruit près de son joueur retire aussi l'autre copie. Gemini (Antigravity CLI) ajouté comme relecteur, en plus de Codex.
+
+**2026-11-21 (suite)** — Bombes de la tablette (NOTES §5.99) : la bombe d'un joueur était invisible chez l'autre ; elle est maintenant recréée et suivie chez lui, puis retirée à l'explosion (vu à l'image, essais bm2 à bm4, relectures Codex et Gemini). Rayons des Gardiens : tirs des Gardiens miniatures reconnus, rayon au repos jamais retiré ; tir du Gardien volant et des Tourelles toujours pas vu.
 
 **2026-11-19 (après-midi)** — Boss du château (NOTES §5.94) : les quatre Fléaux puis Ganon meurent chez les deux joueurs quand l'un les bat (avant, l'autre les gardait à 1 point) ; les deux jeux enchaînent les mêmes combats et la même cinématique de fin (vu à l'image). Objets lâchés partagés (§5.95) : une arme ou un matériau lâché reste par terre et apparaît chez l'autre joueur, avec la même usure ; le premier qui le ramasse le garde, l'autre copie disparaît (essai `gd1`, à l'image et dans les journaux). Remplace les dons directs.
 
