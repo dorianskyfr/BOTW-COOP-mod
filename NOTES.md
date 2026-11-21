@@ -916,6 +916,17 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.04 Explosion des bombes : fonction du jeu retrouvée en 1.9.0, toujours rien à l'image (2026-11-21, essais `bx2`, `bx3`, Eden) - [V] image et journaux ; non gardé
+
+- Retrouvé dans main 1.9.0 (`tools/research_remote_bomb_ai.py`, capstone sur `build/dumps/main_1.9.0.bin`, image mémoire de base 0x8506000) :
+  - fabrique d'IA `RemoteBomb` : entrée `{crc32("RemoteBomb") = be97cd51, fonction}` à main+0x1cb8ab0 (seule occurrence du hachage). La fonction (main+0xb7eee8) alloue 0x1a8 octets puis appelle le constructeur main+0xa202fc ;
+  - table virtuelle de `uking::ai::RemoteBomb` : main+0x1c875f0. `init_` main+0xa2052c, `enter_` main+0xa20538, `leave_` main+0xa20b44, `loadParams_` main+0xa20d70, `handleMessage_` main+0xa20ba8, `calc_` main+0xa20860 ;
+  - `changeToExplodeChild` : main+0xa20ab4. Juste avant `leave_`, 144 octets comme en 1.5.0. Elle se termine par `Ai::changeChild(this, "爆発", nullptr)` (main+0x15375d4). Avant : remise à zéro de l'octet +0x88, appel virtuel sur l'objet +0x58, deux appels main+0xb3bd18 sur l'objet +0x198, appel main+0x1210f50 sur l'acteur, bit 0x20 posé en acteur+0x518.
+- `bx2` : la copie de J2 passe par cette fonction (table virtuelle vérifiée, `rc=0`) et se supprime 51 images plus tard. **Rien ne se voit.**
+- `bx3` : la même chose, plus la séquence `Explode` (clé de la liste d'animations). Séquence jouée, **rien ne se voit**.
+- Conclusion : la gerbe visible ne vient ni de l'IA (`changeToExplodeChild`, enfant « 爆発 »), ni de la séquence, ni de l'acteur `Explode`. **Je ne peux pas confirmer** d'où elle vient. Pistes non essayées : `BombExplode` (classe d'action, paramètres `SizeUpTime`/`ExplodeTime`) qui consulterait le gestionnaire des runes (`RuneMgr`) du joueur propriétaire ; liens d'effets (ELink) de la bombe.
+- Pas gardé : la copie restait ~1,7 s en l'air sans effet. Le code publié reste celui de v0.99.13. Code des essais : `docs/evidence/2026-11-21_bombes-explosion-changeToExplodeChild_bx2-bx3.patch`, capture `..._J2-rien_bx3.png`.
+
 ### 6.03 Explosion des bombes : essai par l'IA de la copie, sans résultat visible (2026-11-21, essai `bx1`, Eden) - [V] image et journaux ; non gardé
 
 - Décompilation botw (`third_party/botw`) :
