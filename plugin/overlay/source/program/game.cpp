@@ -1133,18 +1133,9 @@ namespace coop::game {
         return n;
     }
 
-    bool PatchPouchWeapon(const char* name, const std::uintptr_t* before, int beforeN, int value, const WeaponBonus& bonus,
-                          int& oldValue) {
-        /*
-         * L'arme de ce nom qui n'etait pas dans `before` (relevee avant le ramassage) : la copie tout juste
-         * ramassee (relecture Gemini : choisir par la durabilite pouvait viser une arme deja la). Champs de
-         * ReadPouch : durabilite +0x20, bonus valeur +0x80, bits +0x88. Exactement une nouvelle, sinon rien.
-         */
-        oldValue = -1;
+    std::uintptr_t FindNewPouchWeapon(const char* name, const std::uintptr_t* before, int beforeN) {
         std::uintptr_t now[32];
         const int n = ListPouchWeapons(name, now, 32);
-        if (n <= 0)
-            return false;
         std::uintptr_t target = 0;
         int fresh = 0;
         for (int i = 0; i < n; i++) {
@@ -1156,7 +1147,19 @@ namespace coop::game {
                 fresh++;
             }
         }
-        if (fresh != 1)
+        return fresh == 1 ? target : 0;
+    }
+
+    bool PatchPouchWeapon(const char* name, const std::uintptr_t* before, int beforeN, int value, const WeaponBonus& bonus,
+                          int& oldValue) {
+        /*
+         * L'arme de ce nom qui n'etait pas dans `before` (relevee avant le ramassage) : la copie tout juste
+         * ramassee (relecture Gemini : choisir par la durabilite pouvait viser une arme deja la). Champs de
+         * ReadPouch : durabilite +0x20, bonus valeur +0x80, bits +0x88. Exactement une nouvelle, sinon rien.
+         */
+        oldValue = -1;
+        const std::uintptr_t target = FindNewPouchWeapon(name, before, beforeN);
+        if (target == 0)
             return false;
         oldValue = Peek<std::int32_t>(target + 0x20);
         if (value > 0)
@@ -1305,6 +1308,73 @@ namespace coop::game {
         reinterpret_cast<void (*)(std::uintptr_t, std::uintptr_t)>(base + SaveToGameData)(mgr, mgr + ItemList);
         reinterpret_cast<void (*)(std::uintptr_t)>(base + CritUnlock)(mgr + 0x28);
         return true;
+    }
+
+    bool RemoveInventoryItem(const char* name, std::uintptr_t target, int& before, int& after, std::uintptr_t* removed) {
+        /*
+         * uking::ui::PauseMenuDataMgr::removeItem(this, const SafeString& nom) a main+0xd93320 : fonction qui cite
+         * "PouchDelete" et appelle saveToGameData, desassemblee sur notre image 1.9.0 (2026-11-21) ; sa sequence
+         * suit la decomp (uiPauseMenuDataMgr.cpp, removeItem) : verrou this+0x28, parcours de la liste this+0x68,
+         * premier objet de ce nom NON equipe (octet +0x24 nul), objet empilable (etiquette CanStack, hachage
+         * 0x9b44906f) de valeur >= 2 : valeur - 1, sinon objet detruit (main+0xd95d0c), reportDebug("PouchDelete"),
+         * saveToGameData, deverrouillage.
+         * target (arme, arc, bouclier) : l'objet precis a retirer. removeItem prenant le premier non equipe de ce
+         * nom, on echange d'abord sa durabilite (+0x20) et son bonus (+0x80, +0x88) avec ceux de target : c'est
+         * bien la copie en trop qui disparait. target equipe : rien n'est fait (false). Fil du jeu.
+         */
+        constexpr std::uintptr_t RemoveItem = 0xd93320;
+        constexpr std::uintptr_t SafeStringVtableSlot = 0x1d66260;
+        constexpr std::uintptr_t CritLock = 0xeaff08;    /* voir SavePouchToGameData */
+        constexpr std::uintptr_t CritUnlock = 0xeaff18;
+        before = after = -1;
+        if (removed != nullptr)
+            *removed = 0;
+        if (s_Offsets == nullptr || name == nullptr || name[0] == '\0')
+            return false;
+        const std::uintptr_t base = MainBase();
+        const auto mgr = PauseMenuDataMgr();
+        const auto vtSlot = Peek<std::uintptr_t>(base + SafeStringVtableSlot);
+        if (mgr == 0 || vtSlot == 0)
+            return false;
+        if (target != 0) {
+            std::uintptr_t items[32];
+            const int n = ListPouchWeapons(name, items, 32);
+            std::uintptr_t first = 0;
+            bool listed = false;
+            for (int i = 0; i < n; i++) {
+                listed |= items[i] == target;
+                if (first == 0 && Peek<std::uint8_t>(items[i] + 0x24) == 0)
+                    first = items[i];
+            }
+            if (!listed || first == 0 || Peek<std::uint8_t>(target + 0x24) != 0)
+                return false;
+            if (removed != nullptr)
+                *removed = first;  /* c'est cet objet que removeItem detruit (il prend les valeurs de target) */
+            if (first != target) {
+                /* Echange sous le verrou du jeu (relecture Gemini), relache avant removeItem qui le reprend. */
+                reinterpret_cast<void (*)(std::uintptr_t)>(base + CritLock)(mgr + 0x28);
+                const auto v = Peek<std::int32_t>(target + 0x20);
+                const auto bv = Peek<std::int32_t>(target + 0x80);
+                const auto bf = Peek<std::uint32_t>(target + 0x88);
+                *reinterpret_cast<std::int32_t*>(target + 0x20) = Peek<std::int32_t>(first + 0x20);
+                *reinterpret_cast<std::int32_t*>(target + 0x80) = Peek<std::int32_t>(first + 0x80);
+                *reinterpret_cast<std::uint32_t*>(target + 0x88) = Peek<std::uint32_t>(first + 0x88);
+                *reinterpret_cast<std::int32_t*>(first + 0x20) = v;
+                *reinterpret_cast<std::int32_t*>(first + 0x80) = bv;
+                *reinterpret_cast<std::uint32_t*>(first + 0x88) = bf;
+                reinterpret_cast<void (*)(std::uintptr_t)>(base + CritUnlock)(mgr + 0x28);
+            }
+        }
+        struct SafeString {
+            std::uintptr_t m_Vtable;
+            const char* m_Str;
+        } str { vtSlot + 0x10, name };
+        before = Peek<std::int32_t>(mgr + ItemListCount);
+        reinterpret_cast<void (*)(std::uintptr_t, const SafeString&)>(base + RemoveItem)(mgr, str);
+        after = Peek<std::int32_t>(mgr + ItemListCount);
+        /* Arme : une entree de moins. Pile : meme nombre d'entrees (un exemplaire de moins), on ne peut pas
+           le distinguer ici ; l'appelant relit le nombre. */
+        return target == 0 || after < before;
     }
 
     bool AddInventoryItem(const char* name, int value, int& before, int& after, const WeaponBonus* bonus) {

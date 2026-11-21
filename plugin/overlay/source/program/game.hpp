@@ -237,8 +237,16 @@ namespace coop::game {
        apres chaque ajout. A appeler apres avoir modifie un objet de l'inventaire. Fil du jeu. */
     bool SavePouchToGameData();
 
+    /* Retire un exemplaire de l'objet `name` de l'inventaire (PauseMenuDataMgr::removeItem : un de moins pour
+       une pile, sinon l'objet). target != 0 (arme) : c'est cet objet-la qui part ; false s'il est equipe ou
+       introuvable. before / after : nombre d'entrees de la liste. Fil du jeu. */
+    bool RemoveInventoryItem(const char* name, std::uintptr_t target, int& before, int& after, std::uintptr_t* removed = nullptr);
+
     /* Adresses des armes, arcs et boucliers de l'inventaire portant ce nom (au plus max), -1 si illisible. Fil du jeu. */
     int ListPouchWeapons(const char* name, std::uintptr_t* out, int max);
+
+    /* La seule arme de ce nom absente de `before` (relevee avant un ramassage), 0 si aucune ou plusieurs. */
+    std::uintptr_t FindNewPouchWeapon(const char* name, const std::uintptr_t* before, int beforeN);
 
     /* La seule arme de ce nom absente de `before` (relevee avant un ramassage) recoit cette durabilite
        (value > 0) et ce bonus (si bits != 0). oldValue : sa durabilite avant. false si aucune ou plusieurs. */

@@ -42,7 +42,7 @@ Journal d'avancement : [`PROGRESS.md`](PROGRESS.md). Détails techniques : [`NOT
 - **Téléportation vers l'autre joueur** : maintenir le clic du stick gauche 1,5 s. Jusqu'à 250 m, Link arrive à côté de lui ; plus loin, le jeu fait un voyage (chargement) vers le sanctuaire ou la tour le plus proche de lui, puis Link le rejoint. Un clic court accroupit Link comme d'habitude.
 - **Sauvegardes coop séparées** : au premier lancement avec le mod, vos sauvegardes sont copiées dans un dossier `coop` des données de sauvegarde du jeu (les originales sont seulement lues) ; ensuite le jeu ne lit et n'écrit que cette copie. Retirer le mod rend vos sauvegardes normales, inchangées.
 - **Sauvetage par le partenaire** : à votre mort, si aucune fée ni la Grâce de Mipha ne vous sauve et que l'autre joueur est en jeu, vivant et à moins de 150 m, vous repartez avec 3 cœurs (au plus une fois toutes les 2 minutes) ; votre partenaire en est averti. Réglages dans `romfs\botw-coop.txt` : `revive=0` pour couper, `revive_delay=<secondes>`, `revive_range=<mètres>`.
-- **Objets lâchés partagés** : une arme ou un bouclier lâché (menu « Lâcher »), ou un matériau posé (menu, « Tenir », fermer le menu, puis A), reste par terre et apparaît au même endroit chez l'autre joueur s'il est à moins de 120 m, avec la même usure. Le premier qui le ramasse le garde : la copie de l'autre disparaît (aussi si l'objet est détruit, une arme en bois qui brûle par exemple). Le bonus d'une arme (« Attaque + »…) suit la copie, y compris après une sauvegarde. Si vous rechargez une partie après avoir lâché un objet, vous le retrouvez dans votre inventaire et la copie de l'autre joueur reste au sol.
+- **Objets lâchés partagés** : une arme ou un bouclier lâché (menu « Lâcher »), ou un matériau posé (menu, « Tenir », fermer le menu, puis A), reste par terre et apparaît au même endroit chez l'autre joueur s'il est à moins de 120 m, avec la même usure. Le premier qui le ramasse le garde : la copie de l'autre disparaît (aussi si l'objet est détruit, une arme en bois qui brûle par exemple). Le bonus d'une arme (« Attaque + »…) suit la copie, y compris après une sauvegarde. Ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre le perd. Si vous rechargez une partie après avoir lâché un objet, vous le retrouvez dans votre inventaire et la copie de l'autre joueur reste au sol.
 - **Épée de légende** : chacun la retire du socle dans son propre monde (elle ne disparaît plus chez l'autre).
 - **Repas partagés** : ce que vous mangez depuis le menu soigne aussi l'autre joueur, du même nombre de cœurs (`meal=0` pour couper). Les effets des plats ne sont pas partagés.
 - **L'autre joueur sur la carte** : un tampon du jeu marque sa position et le suit ; il disparaît quand il quitte la partie (`map=0` pour couper). Vu sur l'écran de la carte.
@@ -61,7 +61,9 @@ Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0
 - **DLC** : Épreuve de l'épée et sanctuaires de la Ballade des Prodiges, les deux joueurs entrent ensemble, ennemis vaincus partagés.
 - **Réseau** : relais protégé (mot de passe, connexions limitées, messages invalides ignorés, client trop lent déconnecté).
 
-Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : un boss, une épreuve de l'épée complète, la Ballade des Prodiges jouée, le rayon d'un Gardien volant, le tir des Tourelles.
+- **Boss** : les quatre Fléaux du château et Ganon, combattus ensemble ; un boss battu chez l'un meurt chez l'autre et les deux jeux enchaînent la suite (vu à l'image).
+
+Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : Ganon bête du Fléau, les Fléaux dans les Créatures divines, une épreuve de l'épée complète, la Ballade des Prodiges jouée, le rayon d'un Gardien volant, le tir des Tourelles. Limites détaillées : `PROGRESS.md`, « Limites connues ».
 
 ## Installation simple : le launcher
 

@@ -891,7 +891,32 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - Codex : « No actionable regressions ».
   - Gemini : 7 remarques, toutes rejetées après vérification dans le code (« return manquant » : les deux appels suivants testent déjà le monde ; « adresses en dur » : tout le mod est fixé sur 1.9.0 ; « ne sauve que les épées » : +0x68 est la liste entière ; etc.). Une seule est juste : le doublon par rechargement, voir les limites.
 - Limite : un joueur qui lâche un objet après sa dernière sauvegarde puis recharge le retrouve dans son inventaire, et la copie de l'autre reste. Choix assumé : sinon un objet lâché avant la sauvegarde serait perdu pour les deux.
-- **Non vérifié** : l'annonce « détruit » (arme brûlée près de son joueur).
+
+### 5.97 Ramassage simultané : le doublon est retiré ; annonce « détruit » vérifiée (2026-11-21, essais `gd11` à `gd13`, Eden, relais `--lag 2500`) - [V] image et journaux
+
+- **Annonce « détruit »** : [V] `gd11`. L'outil d'essai `-DCOOP_TEST_DESTROY` détruit la copie d'arme du partenaire 5 s après sa création, comme une arme qui brûle. Chez J2 : `disparu a 2.8 m sans entrer dans l'inventaire (1 -> 1) : detruit -> annonce` ; chez J1 : `detruit ... par le joueur 2 -> notre copie retiree`. La hache a disparu des deux mondes. C'est une destruction simulée, pas un vrai feu.
+- **Ramassage simultané** :
+  - Trouvé `PauseMenuDataMgr::removeItem` (main+0xd93320) : fonction qui cite « PouchDelete » et appelle `saveToGameData`, désassemblée en 1.9.0. Sa séquence suit la décompilation : verrou ; premier objet de ce nom non équipé (+0x24) ; pile `CanStack` (0x9b44906f) de valeur ≥ 2 : valeur − 1 ; sinon destruction (main+0xd95d0c) ; `reportDebug("PouchDelete")` ; `saveToGameData`.
+  - Règle : celui qui a lâché l'objet le garde ; l'autre retire de son inventaire la copie qu'il vient de ramasser.
+  - Pour une arme, l'objet précis arrivé au ramassage est connu par son adresse. `removeItem` prend le premier non équipé de ce nom : on échange d'abord durabilité et bonus, sous le verrou du jeu.
+  - Cas couverts : les deux annonces se croisent ; ou l'annonce de l'autre arrive alors que notre copie vient de disparaître sans être encore comptée (`m_PeerPicked`).
+- [V] Herbe d'Hyrule (`gd11`) : J2 passe de 1 à 2 au ramassage, `DOUBLON, notre exemplaire retire` ; le menu montre ×1 (image).
+- [V] Torche (`gd12`, puis `gd13` après les relectures) : J2 passe de 1 à 2 torches, `retire de l'inventaire (objets 35 -> 34)` ; le menu montre une seule torche (image).
+- Relectures :
+  - **Codex, 2 remarques P2 retenues** : historique des ramassages vidé au chargement ; références des autres doublons en attente mises à jour après l'échange.
+  - **Gemini, 9 remarques.**
+    - Retenues :
+      - annonce reçue pendant le délai de l'inventaire (`m_PeerPicked`) ;
+      - arme précise introuvable : on retire quand même une arme de ce nom ;
+      - échange sous verrou ;
+      - succès vérifié ;
+      - compteur non signé.
+    - Rejetées après vérification :
+      - « SafeString fausse » : même construction que pour ajouter un objet, et le retrait a marché en jeu ;
+      - épée de légende : ne se lâche pas, drapeau exclu ;
+      - « double appel » : une entrée annoncée est déjà vidée.
+- Limite : si le joueur avait les mains vides, le jeu équipe l'arme ramassée. Un doublon ne peut alors pas être retiré (retirer une arme équipée : trop risqué) ; c'est journalisé.
+- Preuves : `docs/evidence/2026-11-21_objets-au-sol-doublon_gd11-gd12.log`, captures `2026-11-21_objets-au-sol_doublon-*.png`.
 - Preuves :
   - `docs/evidence/2026-11-21_objets-au-sol-bonus_gd7.log`, captures `2026-11-21_objets-au-sol_bonus_*_gd7.png` ;
   - `2026-11-21_objets-au-sol-sauvegarde_gd10.log` ;

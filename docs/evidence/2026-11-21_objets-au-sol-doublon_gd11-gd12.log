@@ -1,0 +1,13 @@
+== J1 (t_sw1), essai gd12 (relais --lag 2500 : ramassage simultane d'une torche)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache par le joueur 2 en (-2897.4, 314.5, -564.2), a 5.0 m de nous : copie demandee
+[botw-coop] objet au sol : copie de Weapon_Lsword_032 creee (0 releve(s)), durabilite ecrite -> 3000
+[botw-coop] objet au sol : Weapon_Sword_043 (valeur 800, bonus 0/0) lache en (-2900.2, 314.3, -554.5), partage n.1, partenaire a 7.8 m
+[botw-coop] objet au sol : Weapon_Sword_043 (n.1 du joueur 1) ramasse ici, a 1.5 m, inventaire 0 -> 1 -> annonce
+[botw-coop] objet au sol : Weapon_Sword_043 ramasse aussi par le joueur 2 au meme moment : DOUBLON, on le garde (nous l'avions lache), l'autre retire le sien
+== J2 (t_sw1b), essai gd12 (relais --lag 2500 : ramassage simultane d'une torche)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache en (-2897.4, 314.5, -564.2), partage n.1, partenaire a 5.0 m
+[botw-coop] objet au sol : Weapon_Sword_043 (valeur 800, bonus 0/0) lache par le joueur 1 en (-2900.2, 314.3, -554.5), a 7.8 m de nous : copie demandee
+[botw-coop] objet au sol : copie de Weapon_Sword_043 creee (1 releve(s)), durabilite ecrite -> 800
+[botw-coop] objet au sol : Weapon_Sword_043 ramasse, durabilite 800 -> 800 et bonus 0/0 poses sur l'objet de l'inventaire, recopies dans la sauvegarde
+[botw-coop] objet au sol : Weapon_Sword_043 (n.1 du joueur 1) ramasse ici, a 0.5 m, inventaire 1 -> 2 -> annonce
+[botw-coop] objet au sol : Weapon_Sword_043 ramasse aussi par le joueur 1 (qui l'avait lache) au meme moment : DOUBLON, notre exemplaire retire de l'inventaire (objets 35 -> 34)

@@ -100,12 +100,26 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 | D à G, narration | non commencé | — |
 
 ## Limites connues de la version actuelle
-- Le joueur distant est un PNJ : il a une collision (on ne le traverse pas). L'invite « Parler » est retirée depuis le 2026-11-12.
-- Le Link du partenaire porte son armure et ses armes ; il ne joue pas les attaques (seuls les objets bougent comme chez le partenaire). Chacun joue dans son monde ; sont partagés : la présence, l'heure, les jours, la météo (à moins de 300 m), les drapeaux de progression, les objets ramassés, la mort, les points de vie, la position et les animations des ennemis (le joueur le plus proche de l'ennemi fait foi ; vrai coup d'arme et dégâts au joueur non vérifiés).
-- Au-delà de 120 m du joueur local, le personnage distant n'est pas créé (valeur prudente, non mesurée).
-- Un seul joueur distant est géré.
-- Testé seulement sur ce PC, sous Ryujinx 1.3.3, avec BOTW 1.9.0. Toute autre version du jeu désactive les fonctions du plugin (contrôle du build ID).
-- Fenêtre du pare-feu Windows : lancer le relais sur l'adresse LAN fait apparaître la demande d'autorisation pour Python. Elle n'a pas été validée par Claude (réglage de sécurité, à la main de l'utilisateur). Sans autorisation, un second PC ne pourra pas joindre le relais.
+(Mise à jour le 2026-11-21.)
+- **Pas essayé** : une partie entre deux PC, en réseau local ou par VPN. Tout a été vérifié avec deux jeux sur le même PC (Ryujinx 1.3.3 et Eden v0.2.1), avec BOTW 1.9.0 seulement ; toute autre version du jeu désactive le plugin (contrôle du build ID).
+- **Deux joueurs** au plus (un seul joueur distant géré).
+- **Choix de conception** :
+  - chacun joue dans son propre monde ;
+  - sont partagés : la présence, l'heure, les jours, la météo (même climat), la progression (sanctuaires, tours, Créatures divines, Koroks, coffres, réceptacles), les objets pris sur la carte, les ennemis (vie, position, animations, mort ; le joueur le plus proche fait foi), les objets lâchés au sol, les repas ;
+  - restent à chacun : l'inventaire, la santé, l'équipement, l'épée de légende ;
+  - les récompenses sont données aux deux.
+- Le Link du partenaire porte son armure et ses armes et joue ses actions (attaques, tirs, sauts, parades, NOTES 5.59). C'est un personnage du jeu : il a une collision (on ne le traverse pas) ; l'invite « Parler » est retirée. Il est créé jusqu'à 250 m (`partner_range`).
+- **Énigme de sanctuaire en cours** : non partagée, le jeu ne sauvegarde pas cet état. La fin du sanctuaire est partagée.
+- **Objets lâchés au sol** :
+  - partagés si le partenaire est à moins de 120 m ;
+  - un objet lâché après la dernière sauvegarde puis rechargé se retrouve dans l'inventaire, et la copie de l'autre reste (choix : pas de perte) ;
+  - ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre se le voit retirer (NOTES 5.97), sauf si le jeu a équipé l'arme d'office (mains vides) : le doublon reste alors.
+- **Pas vus en jeu** :
+  - Ganon bête du Fléau ; les Fléaux dans les Créatures divines (il faudrait une vraie progression) ;
+  - le rayon d'un Gardien volant, le tir des Tourelles ;
+  - l'Épreuve de l'épée et la Ballade des Prodiges jouées en entier ;
+  - Rudania et Naboris moins éprouvées que Medoh et Ruta.
+- **Pare-feu Windows** : au premier lancement du relais sur l'adresse LAN, Windows demande d'autoriser Python. C'est à l'utilisateur de l'accepter (réglage de sécurité) ; sans cela, un second PC ne peut pas joindre le relais.
 
 ## Point de reprise
 **2026-11-15 (nuit, suite)** — Limites corrigées (NOTES §5.61) : coffre vu ouvert chez l'autre (retiré de près, pas de double contenu) ; cinématiques limitées aux vraies (un Game Over était rejoué chez l'autre : corrigé) ; partenaire trop loin rejoint le joueur pour la cinématique ; Link du partenaire créé jusqu'à 250 m ; bouton « Journaux à envoyer » dans le launcher. Publié en v0.99.0.

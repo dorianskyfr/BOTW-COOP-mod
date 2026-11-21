@@ -270,6 +270,9 @@ namespace coop::weapons {
             std::uintptr_t m_Known[32] = {};  /* armes de ce nom dans l'inventaire avant le ramassage (copie d'arme) */
             int m_KnownN = -1;
             int m_PatchTries = 0;
+            std::uintptr_t m_PickedItem = 0;  /* arme : objet de l'inventaire arrive au ramassage de la copie */
+            bool m_PeerPicked = false;        /* l'autre a annonce le ramassage alors que notre copie venait de
+                                                 disparaitre sans etre encore comptee : doublon a regler si elle arrive */
         };
 
         bool IsWeaponCopy(const Drop& d) {
@@ -285,9 +288,11 @@ namespace coop::weapons {
             std::uint32_t m_Id = 0;
             std::uint64_t m_Scan = 0;
             char m_Name[48] = {};  /* GPCK ne porte pas le nom (relecture Gemini : journal sans nom) */
+            std::uintptr_t m_Item = 0;  /* arme : l'objet arrive dans l'inventaire (copie ramassee) */
+            bool m_Done = false;        /* doublon deja regle */
         };
         Picked s_Picked[8];
-        int s_PickedNext = 0;
+        std::uint32_t s_PickedNext = 0;
         std::uint64_t s_DropScans = 0;
         int s_DropLogs = 0;
 
@@ -403,12 +408,49 @@ namespace coop::weapons {
             }
         }
 
+        int PouchNow(int& n);
+
+        /*
+         * Ramasse des deux cotes en meme temps (les deux annonces se sont croisees). Regle : celui qui a lache
+         * l'objet le garde ; l'autre retire la copie qu'il vient de ramasser de son inventaire
+         * (PauseMenuDataMgr::removeItem ; pour une arme, l'objet precis arrive au ramassage). Fil du jeu.
+         */
+        void ResolveDuplicate(const char* name, std::uintptr_t item, int owner, int from) {
+            if (owner == coop::session::g_LocalId) {
+                Logging.Log("[botw-coop] objet au sol : %s ramasse aussi par le joueur %d au meme moment : DOUBLON, on le garde "
+                    "(nous l'avions lache), l'autre retire le sien", name, from);
+                return;
+            }
+            const bool weapon = std::strncmp(name, "Weapon_", 7) == 0;
+            int before = -1, after = -1;
+            std::uintptr_t removed = 0;
+            /* Arme sans objet precis (introuvable) : on retire quand meme une arme de ce nom (relecture Gemini). */
+            const bool ok = coop::game::RemoveInventoryItem(name, weapon ? item : 0, before, after, &removed);
+            /* L'echange de valeurs a deplace l'identite de `removed` vers `item` : les autres doublons en attente
+               qui visaient `removed` visent maintenant `item` (relecture Codex). */
+            if (ok && removed != 0 && removed != item)
+                for (Picked& p : s_Picked)
+                    if (p.m_Item == removed)
+                        p.m_Item = item;
+            Logging.Log("[botw-coop] objet au sol : %s ramasse aussi par le joueur %d (qui l'avait lache) au meme moment : DOUBLON, "
+                "notre exemplaire %s%s (objets %d -> %d)", name, from, ok ? "retire de l'inventaire" : "NON RETIRE (equipe ou introuvable)",
+                weapon && item == 0 ? " (arme precise inconnue : une de ce nom)" : "", before, after);
+            char msg[96];
+            if (const char* label = coop::config::ItemNameFor(Crc32(name)))
+                std::snprintf(msg, sizeof(msg), "Ramassé en même temps : %s reste au joueur %d", label, from);
+            else
+                std::snprintf(msg, sizeof(msg), "Ramassé en même temps : l'objet reste au joueur %d", from);
+            coop::notify::Post(msg);
+        }
+
         /* Le partenaire a ramasse un objet partage : notre copie est retiree. */
         void ReceivePick(const Gift& g) {
-            for (const Picked& p : s_Picked)
-                if (p.m_Owner == g.m_Owner && p.m_Id == g.m_DropId && p.m_Scan != 0 && s_DropScans - p.m_Scan <= 50)
-                    Logging.Log("[botw-coop] objet au sol : %s (n.%x du joueur %d) ramasse aussi par le joueur %d au meme moment : DOUBLON",
-                        p.m_Name, g.m_DropId, g.m_Owner, g.m_From);
+            for (Picked& p : s_Picked)
+                if (!p.m_Done && p.m_Owner == g.m_Owner && p.m_Id == g.m_DropId && p.m_Scan != 0 && s_DropScans - p.m_Scan <= 50
+                    && g.m_Reason != 1) {
+                    p.m_Done = true;
+                    ResolveDuplicate(p.m_Name, p.m_Item, p.m_Owner, g.m_From);
+                }
             for (Drop& d : s_Drops) {
                 if ((d.m_Actor == 0 && !d.m_Pending) || d.m_Owner != g.m_Owner || d.m_Id != g.m_DropId)
                     continue;
@@ -419,6 +461,24 @@ namespace coop::weapons {
                 }
                 const bool alive = coop::game::IsActorListed(d.m_Actor) && coop::game::GetActorState(d.m_Actor) != 3
                     && std::strcmp(coop::game::GetActorName(d.m_Actor), d.m_Name) == 0;
+                /* Notre copie a deja disparu et l'inventaire l'a gagnee, mais notre annonce n'est pas encore
+                   partie : ramassee des deux cotes en meme temps. */
+                if (!alive && g.m_Reason != 1 && d.m_Owner != coop::session::g_LocalId && d.m_InPouch >= 0) {
+                    int pouchN = -1;
+                    if (CountInPouch(d.m_Name, PouchNow(pouchN)) > d.m_InPouch) {
+                        const std::uintptr_t item = IsWeaponCopy(d) && d.m_KnownN >= 0
+                            ? coop::game::FindNewPouchWeapon(d.m_Name, d.m_Known, d.m_KnownN) : 0;
+                        ResolveDuplicate(d.m_Name, item, d.m_Owner, g.m_From);
+                        d = Drop {};
+                        return;
+                    }
+                    /* Disparue mais pas encore comptee (l'inventaire peut la montrer jusqu'a 1 s plus tard) : on
+                       garde l'entree ; si elle arrive, doublon a regler, sinon on l'oublie (relecture Gemini). */
+                    d.m_PeerPicked = true;
+                    Logging.Log("[botw-coop] objet au sol : %s ramasse par le joueur %d pendant que notre copie disparaissait : on attend "
+                        "l'inventaire", d.m_Name, g.m_From);
+                    return;
+                }
                 const bool deleted = alive && coop::game::DeleteActor(d.m_Actor);
                 Logging.Log("[botw-coop] objet au sol : %s %s par le joueur %d -> notre copie %s", d.m_Name,
                     g.m_Reason == 1 ? "detruit (disparu pres de lui sans entrer dans son inventaire)" : "ramasse", g.m_From,
@@ -515,6 +575,14 @@ namespace coop::weapons {
                 }
                 const float dx = d.m_Pos[0] - me[3], dy = d.m_Pos[1] - me[7], dz = d.m_Pos[2] - me[11];
                 const float dist = std::sqrt(dx * dx + dy * dy + dz * dz);
+#if defined(COOP_TEST_DESTROY)
+                /* Essai (jamais dans la build a jouer) : la copie d'une arme du partenaire, a portee de main, est
+                   detruite 5 s apres sa creation, comme une arme en bois qui brule : verifie l'annonce « detruit ». */
+                if (listed && !worn && IsWeaponCopy(d) && dist <= PickRange && ++d.m_Wait == 50) {
+                    Logging.Log("[botw-coop] objet au sol : ESSAI, copie de %s detruite pres de nous", d.m_Name);
+                    coop::game::DeleteActor(d.m_Actor);
+                }
+#endif
                 if (listed && !worn) {
                     d.m_GoneScans = 0;
                     if (dist < 4.0f) /* a portee de main : releve avant un eventuel ramassage */
@@ -535,6 +603,16 @@ namespace coop::weapons {
                    l'inventaire (arme en bois brulee...) : detruit, annonce aussi pour que l'autre copie parte. */
                 const int now = CountInPouch(d.m_Name, PouchNow(pouchN));
                 const bool gained = d.m_InPouch >= 0 && now > d.m_InPouch;
+                if (d.m_PeerPicked && (gained || (!listed && d.m_GoneScans >= 10))) {
+                    /* L'autre l'a deja annoncee ramassee : rien a annoncer ; si nous l'avons aussi, doublon. */
+                    if (gained) {
+                        const std::uintptr_t item = IsWeaponCopy(d) && d.m_KnownN >= 0
+                            ? coop::game::FindNewPouchWeapon(d.m_Name, d.m_Known, d.m_KnownN) : 0;
+                        ResolveDuplicate(d.m_Name, item, d.m_Owner, d.m_Owner);
+                    }
+                    d = Drop {};
+                    continue;
+                }
                 if (!gained && ++d.m_GoneScans <= 10)
                     continue;
                 if (!gained && listed) {
@@ -545,6 +623,8 @@ namespace coop::weapons {
                    lui donne ceux de l'arme lachee, sur l'objet tout juste arrive (absent du releve d'avant). Jusqu'a
                    1 s d'essais (l'inventaire peut le montrer un releve plus tard), puis annonce quand meme. */
                 if (gained && IsWeaponCopy(d) && d.m_PatchTries >= 0) {
+                    if (d.m_PickedItem == 0 && d.m_KnownN >= 0)
+                        d.m_PickedItem = coop::game::FindNewPouchWeapon(d.m_Name, d.m_Known, d.m_KnownN);
                     int oldValue = -1;
                     const bool ok = d.m_KnownN >= 0
                         && coop::game::PatchPouchWeapon(d.m_Name, d.m_Known, d.m_KnownN, d.m_Value, d.m_Bonus, oldValue);
@@ -570,8 +650,12 @@ namespace coop::weapons {
                         Logging.Log("[botw-coop] objet au sol : %s (n.%x du joueur %d) ramasse ici, a %.1f m, inventaire %d -> %d -> annonce",
                             d.m_Name, d.m_Id, d.m_Owner, static_cast<double>(dist), d.m_InPouch, now);
                         Picked& p = s_Picked[s_PickedNext++ % 8];
-                        p = Picked { d.m_Owner, d.m_Id, s_DropScans, {} };
+                        p = Picked {};
+                        p.m_Owner = d.m_Owner;
+                        p.m_Id = d.m_Id;
+                        p.m_Scan = s_DropScans;
                         std::memcpy(p.m_Name, d.m_Name, sizeof(p.m_Name));
+                        p.m_Item = d.m_PickedItem;
                     } else {
                         Logging.Log("[botw-coop] objet au sol : %s (n.%x du joueur %d) disparu a %.1f m sans entrer dans l'inventaire (%d -> %d) : "
                             "detruit -> annonce", d.m_Name, d.m_Id, d.m_Owner, static_cast<double>(dist), d.m_InPouch, now);
@@ -766,6 +850,10 @@ namespace coop::weapons {
                     n++;
                     d = Drop {};
                 }
+            /* Historique des ramassages aussi : apres un rechargement, l'inventaire est revenu en arriere ;
+               une annonce de l'autre ne doit plus rien retirer (relecture Codex). */
+            for (Picked& p : s_Picked)
+                p = Picked {};
             if (n > 0)
                 Logging.Log("[botw-coop] objet au sol : chargement, %d objet(s) partage(s) oublie(s) sans annonce", n);
         }
