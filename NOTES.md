@@ -877,11 +877,25 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - le menu de J2 montre « Traveler's Sword, Attack Up + 10 » (image).
   - Dans le même essai, la mini-carte de J2 montre le tampon de J1.
 - [V] `gd8` (non-régression après les deux relectures) : hache lâchée puis reprise par J1, copie retirée chez J2 ; aucun « monde recharge », « detruit » ou « DOUBLON » à tort.
-- **Non vérifié** :
-  - l'annonce « détruit » (arme brûlée près de son joueur) ;
-  - l'oubli au rechargement d'une partie ;
-  - la persistance du bonus après sauvegarde et rechargement.
-- Preuves : `docs/evidence/2026-11-21_objets-au-sol-bonus_gd7.log`, captures `2026-11-21_objets-au-sol_bonus_*_gd7.png`.
+- `gd9` (sauvegarde manuelle de J2 puis rechargement, copie d'essai t_sw1b) : deux défauts vus.
+  - **Bonus perdu** : après le rechargement, l'épée n'a plus son bonus (image). Codex avait raison : le jeu recopie l'inventaire dans les données de sauvegarde au ramassage, avant notre correction.
+  - **Faux « détruit »** : le Link garde la même adresse après un rechargement, donc l'oubli par changement de Link ne joue pas. La copie de hache disparue au chargement était annoncée « détruite » et l'original de J1 retiré.
+- Correctifs :
+  - **Bonus :** appel de `PauseMenuDataMgr::saveToGameData` (main+0xd92954), trouvée en désassemblant `itemGet` (main+0xd921bc) sur l'image 1.9.0. La séquence suit la décompilation : verrou `this+0x28` (main+0xeaff08), `reportDebug`, `addToPouch` (main+0xd92488, liste `this+0x68`), `saveToGameData(this, this+0x68)`, déverrouillage (main+0xeaff18). 23 appelants. Appel avec le même verrou, après la correction de l'objet (`SavePouchToGameData`).
+  - **Rechargement :** dès que le monde n'est plus prêt (« plus pret (chargement) »), les objets suivis sont oubliés sans rien annoncer.
+- [V] `gd10` :
+  - J2 ramasse la copie de l'épée bonus (« inventaire 1 -> 2 », seule la nouvelle est corrigée, « recopies dans la sauvegarde ») ;
+  - J2 sauvegarde puis recharge : il a ses deux épées de voyageur, l'ancienne sans bonus (5) et la nouvelle avec Attack Up (15) (image) ;
+  - au rechargement, « chargement, 2 objet(s) partage(s) oublie(s) sans annonce », aucun faux « détruit » ; J1 garde sa hache.
+- Relectures de ces correctifs :
+  - Codex : « No actionable regressions ».
+  - Gemini : 7 remarques, toutes rejetées après vérification dans le code (« return manquant » : les deux appels suivants testent déjà le monde ; « adresses en dur » : tout le mod est fixé sur 1.9.0 ; « ne sauve que les épées » : +0x68 est la liste entière ; etc.). Une seule est juste : le doublon par rechargement, voir les limites.
+- Limite : un joueur qui lâche un objet après sa dernière sauvegarde puis recharge le retrouve dans son inventaire, et la copie de l'autre reste. Choix assumé : sinon un objet lâché avant la sauvegarde serait perdu pour les deux.
+- **Non vérifié** : l'annonce « détruit » (arme brûlée près de son joueur).
+- Preuves :
+  - `docs/evidence/2026-11-21_objets-au-sol-bonus_gd7.log`, captures `2026-11-21_objets-au-sol_bonus_*_gd7.png` ;
+  - `2026-11-21_objets-au-sol-sauvegarde_gd10.log` ;
+  - `2026-11-21_objets-au-sol_bonus-perdu-apres-rechargement_avant-correctif_gd9.png` et `..._bonus-garde-apres-sauvegarde-et-rechargement_gd10.png`.
 - Preuves : `docs/evidence/2026-11-19_objets-au-sol_gd1.log` et les captures `2026-11-19_objets-au-sol_*_gd1.png`.
 
 ### 5.93 Ennemis sous latence simulee ; bilan periodique des roles (2026-11-19, essais `lt1`, `lt2`, Eden) - [V] journaux

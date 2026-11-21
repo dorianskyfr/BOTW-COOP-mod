@@ -550,8 +550,11 @@ namespace coop::weapons {
                         && coop::game::PatchPouchWeapon(d.m_Name, d.m_Known, d.m_KnownN, d.m_Value, d.m_Bonus, oldValue);
                     if (!ok && ++d.m_PatchTries <= 10)
                         continue;
-                    Logging.Log("[botw-coop] objet au sol : %s ramasse, durabilite %d -> %d et bonus %x/%d %s", d.m_Name, oldValue, d.m_Value,
-                        d.m_Bonus.m_Flags, d.m_Bonus.m_Value, ok ? "poses sur l'objet de l'inventaire" : "NON POSES (objet arrive introuvable)");
+                    /* Recopie dans les donnees de sauvegarde : sinon le bonus etait perdu au rechargement (gd9). */
+                    const bool saved = ok && coop::game::SavePouchToGameData();
+                    Logging.Log("[botw-coop] objet au sol : %s ramasse, durabilite %d -> %d et bonus %x/%d %s%s", d.m_Name, oldValue, d.m_Value,
+                        d.m_Bonus.m_Flags, d.m_Bonus.m_Value, ok ? "poses sur l'objet de l'inventaire" : "NON POSES (objet arrive introuvable)",
+                        ok ? (saved ? ", recopies dans la sauvegarde" : ", PAS recopies dans la sauvegarde") : "");
                     d.m_PatchTries = -1; /* fait (ou abandonne) : pas deux fois si l'annonce doit attendre */
                 }
                 {
@@ -753,6 +756,19 @@ namespace coop::weapons {
     }
 
     void OnFrameLocal() {
+        /* Chargement (partie rechargee, sanctuaire, Game Over) : les objets suivis disparaissent sans etre detruits
+           chez l'autre ; on les oublie sans rien annoncer. Essai gd9 : apres un rechargement, le Link garde la meme
+           adresse et la copie disparue etait annoncee « detruite », ce qui retirait l'original chez l'autre. */
+        if (!coop::game::IsWorldReady()) {
+            int n = 0;
+            for (Drop& d : s_Drops)
+                if (d.m_Actor != 0 || d.m_Pending) {
+                    n++;
+                    d = Drop {};
+                }
+            if (n > 0)
+                Logging.Log("[botw-coop] objet au sol : chargement, %d objet(s) partage(s) oublie(s) sans annonce", n);
+        }
         ApplyIncomingGifts();
         if (++s_LocalFrames % ScanEvery != 0)
             return;

@@ -233,6 +233,10 @@ namespace coop::game {
        Renvoie le nombre d'objets lus, -1 si l'inventaire est illisible. Fil du jeu. */
     int ReadPouch(PouchEntry* out, int max, std::uint32_t typeMask = 0xffffffffu);
 
+    /* Recopie l'inventaire dans les drapeaux de sauvegarde (PauseMenuDataMgr::saveToGameData), comme le jeu
+       apres chaque ajout. A appeler apres avoir modifie un objet de l'inventaire. Fil du jeu. */
+    bool SavePouchToGameData();
+
     /* Adresses des armes, arcs et boucliers de l'inventaire portant ce nom (au plus max), -1 si illisible. Fil du jeu. */
     int ListPouchWeapons(const char* name, std::uintptr_t* out, int max);
 

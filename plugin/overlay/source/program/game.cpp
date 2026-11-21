@@ -1282,6 +1282,31 @@ namespace coop::game {
         return true;
     }
 
+    bool SavePouchToGameData() {
+        /*
+         * uking::ui::PauseMenuDataMgr::saveToGameData(this, const OffsetList<PouchItem>&) a main+0xd92954 : trouve
+         * dans itemGet (main+0xd921bc, ci-dessous) desassemble sur notre image 1.9.0 (essai du 2026-11-21) ; la
+         * sequence y suit la decomp (uiPauseMenuDataMgr.cpp, itemGet) : verrou mCritSection (this+0x28, main+0xeaff08),
+         * reportDebug("PouchGet"), addToPouch (main+0xd92488, liste this+0x68), puis saveToGameData(this, this+0x68),
+         * puis deverrouillage (main+0xeaff18). 23 appelants (decomp : ~17 sites). Recopie l'inventaire dans les
+         * drapeaux de sauvegarde (PorchSword_* ...) : sans cela, un bonus ecrit apres le ramassage etait perdu au
+         * rechargement d'une sauvegarde (essai gd9). Fil du jeu.
+         */
+        constexpr std::uintptr_t SaveToGameData = 0xd92954;
+        constexpr std::uintptr_t CritLock = 0xeaff08;
+        constexpr std::uintptr_t CritUnlock = 0xeaff18;
+        if (s_Offsets == nullptr)
+            return false;
+        const auto mgr = PauseMenuDataMgr();
+        if (mgr == 0)
+            return false;
+        const std::uintptr_t base = MainBase();
+        reinterpret_cast<void (*)(std::uintptr_t)>(base + CritLock)(mgr + 0x28);
+        reinterpret_cast<void (*)(std::uintptr_t, std::uintptr_t)>(base + SaveToGameData)(mgr, mgr + ItemList);
+        reinterpret_cast<void (*)(std::uintptr_t)>(base + CritUnlock)(mgr + 0x28);
+        return true;
+    }
+
     bool AddInventoryItem(const char* name, int value, int& before, int& after, const WeaponBonus* bonus) {
         /*
          * uking::ui::PauseMenuDataMgr::itemGet(this, const SafeString& nom, int nombre, const WeaponModifierInfo*)

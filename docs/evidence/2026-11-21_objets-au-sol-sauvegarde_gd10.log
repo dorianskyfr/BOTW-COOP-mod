@@ -1,0 +1,19 @@
+== J1 (t_sw1), essai gd10
+[botw-coop] monde : pret (acteur du joueur actif)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache en (-2900.1, 314.1, -557.8), partage n.1, partenaire a 2.8 m
+[botw-coop] objet au sol : Weapon_Sword_019 (valeur 500, bonus 0/0) lache par le joueur 2 en (-2900.6, 314.2, -556.1), a 3.9 m de nous : copie demandee
+[botw-coop] objet au sol : copie de Weapon_Sword_019 creee (1 releve(s)), durabilite ecrite -> 500
+[botw-coop] objet au sol : Weapon_Sword_001 (valeur 2000, bonus 1/10) lache en (-2900.3, 314.3, -554.5), partage n.2, partenaire a 0.6 m
+[botw-coop] objet au sol : Weapon_Sword_001 ramasse par le joueur 2 -> notre copie retiree
+== J2 (t_sw1b), essai gd10
+[botw-coop] monde : pret (acteur du joueur actif)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache par le joueur 1 en (-2900.1, 314.1, -557.8), a 2.8 m de nous : copie demandee
+[botw-coop] objet au sol : copie de Weapon_Lsword_032 creee (0 releve(s)), durabilite ecrite -> 3000
+[botw-coop] objet au sol : Weapon_Sword_019 (valeur 500, bonus 0/0) lache en (-2900.6, 314.2, -556.1), partage n.1, partenaire a 3.9 m
+[botw-coop] objet au sol : Weapon_Sword_001 (valeur 2000, bonus 1/10) lache par le joueur 1 en (-2900.3, 314.3, -554.5), a 0.6 m de nous : copie demandee
+[botw-coop] objet au sol : copie de Weapon_Sword_001 creee (1 releve(s)), durabilite ecrite -> 2000
+[botw-coop] objet au sol : Weapon_Sword_001 ramasse, durabilite 2000 -> 2000 et bonus 1/10 poses sur l'objet de l'inventaire, recopies dans la sauvegarde
+[botw-coop] objet au sol : Weapon_Sword_001 (n.2 du joueur 1) ramasse ici, a 0.6 m, inventaire 1 -> 2 -> annonce
+[botw-coop] monde : plus pret (chargement ou ecran-titre)
+[botw-coop] objet au sol : chargement, 2 objet(s) partage(s) oublie(s) sans annonce
+[botw-coop] monde : pret (acteur du joueur actif)
