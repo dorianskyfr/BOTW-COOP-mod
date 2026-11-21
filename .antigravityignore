@@ -1,0 +1,20 @@
+# Antigravity CLI (Gemini) : fichiers que l'agent ne doit jamais lire ni proposer.
+# Tout ce qu'il lit part chez Google. Memes exclusions que Codex (CLAUDE.md global).
+# Dossiers d'emulateur (cles prod.keys / title.keys, sauvegardes, NAND)
+build/eden/
+build/ryu/
+build/launcher-test/
+build/lt-work/
+# Cles et secrets, ou qu'ils soient
+*.keys
+prod.keys
+title.keys
+*.pem
+*.key
+.env
+.env.*
+# Sauvegardes du jeu
+**/save/
+**/saves/
+**/save_*/
+*.sav

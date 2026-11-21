@@ -1,0 +1,17 @@
+== J1 (t_sw1), essai gd7 (bonus de l'arme sur la copie ramassee)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache en (-2900.2, 314.1, -557.8), partage n.1, partenaire a 42.0 m
+[botw-coop] essai inventaire : Weapon_Sword_001 x2000 (bonus 1/10) -> objets 21 -> 22
+[botw-coop] essai inventaire : Weapon_Shield_001 x2000 (bonus 0/0) -> objets 22 -> 23
+[botw-coop] essai inventaire : Weapon_Bow_001 x2000 (bonus 0/0) -> objets 23 -> 24
+[botw-coop] objet au sol : Weapon_Sword_001 (valeur 2000, bonus 1/10) lache en (-2900.3, 314.3, -554.5), partage n.2, partenaire a 7.8 m
+[botw-coop] objet au sol : Weapon_Sword_001 ramasse par le joueur 2 -> notre copie retiree
+== J2 (t_sw1b), essai gd7 (bonus de l'arme sur la copie ramassee)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache par le joueur 1 en (-2900.1, 314.1, -557.8), a 42.0 m de nous : copie demandee
+[botw-coop] objet au sol : copie de Weapon_Lsword_032 creee (0 releve(s)), durabilite ecrite -> 3000
+[botw-coop] essai inventaire : Weapon_Sword_001 x2000 (bonus 1/10) -> objets 28 -> 28
+[botw-coop] essai inventaire : Weapon_Shield_001 x2000 (bonus 0/0) -> objets 28 -> 29
+[botw-coop] essai inventaire : Weapon_Bow_001 x2000 (bonus 0/0) -> objets 29 -> 30
+[botw-coop] objet au sol : Weapon_Sword_001 (valeur 2000, bonus 1/10) lache par le joueur 1 en (-2900.3, 314.3, -554.5), a 7.8 m de nous : copie demandee
+[botw-coop] objet au sol : copie de Weapon_Sword_001 creee (1 releve(s)), durabilite ecrite -> 2000
+[botw-coop] objet au sol : Weapon_Sword_001 ramasse, durabilite 2000 -> 2000 et bonus 1/10 poses sur l'objet de l'inventaire
+[botw-coop] objet au sol : Weapon_Sword_001 (n.2 du joueur 1) ramasse ici, a 0.6 m, inventaire 0 -> 1 -> annonce

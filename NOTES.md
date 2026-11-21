@@ -847,7 +847,7 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - Un objet qui disparaît près de son joueur sans entrer dans son inventaire n'est pas annoncé (par exemple une arme en bois brûlée) : la copie de l'autre joueur reste.
 - **Non vérifié** : arc, bouclier, objet lancé (et non lâché par le menu), objet qui roule loin ; deux PC.
 
-### 5.96 Épée de légende chacun la sienne ; bonus et destruction des objets au sol (2026-11-20, essais `gd4` à `gd6`, Eden) - en cours, arrêté à la demande de l'utilisateur
+### 5.96 Épée de légende chacun la sienne ; bonus et destruction des objets au sol (2026-11-20/21, essais `gd4` à `gd8`, Eden) - [V] image et journaux (sauf points listés)
 
 - Épée de légende : son socle (MainField F-2, `Weapon_Sword_070`, HashId 2427157272, drapeau `MainField_Weapon_Sword_070_2427157272` = 99774386) était un objet de carte du groupe 2, donc partagé. Retirée chez l'un, elle disparaissait du socle chez l'autre, qui ne pouvait plus l'avoir. Correctif : exclue de la liste blanche (`build_sync_flags.py`, `EXCLUDE`, avec les emplacements `AocField_Weapon_Sword_070_*`) et des drapeaux privés du plugin (`flags.cpp`). [V] `gd4` (`-DCOOP_TEST_SETLOCAL=0x99774386`, témoin `0xf0143def`) : chez J1 `99774386 0 -> 1` sans « envoye », le témoin `f0143def ... (envoye)` est reçu par J2.
 - Objets au sol :
@@ -856,9 +856,32 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - Deux ramassages simultanés sont journalisés `DOUBLON`, mais pas empêchés.
   - Relais 119/119.
 - [V] `gd4`/`gd5` : armes et arc lâchés par J2, copies chez J1 (même durabilité).
+- Première relecture par Gemini (Antigravity CLI, Gemini 3.8 Flash High, lecture seule, diff seul), 7 remarques :
+  - **Retenues :**
+    - le choix de l'arme à corriger dans l'inventaire par sa durabilité pouvait viser une arme déjà là. On relève désormais les objets de ce nom avant le ramassage (`ListPouchWeapons`) et on corrige le seul nouveau ;
+    - la durabilité est réécrite même sans bonus ;
+    - jusqu'à 1 s d'essais avant l'annonce ;
+    - le nom manquait dans le journal du doublon.
+  - **Rejetées (vérifiées dans le code) :**
+    - « nom non initialisé » : `Gift` est mis à zéro ;
+    - « copie en création orpheline » : déjà géré par `m_Pending` puis `m_Cancelled` ;
+    - « bonus non initialisé » : mis à zéro aussi ;
+    - « regex sans parenthèses » : `MAPS` en a déjà.
+- Relecture Codex (1re passe sur ce sujet), 3 remarques P2 :
+  - **Retenue :** une partie rechargée près d'un objet suivi annonçait « détruit » et retirait la copie de l'autre joueur. Correctif : un nouveau Link (`m_PlayerActor` différent) oublie les objets suivis sans rien annoncer.
+  - **Retenue :** l'usure de la copie au sol est relue tant qu'elle y est (une arme en bois qui brûle en perd).
+  - **Non corrigée, je ne peux pas la confirmer :** le bonus posé après coup ne serait pas copié dans les données de sauvegarde. Le jeu les met à jour au ramassage, avant notre correction ; il faudrait connaître la fonction du jeu qui fait cette copie (adresse en 1.9.0 inconnue). Le bonus serait alors perdu après une sauvegarde puis un rechargement, sans autre changement d'inventaire entre-temps.
+- [V] `gd7` (`-DCOOP_TEST_GIVE -DCOOP_TEST_BONUS -DCOOP_TEST_GIVE_AFTER=7000`) :
+  - J1 a de la place et reçoit l'épée de voyageur « Attack Up + 10 » ; J2, plein, ne la reçoit pas (journaux 21 -> 22 et 28 -> 28) ;
+  - J2 fait de la place, J1 lâche l'épée -> `GDRP ... bonus 1/10` ; J2 ramasse la copie -> `durabilite 2000 -> 2000 et bonus 1/10 poses sur l'objet de l'inventaire`, et J1 retire sa copie ;
+  - le menu de J2 montre « Traveler's Sword, Attack Up + 10 » (image).
+  - Dans le même essai, la mini-carte de J2 montre le tampon de J1.
+- [V] `gd8` (non-régression après les deux relectures) : hache lâchée puis reprise par J1, copie retirée chez J2 ; aucun « monde recharge », « detruit » ou « DOUBLON » à tort.
 - **Non vérifié** :
-  - le bonus posé sur la copie ramassée ; l'essai `gd6` a été arrêté avant (`-DCOOP_TEST_GIVE -DCOOP_TEST_BONUS -DCOOP_TEST_GIVE_AFTER=7000` : faire de la place avant le don d'essai) ;
-  - l'annonce « détruit ».
+  - l'annonce « détruit » (arme brûlée près de son joueur) ;
+  - l'oubli au rechargement d'une partie ;
+  - la persistance du bonus après sauvegarde et rechargement.
+- Preuves : `docs/evidence/2026-11-21_objets-au-sol-bonus_gd7.log`, captures `2026-11-21_objets-au-sol_bonus_*_gd7.png`.
 - Preuves : `docs/evidence/2026-11-19_objets-au-sol_gd1.log` et les captures `2026-11-19_objets-au-sol_*_gd1.png`.
 
 ### 5.93 Ennemis sous latence simulee ; bilan periodique des roles (2026-11-19, essais `lt1`, `lt2`, Eden) - [V] journaux
