@@ -1,0 +1,166 @@
+﻿diff --git a/plugin/overlay/source/program/bombs.cpp b/plugin/overlay/source/program/bombs.cpp
+index 1962582..25918fd 100644
+--- a/plugin/overlay/source/program/bombs.cpp
++++ b/plugin/overlay/source/program/bombs.cpp
+@@ -76,6 +76,33 @@ namespace coop::bombs {
+             slot->m_Since = s_Frames;
+         }
+ 
++        /* Copies qui explosent d'elles-memes : retirees en secours si elles sont encore la apres ExplodeFallback images. */
++        constexpr std::uint64_t ExplodeFallback = 150;
++        struct Exploding {
++            std::uintptr_t m_Actor = 0;
++            std::uint64_t  m_Since = 0;
++        };
++        Exploding s_Exploding[4];
++
++        void CheckExplosions() {
++            for (Exploding& x : s_Exploding) {
++                if (x.m_Actor == 0)
++                    continue;
++                if (!coop::game::IsActorListed(x.m_Actor)) {
++                    if (Log())
++                        Logging.Log("[botw-coop] bombe du partenaire : notre copie s'est supprimee apres %lu images (explosion finie)",
++                            s_Frames - x.m_Since);
++                    x = Exploding {};
++                } else if (s_Frames - x.m_Since >= ExplodeFallback) {
++                    coop::game::DeleteActor(x.m_Actor);
++                    MarkDying(x.m_Actor);
++                    if (Log())
++                        Logging.Log("[botw-coop] bombe du partenaire : copie encore la %lu images apres son explosion, retiree", ExplodeFallback);
++                    x = Exploding {};
++                }
++            }
++        }
++
+         void PruneDying() {
+             for (Dying& d : s_Dying)
+                 if (d.m_Actor != 0 && (s_Frames - d.m_Since > 300 || !coop::game::IsActorListed(d.m_Actor)))
+@@ -187,12 +214,34 @@ namespace coop::bombs {
+                 const float at[3] = { want.m_Mtx[3], want.m_Mtx[7], want.m_Mtx[11] };
+                 const float dx = at[0] - player[0], dy = at[1] - player[1], dz = at[2] - player[2];
+                 if (dx * dx + dy * dy + dz * dz <= ShowRadius * ShowRadius) {
+-                    /* L'explosion n'est pas recreee (NOTES 6.02) : essais bm8/bm9, ni l'acteur Explode (sans modele, mais
+-                       avec un capteur d'attaque) ni la sequence Bomb_Explode jouee sur la copie ne montrent quoi que ce
+-                       soit, alors que chez celui qui fait exploser on voit une grande gerbe bleue. La copie est retiree. */
++                    /* NOTES 6.02 : ni l'acteur Explode ni la sequence Bomb_Explode ne se voient. NOTES 6.03 : la copie
++                       passe elle-meme sur l'enfant « 爆発 » (explosion) de son IA « Root » (classe RemoteBomb,
++                       RemoteBomb.baiprog : SeqTwoAction, BombExplode puis Delete), comme une vraie bombe. Elle se
++                       supprime seule ; on ne la retire qu'en secours, ExplodeFallback images plus tard. */
++                    int rc = -100;
++                    if (c.m_State == CopyState::Alive && c.m_Actor != 0 && coop::game::IsActorListed(c.m_Actor)) {
++                        if (coop::game::SetActorBodyTransform(c.m_Actor, want.m_Mtx) != 0)
++                            coop::game::SetActorMtx(c.m_Actor, want.m_Mtx);
++                        rc = coop::game::RequestAiChildChange(c.m_Actor, "\xe7\x88\x86\xe7\x99\xba"); /* « 爆発 » en UTF-8 */
++                        if (rc == 0) {
++                            Exploding* slot = &s_Exploding[0];
++                            for (Exploding& x : s_Exploding)
++                                if (x.m_Actor == 0) {
++                                    slot = &x;
++                                    break;
++                                }
++                            if (slot->m_Actor != 0 && coop::game::IsActorListed(slot->m_Actor))
++                                coop::game::DeleteActor(slot->m_Actor);
++                            slot->m_Actor = c.m_Actor;
++                            slot->m_Since = s_Frames;
++                            MarkDying(c.m_Actor); /* jamais reprise comme notre bombe */
++                            c.m_Actor = 0;        /* RemoveCopy ne la retire pas : elle explose */
++                        }
++                    }
+                     if (Log())
+-                        Logging.Log("[botw-coop] bombe du partenaire : %s n.%u explosee en (%.1f, %.1f, %.1f) (explosion non montree)",
+-                            Names[c.m_Kind], want.m_Serial, static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]));
++                        Logging.Log("[botw-coop] bombe du partenaire : %s n.%u explosee en (%.1f, %.1f, %.1f), %s (rc=%d)", Names[c.m_Kind],
++                            want.m_Serial, static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]),
++                            rc == 0 ? "notre copie explose" : "explosion non montree", rc);
+                 }
+             }
+             if (want.m_Kind == 0)
+@@ -277,6 +326,8 @@ namespace coop::bombs {
+     void OnFrame() {
+         s_Frames++;
+         if (!coop::game::IsWorldReady()) {
++            for (Exploding& x : s_Exploding)
++                x = Exploding {}; /* disparues avec le monde */
+             /* Chargement : les acteurs disparaissent avec le monde. Une creation en cours n'est pas abandonnee ici
+                (sa poignee est encore attendue) ; elle finit ou echoue a la sortie du chargement. */
+             for (Copy& c : s_Copies)
+@@ -297,6 +348,7 @@ namespace coop::bombs {
+         coop::game::PlayerState st;
+         if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0)
+             return;
++        CheckExplosions();
+         PruneDying();
+         if (s_Frames % ScanEvery == 0)
+             ScanLocal();
+diff --git a/plugin/overlay/source/program/game.cpp b/plugin/overlay/source/program/game.cpp
+index dbe9f3f..ffab2df 100644
+--- a/plugin/overlay/source/program/game.cpp
++++ b/plugin/overlay/source/program/game.cpp
+@@ -793,6 +793,53 @@ namespace coop::game {
+         return 0;
+     }
+ 
++    /*
++     * Demande a l'IA d'un acteur de passer sur un de ses enfants (NOTES 6.03).
++     * Decomp botw (src/KingSystem/ActorSystem) : Actor::mRootAi a +0x558 (actActor.h ; notre ASList releve a +0x560
++     * le suit) ; ActionBase (actAiActionBase.h), apres les 2 virtuelles de SEAD_RTTI_BASE et les 2 du destructeur :
++     * changeChildLater(const SafeString&) indice 22, getCurrentChild() indice 26. Ai::changeChildLater (actAiAi.cpp)
++     * cherche le nom parmi les enfants directs et le met en attente ; le changement se fait au calc suivant.
++     * On l'appelle sur l'enfant courant de l'IA racine (pour une bombe : l'IA « Root », classe RemoteBomb).
++     * Retour : 0 fait ; <0 refus (pointeurs ou tables hors du module main, enfant inconnu).
++     */
++    int RequestAiChildChange(std::uintptr_t actor, const char* child) {
++        constexpr std::size_t Actor_RootAi = 0x558;
++        constexpr int Slot_ChangeChildLater = 22, Slot_GetCurrentChild = 26;
++        if (s_Offsets == nullptr || actor == 0 || child == nullptr)
++            return -1;
++        const auto& info = exl::util::GetMainModuleInfo();
++        const auto inMain = [&](std::uintptr_t p) { return p >= info.m_Total.m_Start && p < info.m_Total.m_Start + info.m_Total.m_Size; };
++        const auto inText = [&](std::uintptr_t p) { return p >= info.m_Text.m_Start && p < info.m_Text.m_Start + info.m_Text.m_Size; };
++        const auto root = Peek<std::uintptr_t>(actor + Actor_RootAi);
++        if (!LooksLikeHeapPtr(root))
++            return -2;
++        const auto rootVt = Peek<std::uintptr_t>(root);
++        if (!inMain(rootVt))
++            return -3;
++        const auto getChild = Peek<std::uintptr_t>(rootVt + Slot_GetCurrentChild * sizeof(std::uintptr_t));
++        if (!inText(getChild))
++            return -4;
++        const auto ai = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(getChild)(root);
++        if (!LooksLikeHeapPtr(ai))
++            return -5;
++        const auto aiVt = Peek<std::uintptr_t>(ai);
++        if (!inMain(aiVt))
++            return -6;
++        const auto changeLater = Peek<std::uintptr_t>(aiVt + Slot_ChangeChildLater * sizeof(std::uintptr_t));
++        if (!inText(changeLater))
++            return -7;
++        const auto vtSlot = Peek<std::uintptr_t>(MainBase() + 0x1d66260); /* SafeString, comme ChangeStage */
++        if (vtSlot == 0)
++            return -8;
++        struct SafeString {
++            std::uintptr_t m_Vtable;
++            const char* m_Str;
++        };
++        const SafeString name { vtSlot + 0x10, child };
++        const auto next = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t, const SafeString&)>(changeLater)(ai, name);
++        return next != 0 ? 0 : -9;
++    }
++
+     namespace {
+         bool Near(float a, float b) { const float d = a - b; return d > -0.05f && d < 0.05f; }
+ 
+diff --git a/plugin/overlay/source/program/game.hpp b/plugin/overlay/source/program/game.hpp
+index 18f83db..ea334fd 100644
+--- a/plugin/overlay/source/program/game.hpp
++++ b/plugin/overlay/source/program/game.hpp
+@@ -179,6 +179,8 @@ namespace coop::game {
+      * (-1 pas de corps, -2 pas d'accesseur, -3/-4/-5 controle de coherence echoue).
+      */
+     int SetActorBodyTransform(std::uintptr_t actor, const float mtx[12]);
++    /* L'IA de l'acteur passe sur l'enfant nomme de son IA courante (au calc suivant). 0 si accepte. Fil du jeu. */
++    int RequestAiChildChange(std::uintptr_t actor, const char* child);
+ 
+     /* Place un acteur a controleur de personnage (PNJ). 0 si fait, negatif sinon. */
+     /* Renvoie le nombre de corps physiques du controleur deplaces (0 = aucun trouve). */

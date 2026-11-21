@@ -916,6 +916,21 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.03 Explosion des bombes : essai par l'IA de la copie, sans résultat visible (2026-11-21, essai `bx1`, Eden) - [V] image et journaux ; non gardé
+
+- Décompilation botw (`third_party/botw`) :
+  - `Actor::mRootAi` à +0x558 (`actActor.h`) ;
+  - `ActionBase` (`actAiActionBase.h`) : `changeChildLater(const SafeString&)` 22e virtuelle, `getCurrentChild()` 26e (après les 2 de `SEAD_RTTI_BASE` et les 2 du destructeur) ;
+  - `Ai::changeChildLater` (`actAiAi.cpp`) cherche parmi les enfants directs ;
+  - `data/uking_functions.csv` (adresses 1.5.0) nomme `uking::ai::RemoteBomb::changeToExplodeChild` (0x550260, 144 octets), `handleMessage_` et `RuneMgr::detonateRemoteBomb`.
+- `RemoteBomb.baiprog` : l'IA « Root » (classe `RemoteBomb`) a 5 enfants directs, dont « 爆発 » (index 4, `SeqTwoAction` : `BombExplode` avec `SizeUpTime` 3 et `ExplodeTime` 5, puis `Delete`).
+- Essai `bx1` : à l'explosion de la bombe de J1, la copie de J2 reçoit `changeChildLater("爆発")` par sa table virtuelle.
+  - Accepté (`rc=0`), et la copie se supprime d'elle-même 51 images plus tard.
+  - **Mais rien ne se voit** chez J2 : la copie reste en l'air, alors que J1 montre la grande gerbe bleue au même moment (captures).
+  - Le changement d'enfant ne suffit pas. `changeToExplodeChild` fait sans doute autre chose (paramètres d'entrée de `BombExplode` ?). **Je ne peux pas confirmer** quoi : je n'ai que son adresse 1.5.0, pas celle de 1.9.0.
+- Pas gardé : la bombe restait 1,7 s en l'air de plus qu'en v0.99.13. Le code de l'essai est gardé dans `docs/evidence/2026-11-21_bombes-explosion-ia_bx1.patch`, avec la capture `2026-11-21_bombes-explosion-ia_J1-gerbe-J2-rien_bx1.png` (J1 en haut, J2 en bas).
+- Piste suivante : retrouver `RemoteBomb::changeToExplodeChild` ou `handleMessage_` dans main 1.9.0 (par la table virtuelle de `uking::ai::RemoteBomb`), et lire ce qu'ils font avant le changement d'enfant.
+
 ### 6.02 Explosion des bombes : retirée, elle ne se voyait pas (2026-11-21, essais `bm8` à `bm10`, Eden) - [V] image et journaux
 
 - [V] `bm9`, captures en rafale des deux jeux au même moment : chez J1, la vraie explosion est une grande gerbe bleue ; chez J2, rien. Ni l'acteur `Explode` (essai `bm8`, 20 captures, journal `explosion creee`), ni la séquence `Bomb_Explode` jouée sur la copie (`bm9`, journal `sequence Bomb_Explode jouee`) ne montrent quoi que ce soit.
