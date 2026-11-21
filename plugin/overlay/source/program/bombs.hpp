@@ -16,8 +16,8 @@
  * - partenaire : le meme acteur cree au meme endroit (poignee de creation), pose a chaque image ; retire quand
  *   le type passe a 0 (bombe explosee ou rangee), quand le numero change ou sans nouvelles depuis ~3 s.
  * - bombe disparue monde charge (explosion) : type 0 avec le drapeau « explosee » et sa derniere place ; le
- *   partenaire y cree l'acteur Explode (meme paquet TitleBG.pack : pas de modele, IA BombExplode, capteur
- *   d'attaque AtkExplode), une fois par bombe.
+ *   partenaire le journalise et retire sa copie. L'explosion n'est pas recreee chez lui (NOTES 6.02 : ni
+ *   l'acteur Explode ni la sequence Bomb_Explode ne se voient).
  */
 namespace coop::bombs {
 

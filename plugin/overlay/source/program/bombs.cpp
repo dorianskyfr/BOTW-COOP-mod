@@ -187,11 +187,12 @@ namespace coop::bombs {
                 const float at[3] = { want.m_Mtx[3], want.m_Mtx[7], want.m_Mtx[11] };
                 const float dx = at[0] - player[0], dy = at[1] - player[1], dz = at[2] - player[2];
                 if (dx * dx + dy * dy + dz * dz <= ShowRadius * ShowRadius) {
-                    const bool ok = coop::game::RequestCreateActorAwake("Explode", at);
+                    /* L'explosion n'est pas recreee (NOTES 6.02) : essais bm8/bm9, ni l'acteur Explode (sans modele, mais
+                       avec un capteur d'attaque) ni la sequence Bomb_Explode jouee sur la copie ne montrent quoi que ce
+                       soit, alors que chez celui qui fait exploser on voit une grande gerbe bleue. La copie est retiree. */
                     if (Log())
-                        Logging.Log("[botw-coop] bombe du partenaire : %s n.%u explosee en (%.1f, %.1f, %.1f), explosion %s", Names[c.m_Kind],
-                            want.m_Serial, static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]),
-                            ok ? "creee" : "REFUSEE");
+                        Logging.Log("[botw-coop] bombe du partenaire : %s n.%u explosee en (%.1f, %.1f, %.1f) (explosion non montree)",
+                            Names[c.m_Kind], want.m_Serial, static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]));
                 }
             }
             if (want.m_Kind == 0)

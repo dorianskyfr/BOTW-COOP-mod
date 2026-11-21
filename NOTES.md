@@ -916,7 +916,15 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
-### 6.01 Explosion des bombes montrée chez l'autre (2026-11-21, essai `bm6`, Eden) - [V] journaux, pas à l'image
+### 6.02 Explosion des bombes : retirée, elle ne se voyait pas (2026-11-21, essais `bm8` à `bm10`, Eden) - [V] image et journaux
+
+- [V] `bm9`, captures en rafale des deux jeux au même moment : chez J1, la vraie explosion est une grande gerbe bleue ; chez J2, rien. Ni l'acteur `Explode` (essai `bm8`, 20 captures, journal `explosion creee`), ni la séquence `Bomb_Explode` jouée sur la copie (`bm9`, journal `sequence Bomb_Explode jouee`) ne montrent quoi que ce soit.
+- `Explode` a un capteur d'attaque (`AtkExplode`) : il pouvait blesser sans rien montrer. **Je ne peux pas confirmer** qu'il blessait. La v0.99.12 le créait ; il est retiré en v0.99.13.
+- Maintenant : l'annonce « explosée » est gardée (journal `explosee en (...) (explosion non montree)`) et la copie est retirée, comme en 5.99. [V] `bm10` : deux bombes de suite, recréées puis retirées chez J2.
+- Reste à trouver : ce qui déclenche l'explosion d'une `RemoteBomb` (son IA, `BombExplode`), pour la déclencher sur la copie.
+- Preuves : `docs/evidence/2026-11-21_bombes-explosion_J1-vue-J2-rien_bm9.png` (J1 en haut, J2 en bas).
+
+### 6.01 Explosion des bombes montrée chez l'autre (2026-11-21, essai `bm6`, Eden) - [V] journaux, pas à l'image ; **remplacé par 6.02**
 
 - Acteur `Explode` (paquet `Actor/Pack/Explode.sbactorpack` de `Pack/TitleBG.pack`) : pas de modèle, IA `BombExplode`, capteur d'attaque `AtkExplode`. [V] `bm5` : la bombe de la tablette n'en crée pas en explosant ; elle explose elle-même.
 - L'émetteur annonce « explosée » (16e valeur de `BOMB`) quand sa bombe disparaît pendant que le monde est chargé, avec sa dernière place. Le partenaire crée `Explode` à cet endroit, une fois par bombe, s'il est à moins de 200 m.
