@@ -793,6 +793,56 @@ namespace coop::game {
         return 0;
     }
 
+    /*
+     * Fait exploser une bombe de la tablette (acteur RemoteBomb*) comme le jeu (NOTES 6.04).
+     * Trouve dans main 1.9.0 (capstone, image build/dumps/main_1.9.0.bin) :
+     * - fabrique d'IA « RemoteBomb » : entree {crc32("RemoteBomb") = be97cd51, fonction} a main+0x1cb8ab0, fonction
+     *   main+0xb7eee8 (new 0x1a8 octets, puis constructeur main+0xa202fc) ; le constructeur pose la table virtuelle
+     *   main+0x1c875f0 (uking::ai::RemoteBomb) ;
+     * - main+0xa20ab4, 144 octets comme uking::ai::RemoteBomb::changeToExplodeChild en 1.5.0 (decomp botw,
+     *   data/uking_functions.csv) : finit par Ai::changeChild(this, "爆発", nullptr) apres avoir prepare l'acteur.
+     * Decomp : Actor::mRootAi a +0x558 ; ActionBase::getCurrentChild est la 26e virtuelle. L'IA courante de la racine
+     * d'une bombe est son IA « Root » (classe RemoteBomb, RemoteBomb.baiprog) ; sa table virtuelle est verifiee avant
+     * l'appel. Retour : 0 fait, <0 refus. Fil du jeu.
+     */
+    /*
+     * Bombe en train d'exploser : bit 0x20 du mot a acteur+0x518, pose par RemoteBomb::changeToExplodeChild
+     * (main+0xa20ab4) et par BombExplode::enter_ (main+0x60af30), desassembles en 1.9.0 (NOTES 6.05). La bombe ne
+     * disparait qu'a la fin de sa sequence d'explosion (~51 images), ce bit la voit des le debut.
+     */
+    bool IsRemoteBombExploding(std::uintptr_t actor) {
+        if (actor == 0 || !CanReadMemory(actor + 0x518, 4))
+            return false;
+        return (Peek<std::uint32_t>(actor + 0x518) & 0x20u) != 0;
+    }
+
+    int ExplodeRemoteBomb(std::uintptr_t actor) {
+        constexpr std::size_t Actor_RootAi = 0x558;
+        constexpr int Slot_GetCurrentChild = 26;
+        constexpr std::uintptr_t RemoteBombAiVtable = 0x1c875f0, ChangeToExplodeChild = 0xa20ab4;
+        if (s_Offsets == nullptr || actor == 0)
+            return -1;
+        const auto& info = exl::util::GetMainModuleInfo();
+        const auto inMain = [&](std::uintptr_t p) { return p >= info.m_Total.m_Start && p < info.m_Total.m_Start + info.m_Total.m_Size; };
+        const auto inText = [&](std::uintptr_t p) { return p >= info.m_Text.m_Start && p < info.m_Text.m_Start + info.m_Text.m_Size; };
+        const auto root = Peek<std::uintptr_t>(actor + Actor_RootAi);
+        if (!LooksLikeHeapPtr(root))
+            return -2;
+        const auto rootVt = Peek<std::uintptr_t>(root);
+        if (!inMain(rootVt))
+            return -3;
+        const auto getChild = Peek<std::uintptr_t>(rootVt + Slot_GetCurrentChild * sizeof(std::uintptr_t));
+        if (!inText(getChild))
+            return -4;
+        const auto ai = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(getChild)(root);
+        if (!LooksLikeHeapPtr(ai))
+            return -5;
+        if (Peek<std::uintptr_t>(ai) != MainBase() + RemoteBombAiVtable)
+            return -6; /* pas l'IA RemoteBomb (autre etat de l'IA racine) : on ne touche a rien */
+        reinterpret_cast<void (*)(std::uintptr_t)>(MainBase() + ChangeToExplodeChild)(ai);
+        return 0;
+    }
+
     namespace {
         bool Near(float a, float b) { const float d = a - b; return d > -0.05f && d < 0.05f; }
 

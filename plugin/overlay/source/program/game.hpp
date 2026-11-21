@@ -179,6 +179,10 @@ namespace coop::game {
      * (-1 pas de corps, -2 pas d'accesseur, -3/-4/-5 controle de coherence echoue).
      */
     int SetActorBodyTransform(std::uintptr_t actor, const float mtx[12]);
+    /* Fait exploser une bombe de la tablette (RemoteBomb::changeToExplodeChild, main 1.9.0). 0 si fait. Fil du jeu. */
+    int ExplodeRemoteBomb(std::uintptr_t actor);
+    /* Vrai si la bombe de la tablette a commence son explosion (acteur+0x518, bit 0x20). */
+    bool IsRemoteBombExploding(std::uintptr_t actor);
 
     /* Place un acteur a controleur de personnage (PNJ). 0 si fait, negatif sinon. */
     /* Renvoie le nombre de corps physiques du controleur deplaces (0 = aucun trouve). */

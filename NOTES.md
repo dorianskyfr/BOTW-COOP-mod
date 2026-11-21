@@ -916,6 +916,23 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.05 Explosion des bombes recréée chez l'autre : c'était le moment de l'annonce (2026-11-21, essais `bw1`, `bs3`, `bx4` à `bx8`, Eden) - [V] image et journaux
+
+- `bw1` (outil `-DCOOP_TEST_BOMB_WATCH`, tout acteur nouveau à moins de 40 m de notre bombe) : à l'explosion, **aucun acteur nouveau**. La gerbe vient de la bombe elle-même.
+- `bs3` (outil `-DCOOP_TEST_BOMB_SELF` + `drive.py bombtest`, bouton d'essai 47) : une bombe créée par le mod chez un seul joueur, tenue en place, puis explosée par `changeToExplodeChild` (6.04). **Elle explose** (image) : Link devient rouge (dégât), un voile de souffle, il est projeté. La fonction marche donc sur une bombe créée par le mod.
+- La vraie cause des échecs de 6.02 à 6.04 : l'annonce arrivait trop tard. La bombe ne disparaît qu'à la fin de sa séquence d'explosion (51 à 67 images, près de 4 s à 13 images/s ce jour-là). La copie explosait donc après la fin de mes rafales de captures.
+- Correctif :
+  - l'émetteur annonce « explosée » dès le début de l'explosion : bit 0x20 du mot à acteur+0x518, posé par `changeToExplodeChild` (main+0xa20ab4) et par `BombExplode::enter_` (main+0x60af30), lus dans leur désassemblage ;
+  - le partenaire place la copie à cet endroit et appelle `changeToExplodeChild` sur son IA (`game::ExplodeRemoteBomb` : table virtuelle de `RemoteBomb` vérifiée avant l'appel) ; la copie se supprime ensuite d'elle-même (secours : retirée 150 images plus tard) ;
+  - une copie encore en création attend d'être prête avant d'exploser (relecture Codex).
+- [V] Essais :
+  - `bx4` : J2 à 2 m est projeté par l'explosion de la copie, au moment où J1 fait exploser la sienne ;
+  - `bx6` : la bulle de souffle couvre l'écran de J2 (capture `2026-11-21_bombes-explosion-copie_J2-projete-et-bulle_bx4-bx6.png`) ;
+  - `bx8`, version finale : `commence son explosion` chez J1, puis `notre copie explose (rc=0)` et `s'est supprimee apres 63 images` chez J2.
+- Pas vu : la gerbe de loin, de l'extérieur (les essais avaient J2 à 2-5 m).
+- Comportement : l'explosion de la copie a sa propre attaque dans le monde de l'autre. Elle pousse et peut blesser le joueur proche (les essais étaient en invincibilité) et touche les ennemis de son monde. La vie des ennemis partagée est une valeur absolue, les deux jeux convergent.
+- Relecture **Codex**, 1 remarque P2, retenue (explosion pendant la création de la copie).
+
 ### 6.04 Explosion des bombes : fonction du jeu retrouvée en 1.9.0, toujours rien à l'image (2026-11-21, essais `bx2`, `bx3`, Eden) - [V] image et journaux ; non gardé
 
 - Retrouvé dans main 1.9.0 (`tools/research_remote_bomb_ai.py`, capstone sur `build/dumps/main_1.9.0.bin`, image mémoire de base 0x8506000) :

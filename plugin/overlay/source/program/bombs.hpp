@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <cstdint>
 
 #include "seqvalue.hpp"
@@ -26,7 +27,8 @@ namespace coop::bombs {
     struct State {
         std::uint32_t m_Kind = 0;   /* 0 aucune, 1..4 : type (bombs.cpp, Names) */
         std::uint32_t m_Serial = 0; /* numero de la bombe chez l'emetteur, change a chaque nouvelle bombe */
-        /* Type 0 seulement : la bombe m_Serial vient de disparaitre, monde charge (explosee) ; m_Mtx = sa derniere place. */
+        /* 1 : la bombe m_Serial explose (explosion commencee, acteur+0x518 bit 0x20, ou disparue monde charge) ;
+           m_Mtx = sa place. */
         std::uint32_t m_Exploded = 0;
         float m_Mtx[12] = {};
     };
@@ -42,5 +44,8 @@ namespace coop::bombs {
 
     /* Fil du jeu, chaque image. */
     void OnFrame();
+
+    /* Essai (COOP_TEST_BOMB_SELF) : nombre d'appuis du bouton d'essai, lu par le fil du jeu. */
+    inline std::atomic<int> g_TestStep { 0 };
 
 }

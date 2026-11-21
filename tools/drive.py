@@ -236,6 +236,10 @@ def main():
             # Essai combat : le plugin pose Link a 12 m du Bokoblin actif le plus proche.
             p.pad(buttons=1 << 53, ms=300)
             p.log("approach : Link pose a 12 m du Bokoblin le plus proche")
+        elif op == "bombtest":
+            # Essai (COOP_TEST_BOMB_SELF) : un appui cree une bombe devant Link, le suivant la fait exploser.
+            p.pad(buttons=1 << 47, ms=300)
+            p.log("bombtest : etape suivante de l'essai bombe seule")
         elif op == "life":
             # Essai : le plugin journalise les points de vie des ennemis a moins de 200 m.
             p.pad(buttons=1 << 61, ms=300)

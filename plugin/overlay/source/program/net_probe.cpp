@@ -355,7 +355,7 @@ namespace coop::net_probe {
                     && SaneMtx(o, 20000.0f)) {
                     b.m_Kind = kind;
                     b.m_Serial = serial;
-                    b.m_Exploded = (kind == 0 && exploded == 1) ? 1u : 0u;
+                    b.m_Exploded = exploded == 1 ? 1u : 0u; /* aussi type non nul : explosion commencee (NOTES 6.05) */
                     coop::bombs::g_Remote[slot].Store(b);
                 }
             } else if (std::strncmp(line, "WPN ", 4) == 0) {

@@ -294,6 +294,18 @@ namespace coop::input_inject {
                         }
                         buttons &= ~(1ull << 63);
                     }
+#ifdef COOP_TEST_BOMB_SELF
+                    /* Bit 47 : essai bombe seule (bombs.cpp) : un appui cree, le suivant fait exploser. */
+                    if ((buttons >> 47) & 1) {
+                        static std::uint64_t s_LastBomb = 0;
+                        const auto cmdB = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmdB != s_LastBomb) {
+                            s_LastBomb = cmdB;
+                            coop::bombs::g_TestStep.fetch_add(1, std::memory_order_release);
+                        }
+                        buttons &= ~(1ull << 47);
+                    }
+#endif
                     /* Bit 62 : essai chute d'un Bokoblin pres du joueur. */
                     if ((buttons >> 62) & 1) {
                         static std::uint64_t s_LastDrop = 0;

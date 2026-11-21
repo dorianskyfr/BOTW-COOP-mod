@@ -76,6 +76,33 @@ namespace coop::bombs {
             slot->m_Since = s_Frames;
         }
 
+        /* Copies qui explosent d'elles-memes : retirees en secours si elles sont encore la apres ExplodeFallback images. */
+        constexpr std::uint64_t ExplodeFallback = 150;
+        struct Exploding {
+            std::uintptr_t m_Actor = 0;
+            std::uint64_t  m_Since = 0;
+        };
+        Exploding s_Exploding[4];
+
+        void CheckExplosions() {
+            for (Exploding& x : s_Exploding) {
+                if (x.m_Actor == 0)
+                    continue;
+                if (!coop::game::IsActorListed(x.m_Actor)) {
+                    if (Log())
+                        Logging.Log("[botw-coop] bombe du partenaire : notre copie s'est supprimee apres %lu images (explosion finie)",
+                            s_Frames - x.m_Since);
+                    x = Exploding {};
+                } else if (s_Frames - x.m_Since >= ExplodeFallback) {
+                    coop::game::DeleteActor(x.m_Actor);
+                    MarkDying(x.m_Actor);
+                    if (Log())
+                        Logging.Log("[botw-coop] bombe du partenaire : copie encore la %lu images apres son explosion, retiree", ExplodeFallback);
+                    x = Exploding {};
+                }
+            }
+        }
+
         void PruneDying() {
             for (Dying& d : s_Dying)
                 if (d.m_Actor != 0 && (s_Frames - d.m_Since > 300 || !coop::game::IsActorListed(d.m_Actor)))
@@ -127,6 +154,52 @@ namespace coop::bombs {
             return false;
         }
 
+#ifdef COOP_TEST_BOMB_WATCH
+        /* Essai (NOTES 6.05) : tant qu'une de nos bombes existe, journalise chaque acteur nouveau a moins de 40 m d'elle
+           (nom, distance, image), pour voir ce que le jeu cree quand elle explose. */
+        struct WatchCtx {
+            float m_At[3];
+        };
+        std::uintptr_t s_Seen[512];
+        int            s_SeenN = 0;
+        int            s_WatchLogs = 0;
+
+        bool WatchOne(const coop::game::ActorInfo& info, void* user) {
+            const auto* w = static_cast<const WatchCtx*>(user);
+            const float dx = info.m_Pos[0] - w->m_At[0], dy = info.m_Pos[1] - w->m_At[1], dz = info.m_Pos[2] - w->m_At[2];
+            const float d2 = dx * dx + dy * dy + dz * dz;
+            if (d2 > 40.0f * 40.0f || info.m_Name == nullptr)
+                return false;
+            for (int i = 0; i < s_SeenN; i++)
+                if (s_Seen[i] == info.m_Actor)
+                    return false;
+            if (s_SeenN < 512)
+                s_Seen[s_SeenN++] = info.m_Actor;
+            if (s_WatchLogs++ < 400)
+                Logging.Log("[botw-coop] essai bombe : acteur nouveau %s a %.1f m de notre bombe (image %lu)", info.m_Name,
+                    static_cast<double>(std::sqrt(d2)), s_Frames);
+            return false;
+        }
+
+        void Watch() {
+            static float s_Last[3] = {};
+            static int s_After = 0;
+            std::uintptr_t own = s_Own[0];
+            if (own != 0) {
+                coop::game::GetActorPos(own, s_Last);
+                s_After = 120; /* et 4 s apres sa disparition */
+            } else if (s_After > 0) {
+                s_After--;
+            } else {
+                s_SeenN = 0;
+                return;
+            }
+            WatchCtx w;
+            std::memcpy(w.m_At, s_Last, sizeof(w.m_At));
+            coop::game::ForEachListedActor(WatchOne, &w);
+        }
+#endif
+
         void ScanLocal() {
             ScanResult r;
             coop::game::ForEachListedActor(ScanOne, &r);
@@ -147,6 +220,14 @@ namespace coop::bombs {
                 if (r.m_Actor[s] != 0) {
                     coop::game::GetActorMtx(r.m_Actor[s], st.m_Mtx);
                     std::memcpy(s_OwnMtx[s], st.m_Mtx, sizeof(st.m_Mtx));
+                    /* Explosion commencee (NOTES 6.05) : annoncee tout de suite, la bombe ne disparaitra qu'a la fin
+                       de sa sequence (~51 images, pres de 4 s a 13 images/s : l'autre explosait trop tard). */
+                    if (coop::game::IsRemoteBombExploding(r.m_Actor[s])) {
+                        st.m_Exploded = 1;
+                        if (!s_OwnExploded[s] && Log())
+                            Logging.Log("[botw-coop] bombe : notre %s n.%u commence son explosion", Names[r.m_Kind[s]], s_OwnSerial[s]);
+                        s_OwnExploded[s] = true;
+                    }
                 } else if (s_OwnExploded[s]) {
                     st.m_Exploded = 1;
                     std::memcpy(st.m_Mtx, s_OwnMtx[s], sizeof(st.m_Mtx));
@@ -181,18 +262,43 @@ namespace coop::bombs {
             /* Explosion annoncee de la bombe qu'on montrait (meme numero) : l'acteur Explode a sa derniere place,
                une seule fois par bombe, si elle est assez pres de nous. */
             /* Aussi pendant la creation de la copie : sinon l'explosion etait perdue (relecture Codex). */
-            if (want.m_Kind == 0 && !stale && want.m_Exploded != 0 && c.m_Kind != 0 && want.m_Serial == c.m_Serial
-                && want.m_Serial != s_ShownExplosion[s]) {
+            /* Copie encore en creation : l'explosion attend qu'elle soit prete (l'emetteur la renvoie 10 fois par seconde
+               tant que sa bombe existe ; relecture Codex : elle etait marquee montree sans l'etre). */
+            if (!stale && want.m_Exploded != 0 && c.m_Kind != 0 && want.m_Serial == c.m_Serial && want.m_Serial != s_ShownExplosion[s]
+                && c.m_State != CopyState::Requested) {
                 s_ShownExplosion[s] = want.m_Serial;
                 const float at[3] = { want.m_Mtx[3], want.m_Mtx[7], want.m_Mtx[11] };
                 const float dx = at[0] - player[0], dy = at[1] - player[1], dz = at[2] - player[2];
                 if (dx * dx + dy * dy + dz * dz <= ShowRadius * ShowRadius) {
-                    /* L'explosion n'est pas recreee (NOTES 6.02) : essais bm8/bm9, ni l'acteur Explode (sans modele, mais
-                       avec un capteur d'attaque) ni la sequence Bomb_Explode jouee sur la copie ne montrent quoi que ce
-                       soit, alors que chez celui qui fait exploser on voit une grande gerbe bleue. La copie est retiree. */
+                    /* NOTES 6.02/6.03 : ni l'acteur Explode, ni la sequence Bomb_Explode, ni le seul changement d'enfant de
+                       l'IA ne se voient. NOTES 6.04 : la copie explose par la fonction du jeu elle-meme
+                       (RemoteBomb::changeToExplodeChild, game::ExplodeRemoteBomb), a la derniere place de la vraie. Elle se
+                       supprime seule ; on ne la retire qu'en secours, ExplodeFallback images plus tard. */
+                    int rc = -100;
+                    if (c.m_State == CopyState::Alive && c.m_Actor != 0 && coop::game::IsActorListed(c.m_Actor)) {
+                        if (coop::game::SetActorBodyTransform(c.m_Actor, want.m_Mtx) != 0)
+                            coop::game::SetActorMtx(c.m_Actor, want.m_Mtx);
+                        rc = coop::game::ExplodeRemoteBomb(c.m_Actor);
+                        if (rc == 0) {
+                            Exploding* slot = &s_Exploding[0];
+                            for (Exploding& x : s_Exploding)
+                                if (x.m_Actor == 0) {
+                                    slot = &x;
+                                    break;
+                                }
+                            if (slot->m_Actor != 0 && coop::game::IsActorListed(slot->m_Actor))
+                                coop::game::DeleteActor(slot->m_Actor);
+                            slot->m_Actor = c.m_Actor;
+                            slot->m_Since = s_Frames;
+                            MarkDying(c.m_Actor); /* jamais reprise comme notre bombe */
+                            c.m_Actor = 0;        /* RemoveCopy ne la retire pas : elle explose */
+                            c.m_State = CopyState::Lost; /* plus suivie ni recreee pour ce numero */
+                        }
+                    }
                     if (Log())
-                        Logging.Log("[botw-coop] bombe du partenaire : %s n.%u explosee en (%.1f, %.1f, %.1f) (explosion non montree)",
-                            Names[c.m_Kind], want.m_Serial, static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]));
+                        Logging.Log("[botw-coop] bombe du partenaire : %s n.%u explosee en (%.1f, %.1f, %.1f), %s (rc=%d)", Names[c.m_Kind],
+                            want.m_Serial, static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]),
+                            rc == 0 ? "notre copie explose" : "explosion non montree", rc);
                 }
             }
             if (want.m_Kind == 0)
@@ -277,6 +383,8 @@ namespace coop::bombs {
     void OnFrame() {
         s_Frames++;
         if (!coop::game::IsWorldReady()) {
+            for (Exploding& x : s_Exploding)
+                x = Exploding {}; /* disparues avec le monde */
             /* Chargement : les acteurs disparaissent avec le monde. Une creation en cours n'est pas abandonnee ici
                (sa poignee est encore attendue) ; elle finit ou echoue a la sortie du chargement. */
             for (Copy& c : s_Copies)
@@ -297,9 +405,57 @@ namespace coop::bombs {
         coop::game::PlayerState st;
         if (!coop::game::ReadPlayer(st) || st.m_PlayerActor == 0)
             return;
+        CheckExplosions();
         PruneDying();
         if (s_Frames % ScanEvery == 0)
             ScanLocal();
+#ifdef COOP_TEST_BOMB_WATCH
+        Watch();
+#endif
+#ifdef COOP_TEST_BOMB_SELF
+        {
+            /* Essai (NOTES 6.05) : une bombe creee par le mod chez ce seul joueur, 4 m devant lui, puis explosee par la
+               fonction du jeu (changeToExplodeChild) : se voit-elle ? Sans reseau ni copie. */
+            static coop::game::ActorHandle s_SelfHandle;
+            static std::uintptr_t s_Self = 0;
+            static int s_Step = 0;
+            static float s_Hold[12] = {};
+            static bool s_Holding = false;
+            const int step = g_TestStep.load(std::memory_order_acquire);
+            const bool create = step != s_Step && (step % 2) == 1;
+            const bool explode = step != s_Step && (step % 2) == 0 && step > 0;
+            s_Step = step;
+            if (create) {
+                s_Self = 0;
+                s_SelfHandle = coop::game::ActorHandle {};
+                float m[12];
+                coop::game::GetActorMtx(st.m_PlayerActor, m);
+                const float at[3] = { m[3] + m[2] * 4.0f, m[7] + 1.5f, m[11] + m[10] * 4.0f };
+                const bool ok = coop::game::RequestCreateActor("RemoteBomb", at, s_SelfHandle);
+                Logging.Log("[botw-coop] essai bombe seule : creation %s en (%.1f, %.1f, %.1f)", ok ? "demandee" : "REFUSEE",
+                    static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]));
+            } else if (s_Self == 0 && s_SelfHandle.m_Unit != 0 && coop::game::GetHandleStatus(s_SelfHandle) == 2) {
+                s_Self = coop::game::ReleaseAndWakeActor(s_SelfHandle);
+                MarkDying(s_Self); /* pas annoncee comme notre bombe */
+                if (s_Self != 0) {
+                    coop::game::GetActorMtx(s_Self, s_Hold);
+                    s_Holding = true;
+                }
+                Logging.Log("[botw-coop] essai bombe seule : creee (acteur %lx)", s_Self);
+            }
+            /* Tenue en place jusqu'a l'explosion (sinon elle roule hors de la plateforme, essai bs2). */
+            if (s_Holding && s_Self != 0 && coop::game::IsActorListed(s_Self) && !explode) {
+                if (coop::game::SetActorBodyTransform(s_Self, s_Hold) != 0)
+                    coop::game::SetActorMtx(s_Self, s_Hold);
+            }
+            if (explode)
+                s_Holding = false;
+            if (explode && s_Self != 0) {
+                const int rc = coop::game::IsActorListed(s_Self) ? coop::game::ExplodeRemoteBomb(s_Self) : -50;
+                Logging.Log("[botw-coop] essai bombe seule : explosion demandee (rc=%d)", rc);
+            }
+        }
+#endif
         for (int s = 0; s < Slots; s++)
             ApplyRemote(s, st.m_Pos);
     }
