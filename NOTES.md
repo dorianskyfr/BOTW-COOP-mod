@@ -892,6 +892,23 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - Gemini : 7 remarques, toutes rejetées après vérification dans le code (« return manquant » : les deux appels suivants testent déjà le monde ; « adresses en dur » : tout le mod est fixé sur 1.9.0 ; « ne sauve que les épées » : +0x68 est la liste entière ; etc.). Une seule est juste : le doublon par rechargement, voir les limites.
 - Limite : un joueur qui lâche un objet après sa dernière sauvegarde puis recharge le retrouve dans son inventaire, et la copie de l'autre reste. Choix assumé : sinon un objet lâché avant la sauvegarde serait perdu pour les deux.
 
+### 5.98 Ganon bête du Fléau : combat final à deux (2026-11-21, essai `bf1`, Eden) - [V] image et journaux
+
+- Enchaînement complet depuis le Sanctum, sans drapeau posé à la main :
+  - les 4 Fléaux tués chez J1 meurent chez J2 ;
+  - Ganon (`Enemy_Ganon` 067c1183) tué chez J1 après sa présentation : `8000 -> 0 (annonce par l'autre joueur)` chez J2 ;
+  - chaque jeu pose lui-même `LastBossGanonBeastGenerateFlag` (462b092f, `0 -> 1`) et retire `LastBossIncompleteGanonGenerateFlag` (f32b647f) ;
+  - les deux jeux arrivent dans la plaine d'Hyrule, à cheval, avec l'arc de lumière remis par Zelda, au même moment (image).
+- `Enemy_GanonBeast` (9b3e2eff, 8 points de vie) :
+  - au départ, la copie de J1 est à 182 m de celle de J2 (« celle de J2 est près de nous : suivie ») ; J1 suit ensuite la copie de J2, relevée au même endroit des deux côtés (-254 ; 123 ; 560) ;
+  - séquence `WaitThreat` rejouée chez J1 ;
+  - tuée chez J1 (`weaken 200 0`) : chez J2 `8 -> 0 (annonce par l'autre joueur)` ;
+  - les deux jeux jouent la même fin, la bête vaincue puis Zelda qui scelle Ganon (images à 30 s d'intervalle).
+- **Non vérifié** :
+  - la vraie mise à mort à l'arc de lumière (points faibles), ici remplacée par l'outil d'essai ;
+  - le générique et l'état de la sauvegarde après la fin.
+- Preuves : `docs/evidence/2026-11-21_ganon-bete-du-fleau_bf1.log`, captures `2026-11-21_ganon-bete-du-fleau_J1-J2_*_bf1.png` (J1 à gauche, J2 à droite).
+
 ### 5.97 Ramassage simultané : le doublon est retiré ; annonce « détruit » vérifiée (2026-11-21, essais `gd11` à `gd13`, Eden, relais `--lag 2500`) - [V] image et journaux
 
 - **Annonce « détruit »** : [V] `gd11`. L'outil d'essai `-DCOOP_TEST_DESTROY` détruit la copie d'arme du partenaire 5 s après sa création, comme une arme qui brûle. Chez J2 : `disparu a 2.8 m sans entrer dans l'inventaire (1 -> 1) : detruit -> annonce` ; chez J1 : `detruit ... par le joueur 2 -> notre copie retiree`. La hache a disparu des deux mondes. C'est une destruction simulée, pas un vrai feu.

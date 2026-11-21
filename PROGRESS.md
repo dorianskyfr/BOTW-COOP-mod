@@ -115,7 +115,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
   - un objet lâché après la dernière sauvegarde puis rechargé se retrouve dans l'inventaire, et la copie de l'autre reste (choix : pas de perte) ;
   - ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre se le voit retirer (NOTES 5.97), sauf si le jeu a équipé l'arme d'office (mains vides) : le doublon reste alors.
 - **Pas vus en jeu** :
-  - Ganon bête du Fléau ; les Fléaux dans les Créatures divines (il faudrait une vraie progression) ;
+  - les Fléaux dans les Créatures divines (il faudrait une vraie progression) ; Ganon bête du Fléau vu jusqu'à la fin, mais tué par l'outil d'essai, pas à l'arc de lumière ;
   - le rayon d'un Gardien volant, le tir des Tourelles ;
   - l'Épreuve de l'épée et la Ballade des Prodiges jouées en entier ;
   - Rudania et Naboris moins éprouvées que Medoh et Ruta.
