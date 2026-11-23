@@ -916,6 +916,19 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.18 Vah Medoh jusqu'à la libération, à deux (2026-11-23, essai `md7`, Eden, version finale de 6.17) - [V] image et journaux
+
+- Au chargement (sauvegardes de `md5` : Fléau apparu chez J1, pas chez J2, dont le drapeau d'apparition n'avait pas été gardé) :
+  - chez J2, le compteur de Medoh est corrigé, `5 -> 0 (5 terminaux actives)` ;
+  - chez J1, le jeu joue lui-même `Demo044_0 / PGanonAppearAgain` (retour du Fléau) ; J1 fait foi et J2 suit.
+- Fléau tué chez J1 (outil) : `Demo712_0 / Die`, la cinématique `Demo118_0` (purification), puis `Die_PGanonWind` (e08dcc05) `0 -> 1`. L'unite centrale devient bleue. `Die_PGanonWind` n'est pas partagé.
+- Unite centrale chez J1 (outil `demo`) : question « Once you activate the main control unit, you will not be able to reenter… Do you still wish to activate it? ». Le curseur est sur **No.** par défaut ; avec HAUT puis A (image `2026-11-23_medoh-unite-centrale-question_md7.png`) :
+  - J1 `Clear_RemainsWind` (39d2bcdf) `0 -> 1 (envoye)`, et la cinématique de l'esprit de Revali (« This returns Medoh back to its rightful owner! ») ;
+  - J2 `recompense : progression 39d2bcdf du partenaire -> Obj_HeroSoul_Rito donne (objets 35 -> 36)`, puis `drapeau recu ... 39d2bcdf mis a 1`. L'icône de la Rafale de Revali apparaît dans son interface (image `2026-11-23_medoh-liberee-revali-J1-rafale-J2_md7.png`).
+- Au passage, chez J2 : l'événement de J1 rejoué (`ClearRemainsWind`, rejeu) lance le combat dans son monde, puisque son Fléau n'était pas apparu ; il meurt aussitôt (`Demo712_0 / Die`), sa vie partagée étant déjà à 0. Chaque jeu suit son propre état et les deux finissent cohérents ; vu dans les journaux seulement.
+- **Non vérifié** : un vrai combat ; les autres Créatures (même déroulement dans `Demo044_0` pour Ruta, Rudania, Naboris : entrées `ClearRemainsWater`, `ClearRemainsFire`, `ClearRemainsElectric`) ; le lancement de l'unite par A (outil `demo` à la place, voir 6.16).
+- Preuves : `docs/evidence/2026-11-23_medoh-jusqu-a-la-liberation_md7.log`.
+
 ### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
 
 - **Données** (GameData de `Pack/Bootup.pack`, `s32_data_0.bgdata`, script scratchpad `counter_init.py`) : `Counter_TerminalWind` (978537d6), `Counter_TerminalWater` (ce303243), `Counter_TerminalFire` (ee506ae7), `Counter_TerminalElectric` (4c2dfe7e) valent 5 au départ, et `Counter_TerminalFinalTrial` (d25c5e0d) 4. Minimum 0, sauvegardés, jamais remis à zéro (`ResetType` 0). Le jeu les fait descendre de 1 par terminal activé (`Demo044_0`, `RemainsTerminalMainFlow` : `Demo_IncreaseGameDataInt -1` selon la carte), et pose `Access_AllTerminal*` à 0.
@@ -932,7 +945,7 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - J1 pose avec l'outil les 5 drapeaux des terminaux de Ruta : chez J1, `terminaux restants ce303243 : 5 -> 0 (5 terminaux actives), tous actives` ;
   - chez J2, les 5 drapeaux reçus par le partage habituel, puis le même `5 -> 0` ;
   - chez J2, le compteur de Medoh, resté à 5 dans sa sauvegarde, est corrigé à 0 (5 terminaux activés).
-  - La toute dernière correction (relance de l'attente) est compilée, mais pas réessayée en jeu.
+  - La toute dernière correction (relance de l'attente) est vue en jeu dans `md7` (6.18) : compteur de Medoh de J2 corrigé, `5 -> 0`.
 - [V] `md5` (première version ; sauvegardes où J1 a activé les 5 terminaux de Medoh en `md1`, J2 aucun) :
   - à l'entrée en jeu, J1 `terminaux restants 978537d6 : 0 (annonce)`, J2 `978537d6 : 5 -> 0 (recu de l'autre joueur), tous actives` (message `TCNT` de la première version) ;
   - J2 demande l'événement de l'unite centrale (outil `demo`) : son jeu pose `Appear_PGanonAgain` et `Appear_PGanonWind`, et la cinématique d'arrivée du Fléau commence. Chez J1, l'événement de J2 rejoué lance aussi le combat (titre « Windblight Ganon » à l'image, `2026-11-23_fleau-du-vent-chez-les-deux_md5.png`) ;
