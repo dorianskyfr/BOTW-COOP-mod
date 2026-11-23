@@ -965,7 +965,27 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - `RemoteBomb::handleMessage_` (main+0xa20ba8) : sur un message, la bombe recopie AI+0x140 dans AI+0x198 ;
   - `changeToExplodeChild` appelle `main+0xb3bd18(AI+0x198, acteur, 0, 0)` puis `(…, 3, 1)`. Cette fonction parcourt 3 emplacements : lien d'acteur en +8, +0x30 et +0x58 (comparé par main+0x1517d50), octet d'état en +0x28, +0x50 et +0x78. Elle met à 0 ou à 1 le bit n de l'emplacement de cette bombe. Juste avant dans le code, main+0xb3ba04 cite « RemoteBomb », « RemoteBombCube », « RemoteBomb2 », « RemoteBombCube2 », « RemoteBombBoomerang », « RemoteBombBoomerang2 ». C'est vraisemblablement l'objet des bombes de la tablette (`RuneMgr::RemoteBombSlotsMaybe` en 1.5.0, `setRemoteBombStateBit`), **non confirmé**. Pour une bombe créée par le mod, AI+0x198 est vide.
 - Données (`RemoteBomb.sbactorpack` de `TitleBG.pack`) : `ElinkUser: Bomb`, `ChemicalUser: RemoteBomb` (forme « bomb », `bomb_ancient`), séquence `Explode` = `Bomb_Explode.bas`. La base ELink (`ELink2DB.sbelnk` de `Bootup.pack`) contient les effets `RemoteBomb`, `RemoteBomb_Stripe`, `Chemical_Explosion`, `_00`, `_01` et `_Inside`. Je ne peux pas dire lequel est la sphère, ni ce qui le déclenche : il faut décoder le format XLNK. Les en-têtes xlink2 ne sont pas dans `third_party\botw` (sous-module vide).
-- En cours : décodage de la base ELink par Codex (lecture seule ; copie de travail `build\ref\ELink2DB_1.9.0.belnk`, hors dépôt).
+- Décodage de la base ELink par Codex : **bloqué**, son bac à sable refuse la lecture du fichier (`EPERM`). Il a fourni la source publique du format (`Nitr4m12/xlink2`, sous-module `lib/xlink2` de la décompilation botw). Suite en 6.21.
+
+### 6.21 Sphère des bombes : clé ELink `Chemical_Explosion` trouvée, l'émettre ne suffit pas (2026-11-23, essais `bs5` à `bs8`, Eden) - [V] données, désassemblage, image et journaux ; non gardé
+
+- **Base ELink** (`ELink2DB.sbelnk` de `Bootup.pack`, copie `build\ref\ELink2DB_1.9.0.belnk`). Structures de `Nitr4m12/xlink2` (`xlink2Resource.h`, `xlink2ResourceParamCreator.cpp` : `BinAccessor`, `createUserBinParam`, `solveUserBin_`). Dans le fichier de BOTW, les positions sont sur 64 bits, ce que j'ai vérifié sur le fichier :
+  - en-tête de 0x60 octets, puis 1526 hachages d'utilisateurs triés, puis 1526 positions sur 64 bits ; table des paramètres en 0x60 + 12 × 1526 ; table des noms en 0x3a28d8 ; conditions en 0x39a658 ;
+  - en-tête d'utilisateur de 0x38 octets, entrées d'appel de 0x30 octets (scratchpad `xlnk_read.py` et lecteur adapté). Les noms lus sont tous cohérents.
+- **Utilisateur `Bomb`** : 1 propriété locale (« 速度 »), 35 entrées, 30 effets, 1 déclencheur permanent, aucun déclencheur par action, séquence ou propriété.
+  - Ses clés : `Chemical_*` (Fire, BlueFire, Smoke, Electricity, Wind, Gust…), `BombAppear`, `Cancel`, `Glow`, `ReactionEffect`, **`Chemical_Explosion`** (conteneur de type 3 = Blend : `Chemical_Explosion_00`, `_01`) et `Chemical_Explosion_Inside` (pareil).
+  - Ces clés sont émises par le code. Le système chimique les prend dans la table main+0x1d652e0 (`Chemical_Fire`, `Chemical_Smoke`, …, `Chemical_Explosion` à l'index 6, `Chemical_Explosion_Inside` à l'index 7).
+- **Émission par le jeu** (main+0x1587e50, système chimique) : il lit l'instance ELink en XLink+0x48 (XLink de l'acteur en +0x568 ; rien si l'octet XLink+0xcd a le bit 2), puis appelle `main+0xf3fc20(instance, clé, &poignée)`. Sa poignée est gardée dans l'objet chimique.
+  - En main+0xf3fc10, +0xf3fc20 et +0xf3fc24 : trois sauts de 16, 4 et 4 octets. C'est la disposition de la liste 1.5.0 (`xlink2::UserInstanceELink::searchAndEmit(const char*)`, `searchAndEmit(const char*, HandleELink*)`, `emit(const Locator&, HandleELink*)`).
+  - L'action de démo `XLinkEventCreateAction::oneShot_` (main+0x1093184) fait la recherche (main+0xf51274) puis l'émission (main+0xf3fc24).
+- **Essais** (patch `docs/evidence/2026-11-23_bombes-sphere-cle-elink-Chemical_Explosion_bs5-bs8.patch`) : fonction `game::EmitActorELink(acteur, clé)` qui fait le même appel que le système chimique :
+  - `bs6` : sur la copie, au moment de son explosion, `sphere de l'explosion emise (rc=0)` (événement créé). J1 voit sa grande sphère, J2 à côté de lui ne voit rien (image `2026-11-23_bombes-cle-emise-J1-sphere-J2-rien_bs6.png`, J1 en haut) ;
+  - `bs8` (`-DCOOP_TEST_BOMB_EMIT_OWN`) : la clé émise sur **notre propre vraie bombe**, posée et intacte. Journal `essai sphere : cle emise sur notre bombe … (rc=0)`, mais **rien à l'image** (`2026-11-23_bombes-cle-emise-sur-vraie-bombe-rien_bs8.png`).
+  - Conclusion : émettre `Chemical_Explosion` ne suffit pas. Le conteneur Blend dépend sans doute d'une valeur que le système chimique règle (propriété ou paramètre), ou bien la sphère vient d'ailleurs. **Je ne peux pas confirmer** lequel.
+- Retiré du plugin, qui reste celui de la v0.99.19 : la copie explose sans sphère de loin.
+- **Pistes suivantes** :
+  - lire le conteneur Blend de `Chemical_Explosion` (sa propriété surveillée) et les paramètres des effets `_00` et `_01` ;
+  - regarder qui appelle main+0x1587e50 avec l'index 6 : c'est l'élément « explosion » du système chimique. Il faudrait le créer sur la copie plutôt qu'émettre la clé.
 
 ### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
 

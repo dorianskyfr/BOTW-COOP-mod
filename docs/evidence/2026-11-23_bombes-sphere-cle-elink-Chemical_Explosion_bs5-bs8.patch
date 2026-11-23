@@ -1,0 +1,125 @@
+﻿diff --git a/plugin/overlay/source/program/bombs.cpp b/plugin/overlay/source/program/bombs.cpp
+index aa0e2eb..fc4b669 100644
+--- a/plugin/overlay/source/program/bombs.cpp
++++ b/plugin/overlay/source/program/bombs.cpp
+@@ -301,6 +301,13 @@ namespace coop::bombs {
+                             coop::game::SetActorMtx(c.m_Actor, want.m_Mtx);
+                         rc = coop::game::ExplodeRemoteBomb(c.m_Actor);
+                         if (rc == 0) {
++                            /* NOTES 6.21 : la sphere visible de loin est l'effet ELink "Chemical_Explosion", que le chemin
++                               de l'IA n'emet pas (6.20). On l'emet nous-memes sur la copie. */
++                            const int fx = coop::game::EmitActorELink(c.m_Actor, "Chemical_Explosion");
++                            static int s_SphereLogs = 0;
++                            if (s_SphereLogs++ < 20)
++                                Logging.Log("[botw-coop] bombe du partenaire : n.%u, sphere de l'explosion %s (rc=%d)", want.m_Serial,
++                                    fx == 0 ? "emise" : "NON emise", fx);
+                             Exploding* slot = &s_Exploding[0];
+                             for (Exploding& x : s_Exploding)
+                                 if (x.m_Actor == 0) {
+@@ -433,6 +440,20 @@ namespace coop::bombs {
+ #ifdef COOP_TEST_BOMB_WATCH
+         Watch();
+ #endif
++#ifdef COOP_TEST_BOMB_EMIT_OWN
++        {
++            /* Essai (NOTES 6.21) : a chaque appui du bouton d'essai, la cle ELink "Chemical_Explosion" est emise sur notre
++               propre bombe de la tablette, posee et intacte (rien d'autre). La sphere apparait-elle ? */
++            static int s_EmitStep = 0;
++            const int step = g_TestStep.load(std::memory_order_acquire);
++            if (step != s_EmitStep) {
++                s_EmitStep = step;
++                const std::uintptr_t own = s_Own[0] != 0 ? s_Own[0] : s_Own[1];
++                const int fx = own != 0 && coop::game::IsActorListed(own) ? coop::game::EmitActorELink(own, "Chemical_Explosion") : -50;
++                Logging.Log("[botw-coop] essai sphere : cle emise sur notre bombe %lx (rc=%d)", own, fx);
++            }
++        }
++#endif
+ #ifdef COOP_TEST_BOMB_SELF
+         {
+             /* Essai (NOTES 6.05) : une bombe creee par le mod chez ce seul joueur, 4 m devant lui, puis explosee par la
+@@ -473,7 +494,8 @@ namespace coop::bombs {
+                 s_Holding = false;
+             if (explode && s_Self != 0) {
+                 const int rc = coop::game::IsActorListed(s_Self) ? coop::game::ExplodeRemoteBomb(s_Self) : -50;
+-                Logging.Log("[botw-coop] essai bombe seule : explosion demandee (rc=%d)", rc);
++                const int fx = rc == 0 ? coop::game::EmitActorELink(s_Self, "Chemical_Explosion") : -50;
++                Logging.Log("[botw-coop] essai bombe seule : explosion demandee (rc=%d), sphere (rc=%d)", rc, fx);
+             }
+         }
+ #endif
+diff --git a/plugin/overlay/source/program/game.cpp b/plugin/overlay/source/program/game.cpp
+index be75cd9..3f4573c 100644
+--- a/plugin/overlay/source/program/game.cpp
++++ b/plugin/overlay/source/program/game.cpp
+@@ -851,6 +851,42 @@ namespace coop::game {
+         return 0;
+     }
+ 
++    /*
++     * NOTES 6.21 : emet une cle ELink sur un acteur, comme le systeme chimique du jeu. Desassemblage de main 1.9.0 :
++     * main+0x1587e50 prend la cle dans la table main+0x1d652e0 ("Chemical_Fire", ..., "Chemical_Explosion" a
++     * l'index 6), lit l'instance ELink a XLink+0x48 (XLink de l'acteur a acteur+0x568, Actor::mXLink dans la decomp
++     * actActor.h ; ignoree si l'octet XLink+0xcd a le bit 2) et appelle main+0xf3fc20(instance, cle, &poignee).
++     * main+0xf3fc10 / +0xf3fc20 / +0xf3fc24 sont trois sauts de 16, 4 et 4 octets, comme en 1.5.0 (decomp,
++     * uking_functions.csv) xlink2::UserInstanceELink::searchAndEmit(const char*), searchAndEmit(const char*,
++     * HandleELink*) et emit(const Locator&, HandleELink*). Poignee : {evenement, numero}, mise a zero avant. La
++     * sphere d'une bombe est la cle "Chemical_Explosion" de l'utilisateur ELink "Bomb" (ELink2DB de Bootup.pack,
++     * lu avec le format de Nitr4m12/xlink2). Fil du jeu. Retour : 0 emis, <0 refus.
++     */
++    int EmitActorELink(std::uintptr_t actor, const char* key) {
++        constexpr std::size_t Actor_XLink = 0x568, XLink_ELinkInstance = 0x48, XLink_Flags = 0xcd;
++        constexpr std::uintptr_t SearchAndEmitWithHandle = 0xf3fc20;
++        if (actor == 0 || key == nullptr || !CanReadMemory(actor + Actor_XLink, 8))
++            return -1;
++        const auto xlink = Peek<std::uintptr_t>(actor + Actor_XLink);
++        if (!LooksLikeHeapPtr(xlink) || !CanReadMemory(xlink, 0xd0))
++            return -2;
++        if ((Peek<std::uint8_t>(xlink + XLink_Flags) & 4) != 0)
++            return -3; /* le jeu n'emet pas non plus dans ce cas */
++        const auto instance = Peek<std::uintptr_t>(xlink + XLink_ELinkInstance);
++        if (!LooksLikeHeapPtr(instance))
++            return -4;
++        struct Handle {
++            std::uintptr_t m_Event;
++            std::uint32_t m_Id;
++            std::uint32_t m_Pad;
++        } handle { 0, 0, 0 };
++        /* Valeur de retour non utilisee (type non confirme en 1.9.0) : la poignee remplie dit si l'evenement existe,
++           comme le controle du systeme chimique (main+0x1587f0c). */
++        using EmitFn = void (*)(std::uintptr_t instance, const char* key, Handle* handle);
++        reinterpret_cast<EmitFn>(MainBase() + SearchAndEmitWithHandle)(instance, key, &handle);
++        return handle.m_Event != 0 ? 0 : -5;
++    }
++
+     namespace {
+         bool Near(float a, float b) { const float d = a - b; return d > -0.05f && d < 0.05f; }
+ 
+diff --git a/plugin/overlay/source/program/game.hpp b/plugin/overlay/source/program/game.hpp
+index f07619b..3a260a2 100644
+--- a/plugin/overlay/source/program/game.hpp
++++ b/plugin/overlay/source/program/game.hpp
+@@ -181,6 +181,8 @@ namespace coop::game {
+     int SetActorBodyTransform(std::uintptr_t actor, const float mtx[12]);
+     /* Fait exploser une bombe de la tablette (RemoteBomb::changeToExplodeChild, main 1.9.0). 0 si fait. Fil du jeu. */
+     int ExplodeRemoteBomb(std::uintptr_t actor);
++    /* Emet une cle ELink sur l'acteur (comme XLinkEventCreateAction, NOTES 6.21). 0 si emise. Fil du jeu. */
++    int EmitActorELink(std::uintptr_t actor, const char* key);
+ #ifdef COOP_TEST_REMOVE_EQUIPPED
+     void DebugRemoveEquippedWeapon();
+ #endif
+diff --git a/plugin/overlay/source/program/input_inject.cpp b/plugin/overlay/source/program/input_inject.cpp
+index a3889eb..dce3e2e 100644
+--- a/plugin/overlay/source/program/input_inject.cpp
++++ b/plugin/overlay/source/program/input_inject.cpp
+@@ -306,8 +306,9 @@ namespace coop::input_inject {
+                         buttons &= ~(1ull << 46);
+                     }
+ #endif
+-#ifdef COOP_TEST_BOMB_SELF
+-                    /* Bit 47 : essai bombe seule (bombs.cpp) : un appui cree, le suivant fait exploser. */
++#if defined(COOP_TEST_BOMB_SELF) || defined(COOP_TEST_BOMB_EMIT_OWN)
++                    /* Bit 47 : essai bombe seule (bombs.cpp) : un appui cree, le suivant fait exploser. Avec
++                       COOP_TEST_BOMB_EMIT_OWN : chaque appui emet la sphere sur notre bombe (NOTES 6.21). */
+                     if ((buttons >> 47) & 1) {
+                         static std::uint64_t s_LastBomb = 0;
+                         const auto cmdB = pad.m_Commands.load(std::memory_order_acquire);
