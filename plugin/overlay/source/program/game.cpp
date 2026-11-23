@@ -816,6 +816,12 @@ namespace coop::game {
         return (Peek<std::uint32_t>(actor + 0x518) & 0x20u) != 0;
     }
 
+    std::uint32_t RemoteBombFlags(std::uintptr_t actor) {
+        if (actor == 0 || !CanReadMemory(actor + 0x518, 4))
+            return 0xffffffffu;
+        return Peek<std::uint32_t>(actor + 0x518);
+    }
+
     int ExplodeRemoteBomb(std::uintptr_t actor) {
         constexpr std::size_t Actor_RootAi = 0x558;
         constexpr int Slot_GetCurrentChild = 26;

@@ -916,6 +916,27 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.09 Bombes : la copie explosait quand on sortait la bombe (2026-11-23, essais `bf1`, `bt1` à `bt7`, Eden) - [V] journaux et image
+
+- `bf1` (version publiée v0.99.15), J2 à 30 m de J1 : la troisième bombe de J1, tenue au-dessus de sa tête, n'est jamais annoncée ; J2 ne la voit pas.
+- `bt1`, journal d'essai `-DCOOP_TEST_BOMB_TRACE` (mot entier à acteur+0x518, `game::RemoteBombFlags`) :
+  - quand Link **sort** la bombe : `00001000 -> 40005020` puis `40005000` 6 images plus tard. Le bit 0x20, pris depuis 6.05 pour « explosion commencée », se lève donc aussi à la sortie de la bombe ;
+  - à la **vraie** explosion : `00001000 -> 00001020`, et le bit reste jusqu'à la disparition de la bombe (99 images).
+- Conséquence dans les versions 0.99.14 et 0.99.15 :
+  - la copie de l'autre « explosait » dès que la bombe était sortie, à l'endroit où Link la tenait ;
+  - la vraie bombe n'était plus montrée ensuite (copie perdue pour ce numéro), et sa vraie explosion non plus ;
+  - une bombe sortie puis jamais lancée gardait l'état « explosée » : la bombe suivante n'était pas annoncée (le `bf1` ci-dessus).
+  - Les essais `bx4` et `bx6` de 6.05 avaient en fait vu cette fausse explosion, au moment de la sortie (J1 lançait et faisait exploser juste après).
+- Correctif : l'explosion n'est annoncée que si le bit 0x20 tient 5 relevés de suite (12 à 15 images, `ExplodeConfirmScans`).
+- [V] `bt2` : la bouffée de la sortie est ignorée à chaque bombe (n.1 à n.7) ; la vraie explosion est annoncée (`commence son explosion`) et la copie de J2 explose à l'endroit où la bombe est arrivée, par exemple `n.2 explosee en (-616.0, 128.6, -328.7)`, à 9 m de J1, là où il l'avait lancée.
+- [V] Image, `bt3` (J2 à 30 m) : la copie se voit chez J2, tenue par J1 puis lancée, et elle suit la bombe qui roule dans la pente (`actors` : 0,45 m d'écart entre la bombe de J1 et la copie de J2).
+- **Limite, vue à l'image** (`bt3`, `bt7`) :
+  - chez J1, la vraie explosion fait une grosse sphère bleue, bien visible à 33 m ;
+  - chez J2, à 13 m comme à 30 m, la copie **disparaît sans sphère** au moment de l'explosion.
+  - `changeToExplodeChild` sur la copie produit le souffle tout près (projection, voile, dégâts : `bs3`, bombe créée par le mod à 4 m), pas la sphère visible de loin. Cause non trouvée.
+- Bombe tombée hors de vue (`bt2`, n.7, roulée vers la mare) : sa disparition est annoncée comme une explosion, comme avant (non vérifié à l'image).
+- Preuves : `docs/evidence/2026-11-23_bombe-faux-signal-a-la-sortie_bt1-bt2.log`.
+
 ### 6.08 Le canon du Gardien volant n'est pas un tir (2026-11-23, essais `gf1`, `gf3`, Eden) - [V] journaux
 
 - `gf1`, près du sanctuaire 073 : relevé `acteur : GuardianBeamCannon hash=00000000 etat=1 pos=(-881.27, 149.71, -463.60)` alors que le Gardien volant `26770fae` est en (-881.72, 152.83, -463.67), à 3,1 m. Il est présent en permanence et suit son Gardien, comme `Guardian_C_Propeller` : c'est le canon fixé au Gardien, pas un tir.

@@ -49,6 +49,9 @@ namespace coop::bombs {
         std::uint32_t  s_OwnSerial[Slots] = {};
         float          s_OwnMtx[Slots][12] = {};
         bool           s_OwnExploded[Slots] = {};
+        /* Releves de suite ou le bit d'explosion est leve (NOTES 6.09). 5 releves = 12 a 15 images. */
+        constexpr int  ExplodeConfirmScans = 5;
+        int            s_ExplodeScans[Slots] = {};
         /* Derniere bombe du partenaire dont l'explosion a ete montree (une seule fois par bombe). */
         std::uint32_t  s_ShownExplosion[Slots] = {};
         int            s_Logs = 0;
@@ -204,11 +207,23 @@ namespace coop::bombs {
             ScanResult r;
             coop::game::ForEachListedActor(ScanOne, &r);
             for (int s = 0; s < Slots; s++) {
+#ifdef COOP_TEST_BOMB_TRACE
+                {
+                    static std::uint32_t s_LastFlags[Slots] = {};
+                    static int s_TraceLogs = 0;
+                    const std::uint32_t flags = r.m_Actor[s] != 0 ? coop::game::RemoteBombFlags(r.m_Actor[s]) : 0;
+                    if (flags != s_LastFlags[s] && s_TraceLogs++ < 200)
+                        Logging.Log("[botw-coop] essai bombe : acteur %lx mot+0x518 %08x -> %08x (image %lu)", r.m_Actor[s],
+                            s_LastFlags[s], flags, s_Frames);
+                    s_LastFlags[s] = flags;
+                }
+#endif
                 if (r.m_Actor[s] != s_Own[s]) {
                     if (r.m_Actor[s] != 0)
                         s_OwnSerial[s]++;
                     /* Disparue pendant que le monde est charge (ScanLocal ne tourne qu'alors) : explosion. */
                     s_OwnExploded[s] = r.m_Actor[s] == 0 && s_Own[s] != 0;
+                    s_ExplodeScans[s] = 0;
                     if (Log())
                         Logging.Log("[botw-coop] bombe : notre %s %s (n.%u)", s == 0 ? "bombe ronde" : "bombe cube",
                             r.m_Actor[s] != 0 ? Names[r.m_Kind[s]] : "a disparu (explosee)", s_OwnSerial[s]);
@@ -220,9 +235,15 @@ namespace coop::bombs {
                 if (r.m_Actor[s] != 0) {
                     coop::game::GetActorMtx(r.m_Actor[s], st.m_Mtx);
                     std::memcpy(s_OwnMtx[s], st.m_Mtx, sizeof(st.m_Mtx));
-                    /* Explosion commencee (NOTES 6.05) : annoncee tout de suite, la bombe ne disparaitra qu'a la fin
-                       de sa sequence (~51 images, pres de 4 s a 13 images/s : l'autre explosait trop tard). */
-                    if (coop::game::IsRemoteBombExploding(r.m_Actor[s])) {
+                    /* Explosion commencee (NOTES 6.05) : annoncee sans attendre la disparition de la bombe, qui n'arrive
+                       qu'a la fin de sa sequence (~51 images, pres de 4 s a 13 images/s : l'autre explosait trop tard).
+                       NOTES 6.09 (essai bt1) : le bit se leve aussi ~6 images quand Link sort la bombe ; la vraie
+                       explosion le garde ~100 images. Il doit tenir ExplodeConfirmScans releves de suite. */
+                    if (coop::game::IsRemoteBombExploding(r.m_Actor[s]))
+                        s_ExplodeScans[s]++;
+                    else
+                        s_ExplodeScans[s] = 0;
+                    if (s_ExplodeScans[s] >= ExplodeConfirmScans) {
                         st.m_Exploded = 1;
                         if (!s_OwnExploded[s] && Log())
                             Logging.Log("[botw-coop] bombe : notre %s n.%u commence son explosion", Names[r.m_Kind[s]], s_OwnSerial[s]);

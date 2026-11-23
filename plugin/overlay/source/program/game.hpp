@@ -186,6 +186,8 @@ namespace coop::game {
 #endif
     /* Vrai si la bombe de la tablette a commence son explosion (acteur+0x518, bit 0x20). */
     bool IsRemoteBombExploding(std::uintptr_t actor);
+    /* Mot entier a acteur+0x518 (0xffffffff si illisible) : journal d'essai de la reutilisation des bombes. */
+    std::uint32_t RemoteBombFlags(std::uintptr_t actor);
 
     /* Place un acteur a controleur de personnage (PNJ). 0 si fait, negatif sinon. */
     /* Renvoie le nombre de corps physiques du controleur deplaces (0 = aucun trouve). */

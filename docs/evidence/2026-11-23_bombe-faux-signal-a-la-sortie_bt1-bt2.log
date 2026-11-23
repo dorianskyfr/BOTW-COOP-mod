@@ -1,0 +1,104 @@
+﻿# Essais bt1 (avant correction, trace du mot acteur+0x518) et bt2 (apres correction), Eden, 2026-11-23. NOTES 6.09
+## bt1_game.txt
+[botw-coop] essai bombe : acteur 21b0941450 mot+0x518 00000000 -> 00001000 (image 8676)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.1, acteur 21b0941450)
+[botw-coop] essai bombe : acteur 21b0941450 mot+0x518 00001000 -> 40001000 (image 8679)
+[botw-coop] essai bombe : acteur 21b0941450 mot+0x518 40001000 -> 40005020 (image 8682)
+[botw-coop] bombe : notre RemoteBomb n.1 commence son explosion
+[botw-coop] essai bombe : acteur 21b0941450 mot+0x518 40005020 -> 40005000 (image 8688)
+[botw-coop] bombe : notre bombe ronde revient apres son explosion, nouvelle bombe (n.2, acteur 21b0941450)
+[botw-coop] essai bombe : acteur 21b0941450 mot+0x518 40005000 -> 00001000 (image 8781)
+[botw-coop] essai bombe : acteur 21b0941450 mot+0x518 00001000 -> 00001020 (image 9870)
+[botw-coop] bombe : notre RemoteBomb n.2 commence son explosion
+[botw-coop] essai bombe : acteur 0 mot+0x518 00001020 -> 00000000 (image 9969)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.2, acteur 0)
+## bt1_game2.txt
+[botw-coop] bombe du partenaire : RemoteBomb n.1 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.1 explosee en (-621.0, 128.9, -336.8), notre copie explose (rc=0)
+[botw-coop] bombe du partenaire : RemoteBomb n.2 CREEE apres 1 images
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 68 images (explosion finie)
+[botw-coop] bombe du partenaire : RemoteBomb n.2 explosee en (-628.9, 127.7, -334.5), notre copie explose (rc=0)
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 51 images (explosion finie)
+## bt2_game.txt
+[botw-coop] essai bombe : acteur 21b095a450 mot+0x518 00000000 -> 00001000 (image 9456)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.1)
+[botw-coop] essai bombe : acteur 21b095a450 mot+0x518 00001000 -> 40005020 (image 9459)
+[botw-coop] essai bombe : acteur 21b095a450 mot+0x518 40005020 -> 40005000 (image 9468)
+[botw-coop] essai bombe : acteur 21b095a450 mot+0x518 40005000 -> 00001000 (image 9600)
+[botw-coop] essai bombe : acteur 21b095a450 mot+0x518 00001000 -> 00001020 (image 9915)
+[botw-coop] bombe : notre RemoteBomb n.1 commence son explosion
+[botw-coop] essai bombe : acteur 0 mot+0x518 00001020 -> 00000000 (image 10014)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.1)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 00000000 -> 00001000 (image 11754)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.2)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 00001000 -> 40005020 (image 11757)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 40005020 -> 40005000 (image 11763)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 40005000 -> 00001000 (image 11859)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 00001000 -> 00001020 (image 12054)
+[botw-coop] bombe : notre RemoteBomb n.2 commence son explosion
+[botw-coop] essai bombe : acteur 0 mot+0x518 00001020 -> 00000000 (image 12153)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.2)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 00000000 -> 00001000 (image 14628)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.3)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 00001000 -> 40001000 (image 14631)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 40001000 -> 40005020 (image 14634)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 40005020 -> 40005000 (image 14640)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 40005000 -> 00001000 (image 14730)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 00001000 -> 00001020 (image 14940)
+[botw-coop] bombe : notre RemoteBomb n.3 commence son explosion
+[botw-coop] essai bombe : acteur 0 mot+0x518 00001020 -> 00000000 (image 15036)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.3)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 00000000 -> 00001000 (image 17070)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.4)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 00001000 -> 40001000 (image 17073)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 40001000 -> 40005020 (image 17076)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 40005020 -> 40005000 (image 17082)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 40005000 -> 00001000 (image 17175)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 00001000 -> 00001020 (image 17865)
+[botw-coop] bombe : notre RemoteBomb n.4 commence son explosion
+[botw-coop] essai bombe : acteur 0 mot+0x518 00001020 -> 00000000 (image 17961)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.4)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 00000000 -> 00001000 (image 20010)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.5)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 00001000 -> 40005020 (image 20013)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 40005020 -> 40005000 (image 20019)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 40005000 -> 40001000 (image 20106)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 40001000 -> 00001000 (image 20118)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 00001000 -> 00001020 (image 20454)
+[botw-coop] bombe : notre RemoteBomb n.5 commence son explosion
+[botw-coop] essai bombe : acteur 0 mot+0x518 00001020 -> 00000000 (image 20553)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.5)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 00000000 -> 00001000 (image 21468)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.6)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 00001000 -> 40005020 (image 21471)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 40005020 -> 40005000 (image 21477)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 40005000 -> 00001000 (image 21645)
+[botw-coop] essai bombe : acteur 21b0153360 mot+0x518 00001000 -> 00001020 (image 22770)
+[botw-coop] bombe : notre RemoteBomb n.6 commence son explosion
+[botw-coop] essai bombe : acteur 0 mot+0x518 00001020 -> 00000000 (image 22869)
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.6)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 00000000 -> 00001000 (image 24567)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.7)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 00001000 -> 40005020 (image 24570)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 40005020 -> 40005000 (image 24576)
+[botw-coop] essai bombe : acteur 21b00c62a0 mot+0x518 40005000 -> 00001000 (image 24687)
+## bt2_game2.txt
+[botw-coop] bombe du partenaire : RemoteBomb n.1 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.1 explosee en (-627.0, 127.5, -338.4), notre copie explose (rc=0)
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 51 images (explosion finie)
+[botw-coop] bombe du partenaire : RemoteBomb n.2 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.2 explosee en (-616.0, 128.6, -328.7), notre copie explose (rc=0)
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 50 images (explosion finie)
+[botw-coop] bombe du partenaire : RemoteBomb n.3 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.3 explosee en (-614.1, 128.8, -328.3), notre copie explose (rc=0)
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 51 images (explosion finie)
+[botw-coop] bombe du partenaire : RemoteBomb n.4 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.4 explosee en (-628.0, 127.5, -336.2), notre copie explose (rc=0)
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 51 images (explosion finie)
+[botw-coop] bombe du partenaire : RemoteBomb n.5 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.5 explosee en (-629.0, 127.7, -341.7), notre copie explose (rc=0)
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 45 images (explosion finie)
+[botw-coop] bombe du partenaire : RemoteBomb n.6 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.6 explosee en (-591.3, 129.6, -320.2), notre copie explose (rc=0)
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 50 images (explosion finie)
+[botw-coop] bombe du partenaire : RemoteBomb n.7 CREEE apres 1 images

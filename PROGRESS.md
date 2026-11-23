@@ -100,7 +100,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 | D à G, narration | non commencé | — |
 
 ## Limites connues de la version actuelle
-(Mise à jour le 2026-11-21.)
+(Mise à jour le 2026-11-23.)
 - **Pas essayé** : une partie entre deux PC, en réseau local ou par VPN. Tout a été vérifié avec deux jeux sur le même PC (Ryujinx 1.3.3 et Eden v0.2.1), avec BOTW 1.9.0 seulement ; toute autre version du jeu désactive le plugin (contrôle du build ID).
 - **Deux joueurs** au plus (un seul joueur distant géré).
 - **Choix de conception** :
@@ -114,12 +114,16 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
   - partagés si le partenaire est à moins de 120 m ;
   - un objet lâché après la dernière sauvegarde puis rechargé se retrouve dans l'inventaire, et la copie de l'autre reste (choix : pas de perte) ;
   - ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre se le voit retirer (NOTES 5.97), y compris si le jeu a équipé l'arme d'office (NOTES 6.06 ; mécanisme vérifié par un outil d'essai, pas encore par un vrai ramassage simultané).
-- **Bombes de la tablette** (NOTES 5.99, 6.05) : l'explosion est recréée chez l'autre (vue de près, pas encore de loin) ; elle peut blesser le joueur proche dans son propre monde ; une copie prise dans une explosion chez soi n'est pas recréée avant la bombe suivante ; ramasser la copie de la bombe de l'autre n'est pas essayé.
+- **Bombes de la tablette** (NOTES 5.99, 6.05, 6.09) :
+  - la bombe de l'autre se voit, tenue, lancée ou en train de rouler (vu à 30 m) ;
+  - elle explose chez vous au même endroit et au bon moment. Mais vue à plus de quelques mètres, elle disparaît sans la sphère bleue de l'explosion ; de près, seul le souffle se sent (il peut vous projeter et vous blesser) ;
+  - une copie prise dans une explosion chez vous n'est pas recréée avant la bombe suivante ;
+  - ramasser la copie de la bombe de l'autre n'est pas essayé.
 - **Arbitrage par le serveur** (NOTES 6.00) : seulement pour le rôle des ennemis ; vérifié par les journaux, pas à l'image. Avec un relais plus ancien, chaque jeu reprend l'ancienne règle locale.
 - **Gardiens miniatures des sanctuaires** : suivis une fois l'épreuve commencée (position, animations, tirs retirés chez celui qui suit, mort ; NOTES 6.07, sanctuaire 073, journaux).
 - **Pas vus en jeu** :
   - les Fléaux dans les Créatures divines (il faudrait une vraie progression) ; Ganon bête du Fléau vu jusqu'à la fin, mais tué par l'outil d'essai, pas à l'arc de lumière ;
-  - le rayon d'un Gardien volant, le tir des Tourelles ;
+  - le rayon d'un Gardien volant, le tir des Tourelles (le canon du Gardien volant n'est plus pris pour un tir, NOTES 6.08) ;
   - l'Épreuve de l'épée et la Ballade des Prodiges jouées en entier ;
   - Rudania et Naboris moins éprouvées que Medoh et Ruta.
 - **Pare-feu Windows** : au premier lancement du relais sur l'adresse LAN, Windows demande d'autoriser Python. C'est à l'utilisateur de l'accepter (réglage de sécurité) ; sans cela, un second PC ne peut pas joindre le relais.
