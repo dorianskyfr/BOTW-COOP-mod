@@ -58,14 +58,14 @@ Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0
 - **Ennemis** : Bokoblin, Moblin (vie, attaques, dégâts), Lézalfos (animations), Lynel (vie, position, animations, y compris celles de son second créneau : cri, dégainer, charge), Hinox (vie, réveil, animations), Gardiens volants (vie et position, vus au même endroit dans les deux jeux), Gardiens fixes et Tourelles du château (suivis ; leurs mouvements dépendent de chaque jeu), Gardiens : leur rayon ne touche que le joueur le plus proche (vu à l'image). Le monstre vise le joueur le plus proche de lui. Un ennemi vaincu chez l'un est retiré chez l'autre, y compris quand le jeu l'a fait monter de rang (mode expert, progression de la partie) : le mod lit le drapeau exact de son objet de carte.
 - **Mode expert** : vérifié (parties chargées depuis une sauvegarde en mode expert).
 - **Lune de sang** : déclenchée par le jeu chez les deux joueurs au même minuit.
-- **Créatures divines** : les deux joueurs entrent ensemble ; énigmes, bornes, coffres et ennemis vaincus partagés (Vah Medoh).
+- **Créatures divines** : les deux joueurs entrent ensemble ; énigmes, bornes, coffres et ennemis vaincus partagés (Vah Medoh). Pour les quatre Créatures, le Fléau apparaît et meurt chez les deux, et la libération passe chez l'autre, qui reçoit le pouvoir du Prodige (essais avec outil, NOTES 6.18, 6.19).
 - **Sanctuaires** : les deux joueurs entrent ensemble, ennemis vaincus partagés ; l'état d'une énigme en cours n'est pas sauvegardé par le jeu, donc pas partagé (la fin du sanctuaire l'est).
 - **DLC** : Épreuve de l'épée et sanctuaires de la Ballade des Prodiges, les deux joueurs entrent ensemble, ennemis vaincus partagés.
 - **Réseau** : relais protégé (mot de passe, connexions limitées, messages invalides ignorés, client trop lent déconnecté).
 
 - **Boss** : les quatre Fléaux du château, Ganon puis Ganon bête du Fléau (combat final), combattus ensemble ; un boss battu chez l'un meurt chez l'autre et les deux jeux enchaînent la suite jusqu'à la fin (vu à l'image).
 
-Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : un vrai combat contre les Fléaux dans les Créatures divines (le Fléau du Vent apparaît et meurt chez les deux, essai avec outil, NOTES 6.17), une épreuve de l'épée complète, la Ballade des Prodiges jouée. Les tirs du Gardien volant et des Tourelles sont vus dans les journaux, et retirés chez celui qui suit. Limites détaillées : `PROGRESS.md`, « Limites connues ».
+Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : un vrai combat contre les Fléaux dans les Créatures divines (abattus par un outil d'essai, NOTES 6.19), une épreuve de l'épée complète, la Ballade des Prodiges jouée. Les tirs du Gardien volant et des Tourelles sont vus dans les journaux, et retirés chez celui qui suit. Limites détaillées : `PROGRESS.md`, « Limites connues ».
 
 **Limites connues, gardées volontairement** :
 - **Deux joueurs** au plus.

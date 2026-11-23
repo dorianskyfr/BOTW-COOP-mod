@@ -1,0 +1,37 @@
+# md9 : Vah Rudania jusqu'a la liberation a deux (Eden, 2026-11-23). NOTES 6.19
+## md9_game.txt
+[botw-coop] essai drapeau local : hachage=7107eb73 index 18704, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=85470cec index 21969, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=3741659e index 9148, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=f23aaae0 index 39841, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=38cf0d9d index 9440, octet 0 -> 1
+[botw-coop] terminaux restants ee506ae7 : 5 -> 0 (5 terminaux actives), tous actives
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsFire -> accepte
+[botw-coop] cinematique : Demo044_0 / ClearRemainsFire annoncee au partenaire
+[botw-coop] essai cinematique : Demo044_0 / ClearRemainsFire demandee au jeu local -> acceptee
+[botw-coop] drapeau change : n.39511 hachage=f03e90fc 0 -> 1
+[botw-coop] drapeau change : n.7379 hachage=2cd9da73 0 -> 1
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_SiteBoss_Lsword 2835855b 1600 -> 0
+[botw-coop] evenement demande : Demo712_1 / Die -> accepte
+[botw-coop] cinematique : Demo712_1 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] vie ennemi : Enemy_SiteBoss_Lsword 2835855b 1600 -> 0 chez nous (max 1600), annonce, n.1
+[botw-coop] drapeau change : n.25312 hachage=99589134 0 -> 1
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsFire -> accepte
+[botw-coop] cinematique : Demo044_0 / ClearRemainsFire annoncee au partenaire
+[botw-coop] essai cinematique : Demo044_0 / ClearRemainsFire demandee au jeu local -> acceptee
+[botw-coop] drapeau change : n.10658 hachage=4007e1ee 0 -> 1 (envoye)
+## md9_game2.txt
+[botw-coop] terminaux restants 978537d6 : 5 -> 0 (5 terminaux actives), tous actives
+[botw-coop] terminaux restants ee506ae7 : 5 -> 0 (5 terminaux actives), tous actives
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsFire -> accepte (rejeu)
+[botw-coop] cinematique de J1 : Demo044_0 / ClearRemainsFire rejouee ici (partenaire a 4 m) -> acceptee, n.1
+[botw-coop] drapeau change : n.39511 hachage=f03e90fc 0 -> 1
+[botw-coop] drapeau change : n.7379 hachage=2cd9da73 0 -> 1
+[botw-coop] vie ennemi : Enemy_SiteBoss_Lsword 2835855b 1600 -> 0 (annonce par l'autre joueur), n.2
+[botw-coop] evenement demande : Demo712_1 / Die -> accepte
+[botw-coop] cinematique : Demo712_1 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] drapeau change : n.25312 hachage=99589134 0 -> 1
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsFire -> accepte (rejeu)
+[botw-coop] cinematique de J1 : Demo044_0 / ClearRemainsFire rejouee ici (partenaire a 0 m) -> acceptee, n.2
+[botw-coop] recompense : progression 4007e1ee du partenaire -> Obj_HeroSoul_Goron donne (objets 36 -> 37)
+[botw-coop] drapeau recu : n.10658 hachage=4007e1ee mis a 1 (octet 1 : categorie 0 gardee)

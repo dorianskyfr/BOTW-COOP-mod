@@ -942,9 +942,19 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - chez J2, `recompense : progression b742dd6c du partenaire -> Obj_HeroSoul_Zora donne (objets 36 -> 37)`, puis `drapeau recu`.
 - La question est aussi posée chez J2 (événement rejoué). Après « Yes. », J2 voit l'esprit de Mipha et la cinématique de sortie. **Les deux sortent de Ruta à la même position**, (3283,9 ; 244,7 ; -430,4) (image `2026-11-23_ruta-liberee-mipha-J1-sortie-J2_md8.png`, J1 à gauche avec Mipha, J2 à droite avec Ruta vue du ciel).
 - Ce qui reste à voir : si J2 répond « No. » à la question rejouée, il reste dans une Créature déjà libérée chez lui. Le jeu repose alors la question (le Fléau y est mort), donc ce cas n'est pas bloquant ; il n'a pas été essayé.
-- **Non vérifié** : un vrai combat ; Rudania et Naboris (même déroulement dans `Demo044_0`, entrées `ClearRemainsFire` et `ClearRemainsElectric`).
+- **Vah Rudania (`md9`) et Vah Naboris (`md10`)**, même montage (terminaux posés chez J1, outil `demo` sur `ClearRemainsFire` puis `ClearRemainsElectric`). Naboris est atteinte par le point `StartDemoEnter` (`goto_tp 9003 1`), et les deux joueurs sont placés près de son unite centrale, en (0 ; 93,6 ; -2). Le même déroulement est vu chez les deux :
+  | | Rudania (md9) | Naboris (md10) |
+  |---|---|---|
+  | compteur `5 -> 0` chez J1 et J2 | `ee506ae7` | `4c2dfe7e` |
+  | apparition chez les deux | `Appear_PGanonFire` f03e90fc, titre « Fireblight Ganon » | `Appear_PGanonElectric` 7217a3ac, titre « Thunderblight Ganon » |
+  | vie partagée | `Enemy_SiteBoss_Lsword` 1600 -> 0 | `Enemy_SiteBoss_Sword` 2000 -> 0 |
+  | mort chez les deux | `Demo712_1 / Die`, `Die_PGanonFire` 99589134 | `Demo712_2 / Die`, `Die_PGanonElectric` c7e51aaf |
+  | libération J1 -> J2 | `Clear_RemainsFire` 4007e1ee, `Obj_HeroSoul_Goron` (36 -> 37) | `Clear_RemainsElectric` 18d100e9, `Obj_HeroSoul_Gerudo` (36 -> 37) |
+  | sortie des deux au même point | (1589,8 ; 485,4 ; -2427,2) | (-3782,4 ; 148,7 ; 2860,4) |
+  - L'esprit de Daruk puis celui d'Urbosa apparaissent chez J1. La question rejouée chez J2 reçoit « Yes. » aussi. Images : `2026-11-23_fleau-feu-chez-les-deux_md9.png`, `..._rudania-liberee-daruk-J1-sortie-J2_md9.png`, `..._fleau-foudre-chez-les-deux_md10.png`, `..._naboris-liberee-urbosa-J1-sortie-J2_md10.png`.
+- **Bilan** : les quatre Créatures divines ont été menées jusqu'à leur libération à deux. Les Fléaux ont été abattus par l'outil d'essai, et l'unite centrale lancée par l'outil `demo`. **Non vérifié** : un vrai combat (arc, attaques) et le lancement de l'unite par A.
 - **Ultime épreuve** (DLC 2, `Counter_TerminalFinalTrial`, 4 au départ) : non traitée. Ses cartes et ses événements ne sont pas dans les fichiers extraits ici (`build\romfs-aoc` ne contient que `Map` et les `Dungeon1xx.pack`). Je ne peux donc pas confirmer quels drapeaux de terminal le jeu compte. Les drapeaux `FinalTrial_Terminal_{Fire,Electric,Water,Wind}` existent dans la table, mais leur lien avec le compteur n'est pas vu.
-- Preuves : `docs/evidence/2026-11-23_ruta-jusqu-a-la-liberation_md8.log`.
+- Preuves : `docs/evidence/2026-11-23_ruta-jusqu-a-la-liberation_md8.log`, `..._rudania-jusqu-a-la-liberation_md9.log`, `..._naboris-jusqu-a-la-liberation_md10.log`.
 
 ### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
 

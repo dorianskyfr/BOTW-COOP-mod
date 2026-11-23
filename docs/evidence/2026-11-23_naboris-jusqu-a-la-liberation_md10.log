@@ -1,0 +1,37 @@
+# md10 : Vah Naboris jusqu'a la liberation a deux (Eden, 2026-11-23). NOTES 6.19
+## md10_game.txt
+[botw-coop] essai drapeau local : hachage=dfd13e6a index 36778, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=8b945625 index 22972, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=9f00fbe4 index 26189, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=b0cbc802 index 29060, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=f32013b7 index 39984, octet 0 -> 1
+[botw-coop] terminaux restants 4c2dfe7e : 5 -> 0 (5 terminaux actives), tous actives
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsElectric -> accepte
+[botw-coop] cinematique : Demo044_0 / ClearRemainsElectric annoncee au partenaire
+[botw-coop] essai cinematique : Demo044_0 / ClearRemainsElectric demandee au jeu local -> acceptee
+[botw-coop] drapeau change : n.7379 hachage=2cd9da73 0 -> 1
+[botw-coop] drapeau change : n.18896 hachage=7217a3ac 0 -> 1
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_SiteBoss_Sword dc8aa82c 2000 -> 0
+[botw-coop] evenement demande : Demo712_2 / Die -> accepte
+[botw-coop] cinematique : Demo712_2 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] vie ennemi : Enemy_SiteBoss_Sword dc8aa82c 2000 -> 0 chez nous (max 2000), annonce, n.3
+[botw-coop] drapeau change : n.32894 hachage=c7e51aaf 0 -> 1
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsElectric -> accepte
+[botw-coop] cinematique : Demo044_0 / ClearRemainsElectric annoncee au partenaire
+[botw-coop] essai cinematique : Demo044_0 / ClearRemainsElectric demandee au jeu local -> acceptee
+[botw-coop] drapeau change : n.4158 hachage=18d100e9 0 -> 1 (envoye)
+## md10_game2.txt
+[botw-coop] terminaux restants 978537d6 : 5 -> 0 (5 terminaux actives), tous actives
+[botw-coop] terminaux restants 4c2dfe7e : 5 -> 0 (5 terminaux actives), tous actives
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsElectric -> accepte (rejeu)
+[botw-coop] cinematique de J1 : Demo044_0 / ClearRemainsElectric rejouee ici (partenaire a 4 m) -> acceptee, n.1
+[botw-coop] drapeau change : n.7379 hachage=2cd9da73 0 -> 1
+[botw-coop] drapeau change : n.18896 hachage=7217a3ac 0 -> 1
+[botw-coop] vie ennemi : Enemy_SiteBoss_Sword dc8aa82c 2000 -> 0 (annonce par l'autre joueur), n.3
+[botw-coop] evenement demande : Demo712_2 / Die -> accepte
+[botw-coop] cinematique : Demo712_2 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] drapeau change : n.32894 hachage=c7e51aaf 0 -> 1
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsElectric -> accepte (rejeu)
+[botw-coop] cinematique de J1 : Demo044_0 / ClearRemainsElectric rejouee ici (partenaire a 0 m) -> acceptee, n.2
+[botw-coop] recompense : progression 18d100e9 du partenaire -> Obj_HeroSoul_Gerudo donne (objets 36 -> 37)
+[botw-coop] drapeau recu : n.4158 hachage=18d100e9 mis a 1 (octet 1 : categorie 0 gardee)
