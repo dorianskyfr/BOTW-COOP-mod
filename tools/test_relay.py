@@ -521,13 +521,21 @@ def main():
         b.pump(0.4)
         check("arbitre : l'autre plus pres de 1 m seulement ne prend pas la main", not b.take("EOWN 2 cafe0001"), str(b.lines))
         b.send(f"EMTX cafe0001 10.0 {emtx}")
+        b.pump(0.4)
+        check("arbitre : bail garde 1,5 s par son proprietaire a jour (NOTES 6.10), meme si l'autre est bien plus pres",
+              not b.take("EOWN 2 cafe0001"), str(b.lines))
+        time.sleep(1.3)
+        a.send("EDST cafe0001 20.0")  # le proprietaire reste a jour
+        b.send(f"EMTX cafe0001 10.0 {emtx}")
         line = b.expect("EOWN 2 cafe0001")
         n2 = int(line.split()[3])
-        check("arbitre : l'autre plus pres de 10 m prend la main (numero plus grand)", n2 > n1, line)
+        check("arbitre : apres ce delai, l'autre plus pres de 10 m prend la main (numero plus grand)", n2 > n1, line)
         a.send("EDST cafe0001 9.0")
         b.pump(0.4)
         check("arbitre : retour seulement au-dela de la marge (9 m contre 10 m : rien de nouveau)",
               not [l for l in b.take("EOWN 1 cafe0001") if int(l.split()[3]) > n2], str(b.lines))
+        time.sleep(1.3)
+        b.send(f"EMTX cafe0001 10.0 {emtx}")
         a.send("EDST cafe0001 5.0")
         line = b.expect(f"EOWN 1 cafe0001 {n2 + 1}")
         check("arbitre : 5 m contre 10 m, la main revient", line == f"EOWN 1 cafe0001 {n2 + 1}", line)

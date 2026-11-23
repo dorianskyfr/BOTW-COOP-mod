@@ -916,6 +916,20 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.10 Gardien volant : tir vu, et la main ne change plus plusieurs fois par seconde (2026-11-23, essais `gf4`, `gf5`, Eden) - [V] journaux
+
+- **Tir du Gardien volant vu** (`gf4` et `gf5`, les deux joueurs à 5 m l'un de l'autre près de (-640, -405), Gardiens volants `Enemy_Guardian_C` en patrouille) :
+  - `rayon de Gardien tire en (-792.5, 140.3, -418.3) : tireur 26770fae a 5.2 m` ;
+  - puis `tir de la copie suivie 26770fae (a 5.2 m au tir) retire`, chez J1 qui suivait ce Gardien ;
+  - même chose dans `gf5` (5,1 m). Le retrait des tirs (5.99) marche donc aussi pour le Gardien volant.
+- **Défaut de l'arbitre (6.00) vu dans `gf4`** : pour le Gardien volant `d2ac17e9`, la main a changé 21 fois, dont 17 fois à moins de 1,5 s d'écart et une fois à 6 ms. Par exemple, à 08:34:08.235, J1 prend la main (64,1 m contre 67,2) ; à 08:34:08.241, J2 la reprend (J1 71,4 m).
+  - Cause : un même joueur annonce deux distances qui diffèrent de plusieurs mètres. L'une est mesurée sur sa copie suivie, en retard sur l'ennemi qui fait foi chez l'autre ; l'autre est mesurée sur l'ennemi qui fait foi chez lui. Pour un ennemi rapide, la marge de 2 m ne suffit pas.
+- Correctif (`tools/relay.py`) : un bail donné reste au moins `LEASE_HOLD` = 1,5 s à son propriétaire, tant que sa distance est à jour.
+  - Essai automatique ajouté : 130 sur 130.
+  - [V] `gf5`, même parcours : plus aucun changement à moins de 1,5 s d'écart (le plus court : 1,505 s).
+- **Reste** : pour un Gardien volant à peu près à égale distance des deux joueurs, la main change encore toutes les 1,5 à 2 s (16 fois pour `26770fae` en 2 min dans `gf5`). Il faudrait que le serveur calcule lui-même les deux distances, avec la position des joueurs et celle de l'ennemi annoncée par celui qui fait foi. Non fait.
+- Preuves : `docs/evidence/2026-11-23_gardien-volant-tir-et-bail-garde_gf4-gf5.log`.
+
 ### 6.09 Bombes : la copie explosait quand on sortait la bombe (2026-11-23, essais `bf1`, `bt1` à `bt7`, Eden) - [V] journaux et image
 
 - `bf1` (version publiée v0.99.15), J2 à 30 m de J1 : la troisième bombe de J1, tenue au-dessus de sa tête, n'est jamais annoncée ; J2 ne la voit pas.

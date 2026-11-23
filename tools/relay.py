@@ -103,6 +103,8 @@ LEASE_FRESH = 3.0     # s : une distance plus vieille ne compte plus
 LEASE_MARGIN = 2.0    # m : l'autre doit etre plus pres de 2 m pour prendre la main
 LEASE_RESEND = 1.0    # s : rappel du bail de chaque ennemi annonce
 LEASE_FORGET = 10.0   # s : ennemi oublie sans nouvelle distance
+LEASE_HOLD = 1.5      # s : un bail donne reste au moins ce temps a son proprietaire s'il donne des nouvelles
+                      # (NOTES 6.10 : Gardien volant, la main changeait plusieurs fois par seconde)
 MAX_LEASES = 4096     # borne de memoire (un client ne peut pas la faire grossir sans fin)
 STATE_INTERVAL = 0.25
 STATE_BATCH = 100
@@ -482,12 +484,13 @@ def main():
     leases = {}  # hachage -> Lease
 
     class Lease:
-        __slots__ = ("owner", "epoch", "reports")
+        __slots__ = ("owner", "epoch", "reports", "since")
 
         def __init__(self):
             self.owner = None
             self.epoch = 0
             self.reports = {}  # joueur -> (distance, instant)
+            self.since = 0.0   # instant ou le bail a ete donne
 
     def lease_broadcast(h, lease):
         line = f"EOWN {lease.owner} {h:08x} {lease.epoch}\n"
@@ -502,12 +505,17 @@ def main():
             return
         best = min(fresh, key=lambda pid: (fresh[pid], pid))
         owner = lease.owner
-        if owner not in fresh or (best != owner and fresh[best] < fresh[owner] - LEASE_MARGIN):
+        # Essai gf4 (NOTES 6.10) : pour un ennemi rapide, les distances d'un meme joueur sautent de plusieurs metres
+        # selon qu'il mesure sa copie suivie (en retard) ou l'ennemi qui fait foi chez lui ; la marge ne suffisait
+        # pas, la main changeait plusieurs fois par seconde. Le proprietaire a jour la garde LEASE_HOLD secondes.
+        held = owner in fresh and now - lease.since < LEASE_HOLD
+        if owner not in fresh or (not held and best != owner and fresh[best] < fresh[owner] - LEASE_MARGIN):
             # Numero pris dans un compteur commun a tous les ennemis : un ennemi oublie puis revu repart plus
             # haut, jamais a 1 (sinon le plugin, qui ignore un bail plus ancien, le refusait ; relecture Codex).
             lease_epoch[0] += 1
             lease.owner = best
             lease.epoch = lease_epoch[0]
+            lease.since = now
             lease_changes[0] += 1
             if lease_changes[0] <= 40 or lease_changes[0] % 200 == 0:
                 where = ", ".join(f"J{pid} {d:.1f} m" for pid, d in sorted(fresh.items()))

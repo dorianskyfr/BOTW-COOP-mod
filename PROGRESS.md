@@ -119,11 +119,11 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
   - elle explose chez vous au même endroit et au bon moment. Mais vue à plus de quelques mètres, elle disparaît sans la sphère bleue de l'explosion ; de près, seul le souffle se sent (il peut vous projeter et vous blesser) ;
   - une copie prise dans une explosion chez vous n'est pas recréée avant la bombe suivante ;
   - ramasser la copie de la bombe de l'autre n'est pas essayé.
-- **Arbitrage par le serveur** (NOTES 6.00) : seulement pour le rôle des ennemis ; vérifié par les journaux, pas à l'image. Avec un relais plus ancien, chaque jeu reprend l'ancienne règle locale.
+- **Arbitrage par le serveur** (NOTES 6.00, 6.10) : seulement pour le rôle des ennemis ; vérifié par les journaux, pas à l'image. Avec un relais plus ancien, chaque jeu reprend l'ancienne règle locale. Un bail reste au moins 1,5 s au même joueur. Pour un ennemi rapide (Gardien volant) à peu près à égale distance des deux joueurs, la main change encore toutes les 1,5 à 2 s.
 - **Gardiens miniatures des sanctuaires** : suivis une fois l'épreuve commencée (position, animations, tirs retirés chez celui qui suit, mort ; NOTES 6.07, sanctuaire 073, journaux).
 - **Pas vus en jeu** :
   - les Fléaux dans les Créatures divines (il faudrait une vraie progression) ; Ganon bête du Fléau vu jusqu'à la fin, mais tué par l'outil d'essai, pas à l'arc de lumière ;
-  - le rayon d'un Gardien volant, le tir des Tourelles (le canon du Gardien volant n'est plus pris pour un tir, NOTES 6.08) ;
+  - le tir des Tourelles (celui du Gardien volant est vu et retiré chez celui qui suit : NOTES 6.10, journaux) ;
   - l'Épreuve de l'épée et la Ballade des Prodiges jouées en entier ;
   - Rudania et Naboris moins éprouvées que Medoh et Ruta.
 - **Pare-feu Windows** : au premier lancement du relais sur l'adresse LAN, Windows demande d'autoriser Python. C'est à l'utilisateur de l'accepter (réglage de sécurité) ; sans cela, un second PC ne peut pas joindre le relais.
