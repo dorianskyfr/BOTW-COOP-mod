@@ -925,6 +925,11 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - J2 : l'événement est rejoué (`cinematique de J1 : Demo044_0 / ClearRemainsWind rejouee ici`), affiche « Sheikah Slate authenticated. », puis le jeu reprend. **Pas de Fléau** (`actors SiteBoss` : 0).
   - Tué chez J1 par l'outil (`weaken 80 0`) : cinématique de mort, `Demo712_0 / Die`, drapeau 17f40979 posé. Rien n'arrive chez J2.
 - **Constat** : le combat contre le Fléau d'une Créature divine ne démarre que chez celui qui lance l'unite centrale. Les drapeaux d'apparition et de mort (`Appear_PGanon*`, `Die_PGanon*`) ne sont dans aucun groupe de la liste blanche (`tools/build_sync_flags.py`). Chez J2, l'événement rejoué s'arrête avant le combat. Je ne peux pas confirmer pourquoi : le compteur `Counter_TerminalWind`, lu par l'événement, est un entier, et le mod ne partage pas les entiers.
+- **Cause trouvée** (déroulement de `Demo044_0` / `ClearRemainsWind`, lu avec le paquet PyPI `evfl` de zeldamods, installé dans `build\venv` ; script scratchpad `flow044.py`) :
+  - `CheckGameDataInt Counter_TerminalWind <= 0` : le compteur est le **nombre de terminaux restants**. S'il est au-dessus de 0, l'unite répond `Demo044_0_Text038` (« terminaux non activés »), et rien d'autre.
+  - S'il vaut 0 : si `Die_PGanonWind`, alors `Clear_RemainsWind` ON, `Demo156_0`, retour à `MainField/B-3` (Medoh libérée). Sinon, si `Appear_PGanonWind`, un dialogue (`Text037`). Sinon, `Remains_StartBossSeq`, `Appear_PGanonWind` ON, `Appear_PGanonAgain` ON, `Demo155_0` (arrivée du Fléau), musique du combat, sauvegarde automatique.
+  - Chez J2, les terminaux arrivent par drapeaux partagés, mais son compteur ne descend pas : l'événement rejoué s'arrête au message des terminaux restants. Le message 038 n'a pas été vu à l'image, c'est déduit du déroulement.
+  - Les entrées `Access00` à `Access04` (activation des terminaux) et `PGanonAppearAgain` sont dans le même fichier, non lues en détail.
 - **À décider** : partager ce combat demande de faire passer l'événement chez l'autre jusqu'au combat (compteur, drapeaux d'apparition), ou de laisser chacun le lancer de son côté. Les essais `rb2` à `rb5` (5.86) montrent que poser seulement les drapeaux d'apparition laisse le Fléau invisible.
 - Preuves : `docs/evidence/2026-11-23_fleau-medoh-md2-md4.log`.
 
