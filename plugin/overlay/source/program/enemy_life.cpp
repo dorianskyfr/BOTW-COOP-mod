@@ -391,6 +391,11 @@ namespace coop::enemy_life {
         bool IsGuardianShot(const char* name) {
             if (name == nullptr)
                 return false;
+            /* GuardianBeamCannon n'est pas un tir : c'est le canon fixe au Gardien volant (essai gf1 : etat 1 en
+               permanence, a ~3 m de son Gardien qu'il suit partout, comme Guardian_C_Propeller). Le retirer chez celui
+               qui suit lui enlevait son arme pour de bon (NOTES 6.08). */
+            if (std::strstr(name, "Cannon") != nullptr)
+                return false;
             if (std::strncmp(name, "GuardianBeam", 12) == 0)
                 return true;
             return std::strncmp(name, "GuardianMini", 12) == 0 && std::strstr(name, "Beam") != nullptr;

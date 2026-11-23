@@ -916,6 +916,14 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.08 Le canon du Gardien volant n'est pas un tir (2026-11-23, essais `gf1`, `gf3`, Eden) - [V] journaux
+
+- `gf1`, près du sanctuaire 073 : relevé `acteur : GuardianBeamCannon hash=00000000 etat=1 pos=(-881.27, 149.71, -463.60)` alors que le Gardien volant `26770fae` est en (-881.72, 152.83, -463.67), à 3,1 m. Il est présent en permanence et suit son Gardien, comme `Guardian_C_Propeller` : c'est le canon fixé au Gardien, pas un tir.
+- Depuis 5.99 (v0.99.12), tout nom commençant par `GuardianBeam` comptait comme un tir, `GuardianBeamCannon` compris. Le canon, vu à plus de 1 m de son Gardien (seuil du rayon « au repos »), pouvait être retiré chez celui qui suit : le Gardien perdait son arme pour de bon. Dans `gf1`, il n'a été épargné que parce qu'il avait été vu quand le Gardien était encore à plus de 150 m (tireur inconnu).
+- Correctif : un nom contenant `Cannon` n'est jamais un tir (`IsGuardianShot`). [V] `gf3`, cinq passages sous le Gardien volant à moins de 150 m : plus aucune ligne « rayon de Gardien tire » pour son canon.
+- Les tirs retirés à 3,7 et 4,4 m de Gardiens au sol (`c794dcd5`, `6f659549`, y ≈ 130) correspondent à des tirs de Gardien Stalker, comme en 5.91 (3,8 m).
+- **Toujours non vu** : un tir du Gardien volant (il patrouille et s'éloigne ; aucune visée en `gf1`/`gf3`).
+
 ### 6.07 Gardiens miniatures des sanctuaires : endormis, pas oubliés (2026-11-23, essai `gm3`, Eden) - [V] journaux
 
 - Relevé des acteurs du sanctuaire 122 (`drive.py actors`, hachage et état de chaque acteur) : les trois `Enemy_Guardian_Mini_Junior` ont un identifiant d'objet de carte (a8ec1e4a, e8c6cd69, aa2707dd) mais restent à l'état 0, de loin (163 à 175 m) comme de près (6,7 m), même après trois coups d'épée donnés à côté d'eux.
