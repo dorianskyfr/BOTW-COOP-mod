@@ -929,6 +929,23 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - **Non vérifié** : un vrai combat ; les autres Créatures (même déroulement dans `Demo044_0` pour Ruta, Rudania, Naboris : entrées `ClearRemainsWater`, `ClearRemainsFire`, `ClearRemainsElectric`) ; le lancement de l'unite par A (outil `demo` à la place, voir 6.16).
 - Preuves : `docs/evidence/2026-11-23_medoh-jusqu-a-la-liberation_md7.log`.
 
+### 6.19 Vah Ruta jusqu'à la libération, à deux (2026-11-23, essai `md8`, Eden, v0.99.19) - [V] image et journaux
+
+- Montage : les 5 terminaux comptés de Ruta posés chez J1 par l'outil d'essai (`COOP_TEST_SETLOCAL` et `_LIST`, `0 -> 1`, envoyés). Outil `demo` sur `Demo044_0 / ClearRemainsWater`. Les deux joueurs sont devant l'unite centrale de Ruta, en (0 ; 3 ; -59,5) d'après `RemainsWater_Static`.
+- Compteur `Counter_TerminalWater` (ce303243) : `5 -> 0 (5 terminaux actives), tous actives` chez J1 (après ses propres terminaux) et chez J2 (terminaux reçus).
+- Unite centrale chez J1 (outil) : l'événement est rejoué chez J2 (partenaire à 4 m). Les deux posent `Appear_PGanonWater` (444b9555) et `Appear_PGanonAgain` (2cd9da73). La cinématique d'apparition se joue chez les deux, puis le titre « Waterblight Ganon » s'affiche chez J1. J2 voit `Enemy_SiteBoss_Spear_R` (image `2026-11-23_fleau-eau-chez-les-deux_md8.png`).
+- Fléau tué chez J1 (outil `weaken`) :
+  - `Enemy_SiteBoss_Spear 2e950876 1200 -> 0` est annoncé ; J2 l'applique (`annonce par l'autre joueur`) ;
+  - les deux jouent `Demo712_3 / Die`, puis posent `Die_PGanonWater` (d19db9d6) `0 -> 1`, chacun de son côté. Ce drapeau n'est pas partagé, comme pour Medoh.
+- Unite centrale de nouveau (outil chez J1) : la question « Do you still wish to activate it? » apparaît, avec « No. » par défaut (image `2026-11-23_ruta-unite-centrale-question_md8.png`). Avec HAUT puis A :
+  - chez J1, `Clear_RemainsWater` (b742dd6c) passe `0 -> 1 (envoye)`, puis l'esprit de Mipha apparaît ;
+  - chez J2, `recompense : progression b742dd6c du partenaire -> Obj_HeroSoul_Zora donne (objets 36 -> 37)`, puis `drapeau recu`.
+- La question est aussi posée chez J2 (événement rejoué). Après « Yes. », J2 voit l'esprit de Mipha et la cinématique de sortie. **Les deux sortent de Ruta à la même position**, (3283,9 ; 244,7 ; -430,4) (image `2026-11-23_ruta-liberee-mipha-J1-sortie-J2_md8.png`, J1 à gauche avec Mipha, J2 à droite avec Ruta vue du ciel).
+- Ce qui reste à voir : si J2 répond « No. » à la question rejouée, il reste dans une Créature déjà libérée chez lui. Le jeu repose alors la question (le Fléau y est mort), donc ce cas n'est pas bloquant ; il n'a pas été essayé.
+- **Non vérifié** : un vrai combat ; Rudania et Naboris (même déroulement dans `Demo044_0`, entrées `ClearRemainsFire` et `ClearRemainsElectric`).
+- **Ultime épreuve** (DLC 2, `Counter_TerminalFinalTrial`, 4 au départ) : non traitée. Ses cartes et ses événements ne sont pas dans les fichiers extraits ici (`build\romfs-aoc` ne contient que `Map` et les `Dungeon1xx.pack`). Je ne peux donc pas confirmer quels drapeaux de terminal le jeu compte. Les drapeaux `FinalTrial_Terminal_{Fire,Electric,Water,Wind}` existent dans la table, mais leur lien avec le compteur n'est pas vu.
+- Preuves : `docs/evidence/2026-11-23_ruta-jusqu-a-la-liberation_md8.log`.
+
 ### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
 
 - **Données** (GameData de `Pack/Bootup.pack`, `s32_data_0.bgdata`, script scratchpad `counter_init.py`) : `Counter_TerminalWind` (978537d6), `Counter_TerminalWater` (ce303243), `Counter_TerminalFire` (ee506ae7), `Counter_TerminalElectric` (4c2dfe7e) valent 5 au départ, et `Counter_TerminalFinalTrial` (d25c5e0d) 4. Minimum 0, sauvegardés, jamais remis à zéro (`ResetType` 0). Le jeu les fait descendre de 1 par terminal activé (`Demo044_0`, `RemainsTerminalMainFlow` : `Demo_IncreaseGameDataInt -1` selon la carte), et pose `Access_AllTerminal*` à 0.

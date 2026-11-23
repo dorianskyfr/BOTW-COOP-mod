@@ -1,0 +1,37 @@
+# md8 : Vah Ruta jusqu'a la liberation a deux (Eden, 2026-11-23). NOTES 6.19
+## md8_game.txt
+[botw-coop] essai drapeau local : hachage=1cc64a4e index 4776, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=15da6f8c index 3685, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=7133d21a index 18734, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=41ac752f index 10952, octet 0 -> 1
+[botw-coop] essai drapeau local : hachage=ba2edb7f index 30607, octet 0 -> 1
+[botw-coop] terminaux restants ce303243 : 5 -> 0 (5 terminaux actives), tous actives
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsWater -> accepte
+[botw-coop] cinematique : Demo044_0 / ClearRemainsWater annoncee au partenaire
+[botw-coop] essai cinematique : Demo044_0 / ClearRemainsWater demandee au jeu local -> acceptee
+[botw-coop] drapeau change : n.7379 hachage=2cd9da73 0 -> 1
+[botw-coop] drapeau change : n.11406 hachage=444b9555 0 -> 1
+[botw-coop] vie ennemi : OUTIL DE TEST, Enemy_SiteBoss_Spear 2e950876 1200 -> 0
+[botw-coop] evenement demande : Demo712_3 / Die -> accepte
+[botw-coop] cinematique : Demo712_3 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] vie ennemi : Enemy_SiteBoss_Spear 2e950876 1200 -> 0 chez nous (max 1200), annonce, n.2
+[botw-coop] drapeau change : n.34457 hachage=d19db9d6 0 -> 1
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsWater -> accepte
+[botw-coop] cinematique : Demo044_0 / ClearRemainsWater annoncee au partenaire
+[botw-coop] essai cinematique : Demo044_0 / ClearRemainsWater demandee au jeu local -> acceptee
+[botw-coop] drapeau change : n.30174 hachage=b742dd6c 0 -> 1 (envoye)
+## md8_game2.txt
+[botw-coop] terminaux restants 978537d6 : 5 -> 0 (5 terminaux actives), tous actives
+[botw-coop] terminaux restants ce303243 : 5 -> 0 (5 terminaux actives), tous actives
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsWater -> accepte (rejeu)
+[botw-coop] cinematique de J1 : Demo044_0 / ClearRemainsWater rejouee ici (partenaire a 4 m) -> acceptee, n.1
+[botw-coop] drapeau change : n.7379 hachage=2cd9da73 0 -> 1
+[botw-coop] drapeau change : n.11406 hachage=444b9555 0 -> 1
+[botw-coop] vie ennemi : Enemy_SiteBoss_Spear 2e950876 1200 -> 0 (annonce par l'autre joueur), n.2
+[botw-coop] evenement demande : Demo712_3 / Die -> accepte
+[botw-coop] cinematique : Demo712_3 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] drapeau change : n.34457 hachage=d19db9d6 0 -> 1
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsWater -> accepte (rejeu)
+[botw-coop] cinematique de J1 : Demo044_0 / ClearRemainsWater rejouee ici (partenaire a 0 m) -> acceptee, n.2
+[botw-coop] recompense : progression b742dd6c du partenaire -> Obj_HeroSoul_Zora donne (objets 36 -> 37)
+[botw-coop] drapeau recu : n.30174 hachage=b742dd6c mis a 1 (octet 1 : categorie 0 gardee)
