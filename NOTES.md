@@ -916,6 +916,36 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
+
+- **Données** (GameData de `Pack/Bootup.pack`, `s32_data_0.bgdata`, script scratchpad `counter_init.py`) : `Counter_TerminalWind` (978537d6), `Counter_TerminalWater` (ce303243), `Counter_TerminalFire` (ee506ae7), `Counter_TerminalElectric` (4c2dfe7e) valent 5 au départ, et `Counter_TerminalFinalTrial` (d25c5e0d) 4. Minimum 0, sauvegardés, jamais remis à zéro (`ResetType` 0). Le jeu les fait descendre de 1 par terminal activé (`Demo044_0`, `RemainsTerminalMainFlow` : `Demo_IncreaseGameDataInt -1` selon la carte), et pose `Access_AllTerminal*` à 0.
+- **Première version** (essayée en `md5`) : chacun gardait le plus petit des deux compteurs, échangés par un nouveau message `TCNT`.
+- **Relectures de la première version** :
+  - Codex, 2 remarques P2, retenues : un terminal activé par l'autre reste orange et peut être compté deux fois ; et le dictionnaire du relais n'était pas borné.
+  - Gemini, 6 remarques. Retenues : deux terminaux activés en même temps chez les deux n'en comptaient qu'un (P1, Créature bloquée) ; une adresse gardée après un rechargement (P1). Sans objet avec la version finale : les deux remarques P2 sur le relais et la remarque P3 sur la reconnexion. Rejetée : l'écriture directe en mémoire (P3), déjà la méthode du compteur de jours, vérifiée en jeu (le compteur écrit a bien été lu par l'événement en `md5`).
+- **Version finale** (`flags.cpp`, `SyncTerminalCounters`) : le compteur est **dérivé des drapeaux des terminaux**, déjà partagés (groupe 2). Compteur = 5 − nombre de terminaux de la Créature activés. Pas de message réseau ; le relais est inchangé.
+  - Terminaux comptés (script scratchpad `terminal_flags.py`) : les `FldObj_Terminal_A_01` posés sur un `DgnObj_RemainsTerminalBody_A` de la carte `Remains<X>_Static`, 5 par Créature. Ceux de Medoh sont les 5 de `md1`. Le terminal de l'entrée ne compte pas ; celui de Ruta est `f29845a5`, essayé en `tm1`/`tm2`.
+  - Correction seulement si l'écart dure 30 s. L'attente repart de zéro dès que le compteur ou le nombre de terminaux activés change (relecture Codex, seconde passe, retenue) : le jeu, quand il active lui-même un terminal, pose le drapeau et baisse le compteur à quelques secondes d'intervalle.
+  - Quand le compteur passe à 0, `Access_AllTerminal*` est posé localement, sans envoi. L'adresse du compteur n'est reprise que si elle est encore à sa place dans le tableau actif.
+  - L'Ultime épreuve (`Counter_TerminalFinalTrial`) n'est pas traitée.
+- [V] `md6` (version finale, avant la dernière correction de l'attente) :
+  - J1 pose avec l'outil les 5 drapeaux des terminaux de Ruta : chez J1, `terminaux restants ce303243 : 5 -> 0 (5 terminaux actives), tous actives` ;
+  - chez J2, les 5 drapeaux reçus par le partage habituel, puis le même `5 -> 0` ;
+  - chez J2, le compteur de Medoh, resté à 5 dans sa sauvegarde, est corrigé à 0 (5 terminaux activés).
+  - La toute dernière correction (relance de l'attente) est compilée, mais pas réessayée en jeu.
+- [V] `md5` (première version ; sauvegardes où J1 a activé les 5 terminaux de Medoh en `md1`, J2 aucun) :
+  - à l'entrée en jeu, J1 `terminaux restants 978537d6 : 0 (annonce)`, J2 `978537d6 : 5 -> 0 (recu de l'autre joueur), tous actives` (message `TCNT` de la première version) ;
+  - J2 demande l'événement de l'unite centrale (outil `demo`) : son jeu pose `Appear_PGanonAgain` et `Appear_PGanonWind`, et la cinématique d'arrivée du Fléau commence. Chez J1, l'événement de J2 rejoué lance aussi le combat (titre « Windblight Ganon » à l'image, `2026-11-23_fleau-du-vent-chez-les-deux_md5.png`) ;
+  - le Fléau `Enemy_SiteBoss_Bow` a005bd2a existe chez les deux, vie 800/800 ; le serveur donne la main au plus proche, l'autre suit sa copie ;
+  - tué chez J1 (`weaken 80 0`) : `800 -> 0 ... annonce`, et **les deux jeux** lancent `Demo712_0 / Die` et posent le même drapeau 17f40979.
+- **Non vérifié** :
+  - la suite (dialogue du Prodige, unite centrale relancée, `Clear_RemainsWind`) ;
+  - un vrai combat à l'arc ;
+  - les trois autres Créatures et l'Ultime épreuve ;
+  - le lancement de l'unite centrale par A : il n'a pas réagi dans ces sauvegardes (6.16), d'où l'outil `demo`.
+- Un terminal activé par l'autre reste orange chez soi jusqu'au prochain chargement. Si on l'active quand même, le jeu refait descendre son propre compteur ; la version finale le remet au bon nombre après 30 s (non essayé en jeu).
+- Preuves : `docs/evidence/2026-11-23_fleau-medoh-chez-les-deux_md5.log`, `docs/evidence/2026-11-23_compteur-derive-des-terminaux_md6.log`.
+
 ### 6.16 Fléau du Vent atteint, mais chez un seul joueur (2026-11-23, essais `md2` à `md4`, Eden) - [V] image et journaux
 
 - **Unite centrale** (`md2`) : avec les 5 terminaux activés en `md1`, ni invite « Examine » ni réaction à A, même à la place exacte de `rb4` ((0.2, 20.8), tourné vers +z). Je ne sais pas pourquoi.

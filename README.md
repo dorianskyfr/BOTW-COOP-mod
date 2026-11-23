@@ -65,7 +65,7 @@ Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0
 
 - **Boss** : les quatre Fléaux du château, Ganon puis Ganon bête du Fléau (combat final), combattus ensemble ; un boss battu chez l'un meurt chez l'autre et les deux jeux enchaînent la suite jusqu'à la fin (vu à l'image).
 
-Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : les Fléaux dans les Créatures divines, une épreuve de l'épée complète, la Ballade des Prodiges jouée. Les tirs du Gardien volant et des Tourelles sont vus dans les journaux, et retirés chez celui qui suit. Limites détaillées : `PROGRESS.md`, « Limites connues ».
+Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : un vrai combat contre les Fléaux dans les Créatures divines (le Fléau du Vent apparaît et meurt chez les deux, essai avec outil, NOTES 6.17), une épreuve de l'épée complète, la Ballade des Prodiges jouée. Les tirs du Gardien volant et des Tourelles sont vus dans les journaux, et retirés chez celui qui suit. Limites détaillées : `PROGRESS.md`, « Limites connues ».
 
 **Limites connues, gardées volontairement** :
 - **Deux joueurs** au plus.

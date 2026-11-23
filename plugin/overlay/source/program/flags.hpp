@@ -90,6 +90,12 @@ namespace coop::flags {
     inline Queue g_Incoming; /* fil reseau -> fil du jeu */
 
     /*
+     * Fil du jeu, appele par OnFrame (NOTES 6.17) : le compteur de terminaux restants de chaque Creature divine
+     * est ramene a 5 moins le nombre de ses terminaux actives (drapeaux deja partages).
+     */
+    void SyncTerminalCounters();
+
+    /*
      * Leve par le fil reseau quand un joueur distant apparait (ou apres une
      * reconnexion) : le fil du jeu renvoie alors tous ses drapeaux partages a 1.
      */

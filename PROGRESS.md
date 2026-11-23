@@ -122,7 +122,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
 - **Arbitrage par le serveur** (NOTES 6.00, 6.10) : seulement pour le rôle des ennemis ; vérifié par les journaux, pas à l'image. Avec un relais plus ancien, chaque jeu reprend l'ancienne règle locale. Le serveur calcule lui-même les distances (positions des joueurs et de l'ennemi), et un bail reste au moins 1,5 s au même joueur (NOTES 6.10, 6.11).
 - **Gardiens miniatures des sanctuaires** : suivis une fois l'épreuve commencée (position, animations, tirs retirés chez celui qui suit, mort ; NOTES 6.07, sanctuaire 073, journaux).
 - **Pas vus en jeu** :
-  - les Fléaux dans les Créatures divines : **le combat ne démarre que chez celui qui lance l'unite centrale** (Fléau du Vent vu chez J1 seulement, NOTES 6.16). Un terminal activé par l'un reste en place chez l'autre (6.15) ; Ganon bête du Fléau vu jusqu'à la fin, mais tué par l'outil d'essai, pas à l'arc de lumière ;
+  - les Fléaux dans les Créatures divines : le compteur de terminaux est partagé, et le Fléau du Vent apparaît et meurt chez les deux (NOTES 6.17, Vah Medoh, outil d'essai) ; pas encore de vrai combat, ni la suite jusqu'à la libération, ni les autres Créatures. Un terminal activé par l'un reste en place chez l'autre (6.15) ; Ganon bête du Fléau vu jusqu'à la fin, mais tué par l'outil d'essai, pas à l'arc de lumière ;
   - l'Épreuve de l'épée et la Ballade des Prodiges jouées en entier ;
   - Rudania et Naboris moins éprouvées que Medoh et Ruta.
 - **Pare-feu Windows** : au premier lancement du relais sur l'adresse LAN, Windows demande d'autoriser Python. C'est à l'utilisateur de l'accepter (réglage de sécurité) ; sans cela, un second PC ne peut pas joindre le relais.

@@ -572,6 +572,123 @@ namespace coop::flags {
         return true;
     }
 
+    namespace {
+        /*
+         * NOTES 6.17 : compteurs de terminaux restants des Creatures divines (drapeaux entiers sauvegardes, 5 au
+         * depart, minimum 0, lus dans GameData). Le jeu les fait descendre de 1 a chaque terminal active (Demo044_0,
+         * RemainsTerminalMainFlow) ; l'unite centrale ne lance le combat contre le Fleau que s'il vaut 0. Les
+         * terminaux actives chez l'autre arrivent par drapeaux (groupe 2), mais le compteur ne descendait pas : le
+         * Fleau n'apparaissait que chez un joueur (essai md4).
+         * Relectures Codex et Gemini (premiere version, plus petit des deux compteurs echange par message) : un meme
+         * terminal pouvait etre compte deux fois, et deux terminaux actives en meme temps chez les deux n'en
+         * comptaient qu'un. Le compteur est donc derive des drapeaux : 5 moins le nombre de terminaux actives.
+         * Terminaux comptes : les FldObj_Terminal_A_01 poses sur un DgnObj_RemainsTerminalBody_A de la carte
+         * Remains<X>_Static (scratchpad terminal_flags.py ; ceux de Medoh sont les 5 vus en md1). Le terminal de
+         * l'entree ne compte pas. L'Ultime epreuve (Counter_TerminalFinalTrial) n'est pas traitee.
+         */
+        struct BeastTerminals {
+            std::uint32_t m_Counter;      /* Counter_Terminal<X> */
+            std::uint32_t m_All;          /* Access_AllTerminal<X>, pose par le jeu quand le compteur atteint 0 */
+            std::uint32_t m_Terminals[5]; /* MainFieldDungeon_FldObj_Terminal_A_01_<HashId> */
+        };
+        constexpr BeastTerminals Beasts[] = {
+            { Crc32("Counter_TerminalWind"), Crc32("Access_AllTerminalWind"),
+                { 0xf12238cd, 0xf89e7227, 0x814048a3, 0x8e1c9b59, 0x522c9804 } },
+            { Crc32("Counter_TerminalWater"), Crc32("Access_AllTerminalWater"),
+                { 0x1cc64a4e, 0x15da6f8c, 0x7133d21a, 0x41ac752f, 0xba2edb7f } },
+            { Crc32("Counter_TerminalFire"), Crc32("Access_AllTerminalFire"),
+                { 0x7107eb73, 0x85470cec, 0x3741659e, 0xf23aaae0, 0x38cf0d9d } },
+            { Crc32("Counter_TerminalElectric"), Crc32("Access_AllTerminalElectric"),
+                { 0xdfd13e6a, 0x8b945625, 0x9f00fbe4, 0xb0cbc802, 0xf32013b7 } },
+        };
+        constexpr int NumBeasts = 4;
+        constexpr std::int32_t TerminalsPerBeast = 5;
+        /* Ecart tenu 60 echanges (30 s) avant correction : quand le joueur active lui-meme un terminal, le jeu pose
+           le drapeau et baisse le compteur a quelques secondes d'intervalle, pendant l'evenement (choix). */
+        constexpr int MismatchExchanges = 60;
+        std::uintptr_t s_CounterFlag[NumBeasts] = {};
+        int s_CounterIdx[NumBeasts] = { -1, -1, -1, -1 };
+        int s_Mismatch[NumBeasts] = {};
+        /* Dernier etat vu (compteur, cible) : tout changement relance l'attente (relecture Codex, seconde passe : sinon
+           une activation locale heritait du temps deja ecoule et la correction pouvait passer avant la baisse du jeu). */
+        std::int32_t s_LastSeen[NumBeasts] = { -1, -1, -1, -1 };
+        int s_CounterLogs = 0;
+
+        /*
+         * Drapeau entier du compteur k (gabarit : valeur +0x18, hachage +0x1c, comme WM_NumberOfDays) ; 0 sinon.
+         * L'adresse gardee n'est reprise que si elle est encore a sa place dans le tableau actif (relecture Gemini :
+         * apres un rechargement, une ancienne adresse lisible pouvait encore porter le bon hachage).
+         */
+        std::uintptr_t CounterFlag(int k) {
+            constexpr std::size_t HashOff = 0x1c;
+            PtrArray ints {};
+            if (s_Param == 0 || !Read(s_Param + Param_S32Flags, ints) || ints.m_Num <= 0 || ints.m_Num > 8192
+                || ints.m_Num > ints.m_Max || !coop::game::CanReadMemory(ints.m_Buffer, 8ull * ints.m_Num)) {
+                s_CounterFlag[k] = 0;
+                s_CounterIdx[k] = -1;
+                return 0;
+            }
+            std::uintptr_t flag = 0;
+            std::uint32_t h = 0;
+            const int idx = s_CounterIdx[k];
+            if (idx >= 0 && idx < ints.m_Num && Read(ints.m_Buffer + 8ull * idx, flag) && flag == s_CounterFlag[k] && flag != 0
+                && coop::game::CanReadMemory(flag, 0x20) && Read(flag + HashOff, h) && h == Beasts[k].m_Counter)
+                return flag;
+            s_CounterFlag[k] = 0;
+            s_CounterIdx[k] = -1;
+            for (int i = 0; i < ints.m_Num; i++) {
+                if (Read(ints.m_Buffer + 8ull * i, flag) && coop::game::CanReadMemory(flag, 0x20) && Read(flag + HashOff, h)
+                    && h == Beasts[k].m_Counter) {
+                    s_CounterFlag[k] = flag;
+                    s_CounterIdx[k] = i;
+                    break;
+                }
+            }
+            return s_CounterFlag[k];
+        }
+    }
+
+    /* Fil du jeu, deux fois par seconde, en jeu : chaque compteur est ramene a 5 moins le nombre de terminaux actives
+       de sa Creature, si l'ecart dure (MismatchExchanges). Rien n'est envoye : les drapeaux des terminaux le sont deja. */
+    void SyncTerminalCounters() {
+        for (int k = 0; k < NumBeasts; k++) {
+            int active = 0;
+            bool known = true;
+            for (const std::uint32_t t : Beasts[k].m_Terminals) {
+                const int q = Query(t);
+                if (q < 0) {
+                    known = false;
+                    break;
+                }
+                active += q & 1;
+            }
+            const std::uintptr_t f = known ? CounterFlag(k) : 0;
+            std::int32_t current = -1;
+            if (f == 0 || !Read(f + 0x18, current) || current < 0 || current > TerminalsPerBeast) {
+                s_Mismatch[k] = 0;
+                continue;
+            }
+            const std::int32_t target = TerminalsPerBeast - active;
+            const std::int32_t seen = current * 16 + target;
+            if (seen != s_LastSeen[k]) {
+                s_LastSeen[k] = seen;
+                s_Mismatch[k] = 0;
+            }
+            if (current == target) {
+                s_Mismatch[k] = 0;
+                continue;
+            }
+            if (++s_Mismatch[k] < MismatchExchanges)
+                continue;
+            s_Mismatch[k] = 0;
+            std::memcpy(reinterpret_cast<void*>(f + 0x18), &target, 4);
+            const bool all = target == 0 && SetLocalState(Beasts[k].m_All, true);
+            if (s_CounterLogs++ < 40)
+                Logging.Log("[botw-coop] terminaux restants %08x : %d -> %d (%d terminaux actives)%s", Beasts[k].m_Counter, current,
+                    target, active, all ? ", tous actives" : "");
+        }
+    }
+
     int Query(std::uint32_t hash) {
         if (s_Param == 0 || !s_LayoutKnown)
             return -2;
@@ -907,6 +1024,8 @@ namespace coop::flags {
                         s_Sent, s_Applied, s_Dropped);
                 }
             }
+            if (s_HaveSnapshot && inGame)
+                SyncTerminalCounters();
         }
 
         /* Relecture complete en 30 images (1 s a 30 img/s) : ~0,18 ms par image au lieu de ~0,36 en 15 images
