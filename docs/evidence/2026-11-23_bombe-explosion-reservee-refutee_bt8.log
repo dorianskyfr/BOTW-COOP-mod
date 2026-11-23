@@ -1,0 +1,9 @@
+﻿# bt8 : copie passee par RemoteBomb::changeToExplosionReserved (main+0xa20748), option retiree ensuite. Eden, 2026-11-23. NOTES 6.14
+## bt8_game.txt
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.1)
+[botw-coop] bombe : notre RemoteBomb n.1 commence son explosion
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.1)
+## bt8_game2.txt
+[botw-coop] bombe du partenaire : RemoteBomb n.1 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.1 explosee en (-611.7, 129.2, -333.8), notre copie explose (rc=0)
+[botw-coop] bombe du partenaire : copie encore la 150 images apres son explosion, retiree

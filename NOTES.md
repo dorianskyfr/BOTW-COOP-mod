@@ -916,6 +916,28 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.14 Sphère de l'explosion chez l'autre : piste « explosion réservée » réfutée (2026-11-23, essai `bt8`, Eden) - [V] désassemblage, image et journaux ; cause toujours inconnue
+
+- **Enquête Codex** (lecture seule) : non concluante. Son bac à sable a refusé la lecture de `build\dumps\main_1.9.0.bin`. Ses pistes, tirées de la décompilation 1.5.0 : le paramètre statique `XLinkKey` de l'IA `RemoteBomb`, et deux fonctions, `RemoteBomb::changeToExplosionReserved` et `RuneMgr::RemoteBombSlotsMaybe::detonateRemoteBomb`.
+- **Désassemblage de main 1.9.0** (scratchpad `read_rb.py`, recherche des branchements par numpy) :
+  - `main+0xa20748` = `changeToExplosionReserved`. Elle fait comme `changeToExplodeChild` (`main+0xa20ab4`), mais appelle en plus `main+0x1522cc8(acteur, 0x1c, 1)`, qui pose le bit 28 du mot de drapeaux à acteur+0x520 (écriture atomique ; le bit est calculé à partir de `w1`). Puis `changeChild(this, "爆発予約")`.
+  - `main+0xa207e8` : la même remise à zéro, puis `changeChild(this, "所持")` (portée).
+  - Appels : `changeToExplosionReserved` depuis `enter_` (`main+0xa2063c`) et `calc_` (`main+0xa20aac`) ; `changeToExplodeChild` depuis `calc_` seulement (`main+0xa20a68`). Aucun pointeur vers elles dans les données.
+  - `calc_` (`main+0xa20860`) :
+    - enfant « 爆発 » : bit 0x20 de acteur+0x518 relevé, fin ;
+    - sinon, elle cherche le corps physique nommé « bomb » (`main+0x117e3d8` sur acteur+0x6a8). Si son octet +0xc0 vaut 4 : explosion directe ;
+    - sinon, si l'enfant n'est pas « 爆発予約 » et que l'octet IA+0xc8 est posé ou que `main+0xaae620(acteur)` est vrai : `changeToExplosionReserved` ;
+    - ailleurs : « 待機 » (attente), « Cancel ».
+  - L'objet « bomb » est le corps physique (fonctions autour de `main+0xba6d60` et `main+0x10f0xxx`), pas un effet visuel.
+- [V] `bt8` (option d'essai, retirée ensuite) : la copie passe par `changeToExplosionReserved` au lieu de `changeToExplodeChild` (vue de J2 à 29 m, J1 lance puis fait exploser).
+  - Chez J1, la vraie explosion se voit (luminosité de la zone 61 → 103).
+  - Chez J2, rien ne change à l'image, et la copie n'explose pas : `copie encore la 150 images apres son explosion, retiree`.
+  - L'état « explosion réservée » attend donc autre chose pour exploser : ce n'est pas lui qui manque à la copie.
+- **Reste à chercher** :
+  - ce que fait `RemoteBombSlotsMaybe::detonateRemoteBomb` en 1.9.0 (1.5.0 : 0x710067e55c, 732 octets ; adresse 1.9.0 non trouvée) ;
+  - la valeur de `XLinkKey` dans les paramètres de l'IA (RomFS) et l'endroit où elle est émise.
+- La version à jouer garde l'explosion directe : souffle de près, pas de sphère de loin.
+
 ### 6.13 Tir d'une Tourelle vu et retiré chez celui qui suit (2026-11-23, essai `gd15`, Eden) - [V] journaux
 
 - Tourelle `f51a9468` (`Enemy_Guardian_B`, château) en (-251.3, 184.1, -1204.7). Sa plateforme est à y 184, 20 m au-dessus du sol tout autour (sondé avec `tp`). Les deux joueurs y sont posés, à 4 et 9 m d'elle.

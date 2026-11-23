@@ -845,6 +845,8 @@ namespace coop::game {
             return -5;
         if (Peek<std::uintptr_t>(ai) != MainBase() + RemoteBombAiVtable)
             return -6; /* pas l'IA RemoteBomb (autre etat de l'IA racine) : on ne touche a rien */
+        /* NOTES 6.14 : RemoteBomb::changeToExplosionReserved (main+0xa20748) essayee a la place (bt8) : la copie
+           n'explose pas du tout (reste jusqu'au retrait de secours). On garde l'explosion directe. */
         reinterpret_cast<void (*)(std::uintptr_t)>(MainBase() + ChangeToExplodeChild)(ai);
         return 0;
     }
