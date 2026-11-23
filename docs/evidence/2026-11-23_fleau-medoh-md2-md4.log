@@ -1,0 +1,41 @@
+﻿# md2 a md4 : unite centrale de Vah Medoh, Fleau du Vent (Eden, 2026-11-23). NOTES 6.16
+## md3_game.txt
+[botw-coop] drapeau change : n.3577 hachage=1508673e 0 -> 1
+[botw-coop] drapeau change : n.21960 hachage=853bdfc0 1 -> 0
+[botw-coop] essai drapeau local : hachage=c1959ed3 index 31831, octet 1 -> 1
+[botw-coop] essai drapeau local remis a 0 : hachage=89ebcdcd index 22735, octet 0 -> 0
+[botw-coop] essai drapeau local remis a 0 : hachage=2cd9da73 index 7379, octet 0 -> 0
+[botw-coop] drapeau change : n.19134 hachage=737520b2 1 -> 0
+## md3_game2.txt
+[botw-coop] drapeau change : n.21960 hachage=853bdfc0 0 -> 1
+[botw-coop] drapeau change : n.3577 hachage=1508673e 0 -> 1
+[botw-coop] drapeau change : n.21960 hachage=853bdfc0 1 -> 0
+[botw-coop] essai drapeau local : hachage=c1959ed3 index 31831, octet 0 -> 1
+[botw-coop] essai drapeau local remis a 0 : hachage=89ebcdcd index 22735, octet 0 -> 0
+[botw-coop] essai drapeau local remis a 0 : hachage=2cd9da73 index 7379, octet 0 -> 0
+[botw-coop] drapeau change : n.31831 hachage=c1959ed3 0 -> 1
+## md4_game.txt
+[botw-coop] drapeau change : n.21960 hachage=853bdfc0 1 -> 0
+[botw-coop] drapeau change : n.3577 hachage=1508673e 0 -> 1
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsWind -> accepte
+[botw-coop] cinematique : Demo044_0 / ClearRemainsWind annoncee au partenaire
+[botw-coop] essai cinematique : Demo044_0 / ClearRemainsWind demandee au jeu local -> acceptee
+[botw-coop] drapeau change : n.7379 hachage=2cd9da73 0 -> 1
+[botw-coop] drapeau change : n.22735 hachage=89ebcdcd 0 -> 1
+[botw-coop] drapeau change : n.21642 hachage=83218e97 0 -> 1
+[botw-coop] drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+[botw-coop] drapeau change : n.41016 hachage=f97f7a67 1 -> 0
+[botw-coop] evenement demande : Demo712_0 / Die -> accepte
+[botw-coop] cinematique : Demo712_0 non annoncee (evenement du jeu, pas une cinematique de la liste)
+[botw-coop] drapeau change : n.4019 hachage=17f40979 0 -> 1
+## md4_game2.txt
+[botw-coop] drapeau change : n.4707 hachage=1c328e7a 1 -> 0
+[botw-coop] drapeau change : n.21960 hachage=853bdfc0 0 -> 1
+[botw-coop] drapeau change : n.3577 hachage=1508673e 0 -> 1
+[botw-coop] drapeau change : n.21960 hachage=853bdfc0 1 -> 0
+[botw-coop] drapeau change : n.12299 hachage=49d5b2d3 0 -> 1
+[botw-coop] evenement demande : Demo044_0 / ClearRemainsWind -> accepte (rejeu)
+[botw-coop] cinematique de J1 : Demo044_0 / ClearRemainsWind rejouee ici (partenaire a 4 m) -> acceptee, n.1
+[botw-coop] drapeau change : n.1203 hachage=073faa75 0 -> 1
+[botw-coop] drapeau change : n.26437 hachage=a089b5c2 0 -> 1
+[botw-coop] drapeau change : n.41016 hachage=f97f7a67 1 -> 0

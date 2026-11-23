@@ -325,8 +325,19 @@ namespace coop::cutscene {
 #ifdef COOP_REMOTE_PAD
     void DebugPlayDemo() {
         s_ToolDemo.store(true);
-        const bool ok = PlayLocally("Demo011_0", "Demo011_0", false);
-        Logging.Log("[botw-coop] essai cinematique : Demo011_0 demandee au jeu local -> %s", ok ? "acceptee" : "refusee");
+#if defined(COOP_TEST_DEMO_EVENT) && defined(COOP_TEST_DEMO_ENTRY)
+        /* -DCOOP_TEST_DEMO_EVENT=Demo044_0 -DCOOP_TEST_DEMO_ENTRY=ClearRemainsWind (sans guillemets : passes par le
+           shell) : autre evenement, lance d'ordinaire par l'unite centrale de Vah Medoh (essai md3). */
+#define COOP_DEMO_STR2(x) #x
+#define COOP_DEMO_STR(x) COOP_DEMO_STR2(x)
+        constexpr const char* Event = COOP_DEMO_STR(COOP_TEST_DEMO_EVENT);
+        constexpr const char* Entry = COOP_DEMO_STR(COOP_TEST_DEMO_ENTRY);
+#else
+        constexpr const char* Event = "Demo011_0";
+        constexpr const char* Entry = "Demo011_0";
+#endif
+        const bool ok = PlayLocally(Event, Entry, false);
+        Logging.Log("[botw-coop] essai cinematique : %s / %s demandee au jeu local -> %s", Event, Entry, ok ? "acceptee" : "refusee");
     }
 #endif
 

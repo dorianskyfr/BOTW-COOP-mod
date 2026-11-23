@@ -916,6 +916,18 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.16 Fléau du Vent atteint, mais chez un seul joueur (2026-11-23, essais `md2` à `md4`, Eden) - [V] image et journaux
+
+- **Unite centrale** (`md2`) : avec les 5 terminaux activés en `md1`, ni invite « Examine » ni réaction à A, même à la place exacte de `rb4` ((0.2, 20.8), tourné vers +z). Je ne sais pas pourquoi.
+- **`md3`** (nouvelle option d'essai `-DCOOP_TEST_CLEARLOCAL=0x..,0x..`, qui remet des drapeaux à 0) : `Appear_PGanonWind` (89ebcdcd) et `Appear_PGanonAgain` (2cd9da73) valaient déjà 0 chez les deux. Les essais `rb1`/`rb2` ne les avaient pas laissés dans les sauvegardes ; ce n'était pas la cause.
+- **`md4`** (nouvelle option `-DCOOP_TEST_DEMO_EVENT=Demo044_0 -DCOOP_TEST_DEMO_ENTRY=ClearRemainsWind` pour l'outil `demo`) : J1 demande lui-même l'événement de l'unite centrale.
+  - J1 : `Demo044_0 / ClearRemainsWind -> accepte`. La Malice sort de l'unite, le **Fléau du Vent apparaît et le combat commence** (« But you must avenge me, Link! », image `2026-11-23_fleau-du-vent-chez-J1-seulement_md4.png`). L'événement pose `Appear_PGanonAgain`, `Appear_PGanonWind`, 83218e97 et a089b5c2 à 1, et f97f7a67 à 0.
+  - J2 : l'événement est rejoué (`cinematique de J1 : Demo044_0 / ClearRemainsWind rejouee ici`), affiche « Sheikah Slate authenticated. », puis le jeu reprend. **Pas de Fléau** (`actors SiteBoss` : 0).
+  - Tué chez J1 par l'outil (`weaken 80 0`) : cinématique de mort, `Demo712_0 / Die`, drapeau 17f40979 posé. Rien n'arrive chez J2.
+- **Constat** : le combat contre le Fléau d'une Créature divine ne démarre que chez celui qui lance l'unite centrale. Les drapeaux d'apparition et de mort (`Appear_PGanon*`, `Die_PGanon*`) ne sont dans aucun groupe de la liste blanche (`tools/build_sync_flags.py`). Chez J2, l'événement rejoué s'arrête avant le combat. Je ne peux pas confirmer pourquoi : le compteur `Counter_TerminalWind`, lu par l'événement, est un entier, et le mod ne partage pas les entiers.
+- **À décider** : partager ce combat demande de faire passer l'événement chez l'autre jusqu'au combat (compteur, drapeaux d'apparition), ou de laisser chacun le lancer de son côté. Les essais `rb2` à `rb5` (5.86) montrent que poser seulement les drapeaux d'apparition laisse le Fléau invisible.
+- Preuves : `docs/evidence/2026-11-23_fleau-medoh-md2-md4.log`.
+
 ### 6.15 Créatures divines : terminaux activés en jeu, et plus retirés chez l'autre (2026-11-23, essais `md1`, `tm1`, `tm2`, Eden) - [V] image et journaux
 
 - **`md1` (Vah Medoh)** : les 5 terminaux activés pour de vrai par J1. Je relève leurs positions dans la carte (`tools/list_pack_map.py` avec `build\venv`, `FldObj_Terminal_A_01` en (54.6, 2.0, 6.5), (-56.6, -2.7, 7.5), (119.5, -13.8, 27.0), (100.0, 1.6, 5.5), (-119.5, -2.8, 14.6)), je pose Link devant chacun avec `tp`, puis j'appuie sur A. Chaque terminal passe au bleu ; au dernier, « That was the last terminal! Now you just need to start the main control unit! » (image).

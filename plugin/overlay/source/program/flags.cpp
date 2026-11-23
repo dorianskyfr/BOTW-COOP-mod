@@ -795,6 +795,23 @@ namespace coop::flags {
                         Logging.Log("[botw-coop] essai drapeau local : hachage=%08x index %d, octet %d -> %d",
                             static_cast<unsigned>(hash), i, before, after);
                     }
+#ifdef COOP_TEST_CLEARLOCAL
+                    /* -DCOOP_TEST_CLEARLOCAL=0x..,0x.. : drapeaux remis a 0 en meme temps (essai md3 : Appear_PGanonWind et
+                       Appear_PGanonAgain, poses par l'outil en rb1/rb2 et gardes par la sauvegarde d'essai). */
+                    const std::uint32_t clearHashes[] = { COOP_TEST_CLEARLOCAL };
+                    for (const std::uint32_t hash : clearHashes) {
+                        std::uintptr_t f = 0;
+                        const int i = FindByHash(bools, hash, f);
+                        std::uint8_t before = 0xff, after = 0xff;
+                        if (i >= 0) {
+                            Read(f + s_ValueOffset, before);
+                            *reinterpret_cast<std::uint8_t*>(f + s_ValueOffset) &= static_cast<std::uint8_t>(~1u);
+                            Read(f + s_ValueOffset, after);
+                        }
+                        Logging.Log("[botw-coop] essai drapeau local remis a 0 : hachage=%08x index %d, octet %d -> %d",
+                            static_cast<unsigned>(hash), i, before, after);
+                    }
+#endif
 #ifdef COOP_TEST_SETINT
                     /* -DCOOP_TEST_SETINT=0x... -DCOOP_TEST_SETINT_VALUE=n : drapeau entier pose en meme temps (essai rb4 :
                        Counter_TerminalWind, lu par l'evenement Demo044_0 pour lancer le combat contre le Fleau).
