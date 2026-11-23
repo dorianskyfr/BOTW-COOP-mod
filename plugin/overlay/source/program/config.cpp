@@ -51,6 +51,8 @@ namespace coop::config {
             unsigned flag = 0;
             if (std::sscanf(line, "enemy_pos=%u", &flag) == 1)
                 g_EnemyPos = flag != 0;
+            if (std::sscanf(line, "puzzle_pos=%u", &flag) == 1)
+                g_PuzzlePos = flag != 0;
             if (std::sscanf(line, "enemy_anim=%u", &flag) == 1 && flag <= 2)
                 g_EnemyAnim = flag;
             if (std::sscanf(line, "cutscene=%u", &flag) == 1)

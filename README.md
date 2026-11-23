@@ -59,7 +59,7 @@ Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0
 - **Mode expert** : vérifié (parties chargées depuis une sauvegarde en mode expert).
 - **Lune de sang** : déclenchée par le jeu chez les deux joueurs au même minuit.
 - **Créatures divines** : les deux joueurs entrent ensemble ; énigmes, bornes, coffres et ennemis vaincus partagés (Vah Medoh). Pour les quatre Créatures, le Fléau apparaît et meurt chez les deux, et la libération passe chez l'autre, qui reçoit le pouvoir du Prodige (essais avec outil, NOTES 6.18, 6.19).
-- **Sanctuaires** : les deux joueurs entrent ensemble, ennemis vaincus partagés ; l'état d'une énigme en cours n'est pas sauvegardé par le jeu, donc pas partagé (la fin du sanctuaire l'est).
+- **Sanctuaires** : les deux joueurs entrent ensemble, ennemis vaincus partagés ; les objets qu'on déplace (blocs, boules, bougies…) se déplacent chez les deux (le joueur le plus proche fait foi, NOTES 6.23) ; la fin du sanctuaire est partagée.
 - **DLC** : Épreuve de l'épée et sanctuaires de la Ballade des Prodiges, les deux joueurs entrent ensemble, ennemis vaincus partagés.
 - **Réseau** : relais protégé (mot de passe, connexions limitées, messages invalides ignorés, client trop lent déconnecté).
 
@@ -69,7 +69,7 @@ Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image 
 
 **Limites connues, gardées volontairement** :
 - **Deux joueurs** au plus.
-- **Énigme de sanctuaire en cours** : non partagée, le jeu ne la sauvegarde pas (la fin du sanctuaire l'est).
+- **Énigme de sanctuaire en cours** : seuls les objets qu'on déplace sont partagés. Le feu (lierre, torches), l'électricité, l'eau, un interrupteur enfoncé par le corps d'un joueur et les labyrinthes à inclinaison restent propres à chacun.
 - **Le Link du partenaire a une collision** : on ne le traverse pas.
 - **Chacun garde** son inventaire, sa santé, son équipement et l'épée de légende.
 - **Bombes** : l'explosion de la bombe de l'autre est une vraie explosion dans votre monde ; son souffle peut vous projeter et vous blesser.

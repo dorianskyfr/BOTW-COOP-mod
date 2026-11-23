@@ -179,6 +179,8 @@ namespace coop::game {
      * (-1 pas de corps, -2 pas d'accesseur, -3/-4/-5 controle de coherence echoue).
      */
     int SetActorBodyTransform(std::uintptr_t actor, const float mtx[12]);
+    /* Type de mouvement du corps principal : 0 Dynamic, 1 Fixed, 2 Keyframed, 3 Unknown ; -1 sans corps (NOTES 6.23). */
+    int GetActorMotionType(std::uintptr_t actor);
     /* Fait exploser une bombe de la tablette (RemoteBomb::changeToExplodeChild, main 1.9.0). 0 si fait. Fil du jeu. */
     int ExplodeRemoteBomb(std::uintptr_t actor);
     /* Demande l'explosion comme la tablette (octet de detonation de l'IA, NOTES 6.22) : le jeu allume la forme chimique,

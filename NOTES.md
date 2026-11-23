@@ -1003,6 +1003,35 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - **Non vérifié** : à 30 m (J2 tombé dans un lac pendant l'essai) ; la chimie de l'explosion chez l'autre, comme l'herbe qui brûle (même effet que dans le monde de J1, attendu mais non regardé).
 - Preuves : `docs/evidence/2026-11-23_bombes-mise-a-feu-sphere_bs9-bs10.log`.
 
+### 6.23 Énigmes des sanctuaires : objets mobiles partagés (2026-11-23, essais `pz1` à `pz4`, Eden) - [V] journaux
+
+- **Constat** : l'état d'une énigme n'est pas dans des drapeaux sauvegardés. Il vit dans les objets eux-mêmes (blocs, boules, planches) et dans leurs liens (un interrupteur ouvre une porte). Le mod ne partageait que les drapeaux sauvegardés.
+- **Choix** : partager la position des **objets mobiles**, par le même mécanisme que les ennemis (`EMTX`, le joueur le plus proche fait foi, bail du serveur). Un bloc posé sur un interrupteur chez l'un l'est aussi chez l'autre, et chaque monde ouvre alors sa porte lui-même. Les objets animés par le jeu (portes, ascenseurs : corps Keyframed) ne sont pas forcés.
+- **Sélection** (`enemy_life.cpp`, `IsPuzzleObject`) : objet de carte `DgnObj_*` ou `FldObj_*` avec HashId, à moins de 40 m, dont le corps principal est **dynamique**. Un objet déjà suivi le reste même si son corps change un moment de type (tenu par le magnétisme…). Les objets mobiles du monde ouvert à moins de 40 m sont donc pris aussi (caisses, rochers).
+  - Type de mouvement : `game::GetActorMotionType`, qui appelle main+0x12d2830. C'est `RigidBody::getMotionType`, même code que la décomp (`mMotionFlags` en +0x6c : Dynamic 1<<2, Keyframed 1<<3, Fixed 1<<4).
+  - Réglage `puzzle_pos=0` pour couper la fonction (activée par défaut), indépendant de `enemy_pos`. Pas d'animations rejouées pour ces objets. Table des objets suivis passée de 128 à 256 places (partagée avec les ennemis).
+- Objets vus (journal `objet d'enigme : … suivi`) :
+  - sanctuaire 002 : `DgnObj_Candle`, `DgnObj_HangedLamp_A`, `DgnObj_BoardStone_B` ;
+  - sanctuaire 005 : `DgnObj_StoneBall_005`, des boules produites et recyclées en continu, à un rythme propre à chaque monde.
+  - Le sanctuaire 000 est une énigme de feu (`DgnObj_IvyBurn`, `DgnObj_BoardWood`) : aucun objet dynamique, donc **rien de partagé** pour l'instant.
+- Corrections après essais et relectures :
+  - `pz2` : une copie partie à plus de 100 m (boule recyclée) gardait la main, parce que le serveur mesure depuis la position envoyée par celui qui a la main. Désormais, si notre copie est hors de portée et celle de l'autre près de nous, nous suivons et n'envoyons que notre distance (`pz3` : la main revient toujours à la copie proche, environ 28 m contre 112 m) ;
+  - Codex, passe 1 (trois remarques P2, toutes retenues) : rotation seule ignorée à la réception, copie hors de portée jamais recalée, fonction dépendante de `enemy_pos` ;
+  - Codex, passe 2 (une remarque P2, retenue) : rotation seule envoyée seulement une fois par seconde. Le changement de rotation déclenche maintenant l'envoi. C'était la dernière passe autorisée.
+- [V] Essais (outil `-DCOOP_TEST_NUDGE_PUZZLE` : décale de 4 m l'objet suivi le plus proche) :
+  - `pz4`, sanctuaire 002, bougie `2c7443b8`. Décalée chez J1 alors que J2 avait la main : 6 s plus tard, elle était revenue à sa place (la copie de J2 fait foi).
+  - J1 placé contre elle (il prend la main), puis décalage : chez J1 (14,11 ; 0,30 ; 18,13), chez J2 (14,12 ; 0,30 ; 18,15).
+  - `pz1`, `pz3` : boules du sanctuaire 005 suivies d'un monde à l'autre (`ramene vers la copie de J2, ecart 0.2 à 1.2 m`).
+- **Non vérifié** :
+  - un vrai bloc poussé ou porté sur un interrupteur, avec la porte qui s'ouvre chez les deux ;
+  - le dernier changement (envoi sur rotation) : compilé, mais l'essai `pz5` a été interrompu (PC utilisé) ;
+  - aucune image.
+- **Pas partagé** :
+  - énigmes de feu (lierre brûlé, torches allumées), électricité, eau ;
+  - interrupteur au sol enfoncé par le corps d'un joueur : la porte ne s'ouvre que dans son monde ;
+  - labyrinthes à inclinaison (corps Keyframed).
+- Preuves : `docs/evidence/2026-11-23_enigmes-objets-mobiles_pz1-pz4.log`.
+
 ### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
 
 - **Données** (GameData de `Pack/Bootup.pack`, `s32_data_0.bgdata`, script scratchpad `counter_init.py`) : `Counter_TerminalWind` (978537d6), `Counter_TerminalWater` (ce303243), `Counter_TerminalFire` (ee506ae7), `Counter_TerminalElectric` (4c2dfe7e) valent 5 au départ, et `Counter_TerminalFinalTrial` (d25c5e0d) 4. Minimum 0, sauvegardés, jamais remis à zéro (`ResetType` 0). Le jeu les fait descendre de 1 par terminal activé (`Demo044_0`, `RemainsTerminalMainFlow` : `Demo_IncreaseGameDataInt -1` selon la carte), et pose `Access_AllTerminal*` à 0.

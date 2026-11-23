@@ -33,6 +33,7 @@ namespace coop::enemy_life {
             int           m_RemoteFrom = 0;
             std::uint64_t m_RemoteFrame = 0;   /* 0 = jamais recu */
             float         m_SentPos[3] = {};
+            float         m_SentRot[9] = {}; /* objets d'enigme : rotation envoyee (relecture Codex, NOTES 6.23) */
             std::uint64_t m_SentFrame = 0;
             bool          m_Following = false;
             /* NOTES 5.91 : l'autre suit notre copie (son dernier message est un EDST), et quand. */
@@ -176,6 +177,8 @@ namespace coop::enemy_life {
 
         /* Position des ennemis : reglages (choix, pas des mesures). */
         constexpr float         PosRadius = 150.0f;      /* on ne s'occupe que des ennemis a moins de 150 m */
+        constexpr float         PuzzleRadius = 40.0f;    /* objets d'enigme a moins de 40 m (NOTES 6.23) */
+        constexpr float         PuzzleTurnTolerance = 0.03f; /* ecart d'un terme de rotation (~2 degres) */
         constexpr std::uint64_t PosStaleFrames = 90;     /* ~3 s sans nouvelle : l'autre ne fait plus foi */
         constexpr std::uint64_t PosKeepAlive = 30;       /* envoi au moins toutes les ~1 s */
         constexpr float         PosMinMove = 0.05f;      /* ... ou des que l'ennemi a bouge de 5 cm */
@@ -308,7 +311,7 @@ namespace coop::enemy_life {
             }
         }
 
-        constexpr int Capacity = 128;
+        constexpr int Capacity = 256; /* 128 avant les objets d'enigme (NOTES 6.23) */
         Entry s_Entries[Capacity];
         int s_Next = 0;
         std::uint64_t s_Frames = 0, s_Sent = 0, s_Applied = 0;
@@ -402,6 +405,33 @@ namespace coop::enemy_life {
         }
 
         /* Passe « position », a chaque image : suit la copie de l'autre joueur ou envoie la notre. */
+        /*
+         * NOTES 6.23 : objet d'enigme (sanctuaires, Creatures divines, et objets mobiles du monde) : objet de carte
+         * DgnObj_* ou FldObj_* dont le corps principal est dynamique (bloc, boule, caisse... : un objet qu'on deplace).
+         * Les objets animes par le jeu (portes, ascenseurs : corps Keyframed) ne sont pas pris : chaque monde les
+         * anime d'apres ses interrupteurs, que les objets partages actionnent des deux cotes. Un objet deja suivi le
+         * reste meme si son corps change un moment de type (tenu par le magnetisme, fige par Stasis...).
+         */
+        bool IsPuzzleObject(const coop::game::ActorInfo& info) {
+            if (!coop::config::g_PuzzlePos)
+                return false;
+            if (std::strncmp(info.m_Name, "DgnObj_", 7) != 0 && std::strncmp(info.m_Name, "FldObj_", 7) != 0)
+                return false;
+            if (Find(info.m_HashId, false) != nullptr)
+                return true;
+            const float dx = info.m_Pos[0] - s_PlayerPos[0], dy = info.m_Pos[1] - s_PlayerPos[1], dz = info.m_Pos[2] - s_PlayerPos[2];
+            if (dx * dx + dy * dy + dz * dz > PuzzleRadius * PuzzleRadius)
+                return false;
+            if (coop::game::GetActorMotionType(info.m_Actor) != 0)
+                return false;
+            static int s_PuzzleLogs = 0;
+            if (s_PuzzleLogs++ < 60)
+                Logging.Log("[botw-coop] objet d'enigme : %s %08x suivi (corps dynamique) en (%.1f, %.1f, %.1f)", info.m_Name,
+                    info.m_HashId, static_cast<double>(info.m_Pos[0]), static_cast<double>(info.m_Pos[1]),
+                    static_cast<double>(info.m_Pos[2]));
+            return true;
+        }
+
         bool OnActorPos(const coop::game::ActorInfo& info, void*) {
             if (IsGuardianShot(info.m_Name)) {
                 /* Les rayons au repos sont en (0, 0, 0) (essai gl3 : 11 chez J1 des le chargement, une reserve
@@ -414,12 +444,25 @@ namespace coop::enemy_life {
                 s_BeamCount++;
                 return false;
             }
-            if (info.m_HashId == 0 || info.m_Name == nullptr || std::strncmp(info.m_Name, "Enemy_", 6) != 0)
+            if (info.m_HashId == 0 || info.m_Name == nullptr)
+                return false;
+            const bool enemy = std::strncmp(info.m_Name, "Enemy_", 6) == 0;
+            if (enemy ? !coop::config::g_EnemyPos : !IsPuzzleObject(info))
                 return false;
             const float dx = info.m_Pos[0] - s_PlayerPos[0], dy = info.m_Pos[1] - s_PlayerPos[1], dz = info.m_Pos[2] - s_PlayerPos[2];
             const float dist = std::sqrt(dx * dx + dy * dy + dz * dz);
             if (coop::game::GetActorState(info.m_Actor) != 1)
                 return false;
+            /* Objets d'enigme : seulement pres de nous (la table est partagee avec les ennemis), sauf si la copie de l'autre,
+               fraiche, est pres de nous : la notre a pu s'eloigner et doit pouvoir etre recalee (relecture Codex). */
+            if (!enemy && dist > PuzzleRadius) {
+                const Entry* r = Find(info.m_HashId, false);
+                if (r == nullptr || r->m_RemoteFrame == 0 || s_Frames - r->m_RemoteFrame >= PosStaleFrames)
+                    return false;
+                const float rx = r->m_RemoteMtx[3] - s_PlayerPos[0], ry = r->m_RemoteMtx[7] - s_PlayerPos[1], rz = r->m_RemoteMtx[11] - s_PlayerPos[2];
+                if (rx * rx + ry * ry + rz * rz > PuzzleRadius * PuzzleRadius)
+                    return false;
+            }
             if (dist > PosRadius) {
                 /* Notre copie est loin, mais celle de l'autre joueur peut etre pres de nous : un ennemi
                    qui se deplace beaucoup (Gardien mobile, essai gd2) partait d'un cote chez l'un, d'un
@@ -465,8 +508,14 @@ namespace coop::enemy_life {
             /* L'autre fait foi d'apres le serveur mais sa copie n'est pas encore arrivee (juste apres un changement de
                main) : notre IA garde la main en attendant, mais on n'envoie pas notre position comme si on faisait foi ;
                on annonce seulement notre distance (relecture Gemini). */
+            /* Objet d'enigme dont notre copie est hors de portee (on n'arrive ici que si celle de l'autre, fraiche, est pres
+               de nous) : on suit toujours. Sinon, ayant le bail, on envoyait la position de notre copie partie a plus de
+               100 m (essai pz2, boules du sanctuaire 005), et le serveur, qui mesure depuis cette position, nous le
+               laissait. En n'envoyant plus que notre distance, le bail passe a l'autre. */
+            if (!enemy && dist > PuzzleRadius)
+                follow = true;
             const bool waitingForOwner = leased && e->m_LeaseOwner != localId && !fresh;
-            if (coop::config::g_EnemyAnim != 0) {
+            if (coop::config::g_EnemyAnim != 0 && enemy) {
                 Tracked* t = Track(info.m_HashId, coop::game::GetActorASList(info.m_Actor), follow, s_Frames);
                 for (int s = 0; s < SeqSlots; s++) {
                     if (!follow) {
@@ -526,7 +575,16 @@ namespace coop::enemy_life {
             if (follow) {
                 const float ex = e->m_RemoteMtx[3] - info.m_Pos[0], ey = e->m_RemoteMtx[7] - info.m_Pos[1], ez = e->m_RemoteMtx[11] - info.m_Pos[2];
                 const float gap = std::sqrt(ex * ex + ey * ey + ez * ez);
-                if (gap < PosDeadZone)
+                /* Objet d'enigme : une rotation seule (planche, bloc qui pivote) compte aussi (relecture Codex). */
+                bool turned = false;
+                if (!enemy) {
+                    float mtxNow[12];
+                    coop::game::GetActorMtx(info.m_Actor, mtxNow);
+                    for (int k : { 0, 1, 2, 4, 5, 6, 8, 9, 10 })
+                        if (std::fabs(mtxNow[k] - e->m_RemoteMtx[k]) > PuzzleTurnTolerance)
+                            turned = true;
+                }
+                if (gap < PosDeadZone && !turned)
                     return false;
                 float mtx[12];
                 std::memcpy(mtx, e->m_RemoteMtx, sizeof(mtx));
@@ -551,14 +609,24 @@ namespace coop::enemy_life {
             }
 
             const float mx = info.m_Pos[0] - e->m_SentPos[0], my = info.m_Pos[1] - e->m_SentPos[1], mz = info.m_Pos[2] - e->m_SentPos[2];
-            const bool moved = mx * mx + my * my + mz * mz > PosMinMove * PosMinMove;
+            bool moved = mx * mx + my * my + mz * mz > PosMinMove * PosMinMove;
+            float mtxNow[12];
+            coop::game::GetActorMtx(info.m_Actor, mtxNow);
+            constexpr int RotIdx[9] = { 0, 1, 2, 4, 5, 6, 8, 9, 10 };
+            /* Objet d'enigme : une rotation seule compte aussi comme un mouvement (relecture Codex). */
+            if (!enemy && !moved)
+                for (int k = 0; k < 9; k++)
+                    if (std::fabs(mtxNow[RotIdx[k]] - e->m_SentRot[k]) > PuzzleTurnTolerance)
+                        moved = true;
             /* 5 envois par seconde au plus quand l'ennemi bouge, 1 par seconde sinon. */
             if ((moved && s_Frames - e->m_SentFrame >= 6) || s_Frames - e->m_SentFrame >= PosKeepAlive) {
                 PosMsg msg;
                 msg.m_Hash = info.m_HashId;
                 msg.m_Dist = dist;
-                coop::game::GetActorMtx(info.m_Actor, msg.m_Mtx);
+                std::memcpy(msg.m_Mtx, mtxNow, sizeof(msg.m_Mtx));
                 if (g_PosOutgoing.Push(msg)) {
+                    for (int k = 0; k < 9; k++)
+                        e->m_SentRot[k] = mtxNow[RotIdx[k]];
                     std::memcpy(e->m_SentPos, info.m_Pos, sizeof(e->m_SentPos));
                     e->m_SentFrame = s_Frames;
                     s_PosSent++;
@@ -622,7 +690,8 @@ namespace coop::enemy_life {
         }
         coop::game::PlayerState player;
         s_HavePlayer = ready && coop::game::ReadPlayer(player);
-        if (s_HavePlayer && coop::session::g_LocalId != 0 && coop::config::g_EnemyPos) {
+        /* Ennemis et objets d'enigme ont chacun leur reglage (relecture Codex, NOTES 6.23) ; le tri est dans OnActorPos. */
+        if (s_HavePlayer && coop::session::g_LocalId != 0 && (coop::config::g_EnemyPos || coop::config::g_PuzzlePos)) {
             std::memcpy(s_PlayerPos, player.m_Pos, sizeof(s_PlayerPos));
             s_BeamCount = s_GuardianCount = 0;
             s_FollowedNow = s_LeadNow = 0;
@@ -664,8 +733,18 @@ namespace coop::enemy_life {
             auto& n = *static_cast<Nearest*>(user);
             int life = 0, maxLife = 0;
             std::uintptr_t lifePtr = 0;
-            if (info.m_HashId == 0 || info.m_Name == nullptr || !coop::game::GetEnemyLife(info.m_Actor, life, maxLife, lifePtr))
+            if (info.m_HashId == 0 || info.m_Name == nullptr)
                 return false;
+#ifdef COOP_TEST_NUDGE_PUZZLE
+            /* Essai (NOTES 6.23) : l'objet d'enigme suivi le plus proche au lieu de l'ennemi. */
+            if (Find(info.m_HashId, false) == nullptr
+                || (std::strncmp(info.m_Name, "DgnObj_", 7) != 0 && std::strncmp(info.m_Name, "FldObj_", 7) != 0))
+                return false;
+            (void)life, (void)maxLife, (void)lifePtr;
+#else
+            if (!coop::game::GetEnemyLife(info.m_Actor, life, maxLife, lifePtr))
+                return false;
+#endif
             const float dx = info.m_Pos[0] - n.m_Pos[0], dy = info.m_Pos[1] - n.m_Pos[1], dz = info.m_Pos[2] - n.m_Pos[2];
             const float d2 = dx * dx + dy * dy + dz * dz;
             if (d2 < n.m_BestD2) {

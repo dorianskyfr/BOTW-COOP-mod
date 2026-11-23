@@ -1,0 +1,239 @@
+# pz1 a pz4 : objets mobiles des sanctuaires partages (Eden, 2026-11-23). NOTES 6.23
+## pz3_game.txt
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.4 m, J2 a 113.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.4 m, J2 a 112.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J2 a 112.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.4 m, J2 a 112.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 113.9 m, J2 a 30.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, notre copie fait foi (nous a 29.1 m, J2 a 29.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 116.8 m, J2 a 28.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 119.7 m, J2 a 114.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, notre copie fait foi (nous a 29.1 m, J2 a 114.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 121.0 m, J2 a 31.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 119.7 m, J2 a 114.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, notre copie fait foi (nous a 29.1 m, J2 a 114.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 113.3 m, J2 a 27.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 30.1 m, J2 a 30.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 122.5 m, J2 a 116.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 30.1 m, J2 a 116.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 112.9 m, J2 a 29.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 122.5 m, J2 a 122.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 30.1 m, J2 a 122.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.5 m, J2 a 28.5 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 31.0 m, J2 a 31.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.4 m, J2 a 27.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 120.6 m, J2 a 112.2 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J2 a 116.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 128.1 m, J2 a 119.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.5 m, J2 a 112.2 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.4 m, J2 a 116.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 31.0 m, J2 a 119.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 120.6 m, J2 a 112.2 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J2 a 116.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 128.1 m, J2 a 119.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.5 m, J2 a 112.2 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.4 m, J2 a 116.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 31.0 m, J2 a 119.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J2 a 120.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.4 m, J2 a 120.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 114.4 m, J2 a 30.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, notre copie fait foi (nous a 29.1 m, J2 a 29.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 116.0 m, J2 a 28.6 m)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 15e56034 suivi (corps dynamique) en (3.6, -38.2, 1.7)
+## pz3_game2.txt
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 114.7 m, J1 a 30.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 79.1 m, J1 a 39.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, notre copie fait foi (nous a 29.1 m, J1 a 29.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 113.1 m, J1 a 28.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 119.7 m, J1 a 112.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, notre copie fait foi (nous a 29.1 m, J1 a 112.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 112.1 m, J1 a 27.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 119.7 m, J1 a 112.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, notre copie fait foi (nous a 29.1 m, J1 a 112.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 30.1 m, J1 a 30.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 114.0 m, J1 a 29.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 122.5 m, J1 a 113.9 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 30.1 m, J1 a 113.9 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.6 m, J1 a 28.5 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 122.5 m, J1 a 113.9 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 120.6 m, J1 a 116.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 30.1 m, J1 a 113.9 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.5 m, J1 a 116.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 31.0 m, J1 a 30.9 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 120.6 m, J1 a 116.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 128.1 m, J1 a 121.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.5 m, J1 a 116.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.4 m, J1 a 27.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 31.0 m, J1 a 121.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 120.6 m, J1 a 116.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J1 a 113.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 128.1 m, J1 a 121.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.5 m, J1 a 116.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.4 m, J1 a 113.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 31.0 m, J1 a 121.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J1 a 113.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.4 m, J1 a 113.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 116.6 m, J1 a 30.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, notre copie fait foi (nous a 29.1 m, J1 a 29.1 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 119.7 m, J1 a 112.9 m)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 39a5f7ee suivi (corps dynamique) en (3.6, -38.2, 1.7)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 8cec318e suivi (corps dynamique) en (3.5, -38.2, 1.8)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 3013bbc5 suivi (corps dynamique) en (3.5, -38.3, 1.8)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 9ac8d299 suivi (corps dynamique) en (3.6, -38.2, 1.8)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 9a2f6ab4 suivi (corps dynamique) en (3.6, -38.2, 1.7)
+## pz4_game.txt
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 128.1 m, J2 a 121.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 29.0 m, J2 a 116.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 27.0 m, J2 a 121.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 122.5 m, J2 a 116.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 128.1 m, J2 a 121.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 29.0 m, J2 a 116.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 27.0 m, J2 a 121.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.8 m, J2 a 28.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 114.3 m, J2 a 31.5 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 120.6 m, J2 a 113.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.7 m, J2 a 113.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.8 m, J2 a 27.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 120.6 m, J2 a 120.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J2 a 113.5 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 3013bbc5, on suit la copie de l'autre joueur (nous a 119.1 m, J2 a 27.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.7 m, J2 a 120.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.8 m, J2 a 113.5 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 118.4 m, J2 a 29.2 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 123.8 m, J2 a 27.2 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J2 a 120.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.8 m, J2 a 120.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 116.7 m, J2 a 28.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, notre copie fait foi (nous a 31.6 m, J2 a 31.4 m)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 15e56034 suivi (corps dynamique) en (-2.4, -36.7, -2.5)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 8cec318e suivi (corps dynamique) en (3.5, -38.2, 1.7)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 9a2f6ab4 suivi (corps dynamique) en (3.5, -38.2, 1.8)
+[botw-coop] objet d'enigme : DgnObj_Candle b57d1202 suivi (corps dynamique) en (10.0, 0.0, 26.0)
+[botw-coop] objet d'enigme : DgnObj_Candle 2c7443b8 suivi (corps dynamique) en (10.0, 0.5, 18.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A ac01a6d9 suivi (corps dynamique) en (7.5, 7.5, 5.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A 127af3ea suivi (corps dynamique) en (-5.5, 5.5, 4.5)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A 92689311 suivi (corps dynamique) en (19.5, 5.5, -3.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A b5582d25 suivi (corps dynamique) en (10.0, 7.5, -9.0)
+[botw-coop] objet d'enigme : DgnObj_BoardStone_B 41439a65 suivi (corps dynamique) en (12.5, 2.0, -5.0)
+[botw-coop] acteur : DgnObj_Candle                            hash=2c7443b8 etat=1 pos=(10.01, 0.35, 17.99) dist=12.5
+[botw-coop] position ennemi : OUTIL DE TEST, DgnObj_Candle 2c7443b8 deplace de (10.01, 0.35, 17.99) a (14.01, 0.85, 17.99), rc=100
+[botw-coop] acteur : DgnObj_Candle                            hash=2c7443b8 etat=1 pos=(10.05, 0.35, 18.00) dist=12.5
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A d461878c suivi (corps dynamique) en (-8.5, 7.4, -4.5)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A 44de9a1d suivi (corps dynamique) en (-5.5, 7.4, -15.0)
+[botw-coop] position ennemi : OUTIL DE TEST, DgnObj_Candle 2c7443b8 deplace de (10.05, 0.35, 18.00) a (14.05, 0.85, 18.00), rc=100
+[botw-coop] acteur : DgnObj_Candle                            hash=2c7443b8 etat=1 pos=(14.11, 0.30, 18.13) dist=2.1
+## pz4_game2.txt
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 29.1 m, J1 a 29.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 122.5 m, J1 a 119.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 29.0 m, J1 a 119.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 27.0 m, J1 a 27.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 3013bbc5, on suit la copie de l'autre joueur (nous a 60.0 m, J1 a 39.9 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 122.5 m, J1 a 119.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 128.1 m, J1 a 121.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 29.0 m, J1 a 119.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 27.0 m, J1 a 121.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 122.5 m, J1 a 29.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 128.1 m, J1 a 121.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, notre copie fait foi (nous a 29.0 m, J1 a 29.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.7 m, J1 a 28.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, notre copie fait foi (nous a 27.0 m, J1 a 121.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 120.6 m, J1 a 113.9 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.7 m, J1 a 113.9 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.8 m, J1 a 27.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 109.0 m, J1 a 31.4 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J1 a 115.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 120.6 m, J1 a 120.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.8 m, J1 a 115.3 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, notre copie fait foi (nous a 28.7 m, J1 a 120.6 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 116.6 m, J1 a 29.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 121.8 m, J1 a 27.0 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 120.7 m, J1 a 120.7 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 27.8 m, J1 a 120.7 m)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 a0aca654 suivi (corps dynamique) en (3.6, -38.2, 1.7)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 39a5f7ee suivi (corps dynamique) en (3.5, -38.2, 1.8)
+[botw-coop] objet d'enigme : DgnObj_Candle b57d1202 suivi (corps dynamique) en (10.0, 0.0, 26.0)
+[botw-coop] objet d'enigme : DgnObj_Candle 2c7443b8 suivi (corps dynamique) en (10.0, 0.5, 18.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A ac01a6d9 suivi (corps dynamique) en (7.5, 7.5, 5.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A 127af3ea suivi (corps dynamique) en (-5.5, 5.5, 4.5)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A 92689311 suivi (corps dynamique) en (19.5, 5.5, -3.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A b5582d25 suivi (corps dynamique) en (10.0, 7.5, -9.0)
+[botw-coop] objet d'enigme : DgnObj_BoardStone_B 41439a65 suivi (corps dynamique) en (12.5, 2.0, -5.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A a2da2eeb suivi (corps dynamique) en (-11.5, 7.3, 7.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A 62100765 suivi (corps dynamique) en (1.0, 5.3, -10.5)
+[botw-coop] acteur : DgnObj_Candle                            hash=2c7443b8 etat=1 pos=(10.02, 0.35, 17.98) dist=12.5
+[botw-coop] acteur : DgnObj_Candle                            hash=2c7443b8 etat=1 pos=(10.02, 0.35, 17.98) dist=12.5
+[botw-coop] acteur : DgnObj_Candle                            hash=2c7443b8 etat=1 pos=(14.12, 0.30, 18.15) dist=8.7
+## pz4_pilot.log (actors Candle)
+  246.9s goto_tp : voyage vers le point le plus proche de (9102, 0)
+  247.4s goto_tp : voyage vers le point le plus proche de (9102, 0)
+    2.6s    DgnObj_Candle                            (10.00, 0.04, 26.00)
+    2.6s    DgnObj_Candle                            (10.01, 0.35, 17.99)
+    5.1s    DgnObj_Candle                            (10.00, 0.04, 26.00)
+    5.1s    DgnObj_Candle                            (10.02, 0.35, 17.98)
+    5.6s nudge : ennemi le plus proche decale de 4 m
+   14.1s    DgnObj_Candle                            (10.00, 0.04, 26.00)
+   14.1s    DgnObj_Candle                            (10.05, 0.35, 18.00)
+   16.6s    DgnObj_Candle                            (10.00, 0.04, 26.00)
+   16.6s    DgnObj_Candle                            (10.02, 0.35, 17.98)
+    1.2s tp : Link pose en (12, 1, 18)
+    9.2s nudge : ennemi le plus proche decale de 4 m
+   17.7s    DgnObj_Candle                            (10.00, 0.04, 26.00)
+   17.7s    DgnObj_Candle                            (14.11, 0.30, 18.13)
+   20.2s    DgnObj_Candle                            (10.00, 0.04, 26.00)
+   20.2s    DgnObj_Candle                            (14.12, 0.30, 18.15)
+## pz1
+## pz1_game.txt
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon000 Entrance_1 -> demande
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon001 Entrance_1 -> demande
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon002 Entrance_1 -> demande
+[botw-coop] objet d'enigme : DgnObj_Candle b57d1202 suivi (corps dynamique) en (10.0, 0.0, 26.0)
+[botw-coop] objet d'enigme : DgnObj_Candle 2c7443b8 suivi (corps dynamique) en (10.0, 0.5, 18.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A ac01a6d9 suivi (corps dynamique) en (7.5, 7.5, 5.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A 127af3ea suivi (corps dynamique) en (-5.5, 5.5, 4.5)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A 92689311 suivi (corps dynamique) en (19.5, 5.5, -3.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A b5582d25 suivi (corps dynamique) en (10.0, 7.5, -9.0)
+[botw-coop] objet d'enigme : DgnObj_BoardStone_B 41439a65 suivi (corps dynamique) en (12.5, 2.0, -5.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A a2da2eeb suivi (corps dynamique) en (-11.5, 7.3, 7.0)
+[botw-coop] objet d'enigme : DgnObj_HangedLamp_A 62100765 suivi (corps dynamique) en (1.0, 5.3, -10.5)
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon003 Entrance_1 -> demande
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon004 Entrance_1 -> demande
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon005 Entrance_1 -> demande
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 d7ab96c2 suivi (corps dynamique) en (0.2, -37.2, -1.0)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 62e250a2 suivi (corps dynamique) en (-1.2, -36.9, -1.9)
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon006 Entrance_1 -> demande
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 edcfe20f suivi (corps dynamique) en (0.8, -37.4, -0.7)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 fbeb0118 suivi (corps dynamique) en (-1.3, -36.9, -2.0)
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon005 Entrance_1 -> demande
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f, on suit la copie de l'autre joueur (nous a 39.3 m, J2 a 39.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 1.50 m (rc=100), n.1
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 1.38 m (rc=100), n.2
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 1.31 m (rc=100), n.3
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 1.27 m (rc=100), n.4
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 1.26 m (rc=100), n.5
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 1.25 m (rc=100), n.6
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 0.81 m (rc=100), n.7
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 0.21 m (rc=100), n.8
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 0.24 m (rc=100), n.9
+[botw-coop] position ennemi : DgnObj_StoneBall_005 edcfe20f ramene vers la copie de J2, ecart 0.54 m (rc=100), n.10
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, on suit la copie de l'autre joueur (nous a 39.9 m, J2 a 38.3 m)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 a0aca654 suivi (corps dynamique) en (-1.2, -37.0, -1.8)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 47148b53 suivi (corps dynamique) en (-2.4, -36.7, -2.5)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 15e56034 suivi (corps dynamique) en (2.9, -38.0, 1.0)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 fbeb0118, notre copie fait foi (nous a 39.8 m, J2 a 29.5 m)
+## pz1_game2.txt
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon000 Entrance_1 -> demande
+[botw-coop] voyage (essai) : vers CDungeon/Dungeon005 Entrance_1 -> demande
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2, on suit la copie de l'autre joueur (nous a 39.9 m, J1 a 39.8 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 1.15 m (rc=100), n.1
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 0.64 m (rc=100), n.2
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 0.47 m (rc=100), n.3
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 0.56 m (rc=100), n.4
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 0.69 m (rc=100), n.5
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 1.39 m (rc=100), n.6
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 0.64 m (rc=100), n.7
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 0.27 m (rc=100), n.8
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 0.53 m (rc=100), n.9
+[botw-coop] position ennemi : DgnObj_StoneBall_005 d7ab96c2 ramene vers la copie de J1, ecart 0.72 m (rc=100), n.10
+[botw-coop] position ennemi : DgnObj_StoneBall_005 62e250a2, on suit la copie de l'autre joueur (nous a 39.9 m, J1 a 39.9 m)
+[botw-coop] position ennemi : DgnObj_StoneBall_005 47148b53, on suit la copie de l'autre joueur (nous a 39.9 m, J1 a 36.4 m)
+[botw-coop] objet d'enigme : DgnObj_StoneBall_005 39a5f7ee suivi (corps dynamique) en (3.7, -38.2, 1.7)

@@ -794,6 +794,27 @@ namespace coop::game {
     }
 
     /*
+     * NOTES 6.23 : type de mouvement du corps principal (0 Dynamic, 1 Fixed, 2 Keyframed, 3 Unknown ; physDefines.h).
+     * main+0x12d2830 est RigidBody::getMotionType en 1.9.0 : meme code que la decomp (physRigidBody.cpp), drapeaux
+     * mMotionFlags a +0x6c (bits Dynamic 1<<2, Keyframed 1<<3, Fixed 1<<4), sinon mRigidBodyAccessor (+0xa0).
+     * RemoteBomb::calc_ (main+0xa20860) l'appelle sur Actor::mMainBody (+0x190) et compare a 2. -1 sans corps.
+     */
+    int GetActorMotionType(std::uintptr_t actor) {
+        constexpr std::size_t Actor_MainBody = 0x190;
+        constexpr std::uintptr_t GetMotionType = 0x12d2830;
+        if (actor == 0 || !CanReadMemory(actor + Actor_MainBody, 8))
+            return -1;
+        const auto body = Peek<std::uintptr_t>(actor + Actor_MainBody);
+        if (!LooksLikeHeapPtr(body) || !CanReadMemory(body, 0xc0))
+            return -1;
+        /* Meme controle que SetActorBodyTransform : MotionAccessor (+0xb8) dont mBody revient sur le corps. */
+        const auto accessor = Peek<std::uintptr_t>(body + 0xb8);
+        if (!LooksLikeHeapPtr(accessor) || !CanReadMemory(accessor, 0x10) || Peek<std::uintptr_t>(accessor + 0x8) != body)
+            return -1;
+        return reinterpret_cast<int (*)(std::uintptr_t)>(MainBase() + GetMotionType)(body);
+    }
+
+    /*
      * Fait exploser une bombe de la tablette (acteur RemoteBomb*) comme le jeu (NOTES 6.04).
      * Trouve dans main 1.9.0 (capstone, image build/dumps/main_1.9.0.bin) :
      * - fabrique d'IA « RemoteBomb » : entree {crc32("RemoteBomb") = be97cd51, fonction} a main+0x1cb8ab0, fonction

@@ -109,7 +109,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
   - restent à chacun : l'inventaire, la santé, l'équipement, l'épée de légende ;
   - les récompenses sont données aux deux.
 - Le Link du partenaire porte son armure et ses armes et joue ses actions (attaques, tirs, sauts, parades, NOTES 5.59). C'est un personnage du jeu : il a une collision (on ne le traverse pas) ; l'invite « Parler » est retirée. Il est créé jusqu'à 250 m (`partner_range`).
-- **Énigme de sanctuaire en cours** : non partagée, le jeu ne sauvegarde pas cet état. La fin du sanctuaire est partagée.
+- **Énigme de sanctuaire en cours** : les objets qu'on déplace (blocs, boules, bougies… : corps dynamique, à moins de 40 m) sont partagés, le plus proche fait foi (NOTES 6.23, vérifié par les journaux). Pas encore partagés : le feu (lierre, torches), l'électricité, l'eau, un interrupteur enfoncé par le corps d'un joueur, les labyrinthes à inclinaison. La fin du sanctuaire est partagée.
 - **Objets lâchés au sol** :
   - partagés si le partenaire est à moins de 120 m ;
   - un objet lâché après la dernière sauvegarde puis rechargé se retrouve dans l'inventaire, et la copie de l'autre reste (choix : pas de perte) ;
