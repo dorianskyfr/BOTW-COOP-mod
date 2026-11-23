@@ -11,7 +11,8 @@ Version du launcher : elle ne change que si ses sources ont change depuis la der
 recompile avec l'ancienne version et le launcher des joueurs ne se retelecharge pas (il compare
 launcher.json a sa propre version). -NewLauncher force une nouvelle version.
 
-Le plugin doit avoir ete compile sans option d'essai (plugin\build.sh avec COOP_DEFINES vide).
+Le plugin est recompile ici sans option d'essai (plugin\build.sh, COOP_DEFINES vide) : la v0.99.17 avait
+ete publiee avec la compilation d'un essai (COOP_REMOTE_PAD, COOP_TEST_GODMODE), restee dans build\deploy.
 Aucun fichier du jeu n'entre dans l'archive : le launcher genere tout sur le PC du joueur.
 La publication (release GitHub du depot public, etiquette v<Version>, les trois fichiers) se fait
 a part, sur accord.
@@ -28,7 +29,13 @@ New-Item -ItemType Directory -Force (Join-Path $stage 'scripts') | Out-Null
 $utf8 = New-Object Text.UTF8Encoding($false)
 
 $plugin = Join-Path $project 'build\deploy\subsdk9'
+# Recompilation sans option d'essai (meme appel que tools\run-live.ps1).
+$env:COOP_DEFINES = ''
+$env:COOP_PROJECT = $project
+& C:\msys64\usr\bin\bash.exe -lc 'IFS=; P=$(cygpath -u $COOP_PROJECT); bash $P/plugin/build.sh $COOP_PROJECT > /tmp/coop_release_build.log 2>&1'
+if ($LASTEXITCODE -ne 0) { throw 'Compilation du plugin sans option d''essai en echec (/tmp/coop_release_build.log)' }
 if (-not (Test-Path $plugin)) { throw 'Pas de plugin compile (build\deploy\subsdk9)' }
+"Plugin recompile sans option d'essai : $((Get-Item $plugin).Length) octets"
 Copy-Item $plugin (Join-Path $stage 'subsdk9')
 foreach ($s in 'gamedata_names.py', 'build_sync_flags.py', 'build_travel_points.py', 'build_puppet.py', 'build_item_names.py', 'build_cutscenes.py', 'relay.py') {
     Copy-Item (Join-Path $project "tools\$s") (Join-Path $stage "scripts\$s")
