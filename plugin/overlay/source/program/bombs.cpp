@@ -81,16 +81,35 @@ namespace coop::bombs {
 
         /* Copies qui explosent d'elles-memes : retirees en secours si elles sont encore la apres ExplodeFallback images. */
         constexpr std::uint64_t ExplodeFallback = 150;
+        /* NOTES 6.22 : copie mise a feu comme par la tablette ; si son explosion (bit 0x20) n'a pas commence apres
+           DetonateFallback images, elle explose par changeToExplodeChild (souffle sans sphere, comme avant). */
+        constexpr std::uint64_t DetonateFallback = 40;
         struct Exploding {
             std::uintptr_t m_Actor = 0;
             std::uint64_t  m_Since = 0;
+            bool           m_Detonated = false; /* en attente de l'explosion chimique du jeu */
         };
         Exploding s_Exploding[4];
+        int s_DetonateLogs = 0;
 
         void CheckExplosions() {
             for (Exploding& x : s_Exploding) {
                 if (x.m_Actor == 0)
                     continue;
+                if (x.m_Detonated && coop::game::IsActorListed(x.m_Actor)) {
+                    if (coop::game::IsRemoteBombExploding(x.m_Actor)) {
+                        x.m_Detonated = false;
+                        if (s_DetonateLogs++ < 20)
+                            Logging.Log("[botw-coop] bombe du partenaire : mise a feu prise par le jeu apres %lu images (explosion reservee)",
+                                s_Frames - x.m_Since);
+                    } else if (s_Frames - x.m_Since >= DetonateFallback) {
+                        x.m_Detonated = false;
+                        const int rc = coop::game::ExplodeRemoteBomb(x.m_Actor);
+                        if (s_DetonateLogs++ < 20)
+                            Logging.Log("[botw-coop] bombe du partenaire : mise a feu sans effet apres %lu images, explosion directe (rc=%d)",
+                                DetonateFallback, rc);
+                    }
+                }
                 if (!coop::game::IsActorListed(x.m_Actor)) {
                     if (Log())
                         Logging.Log("[botw-coop] bombe du partenaire : notre copie s'est supprimee apres %lu images (explosion finie)",
@@ -296,10 +315,16 @@ namespace coop::bombs {
                        (RemoteBomb::changeToExplodeChild, game::ExplodeRemoteBomb), a la derniere place de la vraie. Elle se
                        supprime seule ; on ne la retire qu'en secours, ExplodeFallback images plus tard. */
                     int rc = -100;
+                    bool detonated = false;
                     if (c.m_State == CopyState::Alive && c.m_Actor != 0 && coop::game::IsActorListed(c.m_Actor)) {
                         if (coop::game::SetActorBodyTransform(c.m_Actor, want.m_Mtx) != 0)
                             coop::game::SetActorMtx(c.m_Actor, want.m_Mtx);
-                        rc = coop::game::ExplodeRemoteBomb(c.m_Actor);
+                        /* NOTES 6.22 : mise a feu comme par la tablette (la chimie du jeu fait l'explosion et sa sphere) ;
+                           explosion directe si la mise a feu est refusee, ou plus tard en secours (CheckExplosions). */
+                        rc = coop::game::DetonateRemoteBomb(c.m_Actor);
+                        detonated = rc == 0;
+                        if (!detonated)
+                            rc = coop::game::ExplodeRemoteBomb(c.m_Actor);
                         if (rc == 0) {
                             Exploding* slot = &s_Exploding[0];
                             for (Exploding& x : s_Exploding)
@@ -311,6 +336,7 @@ namespace coop::bombs {
                                 coop::game::DeleteActor(slot->m_Actor);
                             slot->m_Actor = c.m_Actor;
                             slot->m_Since = s_Frames;
+                            slot->m_Detonated = detonated;
                             MarkDying(c.m_Actor); /* jamais reprise comme notre bombe */
                             c.m_Actor = 0;        /* RemoveCopy ne la retire pas : elle explose */
                             c.m_State = CopyState::Lost; /* plus suivie ni recreee pour ce numero */
@@ -319,7 +345,7 @@ namespace coop::bombs {
                     if (Log())
                         Logging.Log("[botw-coop] bombe du partenaire : %s n.%u explosee en (%.1f, %.1f, %.1f), %s (rc=%d)", Names[c.m_Kind],
                             want.m_Serial, static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]),
-                            rc == 0 ? "notre copie explose" : "explosion non montree", rc);
+                            rc != 0 ? "explosion non montree" : detonated ? "notre copie mise a feu" : "notre copie explose", rc);
                 }
             }
             if (want.m_Kind == 0)
@@ -472,8 +498,8 @@ namespace coop::bombs {
             if (explode)
                 s_Holding = false;
             if (explode && s_Self != 0) {
-                const int rc = coop::game::IsActorListed(s_Self) ? coop::game::ExplodeRemoteBomb(s_Self) : -50;
-                Logging.Log("[botw-coop] essai bombe seule : explosion demandee (rc=%d)", rc);
+                const int rc = coop::game::IsActorListed(s_Self) ? coop::game::DetonateRemoteBomb(s_Self) : -50;
+                Logging.Log("[botw-coop] essai bombe seule : mise a feu demandee (rc=%d)", rc);
             }
         }
 #endif

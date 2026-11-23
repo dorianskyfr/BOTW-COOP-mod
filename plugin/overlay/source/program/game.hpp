@@ -181,6 +181,9 @@ namespace coop::game {
     int SetActorBodyTransform(std::uintptr_t actor, const float mtx[12]);
     /* Fait exploser une bombe de la tablette (RemoteBomb::changeToExplodeChild, main 1.9.0). 0 si fait. Fil du jeu. */
     int ExplodeRemoteBomb(std::uintptr_t actor);
+    /* Demande l'explosion comme la tablette (octet de detonation de l'IA, NOTES 6.22) : le jeu allume la forme chimique,
+       la bombe explose avec sa sphere. 0 si fait. Fil du jeu. */
+    int DetonateRemoteBomb(std::uintptr_t actor);
 #ifdef COOP_TEST_REMOVE_EQUIPPED
     void DebugRemoveEquippedWeapon();
 #endif

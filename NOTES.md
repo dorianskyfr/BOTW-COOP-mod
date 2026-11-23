@@ -987,6 +987,22 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - lire le conteneur Blend de `Chemical_Explosion` (sa propriété surveillée) et les paramètres des effets `_00` et `_01` ;
   - regarder qui appelle main+0x1587e50 avec l'index 6 : c'est l'élément « explosion » du système chimique. Il faudrait le créer sur la copie plutôt qu'émettre la clé.
 
+### 6.22 Sphère des bombes chez l'autre : corrigé, la copie est mise à feu comme par la tablette (2026-11-23, essais `bs9`, `bs10`, Eden) - [V] image et journaux
+
+- **Chemin de la tablette** (désassemblage de main 1.9.0) :
+  - `RuneMgr::RemoteBombSlotsMaybe::detonateRemoteBomb` est main+0xb3b66c. Ses voisines correspondent à la liste 1.5.0 : main+0xb3b5f4 `isRemoteBombAlive`, +0xb3bbac `getRemoteBombDistance`, +0xb3bc68 `getRemoteBombDirectionAngle`. La fonction pose le bit 2 de l'emplacement, replace la bombe à sa matrice (main+0x1071790), puis lui envoie le message `0x0800000a` (main+0x154c61c) ;
+  - `RemoteBomb::calc_` (main+0xa20860) cherche la forme chimique « bomb » de l'acteur (acteur+0x6a8, `Actor::mChemical` dans la décomp `actActor.h` ; main+0x117e3d8). Si l'octet AI+0xc8 est posé (ou si `main+0xaae620(acteur)` est vrai), il allume cette forme (main+0xba6d60, main+0xba6e40, puis main+0x10f1c98, qui pose 4 en forme+0xc1). Puis il passe à « 爆発予約 » (`changeToExplosionReserved`). Quand l'octet forme+0xc0 vaut 4, il appelle `changeToExplodeChild` ;
+  - l'octet AI+0xc8 est mis à zéro par le constructeur (main+0xa203a0) et se trouve dans le récepteur de messages logé en AI+0x98, que `handleMessage_` consulte ;
+  - `ExplodeReserved` (fabrique `crc32("ExplodeReserved")` = bc17628d en main+0x1cb37d0, table virtuelle main+0x1beea48) ne fait que figer la bombe.
+  - Conclusion : la vraie bombe explose **par la chimie**, et la sphère est l'effet chimique. L'ancien chemin (`changeToExplodeChild` direct) et l'essai bt8 (`changeToExplosionReserved` direct) sautaient l'allumage de la forme chimique.
+- **Correctif** : `game::DetonateRemoteBomb(acteur)` vérifie la table virtuelle de l'IA RemoteBomb (comme `ExplodeRemoteBomb`), puis pose AI+0xc8 = 1. Le jeu fait alors toute la chaîne. `bombs.cpp` l'utilise pour la copie. Explosion directe si la mise à feu est refusée, ou en secours si rien n'a commencé après 40 images.
+  - `changeToExplosionReserved` teste le pointeur des emplacements de la tablette (`cbz` en main+0xa2077c). Une copie, qui n'en a pas, ne risque rien. Il pose aussi le bit 0x20 : la ligne `mise a feu prise par le jeu` dit seulement que l'état réservé est atteint.
+- [V] `bs9` (`-DCOOP_TEST_BOMB_SELF`, un seul monde, bombe créée par le mod, Link à environ 15 m) : `mise a feu demandee (rc=0)`. Une forte lumière bleue et des rayons éclairent la scène depuis la bombe, hors du cadre (image `2026-11-23_bombe-seule-mise-a-feu-lumiere-bleue_bs9.png`). Avec l'ancien chemin (`bs4`), il n'y avait rien.
+- [V] `bs10` (deux joueurs) : J1 pose une vraie bombe et la fait exploser. Chez J2, à environ 13 m : `notre copie mise a feu (rc=0)`, `mise a feu prise…`, puis la copie se supprime d'elle-même (99 images). **La grande sphère bleue se voit chez J2** (images 8 à 11 de `2026-11-23_bombes-sphere-chez-J2-a-13m_bs10.png`), comme chez J1.
+- Relecture **Codex** : aucune régression relevée (il n'a pas pu essayer en jeu).
+- **Non vérifié** : à 30 m (J2 tombé dans un lac pendant l'essai) ; la chimie de l'explosion chez l'autre, comme l'herbe qui brûle (même effet que dans le monde de J1, attendu mais non regardé).
+- Preuves : `docs/evidence/2026-11-23_bombes-mise-a-feu-sphere_bs9-bs10.log`.
+
 ### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
 
 - **Données** (GameData de `Pack/Bootup.pack`, `s32_data_0.bgdata`, script scratchpad `counter_init.py`) : `Counter_TerminalWind` (978537d6), `Counter_TerminalWater` (ce303243), `Counter_TerminalFire` (ee506ae7), `Counter_TerminalElectric` (4c2dfe7e) valent 5 au départ, et `Counter_TerminalFinalTrial` (d25c5e0d) 4. Minimum 0, sauvegardés, jamais remis à zéro (`ResetType` 0). Le jeu les fait descendre de 1 par terminal activé (`Demo044_0`, `RemainsTerminalMainFlow` : `Demo_IncreaseGameDataInt -1` selon la carte), et pose `Access_AllTerminal*` à 0.

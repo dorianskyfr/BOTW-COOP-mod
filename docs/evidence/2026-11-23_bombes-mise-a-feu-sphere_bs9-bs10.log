@@ -1,0 +1,26 @@
+# bs9 (bombe seule, mise a feu par l'octet AI+0xc8) et bs10 (copie de la bombe de J1 mise a feu chez J2). Eden, 2026-11-23. NOTES 6.22
+## bs9_game.txt
+[botw-coop] essai bombe seule : creation demandee en (-630.3, 130.0, -333.7)
+[botw-coop] essai bombe seule : creee (acteur 21b5b29f58)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.1)
+[botw-coop] essai bombe seule : mise a feu demandee (rc=0)
+[botw-coop] bombe : notre RemoteBomb n.1 commence son explosion
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.1)
+## bs10_game.txt
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.1)
+[botw-coop] bombe : notre RemoteBomb n.1 commence son explosion
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.1)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.2)
+[botw-coop] bombe : notre RemoteBomb n.2 commence son explosion
+[botw-coop] bombe : notre bombe ronde a disparu (explosee) (n.2)
+[botw-coop] bombe : notre bombe ronde RemoteBomb (n.3)
+## bs10_game2.txt
+[botw-coop] bombe du partenaire : RemoteBomb n.1 CREEE apres 1 images
+[botw-coop] bombe du partenaire : RemoteBomb n.1 explosee en (-638.4, 127.6, -327.6), notre copie mise a feu (rc=0)
+[botw-coop] bombe du partenaire : notre copie explose par la chimie du jeu apres 1 images
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 99 images (explosion finie)
+[botw-coop] bombe du partenaire : RemoteBomb n.2 CREEE apres 2 images
+[botw-coop] bombe du partenaire : RemoteBomb n.2 explosee en (-634.5, 129.2, -335.7), notre copie mise a feu (rc=0)
+[botw-coop] bombe du partenaire : notre copie explose par la chimie du jeu apres 1 images
+[botw-coop] bombe du partenaire : notre copie s'est supprimee apres 99 images (explosion finie)
+[botw-coop] bombe du partenaire : RemoteBomb n.3 CREEE apres 1 images

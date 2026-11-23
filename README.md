@@ -44,7 +44,7 @@ Journal d'avancement : [`PROGRESS.md`](PROGRESS.md). Détails techniques : [`NOT
 - **Sauvetage par le partenaire** : à votre mort, si aucune fée ni la Grâce de Mipha ne vous sauve et que l'autre joueur est en jeu, vivant et à moins de 150 m, vous repartez avec 3 cœurs (au plus une fois toutes les 2 minutes) ; votre partenaire en est averti. Réglages dans `romfs\botw-coop.txt` : `revive=0` pour couper, `revive_delay=<secondes>`, `revive_range=<mètres>`.
 - **Objets lâchés partagés** : une arme ou un bouclier lâché (menu « Lâcher »), ou un matériau posé (menu, « Tenir », fermer le menu, puis A), reste par terre et apparaît au même endroit chez l'autre joueur s'il est à moins de 120 m, avec la même usure. Le premier qui le ramasse le garde : la copie de l'autre disparaît (aussi si l'objet est détruit, une arme en bois qui brûle par exemple). Le bonus d'une arme (« Attaque + »…) suit la copie, y compris après une sauvegarde. Ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre le perd. Si vous rechargez une partie après avoir lâché un objet, vous le retrouvez dans votre inventaire et la copie de l'autre joueur reste au sol.
 - **Épée de légende** : chacun la retire du socle dans son propre monde (elle ne disparaît plus chez l'autre).
-- **Bombes de la tablette** : la bombe ronde ou cube d'un joueur (tenue, posée, lancée, qui roule) apparaît au même endroit chez l'autre (vu à l'image) et explose chez lui au même moment, avec son souffle (le joueur proche est projeté). Limite : vue à plus de quelques mètres, la bombe de l'autre disparaît sans la sphère bleue de l'explosion (NOTES 6.09). Attention : chez l'autre, l'explosion peut aussi le blesser s'il est trop près.
+- **Bombes de la tablette** : la bombe ronde ou cube d'un joueur (tenue, posée, lancée, qui roule) apparaît au même endroit chez l'autre (vu à l'image) et explose chez lui au même moment, avec la sphère bleue de l'explosion (vue à 13 m, NOTES 6.22) et son souffle (le joueur proche est projeté). Attention : chez l'autre, l'explosion peut aussi le blesser s'il est trop près.
 - **Serveur arbitre** : pour chaque ennemi, le serveur décide quel joueur fait foi (le plus proche, avec 2 m de marge) et l'annonce aux deux jeux, qui suivent la même décision.
 - **Repas partagés** : ce que vous mangez depuis le menu soigne aussi l'autre joueur, du même nombre de cœurs (`meal=0` pour couper). Les effets des plats ne sont pas partagés.
 - **L'autre joueur sur la carte** : un tampon du jeu marque sa position et le suit ; il disparaît quand il quitte la partie (`map=0` pour couper). Vu sur l'écran de la carte.
@@ -72,7 +72,7 @@ Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image 
 - **Énigme de sanctuaire en cours** : non partagée, le jeu ne la sauvegarde pas (la fin du sanctuaire l'est).
 - **Le Link du partenaire a une collision** : on ne le traverse pas.
 - **Chacun garde** son inventaire, sa santé, son équipement et l'épée de légende.
-- **Bombes** : vue de plus de quelques mètres, la bombe de l'autre disparaît sans la sphère bleue de l'explosion ; de près, son souffle se sent (il peut vous projeter et vous blesser).
+- **Bombes** : l'explosion de la bombe de l'autre est une vraie explosion dans votre monde ; son souffle peut vous projeter et vous blesser.
 - **Pare-feu Windows** : au premier lancement du relais, Windows demande d'autoriser Python ; sans cela, un second PC ne peut pas le joindre.
 
 ## Installation simple : le launcher

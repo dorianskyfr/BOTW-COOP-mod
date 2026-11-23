@@ -116,7 +116,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
   - ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre se le voit retirer (NOTES 5.97), y compris si le jeu a équipé l'arme d'office (NOTES 6.06, 6.12 : vrai ramassage simultané vérifié, image et journaux).
 - **Bombes de la tablette** (NOTES 5.99, 6.05, 6.09) :
   - la bombe de l'autre se voit, tenue, lancée ou en train de rouler (vu à 30 m) ;
-  - elle explose chez vous au même endroit et au bon moment. Mais vue à plus de quelques mètres, elle disparaît sans la sphère bleue de l'explosion ; de près, seul le souffle se sent (il peut vous projeter et vous blesser) ;
+  - elle explose chez vous au même endroit et au bon moment, avec la sphère bleue de l'explosion (vue à 13 m, NOTES 6.22 ; à 30 m non vérifié). Son souffle peut vous projeter et vous blesser ;
   - une copie prise dans une explosion chez vous n'est pas recréée avant la bombe suivante ;
   - ramasser la copie de la bombe de l'autre n'est pas vérifié : elle est replacée à chaque image sur la vraie bombe (NOTES 6.12).
 - **Arbitrage par le serveur** (NOTES 6.00, 6.10) : seulement pour le rôle des ennemis ; vérifié par les journaux, pas à l'image. Avec un relais plus ancien, chaque jeu reprend l'ancienne règle locale. Le serveur calcule lui-même les distances (positions des joueurs et de l'ennemi), et un bail reste au moins 1,5 s au même joueur (NOTES 6.10, 6.11).

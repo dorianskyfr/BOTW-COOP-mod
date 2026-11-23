@@ -822,6 +822,65 @@ namespace coop::game {
         return Peek<std::uint32_t>(actor + 0x518);
     }
 
+    namespace {
+        /* IA « Root » (classe RemoteBomb) d'une bombe, table virtuelle verifiee (voir ExplodeRemoteBomb). 0 sinon, *rc
+           dit pourquoi. */
+        std::uintptr_t RemoteBombAi(std::uintptr_t actor, int* rc) {
+            constexpr std::size_t Actor_RootAi = 0x558;
+            constexpr int Slot_GetCurrentChild = 26;
+            constexpr std::uintptr_t RemoteBombAiVtable = 0x1c875f0;
+            *rc = -1;
+            if (s_Offsets == nullptr || actor == 0)
+                return 0;
+            const auto& info = exl::util::GetMainModuleInfo();
+            const auto inMain = [&](std::uintptr_t p) { return p >= info.m_Total.m_Start && p < info.m_Total.m_Start + info.m_Total.m_Size; };
+            const auto inText = [&](std::uintptr_t p) { return p >= info.m_Text.m_Start && p < info.m_Text.m_Start + info.m_Text.m_Size; };
+            *rc = -2;
+            const auto root = Peek<std::uintptr_t>(actor + Actor_RootAi);
+            if (!LooksLikeHeapPtr(root))
+                return 0;
+            *rc = -3;
+            const auto rootVt = Peek<std::uintptr_t>(root);
+            if (!inMain(rootVt))
+                return 0;
+            *rc = -4;
+            const auto getChild = Peek<std::uintptr_t>(rootVt + Slot_GetCurrentChild * sizeof(std::uintptr_t));
+            if (!inText(getChild))
+                return 0;
+            *rc = -5;
+            const auto ai = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(getChild)(root);
+            if (!LooksLikeHeapPtr(ai))
+                return 0;
+            *rc = -6; /* pas l'IA RemoteBomb (autre etat de l'IA racine) : on ne touche a rien */
+            if (Peek<std::uintptr_t>(ai) != MainBase() + RemoteBombAiVtable)
+                return 0;
+            *rc = 0;
+            return ai;
+        }
+    }
+
+    /*
+     * NOTES 6.22 : explosion « par la tablette ». Desassemblage de RemoteBomb::calc_ (main+0xa20860) en 1.9.0 : si
+     * l'octet AI+0xc8 est pose (ou main+0xaae620(acteur)), il cherche la forme chimique « bomb » de l'acteur
+     * (acteur+0x6a8, Actor::mChemical dans la decomp ; main+0x117e3d8), l'allume (main+0xba6d60/0xba6e40, puis
+     * main+0x10f1c98 qui pose 4 en forme+0xc1), puis passe a « 爆発予約 » (changeToExplosionReserved, main+0xa20748) ;
+     * quand l'octet forme+0xc0 vaut 4, il appelle changeToExplodeChild. AI+0xc8 est mis a zero par le constructeur
+     * (main+0xa203a0) et se trouve dans le recepteur de messages a AI+0x98 que handleMessage_ (main+0xa20ba8) consulte
+     * pour la detonation (message 0x0800000a envoye par main+0xb3b66c, detonateRemoteBomb de la tablette). La sphere
+     * visible de loin est l'effet chimique (cle ELink "Chemical_Explosion", NOTES 6.21). Retour : 0 fait, <0 refus.
+     */
+    int DetonateRemoteBomb(std::uintptr_t actor) {
+        constexpr std::size_t Ai_DetonateRequested = 0xc8;
+        int rc = 0;
+        const std::uintptr_t ai = RemoteBombAi(actor, &rc);
+        if (ai == 0)
+            return rc;
+        if (!CanReadMemory(ai + Ai_DetonateRequested, 1))
+            return -7;
+        *reinterpret_cast<volatile std::uint8_t*>(ai + Ai_DetonateRequested) = 1;
+        return 0;
+    }
+
     int ExplodeRemoteBomb(std::uintptr_t actor) {
         constexpr std::size_t Actor_RootAi = 0x558;
         constexpr int Slot_GetCurrentChild = 26;
