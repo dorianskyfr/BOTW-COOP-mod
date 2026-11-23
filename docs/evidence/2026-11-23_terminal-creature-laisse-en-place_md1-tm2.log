@@ -1,0 +1,19 @@
+﻿# md1 (avant : terminaux de Vah Medoh retires chez J2) et tm2 (apres : terminal de Vah Ruta laisse en place). Eden, 2026-11-23. NOTES 6.15
+## md1_game2.txt
+[botw-coop] drapeau recu : n.39671 hachage=f12238cd mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] objet : FldObj_Terminal_A_01 pris, ouvert ou vaincu par l'autre joueur (drapeau f12238cd) -> retire ici
+[botw-coop] drapeau recu : n.40876 hachage=f89e7227 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] objet : FldObj_Terminal_A_01 pris, ouvert ou vaincu par l'autre joueur (drapeau f89e7227) -> retire ici
+[botw-coop] drapeau recu : n.13736 hachage=522c9804 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] objet : FldObj_Terminal_A_01 pris, ouvert ou vaincu par l'autre joueur (drapeau 522c9804) -> retire ici
+[botw-coop] drapeau recu : n.23399 hachage=8e1c9b59 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] objet : FldObj_Terminal_A_01 pris, ouvert ou vaincu par l'autre joueur (drapeau 8e1c9b59) -> retire ici
+[botw-coop] drapeau recu : n.21378 hachage=814048a3 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] objet : FldObj_Terminal_A_01 pris, ouvert ou vaincu par l'autre joueur (drapeau 814048a3) -> retire ici
+## tm2_game.txt
+[botw-coop] essai drapeau local : hachage=f29845a5 index 39901, octet 0 -> 1
+## tm2_game2.txt
+[botw-coop] acteur : FldObj_Terminal_A_01                     hash=cd022478 etat=1 pos=(43.02, 6.05, 8.01) dist=3.0
+[botw-coop] drapeau recu : n.39901 hachage=f29845a5 mis a 1 (octet 1 : categorie 0 gardee)
+[botw-coop] objet : FldObj_Terminal_A_01 active par l'autre joueur (drapeau f29845a5) -> laisse en place
+[botw-coop] acteur : FldObj_Terminal_A_01                     hash=cd022478 etat=1 pos=(43.02, 6.05, 8.01) dist=3.0

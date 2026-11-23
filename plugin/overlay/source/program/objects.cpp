@@ -278,6 +278,11 @@ namespace coop::objects {
                         std::memcpy(c.m_Name, v.m_Name, sizeof(c.m_Name));
                         break;
                     }
+            } else if (std::strncmp(v.m_Name, "FldObj_Terminal", 15) == 0) {
+                /* Terminal de Creature divine active par l'autre (essai md1) : son drapeau dit « active », pas « pris ».
+                   Le retirer le faisait disparaitre ici ; il reste en place (le jeu le montrera active au prochain
+                   chargement, son drapeau est deja a 1). */
+                Logging.Log("[botw-coop] objet : %s active par l'autre joueur (drapeau %08x) -> laisse en place", v.m_Name, v.m_Flag);
             } else {
                 const bool ok = coop::game::DeleteActor(v.m_Actor);
                 s_Deleted += ok;

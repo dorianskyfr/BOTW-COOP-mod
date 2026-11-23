@@ -916,6 +916,21 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.15 Créatures divines : terminaux activés en jeu, et plus retirés chez l'autre (2026-11-23, essais `md1`, `tm1`, `tm2`, Eden) - [V] image et journaux
+
+- **`md1` (Vah Medoh)** : les 5 terminaux activés pour de vrai par J1. Je relève leurs positions dans la carte (`tools/list_pack_map.py` avec `build\venv`, `FldObj_Terminal_A_01` en (54.6, 2.0, 6.5), (-56.6, -2.7, 7.5), (119.5, -13.8, 27.0), (100.0, 1.6, 5.5), (-119.5, -2.8, 14.6)), je pose Link devant chacun avec `tp`, puis j'appuie sur A. Chaque terminal passe au bleu ; au dernier, « That was the last terminal! Now you just need to start the main control unit! » (image).
+  - Chez J2 : les 5 drapeaux arrivent (f12238cd, f89e7227, 522c9804, 8e1c9b59, 814048a3).
+  - **Défaut** : le mod retirait chaque terminal chez J2 (`FldObj_Terminal_A_01 pris, ouvert ou vaincu par l'autre joueur -> retire ici`). `objects.cpp` supprimait tout objet dont le drapeau arrivait de l'autre, sauf les coffres. Le drapeau d'un terminal veut dire « activé », pas « pris ».
+  - **Non obtenu** : lancer l'unite centrale (0, 17.8, 22). Ni invite « Examine », ni réaction à A, approchée par l'ouest et par le sud ; la caméra rentre dans le pilier. Le combat contre le Fléau n'est toujours pas vu.
+- **Correctif** (`objects.cpp`) : un objet `FldObj_Terminal*` dont le drapeau arrive de l'autre est laissé en place (journal `active par l'autre joueur -> laisse en place`). Son drapeau est déjà à 1 : le jeu le montrera activé au prochain chargement.
+- `tm1` (Vah Ruta, terminal `FldObj_Terminal_A_01` cd022478 en (43, 6, 8)) : l'appui sur A n'a rien activé (terminal resté sombre, aucun drapeau changé). Je ne sais pas dans quel état est Ruta dans cette sauvegarde.
+- [V] `tm2` (même terminal, outil `-DCOOP_TEST_SETLOCAL=0xf29845a5`, drapeau `MainFieldDungeon_FldObj_Terminal_A_01_3439469688`) :
+  - J1 `essai drapeau local : hachage=f29845a5 ... 0 -> 1` ;
+  - J2 `drapeau recu ... f29845a5 mis a 1`, puis `FldObj_Terminal_A_01 active par l'autre joueur (drapeau f29845a5) -> laisse en place` ;
+  - le terminal est toujours listé et visible chez J2, à 3 m (image `2026-11-23_terminal-creature-laisse-en-place_J2_tm2.png`).
+- **Non vérifié** : l'aspect du terminal chez J2 (allumé ou non) avant un rechargement ; une activation réelle suivie chez l'autre avec ce correctif.
+- Preuves : `docs/evidence/2026-11-23_terminal-creature-laisse-en-place_md1-tm2.log`.
+
 ### 6.14 Sphère de l'explosion chez l'autre : piste « explosion réservée » réfutée (2026-11-23, essai `bt8`, Eden) - [V] désassemblage, image et journaux ; cause toujours inconnue
 
 - **Enquête Codex** (lecture seule) : non concluante. Son bac à sable a refusé la lecture de `build\dumps\main_1.9.0.bin`. Ses pistes, tirées de la décompilation 1.5.0 : le paramètre statique `XLinkKey` de l'IA `RemoteBomb`, et deux fonctions, `RemoteBomb::changeToExplosionReserved` et `RuneMgr::RemoteBombSlotsMaybe::detonateRemoteBomb`.
