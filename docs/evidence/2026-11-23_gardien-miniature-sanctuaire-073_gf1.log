@@ -1,0 +1,83 @@
+﻿=== sanctuaire 073, Gardien miniature 1b271ced (gf1) ===
+=== J1 ===
+[botw-coop] acteur : Enemy_Guardian_Mini_Junior_Wipe          hash=1b271ced etat=0 pos=(0.00, 4.00, -8.00) dist=72.8
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Junior_Wipe_455548141 -> 40e3652c existe, valeur 0, proprietes 0x37 | objet de carte n.10817 -> 40e3652c (le meme)
+[botw-coop] acteur : Enemy_Guardian_Mini_Junior_Wipe          hash=1b271ced etat=0 pos=(0.00, 4.00, -8.00) dist=72.8
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Junior_Wipe_455548141 -> 40e3652c existe, valeur 0, proprietes 0x37 | objet de carte n.10817 -> 40e3652c (le meme)
+[botw-coop] acteur : Enemy_Guardian_Mini_Junior_Wipe          hash=1b271ced etat=0 pos=(0.00, 4.00, -8.00) dist=72.8
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Junior_Wipe_455548141 -> 40e3652c existe, valeur 0, proprietes 0x37 | objet de carte n.10817 -> 40e3652c (le meme)
+[botw-coop] position ennemi : 1b271ced, le serveur donne la main a J1 (bail n.1)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "DemoFoldWait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "Transform" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 1 "DemoFindShader" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] acteur : Enemy_Guardian_Mini_Junior_Wipe          hash=1b271ced etat=1 pos=(0.00, 10.00, -8.00) dist=20.9
+[botw-coop] drapeau d'acteur : CDungeon_Enemy_Guardian_Mini_Junior_Wipe_455548141 -> 40e3652c existe, valeur 0, proprietes 0x37 | objet de carte n.10817 -> 40e3652c (le meme)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 2 "ChangeColor" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "AttackWaitLeft" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 1 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 2 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 3 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 1 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 2 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 3 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "AttackWaitRight" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 1 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 2 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 3 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "BeamSmall" (fait foi)
+[botw-coop] rayon de Gardien tire en (-0.0, 11.9, -7.9) : tireur 1b271ced a 1.9 m (1 Gardien(s) notes)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "AttackWaitLeft" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 1 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 2 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 3 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 1 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 2 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 3 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "AttackWaitRight" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 1 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : 1b271ced creneau 2 banque 0 "Wait" (fait foi)
+=== J2 ===
+[botw-coop] position ennemi : 1b271ced, le serveur donne la main a J1 (bail n.1)
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 0 (annonce par J1), n.1
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 1 (annonce par J1), n.2
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced, on suit la copie de l'autre joueur (nous a 22.2 m, J1 a 20.9 m)
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 6.00 m (rc=1), n.1
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 4.20 m (rc=1), n.2
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 2.97 m (rc=1), n.3
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 2.14 m (rc=1), n.4
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 1.60 m (rc=1), n.5
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 1.25 m (rc=1), n.6
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 1.03 m (rc=1), n.7
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 0.92 m (rc=1), n.8
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 0.87 m (rc=1), n.9
+[botw-coop] position ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced ramene vers la copie de J1, ecart 0.87 m (rc=1), n.10
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 0 (annonce par J1), n.3
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 1 (annonce par J1), n.4
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "BeamSmall" creneau 0 (annonce par J1), n.5
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "DemoFoldWait" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 0 (annonce par J1), n.6
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 1 (annonce par J1), n.7
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 0 (annonce par J1), n.8
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 1 (annonce par J1), n.9
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "BeamSmall" creneau 0 (annonce par J1), n.10
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "Transform" (copie suivie)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 1 "DemoFindShader" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 0 (annonce par J1), n.11
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 1 (annonce par J1), n.12
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 0 (annonce par J1), n.13
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 1 (annonce par J1), n.14
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "BeamSmall" creneau 0 (annonce par J1), n.15
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "Transform" (copie suivie)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 2 "ChangeColor" (copie suivie)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "Wait" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 0 (annonce par J1), n.16
+[botw-coop] animation ennemi : Enemy_Guardian_Mini_Junior_Wipe 1b271ced rejoue "Wait" creneau 1 (annonce par J1), n.17
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "AttackWaitLeft" (copie suivie)
+[botw-coop] animation ennemi : 1b271ced creneau 1 banque 0 "Wait" (copie suivie)
+[botw-coop] animation ennemi : 1b271ced creneau 2 banque 0 "Wait" (copie suivie)
+[botw-coop] animation ennemi : 1b271ced creneau 3 banque 0 "Wait" (copie suivie)
+[botw-coop] animation ennemi : 1b271ced creneau 0 banque 0 "Transform" (copie suivie)

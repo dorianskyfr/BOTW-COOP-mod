@@ -921,6 +921,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Relevé des acteurs du sanctuaire 122 (`drive.py actors`, hachage et état de chaque acteur) : les trois `Enemy_Guardian_Mini_Junior` ont un identifiant d'objet de carte (a8ec1e4a, e8c6cd69, aa2707dd) mais restent à l'état 0, de loin (163 à 175 m) comme de près (6,7 m), même après trois coups d'épée donnés à côté d'eux.
 - Le suivi des ennemis (`enemy_life.cpp`) ne prend que les acteurs actifs (état 1) : c'est pourquoi `gm2` ne les montrait pas. Ce n'est pas un oubli du mod.
 - **Non vérifié** : leur suivi une fois réveillés. Je ne sais pas ce qui lance l'épreuve de ce sanctuaire, et il faudrait un sanctuaire d'épreuve de force.
+- **Mise à jour, essai `gf1` (sanctuaire 073, épreuve de force, deux joueurs) - [V] journaux** :
+  - le Gardien `Enemy_Guardian_Mini_Junior_Wipe` (1b271ced) dort à l'état 0 sur son ascenseur (`DgnObj_EnemyLift_A_01`), puis monte et passe à l'état 1 quand les joueurs entrent dans l'arène ;
+  - J1 fait foi (il annonce `Wait`, `BeamSmall`…) ; J2 suit sa copie et rejoue ses animations (`AttackWaitLeft`, `Transform`…) ;
+  - chez J2, les tirs de la copie suivie sont retirés (`tir de la copie suivie 1b271ced (a 1.9 m au tir) retire`, n.4 à n.7), et les rayons au repos sont ignorés (`colle a son tireur ... au repos`). C'est la première fois que le retrait des tirs des Gardiens miniatures (5.99) est vu ;
+  - tué chez J1 (outil d'essai) : chez J2, `vaincu par l'autre joueur (drapeau 40e3652c) -> retire ici`.
+  - Preuves : `docs/evidence/2026-11-23_gardien-miniature-sanctuaire-073_gf1.log`.
 
 ### 6.06 Doublon d'une arme équipée d'office retiré (2026-11-21, essais `ue1` à `ue4`, Eden) - [V] image et journaux ; ramassage simultané réel non vérifié
 
