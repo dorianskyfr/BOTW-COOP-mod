@@ -940,7 +940,10 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - **Défaut trouvé et corrigé** (`gd14`) : la copie de la hache, créée à 0,7 m des pieds de J2 (et un peu au-dessus, pendant sa chute), a été vue « portée » le temps d'un relevé. Elle a été annoncée à J1, dont le pantin de J2 l'a tenue un instant, puis surveillée comme un don de J2.
   - Pas de doublon : J2 n'avait rien perdu de son inventaire, donc rien n'a été annoncé.
   - Correctif : une copie d'objet du partenaire, trouvée ou encore attendue (`IsPartnerDropCopy`), n'est jamais comptée comme portée ni comme lâchée par nous.
-  - Compilé et embarqué dans `gd15`, mais non revu dans le jeu : la copie y est apparue à 3,2 m, hors du relevé.
+  - [V] `gd16`, même situation que `gd14` : copie créée à 0,6 m des pieds de J2.
+    - Chez J2, plus aucune ligne `emplacement ... Weapon_Lsword_032` ni `a quitte Link` ; chez J1, plus de `CoopWeapon_Weapon_Lsword_032` créée dans la main du pantin de J2.
+    - La copie reste au sol chez J2, avec l'invite « Take ». Le jeu refuse de la prendre, car l'inventaire d'armes de J2 est plein (« You can't carry any more melee weapons »). C'est une règle du jeu, et le ramassage normal d'une copie est vu dans `gd15`.
+    - Preuves : `docs/evidence/2026-11-23_copie-pas-prise-pour-portee_gd16.log`.
   - Relecture **Codex**, 1 remarque P2, retenue : une copie encore attendue n'est reconnue qu'à moins de 4 m du point de lâcher, comme `CollectSameName`. Sinon, une arme du même nom portée ailleurs par Link n'était plus annoncée pendant l'attente. Seconde passe Codex : aucune régression.
 - **Ramasser la copie de la bombe de l'autre** : non vérifié. Sur ce terrain (pente, mare, plateforme ronde), la bombe roule ou dérive avant que J2 l'atteigne (`gf6`). D'après le code, la copie est replacée à chaque image à la position de la vraie bombe : J2 ne peut pas l'emporter.
 - Preuves : `docs/evidence/2026-11-23_ramassage-simultane-arme-equipee_gd14-gd15.log`.

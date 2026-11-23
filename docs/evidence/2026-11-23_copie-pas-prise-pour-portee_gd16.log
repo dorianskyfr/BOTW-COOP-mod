@@ -1,0 +1,15 @@
+﻿# gd16 : meme situation que gd14 (copie creee a 0,6 m de J2), apres correctif IsPartnerDropCopy. Eden, 2026-11-23. NOTES 6.12
+## gd16_game.txt
+[botw-coop] armes : emplacement 0 = Weapon_Sword_019 (874ed0da), position dans le repere de Link (-0.20, 1.50, -0.08)
+[botw-coop] armes : emplacement 1 = Weapon_Sheath_019 (e58064c3), position dans le repere de Link (-0.20, 1.50, -0.08)
+[botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+[botw-coop] don : Weapon_Lsword_032 au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus 0/0)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache en (-633.6, 129.0, -338.1), partage n.1, partenaire a 0.6 m
+## gd16_game2.txt
+[botw-coop] armes : emplacement 0 = Weapon_Sword_019 (874ed0da), position dans le repere de Link (-0.20, 1.40, -0.08)
+[botw-coop] armes : emplacement 1 = Weapon_Sheath_019 (e58064c3), position dans le repere de Link (-0.20, 1.40, -0.08)
+[botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache par le joueur 1 en (-633.6, 129.0, -338.1), a 0.6 m de nous : copie demandee
+[botw-coop] objet au sol : copie de Weapon_Lsword_032 creee (0 releve(s)), durabilite ecrite -> 3000
