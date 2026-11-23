@@ -1,0 +1,101 @@
+﻿# Essais gd14 et gd15 (relais --lag 2500 puis 1500), Eden, 2026-11-23. NOTES 6.12
+## gd14_game_keep.txt
+[botw-coop] messages : crochet pose sur main+0xe84870
+[botw-coop] messages : "Coop : connecté (joueur 1)"
+[botw-coop] messages : bandeau indisponible pour l'instant, nouvel essai (n.1)
+[botw-coop] messages : bandeau demande (26 caracteres)
+[botw-coop] messages : "Joueur 2 a rejoint la partie"
+[botw-coop] messages : bandeau demande (28 caracteres)
+[botw-coop] armes : emplacement 0 = Weapon_Sword_019 (874ed0da), position dans le repere de Link (-0.20, 1.51, -0.08)
+[botw-coop] armes : emplacement 1 = Weapon_Sheath_019 (e58064c3), position dans le repere de Link (-0.20, 1.51, -0.08)
+[botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+[botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+[botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+[botw-coop] don : Weapon_Sword_019 au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus 0/0)
+[botw-coop] armes : plus aucun objet porte
+[botw-coop] don : Weapon_Lsword_032 au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus 0/0)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache en (-633.7, 129.0, -338.1), partage n.1, partenaire a 0.7 m
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Lsword_032" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : objet 0 (CoopWeapon_Weapon_Lsword_032) retire
+[botw-coop] objet au sol : Weapon_Lsword_032 ramasse par le joueur 2 -> notre copie retiree
+[botw-coop] messages : "Joueur 2 a ramassé : Hache de bûcheron"
+[botw-coop] messages : bandeau demande (38 caracteres)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Lsword_032" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Lsheath_032" CREE apres 5 images (objet 1)
+## gd14_game2_keep.txt
+[botw-coop] messages : crochet pose sur main+0xe84870
+[botw-coop] messages : "Coop : connecté (joueur 2)"
+[botw-coop] messages : "Joueur 1 a rejoint la partie"
+[botw-coop] messages : bandeau indisponible pour l'instant, nouvel essai (n.1)
+[botw-coop] messages : bandeau demande (26 caracteres)
+[botw-coop] messages : bandeau demande (28 caracteres)
+[botw-coop] armes : emplacement 0 = Weapon_Sword_019 (874ed0da), position dans le repere de Link (-0.20, 1.40, -0.08)
+[botw-coop] armes : emplacement 1 = Weapon_Sheath_019 (e58064c3), position dans le repere de Link (-0.20, 1.40, -0.08)
+[botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+[botw-coop] don : Weapon_Sword_019 au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus 0/0)
+[botw-coop] armes : plus aucun objet porte
+[botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+[botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache par le joueur 1 en (-633.7, 129.0, -338.0), a 0.7 m de nous : copie demandee
+[botw-coop] messages : "Joueur 1 a lâché : Hache de bûcheron"
+[botw-coop] messages : bandeau demande (36 caracteres)
+[botw-coop] objet au sol : copie de Weapon_Lsword_032 creee (1 releve(s)), durabilite ecrite -> 3000
+[botw-coop] armes : emplacement 0 = Weapon_Lsword_032 (c55c9a17), position dans le repere de Link (0.38, 0.37, 0.56)
+[botw-coop] don : Weapon_Lsword_032 a quitte Link, surveillee 10 s (bonus 0/0)
+[botw-coop] armes : plus aucun objet porte
+[botw-coop] objet au sol : Weapon_Lsword_032 ramasse, durabilite 3000 -> 3000 et bonus 0/0 poses sur l'objet de l'inventaire, recopies dans la sauvegarde
+[botw-coop] objet au sol : Weapon_Lsword_032 (n.1 du joueur 1) ramasse ici, a 0.7 m, inventaire 1 -> 2 -> annonce
+[botw-coop] armes : emplacement 0 = Weapon_Lsword_032 (c55c9a17), position dans le repere de Link (-0.27, 0.73, 0.14)
+[botw-coop] armes : emplacement 0 = Weapon_Lsword_032 (c55c9a17), position dans le repere de Link (-0.30, 0.80, 0.23)
+[botw-coop] armes : emplacement 1 = Weapon_Lsheath_032 (45837e2b), position dans le repere de Link (-0.17, 1.44, -0.09)
+## gd15_game.txt
+[botw-coop] messages : crochet pose sur main+0xe84870
+[botw-coop] messages : "Coop : connecté (joueur 1)"
+[botw-coop] messages : bandeau indisponible pour l'instant, nouvel essai (n.1)
+[botw-coop] messages : bandeau demande (26 caracteres)
+[botw-coop] messages : "Joueur 2 a rejoint la partie"
+[botw-coop] messages : bandeau demande (28 caracteres)
+[botw-coop] armes : emplacement 0 = Weapon_Sword_019 (874ed0da), position dans le repere de Link (-0.20, 1.51, -0.08)
+[botw-coop] armes : emplacement 1 = Weapon_Sheath_019 (e58064c3), position dans le repere de Link (-0.20, 1.51, -0.08)
+[botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+[botw-coop] armes du partenaire : objet 0 (CoopWeapon_Stal_Bokoblin_Junior_Arm_Left) retire
+[botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Sheath_019) retire
+[botw-coop] don : Weapon_Lsword_032 au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus 0/0)
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache en (-633.6, 129.0, -338.1), partage n.1, partenaire a 3.2 m
+[botw-coop] objet au sol : Weapon_Lsword_032 (n.1 du joueur 1) ramasse ici, a 0.6 m, inventaire 0 -> 1 -> annonce
+[botw-coop] objet au sol : Weapon_Lsword_032 ramasse aussi par le joueur 2 au meme moment : DOUBLON, on le garde (nous l'avions lache), l'autre retire le sien
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Lsheath_032" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Lsword_032" CREE apres 5 images (objet 1)
+[botw-coop] armes du partenaire : objet 0 (CoopWeapon_Weapon_Lsheath_032) retire
+[botw-coop] armes du partenaire : objet 1 (CoopWeapon_Weapon_Lsword_032) retire
+## gd15_game2.txt
+[botw-coop] messages : crochet pose sur main+0xe84870
+[botw-coop] messages : "Coop : connecté (joueur 2)"
+[botw-coop] messages : "Joueur 1 a rejoint la partie"
+[botw-coop] messages : bandeau demande (26 caracteres)
+[botw-coop] messages : bandeau demande (28 caracteres)
+[botw-coop] armes : emplacement 0 = Weapon_Sword_019 (874ed0da), position dans le repere de Link (-0.20, 1.40, -0.08)
+[botw-coop] armes : emplacement 1 = Weapon_Sheath_019 (e58064c3), position dans le repere de Link (-0.20, 1.40, -0.08)
+[botw-coop] armes du partenaire : "CoopWeapon_Stal_Bokoblin_Junior_Arm_Left" CREE apres 5 images (objet 0)
+[botw-coop] armes du partenaire : "CoopWeapon_Weapon_Sheath_019" CREE apres 5 images (objet 1)
+[botw-coop] don : Weapon_Sword_019 au sol pres de Link, sortie de l'inventaire, surveillee 10 s (bonus 0/0)
+[botw-coop] armes : plus aucun objet porte
+[botw-coop] objet au sol : Weapon_Lsword_032 (valeur 3000, bonus 0/0) lache par le joueur 1 en (-633.6, 129.0, -338.1), a 3.2 m de nous : copie demandee
+[botw-coop] messages : "Joueur 1 a lâché : Hache de bûcheron"
+[botw-coop] messages : bandeau demande (36 caracteres)
+[botw-coop] objet au sol : copie de Weapon_Lsword_032 creee (0 releve(s)), durabilite ecrite -> 3000
+[botw-coop] objet au sol : Weapon_Lsword_032 ramasse, durabilite 3000 -> 3000 et bonus 0/0 poses sur l'objet de l'inventaire, recopies dans la sauvegarde
+[botw-coop] objet au sol : Weapon_Lsword_032 (n.1 du joueur 1) ramasse ici, a 1.3 m, inventaire 1 -> 2 -> annonce
+[botw-coop] armes : emplacement 0 = Weapon_Lsheath_032 (45837e2b), position dans le repere de Link (-0.17, 1.44, -0.08)
+[botw-coop] armes : emplacement 0 = Weapon_Lsheath_032 (45837e2b), position dans le repere de Link (-0.17, 1.44, -0.08)
+[botw-coop] armes : emplacement 1 = Weapon_Lsword_032 (c55c9a17), position dans le repere de Link (-0.32, 0.82, 0.23)
+[botw-coop] objet au sol : arme equipee Weapon_Lsword_032 retiree de l'inventaire, acteur tenu retire
+[botw-coop] objet au sol : Weapon_Lsword_032 ramasse aussi par le joueur 1 (qui l'avait lache) au meme moment : DOUBLON, notre exemplaire retire de l'inventaire (objets 35 -> 34)
+[botw-coop] messages : "Ramassé en même temps : Hache de bûcheron reste au joueur 1"
+[botw-coop] messages : bandeau demande (46 caracteres)
+[botw-coop] don : Weapon_Lsheath_032 a quitte Link, surveillee 10 s (bonus 0/0)
+[botw-coop] don : Weapon_Lsword_032 a quitte Link, surveillee 10 s (bonus 0/0)
+[botw-coop] armes : plus aucun objet porte

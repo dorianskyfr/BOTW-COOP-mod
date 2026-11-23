@@ -916,6 +916,54 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.13 Tir d'une Tourelle vu et retiré chez celui qui suit (2026-11-23, essai `gd15`, Eden) - [V] journaux
+
+- Tourelle `f51a9468` (`Enemy_Guardian_B`, château) en (-251.3, 184.1, -1204.7). Sa plateforme est à y 184, 20 m au-dessus du sol tout autour (sondé avec `tp`). Les deux joueurs y sont posés, à 4 et 9 m d'elle.
+- J1, qui faisait foi : `rayon de Gardien tire en (-250.3, 190.4, -1204.9) : tireur f51a9468 a 6.4 m`, deux fois. J1 est projeté hors du rempart (invincible).
+- La main passe ensuite à J2, le plus proche. Chez J1, qui suit : `tir de la copie suivie f51a9468 (a 6.4 m au tir) retire`, n.4 et n.5.
+- Le retrait des tirs (5.99) marche donc aussi pour les Tourelles. Les trois sortes de Gardiens qui tirent (Gardien, Gardien volant, Tourelle) sont vues.
+- Preuves : `docs/evidence/2026-11-23_tourelle-tir-retire_et-distances-serveur_gd15-gf6.log`.
+
+### 6.12 Ramassage simultané réel d'une arme équipée d'office (2026-11-23, essais `gd14`, `gd15`, Eden, relais `--lag 2500` puis `--lag 1500`) - [V] image et journaux
+
+- Mise en place :
+  - J2 lance son arme (R maintenu) : il a les mains vides ;
+  - J1 lâche sa hache de bûcheron (`Weapon_Lsword_032`) depuis le menu (Lâcher) ;
+  - les deux sont posés à 0,6 et 1,2 m de la hache, puis appuient sur A presque en même temps. Le relais retardé fait que chacun ramasse avant d'apprendre le ramassage de l'autre.
+- [V] `gd15`, J1 : `ramasse ici, a 0.6 m, inventaire 0 -> 1 -> annonce`, puis `ramasse aussi par le joueur 2 au meme moment : DOUBLON, on le garde (nous l'avions lache)`.
+- [V] `gd15`, J2 :
+  - le jeu équipe la hache d'office (`emplacement 1 = Weapon_Lsword_032 ... (-0.32, 0.82, 0.23)`, dans la main, et son fourreau dans le dos) ;
+  - puis `arme equipee Weapon_Lsword_032 retiree de l'inventaire, acteur tenu retire` et `DOUBLON, notre exemplaire retire de l'inventaire (objets 35 -> 34)` ;
+  - message `Ramassé en même temps : Hache de bûcheron reste au joueur 1` ;
+  - `plus aucun objet porte`. L'image montre J2 sans arme, ni en main ni dans le dos (`2026-11-23_ramassage-simultane-arme-equipee_J2-sans-arme_gd15.png`).
+- C'est la vérification réelle qui manquait en 6.06.
+- **Défaut trouvé et corrigé** (`gd14`) : la copie de la hache, créée à 0,7 m des pieds de J2 (et un peu au-dessus, pendant sa chute), a été vue « portée » le temps d'un relevé. Elle a été annoncée à J1, dont le pantin de J2 l'a tenue un instant, puis surveillée comme un don de J2.
+  - Pas de doublon : J2 n'avait rien perdu de son inventaire, donc rien n'a été annoncé.
+  - Correctif : une copie d'objet du partenaire, trouvée ou encore attendue (`IsPartnerDropCopy`), n'est jamais comptée comme portée ni comme lâchée par nous.
+  - Compilé et embarqué dans `gd15`, mais non revu dans le jeu : la copie y est apparue à 3,2 m, hors du relevé.
+  - Relecture **Codex**, 1 remarque P2, retenue : une copie encore attendue n'est reconnue qu'à moins de 4 m du point de lâcher, comme `CollectSameName`. Sinon, une arme du même nom portée ailleurs par Link n'était plus annoncée pendant l'attente. Seconde passe Codex : aucune régression.
+- **Ramasser la copie de la bombe de l'autre** : non vérifié. Sur ce terrain (pente, mare, plateforme ronde), la bombe roule ou dérive avant que J2 l'atteigne (`gf6`). D'après le code, la copie est replacée à chaque image à la position de la vraie bombe : J2 ne peut pas l'emporter.
+- Preuves : `docs/evidence/2026-11-23_ramassage-simultane-arme-equipee_gd14-gd15.log`.
+
+### 6.11 Arbitre : les distances aux ennemis sont calculées par le serveur (2026-11-23, essai `gf6`, Eden) - [V] journaux
+
+- Suite de 6.10 : les distances annoncées par les jeux ne sont pas comparables pour un ennemi rapide, car celui qui suit mesure sa copie, en retard.
+- `tools/relay.py` :
+  - le serveur garde la dernière position de chaque joueur (MTX ou POS) et la position de l'ennemi annoncée par son propriétaire (EMTX) ;
+  - il calcule lui-même les deux distances, sur la même position de l'ennemi ;
+  - seulement pour les joueurs qui ont annoncé cet ennemi (un joueur ailleurs n'a pas les mêmes coordonnées), et seulement si toutes les positions ont moins de 3 s. Sinon, il garde les distances annoncées.
+- Essai automatique : B annonce 40 m mais sa position le met à 10 m, contre 30 m pour A ; B prend la main. 132 sur 132.
+- [V] `gf6`, même parcours sous les Gardiens volants que `gf4`/`gf5` :
+
+  | Essai | Règle | Changements de main | dont `d2ac17e9` | Plus court écart |
+  |---|---|---|---|---|
+  | `gf4` | avant 6.10 | 40 | 21 | 6 ms |
+  | `gf5` | attente de 1,5 s | 40 | 15 | 1,5 s |
+  | `gf6` | 6.10 + distances du serveur | 19 | 5 | 2 s |
+
+  Les changements restants suivent des écarts nets (par exemple `J1 27.0 m, J2 23.5 m, calculees par le serveur`). Tir du Gardien volant `26770fae` retiré chez celui qui suit (4,6 m).
+- Preuves : `docs/evidence/2026-11-23_tourelle-tir-retire_et-distances-serveur_gd15-gf6.log`.
+
 ### 6.10 Gardien volant : tir vu, et la main ne change plus plusieurs fois par seconde (2026-11-23, essais `gf4`, `gf5`, Eden) - [V] journaux
 
 - **Tir du Gardien volant vu** (`gf4` et `gf5`, les deux joueurs à 5 m l'un de l'autre près de (-640, -405), Gardiens volants `Enemy_Guardian_C` en patrouille) :

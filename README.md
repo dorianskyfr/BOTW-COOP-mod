@@ -65,7 +65,15 @@ Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0
 
 - **Boss** : les quatre Fléaux du château, Ganon puis Ganon bête du Fléau (combat final), combattus ensemble ; un boss battu chez l'un meurt chez l'autre et les deux jeux enchaînent la suite jusqu'à la fin (vu à l'image).
 
-Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : les Fléaux dans les Créatures divines, une épreuve de l'épée complète, la Ballade des Prodiges jouée, le rayon d'un Gardien volant, le tir des Tourelles. Limites détaillées : `PROGRESS.md`, « Limites connues ».
+Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : les Fléaux dans les Créatures divines, une épreuve de l'épée complète, la Ballade des Prodiges jouée. Les tirs du Gardien volant et des Tourelles sont vus dans les journaux, et retirés chez celui qui suit. Limites détaillées : `PROGRESS.md`, « Limites connues ».
+
+**Limites connues, gardées volontairement** :
+- **Deux joueurs** au plus.
+- **Énigme de sanctuaire en cours** : non partagée, le jeu ne la sauvegarde pas (la fin du sanctuaire l'est).
+- **Le Link du partenaire a une collision** : on ne le traverse pas.
+- **Chacun garde** son inventaire, sa santé, son équipement et l'épée de légende.
+- **Bombes** : vue de plus de quelques mètres, la bombe de l'autre disparaît sans la sphère bleue de l'explosion ; de près, son souffle se sent (il peut vous projeter et vous blesser).
+- **Pare-feu Windows** : au premier lancement du relais, Windows demande d'autoriser Python ; sans cela, un second PC ne peut pas le joindre.
 
 ## Installation simple : le launcher
 

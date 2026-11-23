@@ -281,6 +281,33 @@ namespace coop::weapons {
         Drop s_Drops[MaxDrops];
         std::uint32_t s_NextDropId = 1;
 
+        /* Copie d'un objet lache par le partenaire (deja trouvee, ou encore attendue : acteur de ce nom absent
+           avant la demande). Jamais prise pour un objet porte par Link : essai gd14, la copie de la hache creee
+           a 0,7 m de J2 a ete vue « portee » un releve, annoncee au partenaire puis surveillee comme un don. */
+        bool IsPartnerDropCopy(std::uintptr_t actor, const char* name) {
+            for (const Drop& d : s_Drops) {
+                if (d.m_Owner == coop::session::g_LocalId)
+                    continue;
+                if (d.m_Actor != 0 && d.m_Actor == actor)
+                    return true;
+                if (d.m_Pending && name != nullptr && std::strcmp(d.m_Name, name) == 0) {
+                    /* Seulement pres du point de creation, comme CollectSameName (relecture Codex : m_Before ne
+                       recense que les acteurs a moins de 4 m ; une arme du meme nom portee ailleurs etait exclue). */
+                    float p[3];
+                    coop::game::GetActorPos(actor, p);
+                    const float dx = p[0] - d.m_Pos[0], dy = p[1] - d.m_Pos[1], dz = p[2] - d.m_Pos[2];
+                    if (dx * dx + dy * dy + dz * dz > 4.0f * 4.0f)
+                        continue;
+                    bool before = false;
+                    for (int i = 0; i < d.m_BeforeN && i < MaxBefore; i++)
+                        before |= d.m_Before[i] == actor;
+                    if (!before)
+                        return true;
+                }
+            }
+            return false;
+        }
+
         /* Objets partages ramasses ici dans les 5 dernieres secondes : un GPCK de l'autre pour l'un d'eux
            veut dire qu'il a ete ramasse des deux cotes (doublon, journalise). */
         struct Picked {
@@ -905,6 +932,8 @@ namespace coop::weapons {
         std::uintptr_t actors[Slots] = {};
         int n = 0;
         for (int i = 0; i < near.m_Count && n < Slots; i++) {
+            if (IsPartnerDropCopy(near.m_Actors[i], coop::game::GetActorName(near.m_Actors[i])))
+                continue;
             float m[12];
             coop::game::GetActorMtx(near.m_Actors[i], m);
             Pose p;

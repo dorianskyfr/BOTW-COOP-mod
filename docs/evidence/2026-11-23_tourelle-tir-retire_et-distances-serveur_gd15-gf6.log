@@ -1,0 +1,81 @@
+﻿# gd15 (Tourelle f51a9468, chateau) et gf6 (distances calculees par le serveur), Eden, 2026-11-23. NOTES 6.11, 6.13
+## gd15_game.txt
+[botw-coop] position ennemi : f51a9468, le serveur donne la main a J1 (bail n.23)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] position ennemi : f51a9468, le serveur donne la main a J2 (bail n.30)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, on suit la copie de l'autre joueur (nous a 26.6 m, J2 a 24.3 m)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (copie suivie)
+[botw-coop] position ennemi : f51a9468, le serveur donne la main a J1 (bail n.32)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, notre copie fait foi (nous a 26.6 m, J2 a 25.3 m)
+[botw-coop] acteur : Enemy_Guardian_B                         hash=f51a9468 etat=1 pos=(-251.30, 184.11, -1204.71) dist=26.6
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] position ennemi : f51a9468, le serveur donne la main a J2 (bail n.41)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, on suit la copie de l'autre joueur (nous a 27.3 m, J2 a 27.5 m)
+[botw-coop] animation ennemi : Enemy_Guardian_B f51a9468 rejoue "Wait" creneau 0 (annonce par J2), n.12
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (copie suivie)
+[botw-coop] animation ennemi : f51a9468 creneau 2 banque 0 "MaterialTargetFound" (copie suivie)
+[botw-coop] animation ennemi : Enemy_Guardian_B f51a9468 rejoue "Wait" creneau 0 (annonce par J2), n.15
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, notre copie fait foi (nous a 28.0 m, J2 a 27.4 m)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, on suit la copie de l'autre joueur (nous a 29.5 m, J2 a 27.4 m)
+[botw-coop] animation ennemi : Enemy_Guardian_B f51a9468 rejoue "Wait" creneau 0 (annonce par J2), n.20
+[botw-coop] rayon de Gardien tire en (-251.3, 190.4, -1205.7) : tireur f51a9468 a 6.4 m (1 Gardien(s) notes)
+[botw-coop] rayon de Gardien : tir de la copie suivie f51a9468 (a 6.4 m au tir) retire, n.1
+[botw-coop] animation ennemi : Enemy_Guardian_B f51a9468 rejoue "Wait" creneau 0 (annonce par J2), n.23
+[botw-coop] rayon de Gardien tire en (-251.3, 190.4, -1205.7) : tireur f51a9468 a 6.4 m (1 Gardien(s) notes)
+[botw-coop] rayon de Gardien : tir de la copie suivie f51a9468 (a 6.4 m au tir) retire, n.2
+[botw-coop] rayon de Gardien tire en (-250.4, 190.4, -1205.1) : tireur f51a9468 a 6.4 m (1 Gardien(s) notes)
+[botw-coop] rayon de Gardien : tir de la copie suivie f51a9468 (a 6.4 m au tir) retire, n.3
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, notre copie fait foi (nous a 8.2 m, J2 a 27.4 m)
+[botw-coop] rayon de Gardien tire en (-250.3, 190.4, -1204.9) : tireur f51a9468 a 6.4 m (1 Gardien(s) notes)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] animation ennemi : f51a9468 creneau 0 banque 0 "Wait" (fait foi)
+[botw-coop] rayon de Gardien tire en (-251.3, 190.4, -1205.7) : tireur f51a9468 a 6.4 m (1 Gardien(s) notes)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, on suit la copie de l'autre joueur (nous a 25.7 m, J2 a 8.9 m)
+[botw-coop] rayon de Gardien : tir de la copie suivie f51a9468 (a 6.4 m au tir) retire, n.4
+[botw-coop] rayon de Gardien : tir de la copie suivie f51a9468 (a 6.4 m au tir) retire, n.5
+[botw-coop] animation ennemi : Enemy_Guardian_B f51a9468 rejoue "Wait" creneau 0 (annonce par J2), n.31
+[botw-coop] animation ennemi : Enemy_Guardian_B f51a9468 rejoue "Wait" creneau 0 (annonce par J2), n.32
+[botw-coop] animation ennemi : Enemy_Guardian_B f51a9468 rejoue "Wait" creneau 0 (annonce par J2), n.33
+[botw-coop] animation ennemi : Enemy_Guardian_B f51a9468 rejoue "Wait" creneau 0 (annonce par J2), n.34
+## gd15_game2.txt
+[botw-coop] position ennemi : f51a9468, le serveur donne la main a J1 (bail n.23)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, on suit la copie de l'autre joueur (nous a 24.3 m, J1 a 26.6 m)
+[botw-coop] position ennemi : f51a9468, le serveur donne la main a J2 (bail n.30)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, notre copie fait foi (nous a 24.3 m, J1 a 26.6 m)
+[botw-coop] position ennemi : f51a9468, le serveur donne la main a J1 (bail n.32)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, on suit la copie de l'autre joueur (nous a 29.2 m, J1 a 26.6 m)
+[botw-coop] position ennemi : f51a9468, le serveur donne la main a J2 (bail n.41)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, notre copie fait foi (nous a 27.4 m, J1 a 22.1 m)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, on suit la copie de l'autre joueur (nous a 27.4 m, J1 a 28.0 m)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, notre copie fait foi (nous a 27.4 m, J1 a 20.8 m)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, on suit la copie de l'autre joueur (nous a 27.4 m, J1 a 8.2 m)
+[botw-coop] position ennemi : Enemy_Guardian_B f51a9468, notre copie fait foi (nous a 8.9 m, J1 a 25.7 m)
+## gf6_relay.log
+09:04:43.440 ennemi d2ac17e9 : la main passe a J1 (bail n.1 ; J1 84.7 m, calculees par le serveur)
+09:04:59.630 ennemi bb302d8d : la main passe a J2 (bail n.2 ; J2 129.3 m, calculees par le serveur)
+09:04:59.630 ennemi 6f659549 : la main passe a J2 (bail n.3 ; J2 81.6 m, calculees par le serveur)
+09:05:16.879 ennemi bb302d8d : la main passe a J1 (bail n.4 ; J1 150.0 m)
+09:05:39.371 ennemi bb302d8d : la main passe a J2 (bail n.5 ; J2 149.9 m, calculees par le serveur)
+09:06:39.082 ennemi bb302d8d : la main passe a J2 (bail n.6 ; J2 149.8 m, calculees par le serveur)
+09:07:06.086 ennemi 26770fae : la main passe a J1 (bail n.7 ; J1 55.5 m, calculees par le serveur)
+09:07:06.831 ennemi d2ac17e9 : la main passe a J2 (bail n.8 ; J1 171.6 m, J2 88.3 m, calculees par le serveur)
+09:07:16.390 ennemi 26770fae : la main passe a J2 (bail n.9 ; J1 87.2 m, J2 12.3 m, calculees par le serveur)
+09:07:18.930 ennemi 26770fae : la main passe a J1 (bail n.10 ; J1 85.4 m, J2 87.5 m, calculees par le serveur)
+09:07:20.944 ennemi 26770fae : la main passe a J2 (bail n.11 ; J1 89.5 m, J2 84.0 m, calculees par le serveur)
+09:07:33.585 ennemi 26770fae : la main passe a J1 (bail n.12 ; J1 27.3 m, J2 126.0 m, calculees par le serveur)
+09:07:37.410 ennemi 26770fae : la main passe a J2 (bail n.13 ; J1 15.9 m, J2 10.6 m, calculees par le serveur)
+09:07:50.737 ennemi d2ac17e9 : la main passe a J1 (bail n.14 ; J1 17.4 m, calculees par le serveur)
+09:07:51.944 ennemi e0fd0fdd : la main passe a J1 (bail n.15 ; J1 149.9 m, calculees par le serveur)
+09:07:54.094 ennemi d2ac17e9 : la main passe a J2 (bail n.16 ; J1 27.0 m, J2 23.5 m, calculees par le serveur)
+09:08:41.773 ennemi e0fd0fdd : la main passe a J2 (bail n.17 ; J2 147.6 m)
+09:08:54.398 ennemi d2ac17e9 : la main passe a J2 (bail n.18 ; J2 150.0 m, calculees par le serveur)
+09:08:58.033 ennemi e0fd0fdd : la main passe a J1 (bail n.19 ; J1 150.0 m)
+## gf6_game.txt
+[botw-coop] rayon de Gardien tire en (-778.0, 146.1, -384.9) : tireur 26770fae a 4.6 m (1 Gardien(s) notes)
+[botw-coop] rayon de Gardien : tir de la copie suivie 26770fae (a 4.6 m au tir) retire, n.1
+[botw-coop] rayon de Gardien tire en (-806.2, 150.9, -298.6) : tireur 00000000 a 120.0 m (2 Gardien(s) notes)

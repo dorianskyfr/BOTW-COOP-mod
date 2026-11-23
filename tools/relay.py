@@ -63,6 +63,7 @@ import datetime
 import hashlib
 import hmac
 import json
+import math
 import os
 import random
 import secrets
@@ -227,6 +228,8 @@ class Client:
         self.output_bytes = 0
         self.connected_at = time.monotonic()
         self.closing = None  # motif de fermeture apres l'envoi de REFUSE ou DENY
+        self.pos = None      # derniere position annoncee (MTX ou POS) et son instant, pour l'arbitre (NOTES 6.11)
+        self.pos_at = 0.0
         self.close_deadline = None
 
 
@@ -484,13 +487,31 @@ def main():
     leases = {}  # hachage -> Lease
 
     class Lease:
-        __slots__ = ("owner", "epoch", "reports", "since")
+        __slots__ = ("owner", "epoch", "reports", "since", "enemy", "enemy_at")
 
         def __init__(self):
             self.owner = None
             self.epoch = 0
             self.reports = {}  # joueur -> (distance, instant)
             self.since = 0.0   # instant ou le bail a ete donne
+            self.enemy = None  # position de l'ennemi annoncee par le proprietaire (EMTX) et son instant
+            self.enemy_at = 0.0
+
+    def lease_distances(lease, fresh, now):
+        """NOTES 6.11 : distances calculees par le serveur, depuis la position de l'ennemi annoncee par celui qui fait
+        foi et la derniere position de chaque joueur. Les distances annoncees par les jeux ne sont pas comparables
+        pour un ennemi rapide : celui qui suit mesure sa copie, en retard (essai gf4). Seulement pour les joueurs qui
+        ont annonce l'ennemi (un joueur dans un autre lieu n'a pas les memes coordonnees) ; sinon, leurs distances."""
+        if lease.enemy is None or now - lease.enemy_at > LEASE_FRESH:
+            return fresh, False
+        by_pid = {c.pid: c for c in clients.values() if not c.pilot}
+        out = {}
+        for pid in fresh:
+            c = by_pid.get(pid)
+            if c is None or c.pos is None or now - c.pos_at > LEASE_FRESH:
+                return fresh, False
+            out[pid] = math.dist(c.pos, lease.enemy)
+        return out, True
 
     def lease_broadcast(h, lease):
         line = f"EOWN {lease.owner} {h:08x} {lease.epoch}\n"
@@ -503,6 +524,7 @@ def main():
         fresh = {pid: d for pid, (d, t) in lease.reports.items() if pid in online and now - t <= LEASE_FRESH}
         if not fresh:
             return
+        fresh, computed = lease_distances(lease, fresh, now)
         best = min(fresh, key=lambda pid: (fresh[pid], pid))
         owner = lease.owner
         # Essai gf4 (NOTES 6.10) : pour un ennemi rapide, les distances d'un meme joueur sautent de plusieurs metres
@@ -519,7 +541,8 @@ def main():
             lease_changes[0] += 1
             if lease_changes[0] <= 40 or lease_changes[0] % 200 == 0:
                 where = ", ".join(f"J{pid} {d:.1f} m" for pid, d in sorted(fresh.items()))
-                log(f"ennemi {h:08x} : la main passe a J{best} (bail n.{lease.epoch} ; {where})")
+                log(f"ennemi {h:08x} : la main passe a J{best} (bail n.{lease.epoch} ; {where}"
+                    f"{', calculees par le serveur' if computed else ''})")
             lease_broadcast(h, lease)
         elif resend:
             lease_broadcast(h, lease)
@@ -527,7 +550,7 @@ def main():
     lease_changes = [0]
     lease_epoch = [0]
 
-    def lease_report(client, h, dist, now):
+    def lease_report(client, h, dist, now, enemy=None):
         if client.pilot or not (0.0 <= dist < 100000.0):
             return
         lease = leases.get(h)
@@ -536,6 +559,9 @@ def main():
                 return
             lease = leases[h] = Lease()
         lease.reports[client.pid] = (dist, now)
+        # Position de l'ennemi : seulement celle de son proprietaire (ou du premier qui l'annonce).
+        if enemy is not None and lease.owner in (None, client.pid):
+            lease.enemy, lease.enemy_at = enemy, now
         lease_decide(h, lease, now)
 
     # Un envoi peut deconnecter un client trop lent (send -> drop), qui retire alors ses distances et des
@@ -839,7 +865,9 @@ def main():
                         client.emtx = getattr(client, "emtx", 0) + 1
                         if client.emtx == 1 or client.emtx % 200 == 0:
                             log(f"joueur {client.pid} : position d'ennemi n.{client.emtx} = {parts[1]} a {parts[2]} m de lui")
-                        lease_report(client, int(parts[1], 16), float(parts[2]), time.monotonic())
+                        enemy = (float(parts[6]), float(parts[10]), float(parts[14]))
+                        lease_report(client, int(parts[1], 16), float(parts[2]), time.monotonic(),
+                                     enemy if all(abs(v) < 100000.0 for v in enemy) else None)
                     elif parts[0] == "EDST":
                         lease_report(client, int(parts[1], 16), float(parts[2]), time.monotonic())
                     elif parts[0] == "DEMO":
@@ -898,6 +926,11 @@ def main():
                         if client.lifes <= 20 or client.lifes % 100 == 0:
                             log(f"joueur {client.pid} : vie d'ennemi n.{client.lifes} = {payload}")
                     else:
+                        if parts[0] in ("MTX", "POS"):
+                            idx = (4, 8, 12) if parts[0] == "MTX" else (1, 2, 3)
+                            pos = tuple(float(parts[i]) for i in idx)
+                            if all(abs(v) < 100000.0 for v in pos):
+                                client.pos, client.pos_at = pos, time.monotonic()
                         client.count += 1
                         client.last = payload
                         if client.count == 1 or client.count % 100 == 0:
