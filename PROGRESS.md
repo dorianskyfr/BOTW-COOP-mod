@@ -116,7 +116,7 @@ Plan, architecture et décisions à valider : `docs/AUDIT_ET_ARCHITECTURE.md`. I
   - ramassé par les deux au même instant : celui qui l'a lâché le garde, l'autre se le voit retirer (NOTES 5.97), y compris si le jeu a équipé l'arme d'office (NOTES 6.06 ; mécanisme vérifié par un outil d'essai, pas encore par un vrai ramassage simultané).
 - **Bombes de la tablette** (NOTES 5.99, 6.05) : l'explosion est recréée chez l'autre (vue de près, pas encore de loin) ; elle peut blesser le joueur proche dans son propre monde ; une copie prise dans une explosion chez soi n'est pas recréée avant la bombe suivante ; ramasser la copie de la bombe de l'autre n'est pas essayé.
 - **Arbitrage par le serveur** (NOTES 6.00) : seulement pour le rôle des ennemis ; vérifié par les journaux, pas à l'image. Avec un relais plus ancien, chaque jeu reprend l'ancienne règle locale.
-- **Gardiens miniatures des sanctuaires** : pas suivis par le mod (chacun les siens).
+- **Gardiens miniatures des sanctuaires** : endormis (état 0) tant que l'épreuve du sanctuaire n'a pas commencé ; le mod ne suit que les ennemis actifs (NOTES 6.07). Une fois réveillés, ils devraient être suivis comme les autres ennemis : non vérifié.
 - **Pas vus en jeu** :
   - les Fléaux dans les Créatures divines (il faudrait une vraie progression) ; Ganon bête du Fléau vu jusqu'à la fin, mais tué par l'outil d'essai, pas à l'arc de lumière ;
   - le rayon d'un Gardien volant, le tir des Tourelles ;

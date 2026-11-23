@@ -916,6 +916,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
       - « bail perdu avant que l'ennemi soit connu » : au plus 1 s de l'ancienne règle, choisi pour ne pas remplir la table des vies.
 - Preuves : `docs/evidence/2026-11-21_arbitre-ennemis_em1.log`.
 
+### 6.07 Gardiens miniatures des sanctuaires : endormis, pas oubliés (2026-11-23, essai `gm3`, Eden) - [V] journaux
+
+- Relevé des acteurs du sanctuaire 122 (`drive.py actors`, hachage et état de chaque acteur) : les trois `Enemy_Guardian_Mini_Junior` ont un identifiant d'objet de carte (a8ec1e4a, e8c6cd69, aa2707dd) mais restent à l'état 0, de loin (163 à 175 m) comme de près (6,7 m), même après trois coups d'épée donnés à côté d'eux.
+- Le suivi des ennemis (`enemy_life.cpp`) ne prend que les acteurs actifs (état 1) : c'est pourquoi `gm2` ne les montrait pas. Ce n'est pas un oubli du mod.
+- **Non vérifié** : leur suivi une fois réveillés. Je ne sais pas ce qui lance l'épreuve de ce sanctuaire, et il faudrait un sanctuaire d'épreuve de force.
+
 ### 6.06 Doublon d'une arme équipée d'office retiré (2026-11-21, essais `ue1` à `ue4`, Eden) - [V] image et journaux ; ramassage simultané réel non vérifié
 
 - Limite de 5.97 : ramassée les mains vides, l'arme est équipée d'office par le jeu, et `removeItem` ne prend jamais un objet équipé. Le doublon restait.
