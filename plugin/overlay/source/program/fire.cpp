@@ -188,6 +188,23 @@ namespace coop::fire {
         }
         if (s_Frames % ScanEvery == 0)
             Scan();
+#ifdef COOP_TEST_FIRE_LOCAL
+        {
+            /* Essai (NOTES 6.24) : chaque appui cree chez ce joueur une boule de feu du baton 6 m devant Link, comme s'il
+               l'avait lancee (pas marquee comme recreee) : sa disparition doit etre annoncee au partenaire. */
+            static int s_LocalStep = 0;
+            const int step = g_TestStep.load(std::memory_order_acquire);
+            if (step != s_LocalStep) {
+                s_LocalStep = step;
+                float m[12];
+                coop::game::GetActorMtx(st.m_PlayerActor, m);
+                const float at[3] = { m[3] + m[2] * 6.0f, m[7] + DropHeight, m[11] + m[10] * 6.0f };
+                const bool ok = coop::game::RequestCreateActorAwake(FieldActor, at);
+                Logging.Log("[botw-coop] feu : OUTIL DE TEST, notre %s cree en (%.1f, %.1f, %.1f) %s", FieldActor,
+                    static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]), ok ? "" : "REFUSE");
+            }
+        }
+#endif
 #ifdef COOP_TEST_FIRE_SEND
         {
             /* Essai (NOTES 6.24) : chaque appui du bouton d'essai annonce un depart de feu 6 m devant Link, comme si

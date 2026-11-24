@@ -1032,7 +1032,7 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - labyrinthes à inclinaison (corps Keyframed).
 - Preuves : `docs/evidence/2026-11-23_enigmes-objets-mobiles_pz1-pz4.log`.
 
-### 6.24 Départs de feu partagés (2026-11-23, essais `fe1` à `fe3`, Eden) - [V] image et journaux pour la réception ; envoi sur un vrai tir non vérifié
+### 6.24 Départs de feu partagés (2026-11-23 et 24, essais `fe1` à `fe5`, Eden) - [V] image et journaux, de l'impact chez l'un au feu chez l'autre
 
 - **Constat** : chaque jeu fait tourner sa propre chimie. Un feu allumé par un joueur ne brûlait que dans son monde.
 - **Choix** : partager les **départs** de feu, et laisser chaque jeu propager le feu lui-même. Module `fire.cpp` :
@@ -1048,14 +1048,20 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - passe 1, deux remarques P2 retenues : l'exclusion des boules recréées, faite par distance, écartait aussi un vrai tir proche (remplacée par le suivi de l'acteur exact, via sa poignée de création) ; de vieux départs étaient envoyés après une reconnexion (chaque départ porte son image et est jeté après 90 images) ;
   - passe 2, trois remarques P2 retenues : acteur vu avant que sa poignée soit prête (désormais marqué à ce moment-là) ; adresses gardées après un chargement (effacées) ; poignées de création perdues en cas d'échec ;
   - pour ce dernier point, le plugin ne sait pas encore rendre une unité de création au jeu. Une création en échec garde son emplacement, qui n'est plus réutilisé : au plus 4 unités immobilisées. Une création lente n'est jamais abandonnée. C'était la dernière passe autorisée.
+- [V] `fe4` (version finale, création par poignée puis `ReleaseAndWakeActor`) : J2 annonce un départ de feu, l'herbe brûle chez J1 au point annoncé, puis reste une tache d'herbe brûlée. Pas de renvoi, pas d'échec (image `2026-11-24_feu-herbe-chez-J1-creation-par-poignee_fe4.png`).
+- [V] `fe5` (outil `-DCOOP_TEST_FIRE_LOCAL` : un appui crée chez ce joueur une boule de feu du bâton, comme s'il l'avait lancée) :
+  - chez J2 : `notre FireRodLv1Fire cree en (-648.4, 128.5, -324.4)`, puis, quand elle a roulé et éclaté, `notre FireRodLv1Fire a disparu en (-644.4, 127.6, -327.5), depart de feu annonce` ;
+  - relais : `depart de feu n.1` ;
+  - chez J1 : `depart de feu du partenaire … demande`, et l'herbe brûle à cet endroit (images 4 à 10 de `2026-11-24_feu-boule-de-J2-annoncee-herbe-brule-chez-J1_fe5.png`).
+  - La chaîne complète, de l'impact chez l'un au feu chez l'autre, est donc vue.
 - **Non vérifié** :
-  - l'envoi sur un vrai tir (flèche de feu, bâton de feu) : l'essai `fe4`, avec la création par poignée, a été interrompu (PC utilisé). L'allumage par poignée, puis réveil (`ReleaseAndWakeActor`), est donc à revoir en jeu : `fe3` créait l'acteur sans poignée ;
+  - un tir fait au bouton avec une vraie flèche de feu (`FireArrow`) ou un vrai bâton : même suivi d'acteur, mais le nom `FireArrow` d'une flèche en vol n'est pas vu en jeu ;
   - les feux allumés autrement : silex, torche, foudre, Chuchu de feu, ennemis ;
   - une arme en feu ou le feu d'une bombe.
 - **Limites** :
   - la boule de feu recréée a sa propre attaque. Elle peut blesser un ennemi chez le partenaire, et comme la vie des ennemis est partagée, les dégâts du feu peuvent s'ajouter ;
   - un départ de feu est un point unique : l'étendue brûlée peut différer d'un monde à l'autre (vent, herbe).
-- Preuves : `docs/evidence/2026-11-23_feu-departs-partages_fe1-fe3.log`.
+- Preuves : `docs/evidence/2026-11-23_feu-departs-partages_fe1-fe3.log`, `docs/evidence/2026-11-24_feu-envoi-et-reception_fe4-fe5.log`.
 
 ### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
 

@@ -1,0 +1,12 @@
+# fe4 (creation par poignee) et fe5 (boule de feu locale de J2 annoncee a J1). Eden, 2026-11-24. NOTES 6.24
+## fe4_game.txt
+[botw-coop] feu : depart de feu du partenaire (FireRodLv1Fire) en (-649.0, 127.8, -324.2), FireRodLv1Fire demande
+## fe4_game2.txt
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-649.0, 127.8, -324.2) 
+## fe5_game.txt
+[botw-coop] feu : depart de feu du partenaire (FireRodLv1Fire) en (-644.4, 127.6, -327.5), FireRodLv1Fire demande
+## fe5_game2.txt
+[botw-coop] feu : OUTIL DE TEST, notre FireRodLv1Fire cree en (-648.4, 128.5, -324.4) 
+[botw-coop] feu : notre FireRodLv1Fire a disparu en (-644.4, 127.6, -327.5), depart de feu annonce
+## fe5_relay.log
+11:29:34.081 joueur 2 : depart de feu n.1 = 1 -644.43 127.57 -327.52

@@ -320,8 +320,8 @@ namespace coop::input_inject {
                         buttons &= ~(1ull << 47);
                     }
 #endif
-#ifdef COOP_TEST_FIRE_SEND
-                    /* Bit 47 : essai depart de feu annonce (fire.cpp, NOTES 6.24). */
+#if defined(COOP_TEST_FIRE_SEND) || defined(COOP_TEST_FIRE_LOCAL)
+                    /* Bit 47 : essai depart de feu annonce, ou boule de feu locale (fire.cpp, NOTES 6.24). */
                     if ((buttons >> 47) & 1) {
                         static std::uint64_t s_LastFire = 0;
                         const auto cmdF = pad.m_Commands.load(std::memory_order_acquire);
