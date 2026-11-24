@@ -1,0 +1,24 @@
+# vd1 : objets de carte detruits partages (Eden, 2026-11-24). NOTES 6.28
+## vd1_game.txt
+[botw-coop] objet detruit : OUTIL DE TEST, DgnObj_IvyBurn 55d1bc98 detruit 
+[botw-coop] objet detruit : DgnObj_IvyBurn 55d1bc98 a disparu en (-3.5, 3.9, -1.5), annonce
+[botw-coop] objet detruit : OUTIL DE TEST, DgnObj_IvyBurn 488952cd detruit 
+[botw-coop] objet detruit : DgnObj_IvyBurn 488952cd a disparu en (-0.5, 4.0, -1.5), annonce
+## vd1_game2.txt
+[botw-coop] objet detruit : DgnObj_IvyBurn 55d1bc98 detruit chez le partenaire, retire ici 
+[botw-coop] objet detruit : DgnObj_IvyBurn 488952cd detruit chez le partenaire, retire ici 
+## vd1_relay.log
+13:04:07.937 joueur 1 : objet detruit n.1 = 55d1bc98
+13:04:57.061 joueur 1 : objet detruit n.2 = 488952cd
+## vd2 (version finale)
+## vd2_game.txt
+[botw-coop] objet detruit : OUTIL DE TEST, DgnObj_IvyBurn 55d1bc98 detruit 
+[botw-coop] objet detruit : DgnObj_IvyBurn 55d1bc98 a disparu en (-3.5, 3.9, -1.5), annonce
+[botw-coop] objet detruit : OUTIL DE TEST, DgnObj_IvyBurn 488952cd detruit 
+[botw-coop] objet detruit : DgnObj_IvyBurn 488952cd a disparu en (-0.5, 4.0, -1.5), annonce
+## vd2_game2.txt
+[botw-coop] objet detruit : DgnObj_IvyBurn 55d1bc98 detruit chez le partenaire, retire ici 
+[botw-coop] objet detruit : DgnObj_IvyBurn 488952cd detruit chez le partenaire, retire ici 
+## vd2_relay.log
+13:22:40.339 joueur 1 : objet detruit n.1 = 55d1bc98
+13:22:44.979 joueur 1 : objet detruit n.2 = 488952cd

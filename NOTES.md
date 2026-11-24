@@ -1109,6 +1109,25 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un interrupteur enfoncé par un objet qui n'est pas un joueur : les objets mobiles sont déjà partagés (6.23), donc le cas devrait se régler seul.
 - Preuves : `docs/evidence/2026-11-24_interrupteurs-partages_sw1-sw3.log`.
 
+### 6.28 Objets détruits partagés (2026-11-24, essais `vd1`, `vd2`, Eden) - [V] journaux
+
+- **Constat** : un objet de carte détruit dans un monde (lierre brûlé, planche brûlée, caisse cassée…) disparaissait chez celui qui le détruisait, mais restait chez l'autre. Exemple : dans le sanctuaire 000, l'énigme du lierre (`DgnObj_IvyBurn`) bloquait le partenaire.
+- **Module `vanish.cpp`** :
+  - chacun suit ses objets de carte `DgnObj_*` / `FldObj_*` (HashId non nul) à moins de 30 m, toutes les 6 images. Chaque acteur de la liste passe par le relevé, et une adresse suivie est comparée, identifiant compris, à l'acteur qui l'occupe ;
+  - quand un objet suivi n'est plus dans la liste (ou que son adresse porte un autre acteur), monde chargé et nous encore à moins de 30 m de sa dernière place, il annonce `ODEL <HashId>` ;
+  - à la réception, datée par le fil réseau, l'objet de même HashId est retiré chez nous s'il est chargé dans les 2 s ;
+  - un objet retiré ainsi n'est jamais annoncé en retour pendant 10 s ;
+  - relais : `ODEL` (« x »), deux essais automatiques (140/140) ; réglage `vanish=0`.
+- [V] `vd1`, `vd2` (outil `-DCOOP_TEST_VANISH` : un appui détruit chez ce joueur l'objet suivi le plus proche) :
+  - chez J1, `DgnObj_IvyBurn 55d1bc98 a disparu en (-3.5, 3.9, -1.5), annonce`, puis `488952cd … (-0.5, 4.0, -1.5)` ;
+  - relais : `objet detruit n.1` ;
+  - chez J2, `… detruit chez le partenaire, retire ici` pour les deux, sans écho ;
+  - à l'image, la différence ne se voit pas nettement (petits morceaux de lierre) : preuve par les journaux seulement.
+- **Relectures Codex** : passe 1, deux P2 retenues (adresse reprise par un autre objet ; rafale de plus de 16 retraits perdue) ; passe 2, deux P2 retenues (reprise par un acteur non suivi ; retraits datés à la réception et périmés aussi pendant un chargement). C'était la dernière passe autorisée.
+- **Non vérifié** : une vraie destruction (lierre brûlé par le feu, caisse cassée à l'arme) ; un objet qui se transforme en un autre (arbre coupé : souche et tronc).
+- **Limite** : un objet qui sort de la zone chargée pendant qu'on reste à moins de 30 m de sa dernière place serait pris pour détruit. Cela n'a pas été vu ; la zone chargée est bien plus large que 30 m.
+- Preuves : `docs/evidence/2026-11-24_objets-detruits_vd1-vd2.log`.
+
 ### 6.26 État des autres pouvoirs (2026-11-24)
 
 - **Runes de la tablette** :

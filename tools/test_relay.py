@@ -465,6 +465,15 @@ def main():
         a.send("SAVED 15")
         b.expect("SAVED")
         check("SWST hors de 0/1, hachage invalide, trop court ou trop long non retransmis", not b.take("SWST"), str(b.lines))
+        # Objets detruits (NOTES 6.28) : un HashId hexadecimal.
+        a.send("ODEL 5e6f7a8b")
+        got = b.expect("ODEL")
+        check("objet detruit retransmis avec l'identifiant", got == "ODEL 1 5e6f7a8b", got)
+        for bad in ("ODEL zz", "ODEL", "ODEL 1 2", "ODEL 123456789"):
+            a.send(bad)
+        a.send("SAVED 16")
+        b.expect("SAVED")
+        check("ODEL invalide, vide, trop long non retransmis", not b.take("ODEL"), str(b.lines))
         check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
         a.send("GIFT Weapon_Sword_001 1800")
         line = b.expect("GIFT")

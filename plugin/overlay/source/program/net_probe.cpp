@@ -9,6 +9,7 @@
 #include "fire.hpp"
 #include "ice.hpp"
 #include "switches.hpp"
+#include "vanish.hpp"
 #include "config.hpp"
 #include "beast_rotate.hpp"
 #include "cutscene.hpp"
@@ -360,6 +361,13 @@ namespace coop::net_probe {
                     b.m_Serial = serial;
                     b.m_Exploded = exploded == 1 ? 1u : 0u; /* aussi type non nul : explosion commencee (NOTES 6.05) */
                     coop::bombs::g_Remote[slot].Store(b);
+                }
+            } else if (std::strncmp(line, "ODEL ", 5) == 0) {
+                /* Objet de carte detruit chez le partenaire (vanish.hpp, NOTES 6.28) : HashId. */
+                coop::vanish::Msg m;
+                if (std::sscanf(line, "ODEL %d %x", &id, &m.m_Hash) == 2 && m.m_Hash != 0) {
+                    m.m_Frame = coop::vanish::g_GameFrame.load(std::memory_order_relaxed); /* date de reception (relecture Codex) */
+                    coop::vanish::g_Incoming.Push(m);
                 }
             } else if (std::strncmp(line, "SWST ", 5) == 0) {
                 /* Interrupteur au sol du partenaire (switches.hpp, NOTES 6.27) : HashId, 1 enfonce / 0 relache. */
@@ -778,6 +786,19 @@ namespace coop::net_probe {
                             static_cast<double>(o[4]), static_cast<double>(o[5]), static_cast<double>(o[6]), static_cast<double>(o[7]),
                             static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]));
                         if (len > 0 && len < static_cast<int>(sizeof(ice)) && !SendAll(s_Fd, ice, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
+                }
+
+                /* Objets detruits (vanish.hpp, NOTES 6.28) : envoyes des qu'ils sont en file, jetes apres 3 s. */
+                {
+                    coop::vanish::Msg vm;
+                    while (Live() && coop::vanish::g_Outgoing.Pop(vm)) {
+                        if (!inGame || coop::vanish::g_GameFrame.load(std::memory_order_relaxed) - vm.m_Frame > coop::vanish::MaxAgeFrames)
+                            continue;
+                        char vl[32];
+                        const int len = std::snprintf(vl, sizeof(vl), "ODEL %08x\n", vm.m_Hash);
+                        if (len > 0 && len < static_cast<int>(sizeof(vl)) && !SendAll(s_Fd, vl, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
                 }

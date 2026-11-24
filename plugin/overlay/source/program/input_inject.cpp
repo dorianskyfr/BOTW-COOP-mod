@@ -9,6 +9,7 @@
 #include "fire.hpp"
 #include "ice.hpp"
 #include "switches.hpp"
+#include "vanish.hpp"
 
 #include "clock.hpp"
 #include "beast_rotate.hpp"
@@ -223,6 +224,7 @@ namespace coop::input_inject {
                 coop::fire::OnFrame();  /* NOTES 6.24, meme part */
                 coop::ice::OnFrame();   /* NOTES 6.25, meme part */
                 coop::switches::OnFrame(); /* NOTES 6.27, meme part */
+                coop::vanish::OnFrame();   /* NOTES 6.28, meme part */
                 coop::remote_actor::OnFrame();
                 COOP_PART();
                 coop::world_sync::OnFrame();
@@ -320,6 +322,18 @@ namespace coop::input_inject {
                         if (cmdB != s_LastBomb) {
                             s_LastBomb = cmdB;
                             coop::bombs::g_TestStep.fetch_add(1, std::memory_order_release);
+                        }
+                        buttons &= ~(1ull << 47);
+                    }
+#endif
+#ifdef COOP_TEST_VANISH
+                    /* Bit 47 : essai objet detruit (vanish.cpp, NOTES 6.28). */
+                    if ((buttons >> 47) & 1) {
+                        static std::uint64_t s_LastVanish = 0;
+                        const auto cmdV = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmdV != s_LastVanish) {
+                            s_LastVanish = cmdV;
+                            coop::vanish::g_TestStep.fetch_add(1, std::memory_order_release);
                         }
                         buttons &= ~(1ull << 47);
                     }
