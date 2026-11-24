@@ -902,6 +902,68 @@ namespace coop::game {
         return 0;
     }
 
+    /*
+     * NOTES 6.29. Trouve dans main 1.9.0 (fabriques d'IA et d'actions, entrees {crc32(nom), fonction}) :
+     * - IA « SwitchTorch » : entree a main+0x1cb97f0, fabrique main+0xb81d48, constructeur main+0xa89030, table virtuelle
+     *   main+0x1c95238 ;
+     * - actions « Off » (main+0x1caed30 -> main+0xb5ca30 -> constructeur main+0x70559c, table main+0x1c1a5c8) et « On »
+     *   (main+0x1cb2850 -> main+0xb69728 -> constructeur main+0x705a58, table main+0x1c1a800) ;
+     * - Ai::getCurrentChild (26e virtuelle, main+0x15377d0) : index de l'enfant courant (u16) a +0x1c (0xffff aucun),
+     *   nombre d'enfants (u32) a +0x28, tableau d'enfants a +0x30.
+     * SwitchTorch.baiprog (SwitchCandlestick.sbactorpack) : enfants « オフ » (Off), « オフ待機 » (DummyAction), « オン » (On),
+     * « オン待機 » (DummyAction), indices 2 a 5 du programme, dans cet ordre. On verifie que l'enfant 0 est bien Off et
+     * l'enfant 2 bien On ; la torche est allumee quand l'enfant courant est 2 ou 3.
+     */
+    int GetSwitchTorchLit(std::uintptr_t actor, int* childIdx) {
+        constexpr std::size_t Actor_RootAi = 0x558;
+        constexpr int Slot_GetCurrentChild = 26;
+        constexpr std::size_t Ai_ChildIdx = 0x1c, Ai_ChildCount = 0x28, Ai_Children = 0x30;
+        constexpr std::uintptr_t SwitchTorchVtable = 0x1c95238, OffVtable = 0x1c1a5c8, OnVtable = 0x1c1a800;
+        if (childIdx != nullptr)
+            *childIdx = -1;
+        if (s_Offsets == nullptr || actor == 0 || !CanReadMemory(actor + Actor_RootAi, 8))
+            return -1;
+        const auto& info = exl::util::GetMainModuleInfo();
+        const auto inMain = [&](std::uintptr_t p) { return p >= info.m_Total.m_Start && p < info.m_Total.m_Start + info.m_Total.m_Size; };
+        const auto inText = [&](std::uintptr_t p) { return p >= info.m_Text.m_Start && p < info.m_Text.m_Start + info.m_Text.m_Size; };
+        /* Essai tc2 : l'enfant courant de mRootAi n'est pas l'IA SwitchTorch (-5 sur les 5 torches du sanctuaire 016) ;
+           comme pour la bombe, il est l'IA « Root » du programme (BasicStatusRoot), dont l'enfant « 通常 » est l'IA
+           SwitchTorch. On descend donc d'au plus 3 niveaux, chaque table virtuelle et fonction verifiees. */
+        std::uintptr_t ai = Peek<std::uintptr_t>(actor + Actor_RootAi);
+        if (!LooksLikeHeapPtr(ai))
+            return -2;
+        for (int depth = 0; depth < 3 && Peek<std::uintptr_t>(ai) != MainBase() + SwitchTorchVtable; depth++) {
+            const auto vt = Peek<std::uintptr_t>(ai);
+            if (!inMain(vt))
+                return -3;
+            const auto getChild = Peek<std::uintptr_t>(vt + Slot_GetCurrentChild * sizeof(std::uintptr_t));
+            if (!inText(getChild))
+                return -4;
+            ai = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(getChild)(ai);
+            if (!LooksLikeHeapPtr(ai))
+                return -5; /* pas d'enfant courant (action sans enfant, ou etat sans IA) */
+        }
+        if (Peek<std::uintptr_t>(ai) != MainBase() + SwitchTorchVtable)
+            return -5; /* autre etat de la racine (gelee, dans un coffre...) */
+        if (!CanReadMemory(ai, 0x38))
+            return -6;
+        const auto count = Peek<std::uint32_t>(ai + Ai_ChildCount);
+        const auto children = Peek<std::uintptr_t>(ai + Ai_Children);
+        const auto idx = Peek<std::uint16_t>(ai + Ai_ChildIdx);
+        if (count != 4 || !LooksLikeHeapPtr(children) || !CanReadMemory(children, 4 * sizeof(std::uintptr_t)))
+            return -7;
+        const auto off = Peek<std::uintptr_t>(children);
+        const auto on = Peek<std::uintptr_t>(children + 2 * sizeof(std::uintptr_t));
+        if (!LooksLikeHeapPtr(off) || !LooksLikeHeapPtr(on) || Peek<std::uintptr_t>(off) != MainBase() + OffVtable
+            || Peek<std::uintptr_t>(on) != MainBase() + OnVtable)
+            return -8;
+        if (idx >= count)
+            return -9; /* pas encore d'enfant */
+        if (childIdx != nullptr)
+            *childIdx = idx;
+        return idx >= 2 ? 1 : 0;
+    }
+
     int ExplodeRemoteBomb(std::uintptr_t actor) {
         constexpr std::size_t Actor_RootAi = 0x558;
         constexpr int Slot_GetCurrentChild = 26;

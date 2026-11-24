@@ -1128,6 +1128,44 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - **Limite** : un objet qui sort de la zone chargée pendant qu'on reste à moins de 30 m de sa dernière place serait pris pour détruit. Cela n'a pas été vu ; la zone chargée est bien plus large que 30 m.
 - Preuves : `docs/evidence/2026-11-24_objets-detruits_vd1-vd2.log`.
 
+### 6.29 Torches d'énigme partagées (2026-11-24, essais `tc1` à `tc5`, Eden) - [V] image et journaux
+
+- **Constat** : une torche d'énigme allumée par un joueur (flèche de feu, arme en feu, autre torche) ne s'allumait que dans son monde. La porte ou le coffre qu'elle commande restait fermé chez l'autre.
+- **Données du jeu** (cartes `Pack/DungeonNNN.pack` de la RomFS 1.9.0, extraites dans `build/` par `RomfsExtract`) :
+  - torches d'énigme `SwitchCandlestick` (éteinte au départ) et `SwitchCandlestickOn` (allumée au départ). On les trouve dans les sanctuaires 016, 030 et 051. Le sanctuaire 028 a `SwitchCandlestickAncient` (flamme bleue, IA `SwitchTorchSave`), non traitée ;
+  - `SwitchCandlestick.sbactorpack` : IA `SwitchTorch` (`SwitchTorch.baiprog`). L'IA racine `BasicStatusRoot` a pour enfant « 通常 » (classe `SwitchTorch`). Celui-ci a quatre actions : « オフ » (`Off`), « オフ待機 » (`DummyAction`), « オン » (`On`), « オン待機 » (`DummyAction`). Le combustible est la sphère `ChemFuel` de 0,5 m, 1,35 m au-dessus du pied (`SwitchCandlestick.bphysics`).
+- **Désassemblage de main 1.9.0** :
+  - les fabriques d'IA et d'actions sont des entrées `{crc32(nom), fonction}` ;
+  - `SwitchTorch` : entrée main+0x1cb97f0, constructeur main+0xa89030, table virtuelle main+0x1c95238 ;
+  - `Off` : table main+0x1c1a5c8 (constructeur main+0x70559c) ;
+  - `On` : table main+0x1c1a800 (constructeur main+0x705a58) ;
+  - `Ai::getCurrentChild` (26e virtuelle, main+0x15377d0) : index de l'enfant courant (u16) à +0x1c, nombre d'enfants à +0x28, tableau à +0x30.
+- **`GetSwitchTorchLit`** (game.cpp) :
+  - descend d'au plus 3 niveaux depuis `mRootAi` (acteur+0x558) jusqu'à l'IA `SwitchTorch` ;
+  - vérifie que l'enfant 0 est `Off` et l'enfant 2 `On` ;
+  - la torche est allumée si l'enfant courant vaut 2 ou 3.
+  - Mesuré en `tc3` : torches éteintes à l'action 1, `SwitchCandlestickOn` à l'action 3.
+  - En `tc2`, avec un seul niveau, toutes les torches donnaient -5 : l'enfant de `mRootAi` est `BasicStatusRoot`.
+- **Module `torches.cpp`** :
+  - chacun suit ses torches à moins de 60 m (relevé toutes les 2 images) ;
+  - un passage d'éteinte à allumée est annoncé : `TRCH <HashId>`. Rien n'est annoncé pendant les 2 s qui suivent la première vue d'une torche. Sans ce délai, en `tc3`, une `SwitchCandlestickOn` lue éteinte au chargement puis allumée était annoncée à tort ;
+  - à la réception (datée par le fil réseau, gardée 5 s) : si la torche de même HashId est chargée et éteinte, `fire::IgniteAt` crée une boule de feu `FireRodLv1Fire` au centre du combustible (axe Y local de la torche, donc aussi pour les torches murales). La boule est notée comme la nôtre, donc jamais renvoyée en `FIRE`. On essaie au plus 3 boules, une toutes les 1,5 s. La chimie allume la torche, et son IA envoie elle-même son signal ;
+  - une torche allumée ainsi n'est pas renvoyée pendant 10 s ;
+  - relais : `TRCH` (« x »), deux essais automatiques (142/142) ; réglage `torch=0`.
+- [V] **Essais** (sanctuaire 016, outil `-DCOOP_TEST_TORCH` : un appui allume chez ce joueur la torche éteinte la plus proche par une boule de feu) :
+  - **`tc3`** : J1 allume `a95b6fc8` (le feu prend aussi `c99ce62d`, à côté), et les deux sont annoncées. J2 crée une boule de feu pour chacune, puis écrit `allumee pour le partenaire (non renvoyee)` et `allumee ici aussi (1 boule(s) de feu)`. Les images de J1 et J2 sont identiques ;
+  - **`tc4`**, après l'ajout du délai : le sens J2 vers J1 marche de même, et rien n'est annoncé au chargement ;
+  - **`tc5`**, après la relecture : J1 allume `a95b6fc8` et `c99ce62d`, J2 allume `de5c5f5e`. Chacun reçoit et allume les torches de l'autre avec une seule boule, sans écho. L'image de J2 montre les torches allumées des deux joueurs.
+- **Relectures Codex** :
+  - passe 1 : une P2 retenue. Une adresse suivie était lue (matrice) entre deux relevés, peut-être périmée. Les demandes sont maintenant servies seulement l'image d'un relevé, juste après lui ;
+  - passe 2 : rien à signaler.
+- **Non vérifié** : un vrai allumage (flèche de feu, arme en feu, torche tenue) ; les sanctuaires 030 et 051 ; l'ouverture de la porte chez l'autre quand toutes les torches sont allumées.
+- **Limites** :
+  - une torche qui s'éteint seule (minuterie) s'éteint de son côté chez chacun ; l'extinction n'est pas partagée ;
+  - une torche déjà allumée par l'autre avant notre arrivée n'est pas rattrapée ;
+  - la torche bleue (`SwitchCandlestickAncient`) n'est pas partagée.
+- Preuves : `docs/evidence/2026-11-24_torche_tc3.log`, `…_tc4.log`, `…_tc5.log` ; images `…_tc3_J1.png`, `…_tc3_J2.png`, `…_tc5_J1.png`, `…_tc5_J2.png`.
+
 ### 6.26 État des autres pouvoirs (2026-11-24)
 
 - **Runes de la tablette** :

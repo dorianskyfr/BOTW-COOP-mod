@@ -10,6 +10,7 @@
 #include "ice.hpp"
 #include "switches.hpp"
 #include "vanish.hpp"
+#include "torches.hpp"
 #include "config.hpp"
 #include "beast_rotate.hpp"
 #include "cutscene.hpp"
@@ -368,6 +369,13 @@ namespace coop::net_probe {
                 if (std::sscanf(line, "ODEL %d %x", &id, &m.m_Hash) == 2 && m.m_Hash != 0) {
                     m.m_Frame = coop::vanish::g_GameFrame.load(std::memory_order_relaxed); /* date de reception (relecture Codex) */
                     coop::vanish::g_Incoming.Push(m);
+                }
+            } else if (std::strncmp(line, "TRCH ", 5) == 0) {
+                /* Torche d'enigme allumee chez le partenaire (torches.hpp, NOTES 6.29) : HashId. */
+                coop::torches::Msg m;
+                if (std::sscanf(line, "TRCH %d %x", &id, &m.m_Hash) == 2 && m.m_Hash != 0) {
+                    m.m_Frame = coop::torches::g_GameFrame.load(std::memory_order_relaxed); /* date de reception */
+                    coop::torches::g_Incoming.Push(m);
                 }
             } else if (std::strncmp(line, "SWST ", 5) == 0) {
                 /* Interrupteur au sol du partenaire (switches.hpp, NOTES 6.27) : HashId, 1 enfonce / 0 relache. */
@@ -799,6 +807,19 @@ namespace coop::net_probe {
                         char vl[32];
                         const int len = std::snprintf(vl, sizeof(vl), "ODEL %08x\n", vm.m_Hash);
                         if (len > 0 && len < static_cast<int>(sizeof(vl)) && !SendAll(s_Fd, vl, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
+                }
+
+                /* Torches d'enigme allumees (torches.hpp, NOTES 6.29) : envoyees des qu'elles sont en file, jetees apres 3 s. */
+                {
+                    coop::torches::Msg tm;
+                    while (Live() && coop::torches::g_Outgoing.Pop(tm)) {
+                        if (!inGame || coop::torches::g_GameFrame.load(std::memory_order_relaxed) - tm.m_Frame > coop::torches::MaxAgeFrames)
+                            continue;
+                        char tl[32];
+                        const int len = std::snprintf(tl, sizeof(tl), "TRCH %08x\n", tm.m_Hash);
+                        if (len > 0 && len < static_cast<int>(sizeof(tl)) && !SendAll(s_Fd, tl, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
                 }

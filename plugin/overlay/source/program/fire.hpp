@@ -63,6 +63,10 @@ namespace coop::fire {
     /* Fil du jeu, chaque image. */
     void OnFrame();
 
+    /* Fil du jeu (NOTES 6.29) : cree une boule de feu FireRodLv1Fire exactement en `at`, notee comme la notre (jamais
+       annoncee au partenaire). false si aucun emplacement de creation n'est libre ou si le jeu refuse : a redemander. */
+    bool IgniteAt(const float at[3]);
+
     /* Essai (COOP_TEST_FIRE_SEND) : nombre d'appuis du bouton d'essai, lu par le fil du jeu. */
     inline std::atomic<int> g_TestStep { 0 };
 

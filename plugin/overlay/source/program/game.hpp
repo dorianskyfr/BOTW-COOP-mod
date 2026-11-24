@@ -191,6 +191,9 @@ namespace coop::game {
     /* Demande l'explosion comme la tablette (octet de detonation de l'IA, NOTES 6.22) : le jeu allume la forme chimique,
        la bombe explose avec sa sphere. 0 si fait. Fil du jeu. */
     int DetonateRemoteBomb(std::uintptr_t actor);
+    /* Torche d'enigme (IA SwitchTorch, NOTES 6.29) : 1 allumee, 0 eteinte, <0 inconnu (pas l'IA attendue). Fil du jeu.
+       *childIdx (si non nul) recoit l'index de l'action courante de l'IA SwitchTorch (outil d'essai). */
+    int GetSwitchTorchLit(std::uintptr_t actor, int* childIdx = nullptr);
 #ifdef COOP_TEST_REMOVE_EQUIPPED
     void DebugRemoveEquippedWeapon();
 #endif

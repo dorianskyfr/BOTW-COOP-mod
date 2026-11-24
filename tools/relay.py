@@ -157,7 +157,9 @@ def auth_digest(challenge, password):
 #          retransmise telle quelle ; l'autre montre la meme bombe (NOTES 5.99). Ignoree par un plugin plus ancien.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
                 "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1, "DROT": 2, "EDST": 2,
-                "GDRP": 6, "GPCK": 2, "BOMB": 15, "FIRE": 4, "ICE": 15, "SWST": 2, "ODEL": 1}
+                "GDRP": 6, "GPCK": 2, "BOMB": 15, "FIRE": 4, "ICE": 15, "SWST": 2, "ODEL": 1, "TRCH": 1}
+#   TRCH : torche d'enigme allumee chez un joueur (HashId hexadecimal ; plugin torches.hpp, NOTES 6.29), retransmis
+#          tel quel ; l'autre allume la meme torche. Ignore par un plugin plus ancien.
 #   ODEL : objet de carte detruit chez un joueur (HashId hexadecimal ; plugin vanish.hpp, NOTES 6.28), retransmis tel
 #          quel ; l'autre retire le meme objet. Ignore par un plugin plus ancien.
 #   SWST : interrupteur au sol (HashId hexadecimal, 1 enfonce / 0 relache ; plugin switches.hpp, NOTES 6.27),
@@ -184,7 +186,7 @@ FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
                "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i", "DROT": "xfx", "EDST": "xf",
                "GDRP": "xnfffixi", "GPCK": "xii", "BOMB": "iii" + "f" * 12 + "i", "FIRE": "ifff",
-               "ICE": "iii" + "f" * 12, "SWST": "xi", "ODEL": "x"}
+               "ICE": "iii" + "f" * 12, "SWST": "xi", "ODEL": "x", "TRCH": "x"}
 
 
 def valid_fields(kind, values):
@@ -919,6 +921,10 @@ def main():
                         client.odel = getattr(client, "odel", 0) + 1
                         if client.odel <= 40 or client.odel % 200 == 0:
                             log(f"joueur {client.pid} : objet detruit n.{client.odel} = {payload}")
+                    elif parts[0] == "TRCH":
+                        client.trch = getattr(client, "trch", 0) + 1
+                        if client.trch <= 40 or client.trch % 200 == 0:
+                            log(f"joueur {client.pid} : torche allumee n.{client.trch} = {payload}")
                     elif parts[0] == "SWST":
                         if parts[2] not in ("0", "1"):
                             continue

@@ -474,6 +474,15 @@ def main():
         a.send("SAVED 16")
         b.expect("SAVED")
         check("ODEL invalide, vide, trop long non retransmis", not b.take("ODEL"), str(b.lines))
+        # Torches d'enigme (NOTES 6.29) : un HashId hexadecimal.
+        a.send("TRCH 0a1b2c3d")
+        got = b.expect("TRCH")
+        check("torche allumee retransmise avec l'identifiant", got == "TRCH 1 0a1b2c3d", got)
+        for bad in ("TRCH zz", "TRCH", "TRCH 1 2", "TRCH 123456789"):
+            a.send(bad)
+        a.send("SAVED 17")
+        b.expect("SAVED")
+        check("TRCH invalide, vide, trop long non retransmis", not b.take("TRCH"), str(b.lines))
         check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
         a.send("GIFT Weapon_Sword_001 1800")
         line = b.expect("GIFT")

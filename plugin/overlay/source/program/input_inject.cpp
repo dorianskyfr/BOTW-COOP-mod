@@ -10,6 +10,7 @@
 #include "ice.hpp"
 #include "switches.hpp"
 #include "vanish.hpp"
+#include "torches.hpp"
 
 #include "clock.hpp"
 #include "beast_rotate.hpp"
@@ -225,6 +226,7 @@ namespace coop::input_inject {
                 coop::ice::OnFrame();   /* NOTES 6.25, meme part */
                 coop::switches::OnFrame(); /* NOTES 6.27, meme part */
                 coop::vanish::OnFrame();   /* NOTES 6.28, meme part */
+                coop::torches::OnFrame();  /* NOTES 6.29, meme part */
                 coop::remote_actor::OnFrame();
                 COOP_PART();
                 coop::world_sync::OnFrame();
@@ -334,6 +336,18 @@ namespace coop::input_inject {
                         if (cmdV != s_LastVanish) {
                             s_LastVanish = cmdV;
                             coop::vanish::g_TestStep.fetch_add(1, std::memory_order_release);
+                        }
+                        buttons &= ~(1ull << 47);
+                    }
+#endif
+#ifdef COOP_TEST_TORCH
+                    /* Bit 47 : essai torche d'enigme (torches.cpp, NOTES 6.29). */
+                    if ((buttons >> 47) & 1) {
+                        static std::uint64_t s_LastTorch = 0;
+                        const auto cmdT = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmdT != s_LastTorch) {
+                            s_LastTorch = cmdT;
+                            coop::torches::g_TestStep.fetch_add(1, std::memory_order_release);
                         }
                         buttons &= ~(1ull << 47);
                     }
