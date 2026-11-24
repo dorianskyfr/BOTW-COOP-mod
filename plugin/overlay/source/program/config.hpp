@@ -13,6 +13,7 @@
  *   relay=192.168.1.20:47800     adresse IPv4 et port du relais
  *   enemy_pos=0                  coupe le partage de la position des ennemis (actif par defaut)
  *   puzzle_pos=0                 coupe le partage de la position des objets d'enigme (actif par defaut)
+ *   fire=0                       coupe le partage des departs de feu (actif par defaut)
  *   enemy_anim=0|1|2             animations des ennemis (voir g_EnemyAnim)
  *   cutscene=0                   coupe les cinematiques partagees ; cutscene_range=<metres> (50 par defaut)
  *   beast_rotate=0               coupe le partage de l'inclinaison des Creatures divines
@@ -42,6 +43,8 @@ namespace coop::config {
     /* NOTES 6.23 : position des objets mobiles des sanctuaires et Creatures divines (DgnObj_/FldObj_ a corps dynamique),
        par le meme partage que les ennemis (puzzle_pos=0 pour le couper). */
     inline bool g_PuzzlePos = true;
+    /* NOTES 6.24 : departs de feu partages (projectiles de feu -> champ de feu chez l'autre ; fire=0 pour le couper). */
+    inline bool g_FireSync = true;
 
     /*
      * Animations des ennemis (message EAS, NOTES 5.56) : 0 = rien ; 1 = celui qui fait foi annonce

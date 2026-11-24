@@ -69,6 +69,7 @@ Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image 
 
 **Limites connues, gardées volontairement** :
 - **Deux joueurs** au plus.
+- **Feu** : un feu allumé par une flèche de feu ou un bâton de feu démarre aussi chez l'autre, et son jeu le propage ; l'étendue brûlée peut différer un peu. Les autres feux (silex, torche, foudre, ennemis) restent propres à chacun.
 - **Énigme de sanctuaire en cours** : seuls les objets qu'on déplace sont partagés. Le feu (lierre, torches), l'électricité, l'eau, un interrupteur enfoncé par le corps d'un joueur et les labyrinthes à inclinaison restent propres à chacun.
 - **Le Link du partenaire a une collision** : on ne le traverse pas.
 - **Chacun garde** son inventaire, sa santé, son équipement et l'épée de légende.

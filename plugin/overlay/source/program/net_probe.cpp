@@ -6,6 +6,7 @@
 #include "gear.hpp"
 #include "weapons.hpp"
 #include "bombs.hpp"
+#include "fire.hpp"
 #include "config.hpp"
 #include "beast_rotate.hpp"
 #include "cutscene.hpp"
@@ -357,6 +358,17 @@ namespace coop::net_probe {
                     b.m_Serial = serial;
                     b.m_Exploded = exploded == 1 ? 1u : 0u; /* aussi type non nul : explosion commencee (NOTES 6.05) */
                     coop::bombs::g_Remote[slot].Store(b);
+                }
+            } else if (std::strncmp(line, "FIRE ", 5) == 0) {
+                /* Depart de feu du partenaire (fire.hpp, NOTES 6.24) : type de projectile, position monde bornee comme BOMB. */
+                unsigned kind = 0;
+                coop::fire::Event e;
+                if (std::sscanf(line, "FIRE %d %u %f %f %f", &id, &kind, &e.m_Pos[0], &e.m_Pos[1], &e.m_Pos[2]) == 5
+                    && kind < coop::fire::KindCount && std::isfinite(e.m_Pos[0]) && std::isfinite(e.m_Pos[1])
+                    && std::isfinite(e.m_Pos[2]) && std::fabs(e.m_Pos[0]) < 20000.0f && std::fabs(e.m_Pos[1]) < 20000.0f
+                    && std::fabs(e.m_Pos[2]) < 20000.0f) {
+                    e.m_Kind = kind;
+                    coop::fire::g_Incoming.Push(e);
                 }
             } else if (std::strncmp(line, "WPN ", 4) == 0) {
                 /* Objet porte par le partenaire : emplacement, CRC32 du nom, matrice 3x4 dans son repere (weapons.hpp). */
@@ -722,6 +734,20 @@ namespace coop::net_probe {
                             static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]),
                             static_cast<unsigned>(b.m_Exploded));
                         if (len > 0 && len < static_cast<int>(sizeof(bomb)) && !SendAll(s_Fd, bomb, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
+                }
+
+                /* Departs de feu (fire.hpp, NOTES 6.24) : envoyes des qu'ils sont en file. */
+                {
+                    coop::fire::Event fe;
+                    while (Live() && coop::fire::g_Outgoing.Pop(fe)) {
+                        if (!inGame || coop::fire::g_GameFrame.load(std::memory_order_relaxed) - fe.m_Frame > coop::fire::MaxAgeFrames)
+                            continue;
+                        char fl[96];
+                        const int len = std::snprintf(fl, sizeof(fl), "FIRE %u %.2f %.2f %.2f\n", static_cast<unsigned>(fe.m_Kind),
+                            static_cast<double>(fe.m_Pos[0]), static_cast<double>(fe.m_Pos[1]), static_cast<double>(fe.m_Pos[2]));
+                        if (len > 0 && len < static_cast<int>(sizeof(fl)) && !SendAll(s_Fd, fl, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
                 }

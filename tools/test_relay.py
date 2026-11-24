@@ -435,6 +435,15 @@ def main():
         a.send(exploded)
         got = b.expect("BOMB")
         check("bombe explosee (16e valeur) retransmise", got == "BOMB 1 " + exploded[5:], got)
+        # Departs de feu (NOTES 6.24) : type 0..3 et position finie seulement.
+        a.send("FIRE 0 -630.25 128.50 -334.00")
+        got = b.expect("FIRE")
+        check("depart de feu retransmis avec l'identifiant", got == "FIRE 1 0 -630.25 128.50 -334.00", got)
+        for bad in ("FIRE 4 1 2 3", "FIRE -1 1 2 3", "FIRE 0 nan 2 3", "FIRE 0 1 2", "FIRE 0 1 2 3 4", "FIRE x 1 2 3"):
+            a.send(bad)
+        a.send("SAVED 13")
+        b.expect("SAVED")
+        check("FIRE hors des types 0..3, non fini, trop court ou trop long non retransmis", not b.take("FIRE"), str(b.lines))
         check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
         a.send("GIFT Weapon_Sword_001 1800")
         line = b.expect("GIFT")

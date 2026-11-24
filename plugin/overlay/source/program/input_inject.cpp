@@ -6,6 +6,7 @@
 #include "gear.hpp"
 #include "weapons.hpp"
 #include "bombs.hpp"
+#include "fire.hpp"
 
 #include "clock.hpp"
 #include "beast_rotate.hpp"
@@ -217,6 +218,7 @@ namespace coop::input_inject {
                 coop::weapons::OnFrameLocal();
                 COOP_PART();
                 coop::bombs::OnFrame(); /* compte dans la part suivante (liste des parts inchangee) */
+                coop::fire::OnFrame();  /* NOTES 6.24, meme part */
                 coop::remote_actor::OnFrame();
                 COOP_PART();
                 coop::world_sync::OnFrame();
@@ -314,6 +316,18 @@ namespace coop::input_inject {
                         if (cmdB != s_LastBomb) {
                             s_LastBomb = cmdB;
                             coop::bombs::g_TestStep.fetch_add(1, std::memory_order_release);
+                        }
+                        buttons &= ~(1ull << 47);
+                    }
+#endif
+#ifdef COOP_TEST_FIRE_SEND
+                    /* Bit 47 : essai depart de feu annonce (fire.cpp, NOTES 6.24). */
+                    if ((buttons >> 47) & 1) {
+                        static std::uint64_t s_LastFire = 0;
+                        const auto cmdF = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmdF != s_LastFire) {
+                            s_LastFire = cmdF;
+                            coop::fire::g_TestStep.fetch_add(1, std::memory_order_release);
                         }
                         buttons &= ~(1ull << 47);
                     }

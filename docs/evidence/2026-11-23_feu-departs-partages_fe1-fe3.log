@@ -1,0 +1,27 @@
+# fe1 a fe3 : departs de feu partages (Eden, 2026-11-23). NOTES 6.24
+## fe1_game.txt
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-631.5, 128.9, -330.7) 
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-643.1, 128.5, -330.4) 
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-643.1, 128.5, -330.4) 
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-656.8, 98.5, -342.7) 
+[botw-coop] feu : depart de feu du partenaire (FireArrow) en (-966.2, 134.4, -625.7), ExpandFireField demande
+## fe1_game2.txt
+[botw-coop] feu : depart de feu du partenaire (FireArrow) en (-631.5, 128.9, -330.7), ExpandFireField demande
+[botw-coop] feu : depart de feu du partenaire (FireArrow) en (-643.1, 128.4, -330.4), ExpandFireField demande
+[botw-coop] feu : depart de feu du partenaire (FireArrow) en (-643.1, 128.4, -330.4), ExpandFireField demande
+[botw-coop] feu : depart de feu du partenaire (FireArrow) en (-656.8, 98.5, -342.7), ExpandFireField demande
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-643.5, 129.3, -342.8) 
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-966.3, 134.4, -625.7) 
+## fe2_game.txt
+[botw-coop] feu : depart de feu du partenaire (FireArrow) en (-643.4, 127.1, -329.1), FireArrow demande
+## fe2_game2.txt
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-643.4, 127.1, -329.1) 
+## fe3_game.txt
+[botw-coop] feu : depart de feu du partenaire (FireRodLv1Fire) en (-972.5, 133.7, -633.7), FireRodLv1Fire demande
+[botw-coop] feu : depart de feu du partenaire (FireRodLv1Fire) en (-642.8, 127.5, -329.0), FireRodLv1Fire demande
+## fe3_game2.txt
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-972.5, 133.7, -633.7) 
+[botw-coop] feu : OUTIL DE TEST, depart de feu annonce en (-642.8, 127.5, -328.9) 
+## fe3_relay.log
+20:08:29.395 joueur 2 : depart de feu n.1 = 1 -972.49 133.69 -633.72
+20:10:38.823 joueur 2 : depart de feu n.2 = 1 -642.80 127.51 -328.95

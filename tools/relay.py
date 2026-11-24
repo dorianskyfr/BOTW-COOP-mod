@@ -157,7 +157,10 @@ def auth_digest(challenge, password):
 #          retransmise telle quelle ; l'autre montre la meme bombe (NOTES 5.99). Ignoree par un plugin plus ancien.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
                 "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1, "DROT": 2, "EDST": 2,
-                "GDRP": 6, "GPCK": 2, "BOMB": 15}
+                "GDRP": 6, "GPCK": 2, "BOMB": 15, "FIRE": 4}
+#   FIRE : depart de feu chez un joueur (type de projectile 0..3, position monde ; plugin fire.hpp, NOTES 6.24),
+#          retransmis tel quel ; l'autre cree un champ de feu au meme endroit. Ignore par un plugin plus ancien.
+FIRE_KINDS = 4
 # TIME peut porter une 4e valeur : le minuteur de lune de sang du joueur, et une 5e : son climat
 #   (le relais rend aux autres le climat du joueur de reference de la meteo, avec sa meteo).
 # MTX peut porter une 13e valeur : l'etat d'animation du joueur (plugin, anim_state.hpp).
@@ -173,7 +176,7 @@ OPTIONAL_EXTRA = {"TIME": 2, "MTX": 1, "GIFT": 2, "EAS": 1, "DROT": 1, "GDRP": 2
 FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi", "FLAGR": "xi", "LIFE": "xi",
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
                "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i", "DROT": "xfx", "EDST": "xf",
-               "GDRP": "xnfffixi", "GPCK": "xii", "BOMB": "iii" + "f" * 12 + "i"}
+               "GDRP": "xnfffixi", "GPCK": "xii", "BOMB": "iii" + "f" * 12 + "i", "FIRE": "ifff"}
 
 
 def valid_fields(kind, values):
@@ -904,6 +907,12 @@ def main():
                         if bombs.get(slot) != (parts[2], parts[3]):
                             bombs[slot] = (parts[2], parts[3])
                             log(f"joueur {client.pid} : bombe {slot} = type {parts[2]} n.{parts[3]} (position {parts[7]} {parts[11]} {parts[15]})")
+                    elif parts[0] == "FIRE":
+                        if not 0 <= int(parts[1]) < FIRE_KINDS:
+                            continue
+                        client.fires = getattr(client, "fires", 0) + 1
+                        if client.fires <= 20 or client.fires % 100 == 0:
+                            log(f"joueur {client.pid} : depart de feu n.{client.fires} = {payload}")
                     elif parts[0] == "SAVED":
                         log(f"joueur {client.pid} : releve par son partenaire ({payload} m)")
                     elif parts[0] == "GIFT":

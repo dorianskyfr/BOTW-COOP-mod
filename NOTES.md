@@ -1032,6 +1032,31 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - labyrinthes à inclinaison (corps Keyframed).
 - Preuves : `docs/evidence/2026-11-23_enigmes-objets-mobiles_pz1-pz4.log`.
 
+### 6.24 Départs de feu partagés (2026-11-23, essais `fe1` à `fe3`, Eden) - [V] image et journaux pour la réception ; envoi sur un vrai tir non vérifié
+
+- **Constat** : chaque jeu fait tourner sa propre chimie. Un feu allumé par un joueur ne brûlait que dans son monde.
+- **Choix** : partager les **départs** de feu, et laisser chaque jeu propager le feu lui-même. Module `fire.cpp` :
+  - chez le joueur qui tire : ses projectiles de feu sont suivis (`FireArrow`, `FireRodLv1Fire`, `FireRodLv2Fire`, `FireRodLv2FireChild` : acteurs de profil Bullet d'`ActorInfo.product.sbyml`). Quand l'un disparaît (impact) après au moins 2 relevés, à moins de 200 m, sa dernière place est annoncée : message `FIRE <type> <x> <y> <z>` ;
+  - chez le partenaire, à moins de 150 m : une boule de feu du bâton de feu (`FireRodLv1Fire`, `Pack/TitleBG.pack`) est créée 0,8 m au-dessus de l'endroit, au plus une toutes les 4 images ;
+  - relais : `FIRE` ajouté (4 valeurs, « ifff », type 0 à 3), retransmis tel quel ; deux essais automatiques (134/134) ;
+  - réglage `fire=0` pour couper la fonction (activée par défaut).
+- **Choix de l'acteur créé** (outil `-DCOOP_TEST_FIRE_SEND` : un appui annonce un départ de feu 6 m devant Link ; `-DCOOP_TEST_FIRE_KIND=n` pour le type) :
+  - `fe1` : `ExpandFireField` (`炎フィールド放射`, champ de feu du Chuchu de feu, mise à jour 1.9.0). Sur la roche, une boule de feu apparaît puis s'éteint ; sur l'herbe, seulement quelques braises (image `2026-11-23_feu-champ-chuchu-braises_fe1.png`). Sa sphère fait 1 m (`ExpandChemicalField.bphysics`), et son IA `ExpandChemicalField` lit `ScaleTime`, `AttackPower`, `CutGrassType`… dans les paramètres de création (décomp `actionExpandChemicalField.cpp`) que fournit son créateur ;
+  - `fe2` : une `FireArrow` créée sans vitesse ne s'enflamme pas ;
+  - `fe3` : `FireRodLv1Fire`. **L'herbe haute brûle chez J1** à l'endroit annoncé par J2, et le feu s'étend sur plusieurs mètres avant de s'éteindre (images 2 à 6 de `2026-11-23_feu-herbe-chez-J1-depart-annonce-par-J2_fe3.png`). Journaux : J2 `OUTIL DE TEST, depart de feu annonce en (-642.8, 127.5, -328.9)`, relais `depart de feu n.2`, J1 `depart de feu du partenaire … FireRodLv1Fire demande`. Pas de boucle : la boule recréée chez J1 n'est pas renvoyée.
+- **Relectures Codex** :
+  - passe 1, deux remarques P2 retenues : l'exclusion des boules recréées, faite par distance, écartait aussi un vrai tir proche (remplacée par le suivi de l'acteur exact, via sa poignée de création) ; de vieux départs étaient envoyés après une reconnexion (chaque départ porte son image et est jeté après 90 images) ;
+  - passe 2, trois remarques P2 retenues : acteur vu avant que sa poignée soit prête (désormais marqué à ce moment-là) ; adresses gardées après un chargement (effacées) ; poignées de création perdues en cas d'échec ;
+  - pour ce dernier point, le plugin ne sait pas encore rendre une unité de création au jeu. Une création en échec garde son emplacement, qui n'est plus réutilisé : au plus 4 unités immobilisées. Une création lente n'est jamais abandonnée. C'était la dernière passe autorisée.
+- **Non vérifié** :
+  - l'envoi sur un vrai tir (flèche de feu, bâton de feu) : l'essai `fe4`, avec la création par poignée, a été interrompu (PC utilisé). L'allumage par poignée, puis réveil (`ReleaseAndWakeActor`), est donc à revoir en jeu : `fe3` créait l'acteur sans poignée ;
+  - les feux allumés autrement : silex, torche, foudre, Chuchu de feu, ennemis ;
+  - une arme en feu ou le feu d'une bombe.
+- **Limites** :
+  - la boule de feu recréée a sa propre attaque. Elle peut blesser un ennemi chez le partenaire, et comme la vie des ennemis est partagée, les dégâts du feu peuvent s'ajouter ;
+  - un départ de feu est un point unique : l'étendue brûlée peut différer d'un monde à l'autre (vent, herbe).
+- Preuves : `docs/evidence/2026-11-23_feu-departs-partages_fe1-fe3.log`.
+
 ### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
 
 - **Données** (GameData de `Pack/Bootup.pack`, `s32_data_0.bgdata`, script scratchpad `counter_init.py`) : `Counter_TerminalWind` (978537d6), `Counter_TerminalWater` (ce303243), `Counter_TerminalFire` (ee506ae7), `Counter_TerminalElectric` (4c2dfe7e) valent 5 au départ, et `Counter_TerminalFinalTrial` (d25c5e0d) 4. Minimum 0, sauvegardés, jamais remis à zéro (`ResetType` 0). Le jeu les fait descendre de 1 par terminal activé (`Demo044_0`, `RemainsTerminalMainFlow` : `Demo_IncreaseGameDataInt -1` selon la carte), et pose `Access_AllTerminal*` à 0.
