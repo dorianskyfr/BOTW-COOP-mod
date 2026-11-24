@@ -8,6 +8,7 @@
 #include "bombs.hpp"
 #include "fire.hpp"
 #include "ice.hpp"
+#include "switches.hpp"
 #include "config.hpp"
 #include "beast_rotate.hpp"
 #include "cutscene.hpp"
@@ -360,6 +361,11 @@ namespace coop::net_probe {
                     b.m_Exploded = exploded == 1 ? 1u : 0u; /* aussi type non nul : explosion commencee (NOTES 6.05) */
                     coop::bombs::g_Remote[slot].Store(b);
                 }
+            } else if (std::strncmp(line, "SWST ", 5) == 0) {
+                /* Interrupteur au sol du partenaire (switches.hpp, NOTES 6.27) : HashId, 1 enfonce / 0 relache. */
+                coop::switches::Msg m;
+                if (std::sscanf(line, "SWST %d %x %u", &id, &m.m_Hash, &m.m_Pressed) == 3 && m.m_Hash != 0 && m.m_Pressed <= 1)
+                    coop::switches::g_Incoming.Push(m);
             } else if (std::strncmp(line, "ICE ", 4) == 0) {
                 /* Pilier de glace du partenaire (ice.hpp, NOTES 6.25) : emplacement 0..2, numero, present, matrice monde. */
                 int slot = -1;
@@ -772,6 +778,19 @@ namespace coop::net_probe {
                             static_cast<double>(o[4]), static_cast<double>(o[5]), static_cast<double>(o[6]), static_cast<double>(o[7]),
                             static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]));
                         if (len > 0 && len < static_cast<int>(sizeof(ice)) && !SendAll(s_Fd, ice, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
+                }
+
+                /* Interrupteurs au sol (switches.hpp, NOTES 6.27) : envoyes des qu'ils sont en file. */
+                {
+                    coop::switches::Msg sm;
+                    while (Live() && coop::switches::g_Outgoing.Pop(sm)) {
+                        if (!inGame || coop::switches::g_GameFrame.load(std::memory_order_relaxed) - sm.m_Frame > coop::switches::MaxAgeFrames)
+                            continue;
+                        char sl[48];
+                        const int len = std::snprintf(sl, sizeof(sl), "SWST %08x %u\n", sm.m_Hash, sm.m_Pressed);
+                        if (len > 0 && len < static_cast<int>(sizeof(sl)) && !SendAll(s_Fd, sl, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
                 }

@@ -8,6 +8,7 @@
 #include "bombs.hpp"
 #include "fire.hpp"
 #include "ice.hpp"
+#include "switches.hpp"
 
 #include "clock.hpp"
 #include "beast_rotate.hpp"
@@ -221,6 +222,7 @@ namespace coop::input_inject {
                 coop::bombs::OnFrame(); /* compte dans la part suivante (liste des parts inchangee) */
                 coop::fire::OnFrame();  /* NOTES 6.24, meme part */
                 coop::ice::OnFrame();   /* NOTES 6.25, meme part */
+                coop::switches::OnFrame(); /* NOTES 6.27, meme part */
                 coop::remote_actor::OnFrame();
                 COOP_PART();
                 coop::world_sync::OnFrame();

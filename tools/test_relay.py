@@ -456,6 +456,15 @@ def main():
         b.expect("SAVED")
         check("ICE hors des emplacements 0..2, present different de 0/1, non fini ou trop court non retransmis",
               not b.take("ICE"), str(b.lines))
+        # Interrupteurs au sol (NOTES 6.27) : HashId hexadecimal, 0 ou 1.
+        a.send("SWST 1a2b3c4d 1")
+        got = b.expect("SWST")
+        check("interrupteur retransmis avec l'identifiant", got == "SWST 1 1a2b3c4d 1", got)
+        for bad in ("SWST 1a2b3c4d 2", "SWST zz 1", "SWST 1a2b3c4d", "SWST 1a2b3c4d 1 0", "SWST 123456789 1"):
+            a.send(bad)
+        a.send("SAVED 15")
+        b.expect("SAVED")
+        check("SWST hors de 0/1, hachage invalide, trop court ou trop long non retransmis", not b.take("SWST"), str(b.lines))
         check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
         a.send("GIFT Weapon_Sword_001 1800")
         line = b.expect("GIFT")

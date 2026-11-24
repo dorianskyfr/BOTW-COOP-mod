@@ -15,6 +15,7 @@
  *   puzzle_pos=0                 coupe le partage de la position des objets d'enigme (actif par defaut)
  *   fire=0                       coupe le partage des departs de feu (actif par defaut)
  *   ice=0                        coupe le partage des piliers de glace de Cryonis (actif par defaut)
+ *   switch=0                     coupe le partage des interrupteurs au sol (actif par defaut)
  *   enemy_anim=0|1|2             animations des ennemis (voir g_EnemyAnim)
  *   cutscene=0                   coupe les cinematiques partagees ; cutscene_range=<metres> (50 par defaut)
  *   beast_rotate=0               coupe le partage de l'inclinaison des Creatures divines
@@ -48,6 +49,8 @@ namespace coop::config {
     inline bool g_FireSync = true;
     /* NOTES 6.25 : piliers de glace de Cryonis partages (ice=0 pour le couper). */
     inline bool g_IceSync = true;
+    /* NOTES 6.27 : interrupteurs au sol partages (switch=0 pour le couper). */
+    inline bool g_SwitchSync = true;
 
     /*
      * Animations des ennemis (message EAS, NOTES 5.56) : 0 = rien ; 1 = celui qui fait foi annonce

@@ -157,7 +157,9 @@ def auth_digest(challenge, password):
 #          retransmise telle quelle ; l'autre montre la meme bombe (NOTES 5.99). Ignoree par un plugin plus ancien.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
                 "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1, "DROT": 2, "EDST": 2,
-                "GDRP": 6, "GPCK": 2, "BOMB": 15, "FIRE": 4, "ICE": 15}
+                "GDRP": 6, "GPCK": 2, "BOMB": 15, "FIRE": 4, "ICE": 15, "SWST": 2}
+#   SWST : interrupteur au sol (HashId hexadecimal, 1 enfonce / 0 relache ; plugin switches.hpp, NOTES 6.27),
+#          retransmis tel quel ; l'autre enfonce son bouton tant que le joueur est dessus. Ignore par un plugin plus ancien.
 #   ICE : pilier de glace de Cryonis (emplacement 0..2, numero, present 0/1, matrice 3x4 monde ; plugin ice.hpp,
 #         NOTES 6.25), retransmis tel quel ; l'autre montre le meme pilier. Ignore par un plugin plus ancien.
 ICE_SLOTS = 3
@@ -180,7 +182,7 @@ FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
                "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i", "DROT": "xfx", "EDST": "xf",
                "GDRP": "xnfffixi", "GPCK": "xii", "BOMB": "iii" + "f" * 12 + "i", "FIRE": "ifff",
-               "ICE": "iii" + "f" * 12}
+               "ICE": "iii" + "f" * 12, "SWST": "xi"}
 
 
 def valid_fields(kind, values):
@@ -911,6 +913,12 @@ def main():
                         if bombs.get(slot) != (parts[2], parts[3]):
                             bombs[slot] = (parts[2], parts[3])
                             log(f"joueur {client.pid} : bombe {slot} = type {parts[2]} n.{parts[3]} (position {parts[7]} {parts[11]} {parts[15]})")
+                    elif parts[0] == "SWST":
+                        if parts[2] not in ("0", "1"):
+                            continue
+                        client.swst = getattr(client, "swst", 0) + 1
+                        if client.swst <= 40 or client.swst % 200 == 0:
+                            log(f"joueur {client.pid} : interrupteur n.{client.swst} = {payload}")
                     elif parts[0] == "ICE":
                         if not 0 <= int(parts[1]) < ICE_SLOTS or parts[3] not in ("0", "1"):
                             continue

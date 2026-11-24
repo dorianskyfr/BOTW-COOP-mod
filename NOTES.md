@@ -1078,6 +1078,37 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 - Relecture **Codex** : passe 1, une remarque P2 retenue (adresses des copies retirées jamais effacées : `PruneDying`) ; passe 2, aucune remarque.
 - **Non vérifié** : un pilier créé avec le vrai pouvoir (bouton de rune) ; monter sur la copie ; un pilier brisé par le pouvoir.
 
+### 6.27 Interrupteurs au sol partagés (2026-11-24, essais `sw1` à `sw3`, Eden) - [V] image et journaux
+
+- **Constat** (`sw1`, sanctuaire 004, `SwitchStep` da4bb06f en (-16 ; 0 ; -2), volet `SwitchShutter` à côté) : J1 debout dessus, l'interrupteur est bleu chez lui. Chez J2, il reste orange, et le Link de J1 n'y change rien.
+- **Données** (`SwitchStep.sbactorpack` de `TitleBG.pack`) :
+  - deux corps : `Body` (Keyframed, socle) et `Button` (Dynamic, 50 kg) ;
+  - IA `SwitchStepSliderConstraint` : glissière de 0 à -0,36 m (`MinLimit`), enfoncée au-delà de 0,1 m (`SwTh`) ;
+  - aucun drapeau de jeu pour ces interrupteurs : l'état vit dans le bouton physique.
+- **Accès aux corps** (`game.cpp`) :
+  - `FindActorDynamicBody` : liste des `RigidBodySet` de `InstanceSet` (acteur+0x578) en +0x40 / +0x48, même lecture que `ExplodeReserved::leave_` en 1.9.0. Dans chaque ensemble, la liste de ses `RigidBody` est cherchée et chaque élément vérifié (`BodyAccessor`). Le résultat est le premier corps dynamique autre que le principal ;
+  - `GetBodyTransform` : `MotionAccessor::getTransform`, 7e virtuelle (`physMotionAccessor.h`) ;
+  - `SetBodyTransform` : `setTransform`, 3e virtuelle, déjà utilisée par le mod.
+- **Module `switches.cpp`** :
+  - chacun mesure l'enfoncement de ses boutons `SwitchStep*` à moins de 40 m (repos = point le plus haut vu depuis le chargement) ;
+  - il annonce `SWST <HashId> <1/0>` quand l'état change, et rappelle « enfoncé » chaque seconde ;
+  - à la réception d'un « enfoncé » de moins de 3 s, notre bouton est placé 0,3 m sous son repos à chaque image. Un bouton que nous enfonçons pour l'autre, ou qui remonte dans la seconde qui suit, n'est jamais annoncé ;
+  - relais : `SWST` (« xi », 0 ou 1), deux essais automatiques (138/138) ; réglage `switch=0`.
+- [V] `sw2` :
+  - J1 sur l'interrupteur. Chez J2, le bouton passe au bleu et **le volet s'ouvre** ; J1 descend, le bouton redevient orange et le volet se referme (image `2026-11-24_interrupteur-avant-sw1-apres-sw2.png` : en haut sw1, en bas sw2) ;
+  - fait notable : dans cet essai, le Link de J1 posé exactement sur l'interrupteur chez J2 l'enfonçait déjà lui-même, de 0,11 m (`enfonce chez nous`).
+- [V] `sw3` (après les relectures) : J2 placé plus loin. Chez J2, `enfonce pour le partenaire` : volet ouvert. Puis `relache pour le partenaire` : volet fermé (image `2026-11-24_interrupteur-enfonce-pour-le-partenaire_sw3.png`).
+- **Relectures Codex** :
+  - passe 1, deux P2 retenues : repos pris sur un bouton déjà enfoncé (le repos est désormais gardé par interrupteur jusqu'au chargement) ; rebond annoncé comme un appui (1 s de répit après qu'on cesse d'enfoncer) ;
+  - passe 2, deux P2 :
+    - file pleine pendant une coupure (retenue : messages datés, jetés après 3 s ; un changement d'état est retenté tant qu'il n'est pas en file) ;
+    - hauteur de repos sans référence fixe (**non corrigée**) : je ne sais pas lire de façon sûre la position de repos depuis le socle ou la glissière. Limite : un interrupteur déjà enfoncé dès le chargement (caisse posée d'avance) n'est pas annoncé ;
+  - c'était la dernière passe autorisée.
+- **Non vérifié** :
+  - `SwitchStepOnce`, d'autres modèles d'interrupteurs (pression, boule, arc) ;
+  - un interrupteur enfoncé par un objet qui n'est pas un joueur : les objets mobiles sont déjà partagés (6.23), donc le cas devrait se régler seul.
+- Preuves : `docs/evidence/2026-11-24_interrupteurs-partages_sw1-sw3.log`.
+
 ### 6.26 État des autres pouvoirs (2026-11-24)
 
 - **Runes de la tablette** :

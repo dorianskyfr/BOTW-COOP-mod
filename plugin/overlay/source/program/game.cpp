@@ -1014,6 +1014,77 @@ namespace coop::game {
         }
     }
 
+    /*
+     * NOTES 6.27 : corps physiques d'un acteur autres que le principal. Actor::mPhysics (+0x578, InstanceSet) a sa
+     * liste de RigidBodySet en +0x40 (nombre) / +0x48 (tableau) : meme lecture que ExplodeReserved::leave_ (main+0x655674)
+     * en 1.9.0 (sead::PtrArray, physInstanceSet.h : mRigidBodySets). Dans chaque RigidBodySet, la liste de ses corps
+     * (sead::PtrArray<RigidBody> mRigidBodies, physRigidBodySet.h) est cherchee dans les 0x80 premiers octets : un
+     * {nombre 1..32, capacite >= nombre, tableau} dont chaque element est un ksys::phys::RigidBody (BodyAccessor).
+     * Renvoie le premier corps dynamique (getMotionType == 0) different de Actor::mMainBody, 0 sinon.
+     */
+    std::uintptr_t FindActorDynamicBody(std::uintptr_t actor) {
+        constexpr std::uintptr_t GetMotionType = 0x12d2830;
+        if (actor == 0 || !CanReadMemory(actor + 0x578, 8))
+            return 0;
+        const auto physics = Peek<std::uintptr_t>(actor + 0x578);
+        const auto mainBody = Peek<std::uintptr_t>(actor + 0x190);
+        if (!LooksLikeHeapPtr(physics) || !IsReadable(physics, 0x50))
+            return 0;
+        const int sets = Peek<std::int32_t>(physics + 0x40);
+        const auto setArray = Peek<std::uintptr_t>(physics + 0x48);
+        if (sets <= 0 || sets > 16 || !LooksLikeHeapPtr(setArray) || !IsReadable(setArray, 8ull * sets))
+            return 0;
+        for (int i = 0; i < sets; i++) {
+            const auto set = Peek<std::uintptr_t>(setArray + 8ull * i);
+            if (!LooksLikeHeapPtr(set) || !IsReadable(set, 0x90))
+                continue;
+            for (std::size_t off = 0; off + 0x10 <= 0x80; off += 8) {
+                const int n = Peek<std::int32_t>(set + off), cap = Peek<std::int32_t>(set + off + 4);
+                const auto arr = Peek<std::uintptr_t>(set + off + 8);
+                if (n <= 0 || n > 32 || cap < n || cap > 256 || !LooksLikeHeapPtr(arr) || !IsReadable(arr, 8ull * n))
+                    continue;
+                bool all = true;
+                for (int k = 0; k < n && all; k++)
+                    all = BodyAccessor(Peek<std::uintptr_t>(arr + 8ull * k), true) != 0;
+                if (!all)
+                    continue;
+                for (int k = 0; k < n; k++) {
+                    const auto body = Peek<std::uintptr_t>(arr + 8ull * k);
+                    if (body != mainBody && IsReadable(body, 0x70)
+                        && reinterpret_cast<int (*)(std::uintptr_t)>(MainBase() + GetMotionType)(body) == 0)
+                        return body;
+                }
+                break; /* liste trouvee pour ce RigidBodySet */
+            }
+        }
+        return 0;
+    }
+
+    /* Matrice monde d'un corps (MotionAccessor::getTransform, 7e virtuelle apres les 2 de SEAD_RTTI_BASE :
+       physMotionAccessor.h). false si le corps n'est pas valide. */
+    bool GetBodyTransform(std::uintptr_t body, float out[12]) {
+        const auto accessor = BodyAccessor(body, true);
+        if (accessor == 0)
+            return false;
+        const auto vtable = Peek<std::uintptr_t>(accessor);
+        const auto fn = Peek<std::uintptr_t>(vtable + 6 * sizeof(std::uintptr_t));
+        const auto& info = exl::util::GetMainModuleInfo();
+        if (fn < info.m_Text.m_Start || fn >= info.m_Text.m_Start + info.m_Text.m_Size)
+            return false;
+        reinterpret_cast<void (*)(std::uintptr_t, float*)>(fn)(accessor, out);
+        return true;
+    }
+
+    /* Place un corps (MotionAccessor::setTransform, comme SetActorBodyTransform). false si le corps n'est pas valide. */
+    bool SetBodyTransform(std::uintptr_t body, const float mtx[12]) {
+        const auto accessor = BodyAccessor(body, true);
+        if (accessor == 0)
+            return false;
+        const auto fn = Peek<std::uintptr_t>(Peek<std::uintptr_t>(accessor) + 2 * sizeof(std::uintptr_t));
+        reinterpret_cast<void (*)(std::uintptr_t, const float*, bool)>(fn)(accessor, mtx, true);
+        return true;
+    }
+
     int SetActorCharacterPos(std::uintptr_t actor, const float mtx[12], bool log) {
         const auto physics = Peek<std::uintptr_t>(actor + 0x578);
         if (!LooksLikeHeapPtr(physics))

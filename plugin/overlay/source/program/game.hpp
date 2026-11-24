@@ -179,6 +179,11 @@ namespace coop::game {
      * (-1 pas de corps, -2 pas d'accesseur, -3/-4/-5 controle de coherence echoue).
      */
     int SetActorBodyTransform(std::uintptr_t actor, const float mtx[12]);
+    /* Premier corps dynamique de l'acteur autre que le principal (ex. le bouton d'un interrupteur), 0 sinon (NOTES 6.27). */
+    std::uintptr_t FindActorDynamicBody(std::uintptr_t actor);
+    /* Matrice monde d'un corps / placement d'un corps (MotionAccessor). false si le corps n'est pas valide. Fil du jeu. */
+    bool GetBodyTransform(std::uintptr_t body, float out[12]);
+    bool SetBodyTransform(std::uintptr_t body, const float mtx[12]);
     /* Type de mouvement du corps principal : 0 Dynamic, 1 Fixed, 2 Keyframed, 3 Unknown ; -1 sans corps (NOTES 6.23). */
     int GetActorMotionType(std::uintptr_t actor);
     /* Fait exploser une bombe de la tablette (RemoteBomb::changeToExplodeChild, main 1.9.0). 0 si fait. Fil du jeu. */
