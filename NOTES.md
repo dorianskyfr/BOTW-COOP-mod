@@ -1166,6 +1166,32 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - la torche bleue (`SwitchCandlestickAncient`) n'est pas partagée.
 - Preuves : `docs/evidence/2026-11-24_torche_tc3.log`, `…_tc4.log`, `…_tc5.log` ; images `…_tc3_J1.png`, `…_tc3_J2.png`, `…_tc5_J1.png`, `…_tc5_J2.png`.
 
+### 6.30 Objets d'énigme sans préfixe : boules, caisses de métal, boules électriques (2026-11-24, essai `eb1`, Eden) - [V] journaux
+
+- **Constat** :
+  - le partage des objets mobiles (6.23) et celui des objets détruits (6.28) ne regardaient que les noms `DgnObj_*` / `FldObj_*` ;
+  - or beaucoup d'objets d'énigme portent un autre nom. Relevé de toutes les cartes `Pack/Dungeon*.pack` et `Pack/Remains*.pack` (346 noms sans ces préfixes), en gardant ceux dont le premier corps de `Actor/Physics/<nom>.bphysics` est `Dynamic` :
+    - `AncientBall` (40 placées : les boules des sanctuaires), `StoneBall`, `IronBall`, `RockRollA` ;
+    - caisses de métal `Obj_BoxIron_*` (magnétisme), tonneaux, caisses en bois `KibakoDungeon`, tonneaux explosifs ;
+    - boules électriques `ElectricBallGenerator` (IA `ElectricBall`, transportables, sanctuaires 003 et 010), `ElectricBallNoCarriable`, réceptacle mobile `SwitchElectric0_Dynamic`, `ElectricGenerator_Dynamic` ;
+    - blocs fissurés `BlockCrack4x4x4` (159, cassés à la bombe).
+- **`puzzle_names.hpp`** :
+  - `IsExtraMovable` : ces noms sont ajoutés au partage de position (6.23) ;
+  - `IsExtraDestructible` (`BlockCrack4x4x4`, caisses en bois, tonneaux) : ces noms sont ajoutés aux objets détruits (6.28) ;
+  - laissés de côté : cordes, rubis posés, engrenages et roues sur axe, balançoire (leur position est tenue par une liaison).
+- **Électricité** : une boule électrique posée dans un réceptacle chez l'un est maintenant à la même place chez l'autre. La chimie électrique de chaque jeu devrait donc allumer son propre réceptacle. Ce dernier point n'est pas vérifié.
+- [V] **`eb1`** (sanctuaire 010, outil `-DCOOP_TEST_NUDGE_PUZZLE`) :
+  - les deux `ElectricBallGenerator` près de l'entrée (88210611, ae21cb2d) sont suivies ;
+  - J1 était près de la boule, J2 envoyé à l'entrée. J1 la pousse, et chez J2 on lit `ramene vers la copie de J1`, l'écart passant de 1,33 m à 0,38 m ;
+  - au premier essai, les deux joueurs étaient au même endroit : J2 avait la main, et c'est J1 qui a été ramené vers la copie de J2 (règle « le plus proche fait foi ») ;
+  - à la fin, les boules sont en (44.00, -2.58, -3.00) chez J1 et (44.03, -2.58, -3.00) chez J2.
+- **Relecture Codex** : rien à signaler (une passe).
+- **Non vérifié** :
+  - un réceptacle allumé chez l'autre par une boule déplacée ;
+  - les boules `AncientBall` et les caisses de métal (même chemin, non essayés) ;
+  - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
+- Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
+
 ### 6.26 État des autres pouvoirs (2026-11-24)
 
 - **Runes de la tablette** :

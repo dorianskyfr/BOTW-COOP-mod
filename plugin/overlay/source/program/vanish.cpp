@@ -2,6 +2,7 @@
 
 #include "config.hpp"
 #include "game.hpp"
+#include "puzzle_names.hpp"
 
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
@@ -58,7 +59,8 @@ namespace coop::vanish {
         }
 
         bool Watched(const char* name) {
-            return std::strncmp(name, "DgnObj_", 7) == 0 || std::strncmp(name, "FldObj_", 7) == 0;
+            return std::strncmp(name, "DgnObj_", 7) == 0 || std::strncmp(name, "FldObj_", 7) == 0
+                || coop::puzzle_names::IsExtraDestructible(name);
         }
 
         bool RemovedForPartner(std::uint32_t hash) {

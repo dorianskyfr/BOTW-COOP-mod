@@ -2,6 +2,7 @@
 
 #include "config.hpp"
 #include "game.hpp"
+#include "puzzle_names.hpp"
 #include "session.hpp"
 
 #include "lib.hpp"
@@ -407,7 +408,8 @@ namespace coop::enemy_life {
         /* Passe « position », a chaque image : suit la copie de l'autre joueur ou envoie la notre. */
         /*
          * NOTES 6.23 : objet d'enigme (sanctuaires, Creatures divines, et objets mobiles du monde) : objet de carte
-         * DgnObj_* ou FldObj_* dont le corps principal est dynamique (bloc, boule, caisse... : un objet qu'on deplace).
+         * DgnObj_* ou FldObj_* (ou nom de puzzle_names::IsExtraMovable, NOTES 6.30 : boules AncientBall, caisses de metal,
+         * boules electriques...) dont le corps principal est dynamique (bloc, boule, caisse... : un objet qu'on deplace).
          * Les objets animes par le jeu (portes, ascenseurs : corps Keyframed) ne sont pas pris : chaque monde les
          * anime d'apres ses interrupteurs, que les objets partages actionnent des deux cotes. Un objet deja suivi le
          * reste meme si son corps change un moment de type (tenu par le magnetisme, fige par Stasis...).
@@ -415,7 +417,8 @@ namespace coop::enemy_life {
         bool IsPuzzleObject(const coop::game::ActorInfo& info) {
             if (!coop::config::g_PuzzlePos)
                 return false;
-            if (std::strncmp(info.m_Name, "DgnObj_", 7) != 0 && std::strncmp(info.m_Name, "FldObj_", 7) != 0)
+            if (std::strncmp(info.m_Name, "DgnObj_", 7) != 0 && std::strncmp(info.m_Name, "FldObj_", 7) != 0
+                && !coop::puzzle_names::IsExtraMovable(info.m_Name))
                 return false;
             if (Find(info.m_HashId, false) != nullptr)
                 return true;
@@ -738,7 +741,8 @@ namespace coop::enemy_life {
 #ifdef COOP_TEST_NUDGE_PUZZLE
             /* Essai (NOTES 6.23) : l'objet d'enigme suivi le plus proche au lieu de l'ennemi. */
             if (Find(info.m_HashId, false) == nullptr
-                || (std::strncmp(info.m_Name, "DgnObj_", 7) != 0 && std::strncmp(info.m_Name, "FldObj_", 7) != 0))
+                || (std::strncmp(info.m_Name, "DgnObj_", 7) != 0 && std::strncmp(info.m_Name, "FldObj_", 7) != 0
+                    && !coop::puzzle_names::IsExtraMovable(info.m_Name)))
                 return false;
             (void)life, (void)maxLife, (void)lifePtr;
 #else
