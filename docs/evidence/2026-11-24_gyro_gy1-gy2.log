@@ -1,0 +1,50 @@
+﻿J1 [botw-coop] gyro : plateau 6b69b1b6 suivi
+J1 [botw-coop] gyro : plateau ae4a8359 suivi
+J1 [botw-coop] gyro : plateau ac6851c5 suivi
+J1 [botw-coop] gyro : plateau 6b69b1b6 suivi
+J1 [botw-coop] gyro : plateau ae4a8359 suivi
+J1 [botw-coop] gyro : plateau ac6851c5 suivi
+J1 [botw-coop] gyro : OUTIL DE TEST, oscillation lancee (plateau ae4a8359, action 21b0a7bb50)
+J1 [botw-coop] gyro : OUTIL DE TEST, angle 4.7 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle -3.1 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle 1.4 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle 0.3 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle -2.0 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle 3.6 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle -5.2 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle 6.7 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle -8.0 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle 9.2 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, oscillation arretee (plateau ae4a8359, action 21b0a7bb50)
+J1 [botw-coop] gyro : OUTIL DE TEST, oscillation lancee (plateau ae4a8359, action 21b0a7bb50)
+J1 [botw-coop] gyro : OUTIL DE TEST, angle 4.7 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle -3.1 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle 1.4 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle 0.3 degres pose ici 
+J1 [botw-coop] gyro : OUTIL DE TEST, angle -2.0 degres pose ici 
+J2 [botw-coop] gyro : plateau 6b69b1b6 suivi
+J2 [botw-coop] gyro : plateau ae4a8359 suivi
+J2 [botw-coop] gyro : plateau ac6851c5 suivi
+J2 [botw-coop] gyro : plateau 6b69b1b6 suivi
+J2 [botw-coop] gyro : plateau ae4a8359 suivi
+J2 [botw-coop] gyro : plateau ac6851c5 suivi
+J2 [botw-coop] gyro : plateau ae4a8359 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 1.000 0.000] 
+J2 [botw-coop] gyro : plateau ae4a8359 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 1.000 -0.021] 
+J2 [botw-coop] gyro : plateau ae4a8359 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 0.998 -0.062] 
+relais 18:15:23.372 joueur 1 : etat n.2800 = GYRO ae4a8359 1.00000 0.00000 0.00000 0.00000 0.98308 0.18317 0.00000 -0.18317 0.98308
+relais 18:15:34.981 joueur 1 : etat n.3100 = GYRO ae4a8359 1.00000 0.00000 0.00000 0.00000 0.99707 -0.07649 0.00000 0.07649 0.99707
+relais 18:20:05.238 joueur 1 : etat n.6100 = GYRO ae4a8359 1.00000 0.00000 0.00000 0.00000 0.95893 0.28364 0.00000 -0.28364 0.95893
+relais 18:20:09.073 joueur 1 : etat n.6200 = GYRO ae4a8359 1.00000 0.00000 0.00000 0.00000 0.97612 0.21725 0.00000 -0.21725 0.97612
+relais 18:20:12.907 joueur 1 : etat n.6300 = GYRO ae4a8359 1.00000 0.00000 0.00000 0.00000 0.99228 0.12400 0.00000 -0.12400 0.99228
+pilote J2     9.1s position (-39.00, 13.86, -33.08) avant acteur (-0.0, -1.0)
+pilote J2     9.8s position (-39.00, 13.86, -33.08) avant acteur (-0.0, -1.0)
+pilote J2     0.6s bombtest : etape suivante de l'essai bombe seule
+pilote J2     3.1s position (-39.00, 13.91, -32.53) avant acteur (-0.0, -1.0)
+pilote J2     3.7s position (-39.00, 13.80, -33.20) avant acteur (-0.0, -1.0)
+pilote J2     4.3s position (-39.00, 13.68, -33.37) avant acteur (-0.0, -1.0)
+pilote J2     4.9s position (-39.00, 13.90, -32.56) avant acteur (-0.0, -1.0)
+pilote J2     5.5s position (-39.00, 14.00, -31.50) avant acteur (-0.0, -1.0)
+pilote J2     6.1s position (-39.00, 13.96, -30.51) avant acteur (-0.0, -1.0)
+pilote J2     6.7s position (-39.00, 13.97, -30.75) avant acteur (-0.0, -1.0)
+pilote J2     7.3s position (-39.00, 14.04, -31.53) avant acteur (-0.0, -1.0)
+pilote J2     7.9s position (-39.00, 13.94, -32.50) avant acteur (-0.0, -1.0)

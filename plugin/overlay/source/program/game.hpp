@@ -194,6 +194,14 @@ namespace coop::game {
     /* Torche d'enigme (IA SwitchTorch, NOTES 6.29) : 1 allumee, 0 eteinte, <0 inconnu (pas l'IA attendue). Fil du jeu.
        *childIdx (si non nul) recoit l'index de l'action courante de l'IA SwitchTorch (outil d'essai). */
     int GetSwitchTorchLit(std::uintptr_t actor, int* childIdx = nullptr);
+    /* Labyrinthe gyroscopique (acteur DungeonRotateTagGyro, NOTES 6.31) : action DungeonRotateGyro de l'acteur, 0 si
+       introuvable ; *active = l'action est l'enfant courant (le joueur local tient le terminal). Fil du jeu. */
+    std::uintptr_t FindGyroAction(std::uintptr_t actor, bool* active);
+    /* Rotation courante du plateau (9 floats, lignes, action+0x74). */
+    bool GetGyroRotation(std::uintptr_t action, float out[9]);
+    /* Impose une rotation au plateau comme le fait DungeonRotateGyro::calc_ (setExtraTransform du groupe physique de
+       l'acteur), et la range dans l'action. false si refuse. Fil du jeu. */
+    bool ApplyGyroRotation(std::uintptr_t actor, std::uintptr_t action, const float rot[9]);
 #ifdef COOP_TEST_REMOVE_EQUIPPED
     void DebugRemoveEquippedWeapon();
 #endif

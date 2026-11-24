@@ -56,6 +56,8 @@ namespace coop::config {
     inline bool g_VanishSync = true;
     /* NOTES 6.29 : torches d'enigme allumees partagees (torch=0 pour le couper). */
     inline bool g_TorchSync = true;
+    /* NOTES 6.31 : labyrinthes gyroscopiques partages (gyro=0 pour le couper). */
+    inline bool g_GyroSync = true;
 
     /*
      * Animations des ennemis (message EAS, NOTES 5.56) : 0 = rien ; 1 = celui qui fait foi annonce

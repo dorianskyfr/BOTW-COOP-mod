@@ -24,6 +24,10 @@ namespace coop::torches {
            (action 1), puis allumee : son allumage etait annonce a tort. Rien n'est annonce ni servi pendant 2 s apres la
            premiere vue d'une torche. */
         constexpr std::uint64_t SettleFrames = 60;
+        /* Rattrapage d'un partenaire arrive apres l'allumage : les torches allumees ICI (pas celles allumees pour l'autre)
+           et toujours allumees sont reannoncees toutes les 5 s. Une torche allumee pour l'autre n'est jamais reannoncee :
+           sinon, une torche a minuterie eteinte chez l'un serait rallumee sans fin par l'autre. */
+        constexpr std::uint64_t ResendEvery = 150;
 
         bool IsTorch(const char* name) {
             return std::strcmp(name, "SwitchCandlestick") == 0 || std::strcmp(name, "SwitchCandlestickOn") == 0;
@@ -37,6 +41,7 @@ namespace coop::torches {
             std::uint64_t  m_Since = 0; /* image de la premiere vue */
             std::uint64_t  m_RemoteUntil = 0;
             bool           m_Seen = false;
+            bool           m_LocalLit = false; /* allumee ici par le joueur local (annoncee), toujours allumee */
         };
         constexpr int MaxTracked = 32;
         Tracked s_Tracked[MaxTracked];
@@ -62,11 +67,13 @@ namespace coop::torches {
             return dx * dx + dy * dy + dz * dz;
         }
 
-        void Announce(const Tracked& t) {
+        void Announce(const Tracked& t, bool resend = false) {
             Msg m;
             m.m_Hash = t.m_Hash;
             m.m_Frame = s_Frames;
             const bool queued = g_Outgoing.Push(m);
+            if (resend)
+                return; /* rappel periodique : pas de journal */
             if (Log())
                 Logging.Log("[botw-coop] torche : %08x allumee ici en (%.1f, %.1f, %.1f), %s", t.m_Hash,
                     static_cast<double>(t.m_Pos[0]), static_cast<double>(t.m_Pos[1]), static_cast<double>(t.m_Pos[2]),
@@ -88,8 +95,11 @@ namespace coop::torches {
                         Logging.Log("[botw-coop] torche : %08x allumee pour le partenaire (non renvoyee)", t.m_Hash);
                 } else if (Dist2(t.m_Pos, s_PlayerPos) <= Radius * Radius) {
                     Announce(t);
+                    t.m_LocalLit = true;
                 }
             }
+            if (lit == 0)
+                t.m_LocalLit = false;
             t.m_Lit = lit;
         }
 
@@ -147,7 +157,7 @@ namespace coop::torches {
                     continue;
                 Tracked* t = FindTracked(p.m_Hash);
                 if (t != nullptr && t->m_Lit == 1) {
-                    if (Log())
+                    if (p.m_Tries > 0 && Log()) /* deja allumee sans nous (rappel periodique) : silencieux */
                         Logging.Log("[botw-coop] torche : %08x allumee chez le partenaire, allumee ici aussi (%d boule(s) de feu)",
                             p.m_Hash, p.m_Tries);
                     p = Pending {};
@@ -225,6 +235,10 @@ namespace coop::torches {
             Logging.Log("[botw-coop] torche : plus de %d torches suivies, les suivantes sont ignorees", MaxTracked);
         s_TableFull = false;
         ServePending();
+        if (s_Frames % ResendEvery == 0)
+            for (const Tracked& t : s_Tracked)
+                if (t.m_Actor != 0 && t.m_LocalLit && t.m_Lit == 1)
+                    Announce(t, true);
 
 #ifdef COOP_TEST_TORCH
         {

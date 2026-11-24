@@ -71,7 +71,7 @@ Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image 
 - **Deux joueurs** au plus.
 - **Pouvoirs** : les bombes et les piliers de glace de Cryonis se voient chez l'autre ; un objet déplacé par Magnétisme ou Stasis bouge chez les deux. Les effets visuels des autres pouvoirs (rayon du magnétisme, tourbillon de Revali, éclairs d'Urbosa, bouclier de Daruk) ne se voient que chez celui qui les utilise ; leurs effets sur les ennemis comptent chez les deux.
 - **Feu** : un feu allumé par une flèche de feu ou un bâton de feu démarre aussi chez l'autre, et son jeu le propage ; l'étendue brûlée peut différer un peu. Les autres feux (silex, torche, foudre, ennemis) restent propres à chacun.
-- **Énigme de sanctuaire en cours** : les objets qu'on déplace (blocs, boules, caisses de métal, boules électriques), les objets détruits (lierre brûlé, caisse cassée, bloc fissuré), les interrupteurs au sol et les torches allumées sont partagés. La torche bleue, l'extinction d'une torche, l'eau et les labyrinthes à inclinaison restent propres à chacun.
+- **Énigme de sanctuaire en cours** : les objets qu'on déplace (blocs, boules, caisses de métal, boules électriques), les objets détruits (lierre brûlé, caisse cassée, bloc fissuré), les interrupteurs au sol, les torches allumées et l'inclinaison des labyrinthes sont partagés. La torche bleue, l'extinction d'une torche et l'eau restent propres à chacun.
 - **Le Link du partenaire a une collision** : on ne le traverse pas.
 - **Chacun garde** son inventaire, sa santé, son équipement et l'épée de légende.
 - **Bombes** : l'explosion de la bombe de l'autre est une vraie explosion dans votre monde ; son souffle peut vous projeter et vous blesser.

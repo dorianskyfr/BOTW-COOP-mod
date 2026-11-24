@@ -1192,6 +1192,37 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.31 Labyrinthes gyroscopiques partagés, rattrapage des torches (2026-11-24, essais `gy1` à `gy3`, `tc6`, Eden) - [V] journaux et mesure
+
+- **Constat** : le plateau d'un sanctuaire à inclinaison ne bougeait que chez celui qui tenait le terminal. Les plateaux concernés : acteur `DungeonRotateTagGyro`, terminal `SwitchGyroTilt`, sanctuaires 015, 030, 039, 048 (le 013 a un `DungeonRotateTagGyroPutter`, non traité).
+- **Analyse** (Codex en lecture seule, rapport relu ; adresses revérifiées ici) :
+  - action `DungeonRotateGyro` : fabrique main+0x1caf520, constructeur main+0x634144, table main+0x1be50a8, `calc_` main+0x634490 (emplacement 31). C'est l'enfant « 回転 » de l'IA `DungeonRotateTag`, choisi seulement quand le terminal est tenu ;
+  - `+0x74` : rotation du plateau, Matrix33f par lignes ;
+  - application dans `calc_` : `E = [R | p − R·p]` (p = translation de l'acteur, +0x3dc/+0x3ec/+0x3fc), puis main+0x130bd60(gestionnaire, &groupe, &E, priorité) ;
+    - gestionnaire = `(*(*(main+0x1d66ab0)))+0x158` ;
+    - groupe = `*(acteur+0x5a8)`, priorité = `*(int*)*(action+0x30)` (`enter_`, main+0x6342a4..0x6342b4) ;
+  - main+0x130bd60 cherche le groupe dans la liste du gestionnaire, sous verrou (main+0x130bbf0), puis appelle `setExtraTransform` (main+0x130d19c).
+- **`gyro.cpp`** (relevé toutes les 2 images ; adresses lues juste après le relevé) :
+  - envoi : si l'action gyroscopique est l'enfant courant chez nous, la rotation part dès qu'elle change (`GYRO <HashId> <9 nombres>`), et au moins une fois par seconde. Au lâcher, la position finale part une dernière fois ;
+  - réception : si notre terminal n'est pas tenu, la rotation reçue est posée par `ApplyGyroRotation`, qui reproduit le calcul du jeu et appelle sa fonction. Elle est aussi rangée en `+0x74` ;
+  - relais : `GYRO` (« x » + 9 « f »), 144/144 ; réglage `gyro=0`.
+- [V] **`gy1`, `gy2`** (sanctuaire 015, outil `-DCOOP_TEST_GYRO` : chez J1, le plateau le plus proche oscille de ±12° autour de X ; la rotation est posée chez J1 et envoyée) :
+  - chez J2, `plateau ae4a8359 incline comme chez le partenaire`, sans refus ;
+  - J2 posé sur le plateau, hors du pivot : sa position, relevée toutes les 0,6 s, va et vient (z de -33,4 à -30,5, hauteur de 13,68 à 14,04) au rythme de l'oscillation. Avant le lancement, elle restait fixe. Le plateau bouge donc vraiment chez J2, avec sa physique (Link glisse) ;
+  - images de J2 sur le plateau : l'escalier fixe se décale d'une image à l'autre.
+- **Relectures Codex** : deux passes, trois P2 retenues :
+  - passe 1 : un partenaire arrivé après le lâcher ne recevait jamais la position. Celui qui a tenu le terminal en dernier la renvoie maintenant toutes les 5 s ;
+  - passe 1 : une rotation reçue pendant que nous tenons le terminal était posée au lâcher. Elle est maintenant jetée ;
+  - passe 2 : deux joueurs tenant le même plateau en même temps pouvaient finir différents. Le plus petit numéro de joueur l'emporte maintenant des deux côtés (correction non relue : les deux passes autorisées sont faites).
+- [V] **`gy3`** (arrivée tardive) : J1 fait osciller puis arrête (-11,4°) avant que J2 entre. Chez J2, `incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 0.980 0.198]`, soit -11,4°, par le rappel des 5 s.
+- **Torches, rattrapage** (`torches.cpp`, même jour) : les torches allumées par le joueur local, et toujours allumées, sont réannoncées toutes les 5 s. Une torche allumée pour l'autre ne l'est jamais : sinon, une torche à minuterie éteinte chez l'un serait rallumée sans fin par l'autre. [V] **`tc6`** : J1 allume deux torches du sanctuaire 016 avant l'arrivée de J2 ; environ une minute plus tard, J2 entre, reçoit le rappel et les allume.
+- **Non vérifié** :
+  - un vrai terminal tenu à la manette (capteur de mouvement : non disponible avec l'outil de pilotage) ;
+  - la boule du labyrinthe chez les deux ;
+  - les plateaux `DungeonRotateTagGyroPutter` (sanctuaire 013) ;
+  - l'arbitrage à deux.
+- Preuves : `docs/evidence/2026-11-24_gyro_gy1-gy2.log`, `…_gyro-arrivee-tardive_gy3.log`, `…_torche-arrivee-tardive_tc6.log` ; images `…_gyro_gy2_J2_a.png`, `…_b.png`.
+
 ### 6.26 État des autres pouvoirs (2026-11-24)
 
 - **Runes de la tablette** :

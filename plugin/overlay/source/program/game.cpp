@@ -964,6 +964,111 @@ namespace coop::game {
         return idx >= 2 ? 1 : 0;
     }
 
+    /*
+     * NOTES 6.31 (analyse Codex relue, adresses verifiees ici) :
+     * - action « DungeonRotateGyro » : fabrique main+0x1caf520 -> main+0xb5e588 -> constructeur main+0x634144, table
+     *   virtuelle main+0x1be50a8. Enfant « 回転 » de l'IA racine DungeonRotateTag, choisi seulement quand le terminal est
+     *   tenu (main+0x837cf4) ; sinon « 待機 ».
+     * - +0x74 : rotation courante du plateau, Matrix33f par lignes ; +0x50/+0x5c/+0x68 : ses trois colonnes gardees
+     *   (calc_ reconstruit +0x74 depuis elles, main+0x6344f4..0x634504).
+     * - application (calc_, main+0x634508..0x634660) : E = [R | p - R.p], p = translation de la matrice de l'acteur
+     *   (acteur+0x3dc/+0x3ec/+0x3fc), puis main+0x130bd60(mgr, &groupe, &E, priorite) avec mgr = (*(*(main+0x1d66ab0)))
+     *   +0x158 (main+0x6345ac..0x6345b8, saute si nul), groupe = *(acteur+0x5a8) et priorite = *(int*)*(action+0x30)
+     *   (enter_, main+0x6342a4..0x6342b4). main+0x130bd60 cherche le groupe dans la liste du gestionnaire, sous verrou
+     *   (main+0x130bbf0), avant main+0x130d19c (StaticCompoundRigidBodyGroup::setExtraTransform).
+     */
+    namespace {
+        constexpr std::uintptr_t GyroVtable = 0x1be50a8;
+        constexpr std::size_t Gyro_Rot = 0x74, Gyro_Params = 0x30;
+    }
+
+    std::uintptr_t FindGyroAction(std::uintptr_t actor, bool* active) {
+        constexpr std::size_t Actor_RootAi = 0x558;
+        constexpr int Slot_GetCurrentChild = 26;
+        constexpr std::size_t Ai_ChildIdx = 0x1c, Ai_ChildCount = 0x28, Ai_Children = 0x30;
+        *active = false;
+        if (s_Offsets == nullptr || actor == 0 || !CanReadMemory(actor + Actor_RootAi, 8))
+            return 0;
+        const auto& info = exl::util::GetMainModuleInfo();
+        const auto inMain = [&](std::uintptr_t p) { return p >= info.m_Total.m_Start && p < info.m_Total.m_Start + info.m_Total.m_Size; };
+        const auto inText = [&](std::uintptr_t p) { return p >= info.m_Text.m_Start && p < info.m_Text.m_Start + info.m_Text.m_Size; };
+        std::uintptr_t ai = Peek<std::uintptr_t>(actor + Actor_RootAi);
+        for (int depth = 0; depth < 3; depth++) {
+            if (!LooksLikeHeapPtr(ai) || !CanReadMemory(ai, 0x38))
+                return 0;
+            const auto vt = Peek<std::uintptr_t>(ai);
+            if (!inMain(vt))
+                return 0;
+            /* Enfants de cette IA : l'action gyroscopique est-elle parmi eux ? */
+            const auto count = Peek<std::uint32_t>(ai + Ai_ChildCount);
+            const auto children = Peek<std::uintptr_t>(ai + Ai_Children);
+            if (count > 0 && count <= 16 && LooksLikeHeapPtr(children) && CanReadMemory(children, count * sizeof(std::uintptr_t))) {
+                for (std::uint32_t i = 0; i < count; i++) {
+                    const auto c = Peek<std::uintptr_t>(children + i * sizeof(std::uintptr_t));
+                    if (LooksLikeHeapPtr(c) && CanReadMemory(c, 0x130) && Peek<std::uintptr_t>(c) == MainBase() + GyroVtable) {
+                        *active = Peek<std::uint16_t>(ai + Ai_ChildIdx) == i;
+                        return c;
+                    }
+                }
+            }
+            const auto getChild = Peek<std::uintptr_t>(vt + Slot_GetCurrentChild * sizeof(std::uintptr_t));
+            if (!inText(getChild))
+                return 0;
+            ai = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(getChild)(ai);
+        }
+        return 0;
+    }
+
+    bool GetGyroRotation(std::uintptr_t action, float out[9]) {
+        if (action == 0 || !CanReadMemory(action + Gyro_Rot, 9 * sizeof(float)))
+            return false;
+        for (int i = 0; i < 9; i++)
+            out[i] = Peek<float>(action + Gyro_Rot + i * sizeof(float));
+        return true;
+    }
+
+    bool ApplyGyroRotation(std::uintptr_t actor, std::uintptr_t action, const float rot[9]) {
+        constexpr std::uintptr_t MgrGot = 0x1d66ab0, SetExtraTransform = 0x130bd60;
+        constexpr std::size_t Mgr_Offset = 0x158, Actor_Group = 0x5a8;
+        if (s_Offsets == nullptr || actor == 0 || action == 0 || Peek<std::uintptr_t>(action) != MainBase() + GyroVtable)
+            return false;
+        if (!CanReadMemory(actor + 0x3d0, 0x30) || !CanReadMemory(actor + Actor_Group, 8) || !CanReadMemory(action, 0x130))
+            return false;
+        const auto params = Peek<std::uintptr_t>(action + Gyro_Params);
+        if (params == 0 || !CanReadMemory(params, 4))
+            return false;
+        const auto got = Peek<std::uintptr_t>(MainBase() + MgrGot);
+        if (got == 0 || !CanReadMemory(got, 8))
+            return false;
+        const auto inst = Peek<std::uintptr_t>(got);
+        if (!LooksLikeHeapPtr(inst) || !CanReadMemory(inst + Mgr_Offset, 8))
+            return false;
+        const auto mgr = Peek<std::uintptr_t>(inst + Mgr_Offset);
+        if (!LooksLikeHeapPtr(mgr))
+            return false;
+        std::uintptr_t group = Peek<std::uintptr_t>(actor + Actor_Group);
+        if (group == 0)
+            return false;
+        const int priority = Peek<int>(params);
+        const float p[3] = { Peek<float>(actor + 0x3dc), Peek<float>(actor + 0x3ec), Peek<float>(actor + 0x3fc) };
+        alignas(16) float e[12];
+        for (int r = 0; r < 3; r++) {
+            const float* row = rot + r * 3;
+            e[r * 4 + 0] = row[0];
+            e[r * 4 + 1] = row[1];
+            e[r * 4 + 2] = row[2];
+            e[r * 4 + 3] = p[r] - (row[0] * p[0] + row[1] * p[1] + row[2] * p[2]);
+        }
+        /* Rangee aussi dans l'action (+0x74) : si ce joueur prend ensuite le terminal, il repart d'ici. Les colonnes gardees
+           (+0x50/+0x5c/+0x68) ne sont pas touchees : leur ordre n'est pas prouve. */
+        auto* a = reinterpret_cast<volatile float*>(action + Gyro_Rot);
+        for (int i = 0; i < 9; i++)
+            a[i] = rot[i];
+        reinterpret_cast<void (*)(std::uintptr_t, std::uintptr_t*, const float*, int)>(MainBase() + SetExtraTransform)(mgr, &group, e,
+            priority);
+        return true;
+    }
+
     int ExplodeRemoteBomb(std::uintptr_t actor) {
         constexpr std::size_t Actor_RootAi = 0x558;
         constexpr int Slot_GetCurrentChild = 26;

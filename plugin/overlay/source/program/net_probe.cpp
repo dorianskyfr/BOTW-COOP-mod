@@ -11,6 +11,7 @@
 #include "switches.hpp"
 #include "vanish.hpp"
 #include "torches.hpp"
+#include "gyro.hpp"
 #include "config.hpp"
 #include "beast_rotate.hpp"
 #include "cutscene.hpp"
@@ -376,6 +377,16 @@ namespace coop::net_probe {
                 if (std::sscanf(line, "TRCH %d %x", &id, &m.m_Hash) == 2 && m.m_Hash != 0) {
                     m.m_Frame = coop::torches::g_GameFrame.load(std::memory_order_relaxed); /* date de reception */
                     coop::torches::g_Incoming.Push(m);
+                }
+            } else if (std::strncmp(line, "GYRO ", 5) == 0) {
+                /* Plateau gyroscopique incline chez le partenaire (gyro.hpp, NOTES 6.31) : HashId, 9 floats. */
+                coop::gyro::Msg m;
+                float* r = m.m_Rot;
+                if (std::sscanf(line, "GYRO %d %x %f %f %f %f %f %f %f %f %f", &id, &m.m_Hash, &r[0], &r[1], &r[2], &r[3], &r[4], &r[5],
+                        &r[6], &r[7], &r[8]) == 11 && m.m_Hash != 0) {
+                    m.m_Frame = coop::gyro::g_GameFrame.load(std::memory_order_relaxed); /* date de reception */
+                    m.m_From = id;
+                    coop::gyro::g_Incoming.Push(m);
                 }
             } else if (std::strncmp(line, "SWST ", 5) == 0) {
                 /* Interrupteur au sol du partenaire (switches.hpp, NOTES 6.27) : HashId, 1 enfonce / 0 relache. */
@@ -820,6 +831,23 @@ namespace coop::net_probe {
                         char tl[32];
                         const int len = std::snprintf(tl, sizeof(tl), "TRCH %08x\n", tm.m_Hash);
                         if (len > 0 && len < static_cast<int>(sizeof(tl)) && !SendAll(s_Fd, tl, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
+                }
+
+                /* Plateaux gyroscopiques (gyro.hpp, NOTES 6.31) : envoyes des qu'ils sont en file, jetes apres 1 s. */
+                {
+                    coop::gyro::Msg gm;
+                    while (Live() && coop::gyro::g_Outgoing.Pop(gm)) {
+                        if (!inGame || coop::gyro::g_GameFrame.load(std::memory_order_relaxed) - gm.m_Frame > coop::gyro::MaxAgeFrames)
+                            continue;
+                        char gl[192];
+                        const float* r = gm.m_Rot;
+                        const int len = std::snprintf(gl, sizeof(gl), "GYRO %08x %.5f %.5f %.5f %.5f %.5f %.5f %.5f %.5f %.5f\n", gm.m_Hash,
+                            static_cast<double>(r[0]), static_cast<double>(r[1]), static_cast<double>(r[2]), static_cast<double>(r[3]),
+                            static_cast<double>(r[4]), static_cast<double>(r[5]), static_cast<double>(r[6]), static_cast<double>(r[7]),
+                            static_cast<double>(r[8]));
+                        if (len > 0 && len < static_cast<int>(sizeof(gl)) && !SendAll(s_Fd, gl, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
                 }

@@ -483,6 +483,15 @@ def main():
         a.send("SAVED 17")
         b.expect("SAVED")
         check("TRCH invalide, vide, trop long non retransmis", not b.take("TRCH"), str(b.lines))
+        # Plateaux gyroscopiques (NOTES 6.31) : HashId et 9 nombres.
+        a.send("GYRO 0a1b2c3d 1 0 0 0 0.97815 -0.20791 0 0.20791 0.97815")
+        got = b.expect("GYRO")
+        check("plateau gyroscopique retransmis avec l'identifiant", got == "GYRO 1 0a1b2c3d 1 0 0 0 0.97815 -0.20791 0 0.20791 0.97815", got)
+        for bad in ("GYRO 0a1b2c3d 1 0 0 0 1 0 0 0", "GYRO zz 1 0 0 0 1 0 0 0 1", "GYRO 0a1b2c3d 1 0 0 0 1 0 0 0 nan"):
+            a.send(bad)
+        a.send("SAVED 18")
+        b.expect("SAVED")
+        check("GYRO incomplet, hachage invalide, nombre non fini non retransmis", not b.take("GYRO"), str(b.lines))
         check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
         a.send("GIFT Weapon_Sword_001 1800")
         line = b.expect("GIFT")

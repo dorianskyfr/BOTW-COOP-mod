@@ -11,6 +11,7 @@
 #include "switches.hpp"
 #include "vanish.hpp"
 #include "torches.hpp"
+#include "gyro.hpp"
 
 #include "clock.hpp"
 #include "beast_rotate.hpp"
@@ -227,6 +228,7 @@ namespace coop::input_inject {
                 coop::switches::OnFrame(); /* NOTES 6.27, meme part */
                 coop::vanish::OnFrame();   /* NOTES 6.28, meme part */
                 coop::torches::OnFrame();  /* NOTES 6.29, meme part */
+                coop::gyro::OnFrame();     /* NOTES 6.31, meme part */
                 coop::remote_actor::OnFrame();
                 COOP_PART();
                 coop::world_sync::OnFrame();
@@ -336,6 +338,18 @@ namespace coop::input_inject {
                         if (cmdV != s_LastVanish) {
                             s_LastVanish = cmdV;
                             coop::vanish::g_TestStep.fetch_add(1, std::memory_order_release);
+                        }
+                        buttons &= ~(1ull << 47);
+                    }
+#endif
+#ifdef COOP_TEST_GYRO
+                    /* Bit 47 : essai plateau gyroscopique (gyro.cpp, NOTES 6.31). */
+                    if ((buttons >> 47) & 1) {
+                        static std::uint64_t s_LastGyro = 0;
+                        const auto cmdG = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmdG != s_LastGyro) {
+                            s_LastGyro = cmdG;
+                            coop::gyro::g_TestStep.fetch_add(1, std::memory_order_release);
                         }
                         buttons &= ~(1ull << 47);
                     }
