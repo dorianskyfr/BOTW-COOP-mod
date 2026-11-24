@@ -7,6 +7,7 @@
 #include "weapons.hpp"
 #include "bombs.hpp"
 #include "fire.hpp"
+#include "ice.hpp"
 #include "config.hpp"
 #include "beast_rotate.hpp"
 #include "cutscene.hpp"
@@ -358,6 +359,19 @@ namespace coop::net_probe {
                     b.m_Serial = serial;
                     b.m_Exploded = exploded == 1 ? 1u : 0u; /* aussi type non nul : explosion commencee (NOTES 6.05) */
                     coop::bombs::g_Remote[slot].Store(b);
+                }
+            } else if (std::strncmp(line, "ICE ", 4) == 0) {
+                /* Pilier de glace du partenaire (ice.hpp, NOTES 6.25) : emplacement 0..2, numero, present, matrice monde. */
+                int slot = -1;
+                unsigned serial = 0, alive = 0;
+                coop::ice::State st;
+                float* o = st.m_Mtx;
+                if (std::sscanf(line, "ICE %d %d %u %u %f %f %f %f %f %f %f %f %f %f %f %f", &id, &slot, &serial, &alive,
+                        &o[0], &o[1], &o[2], &o[3], &o[4], &o[5], &o[6], &o[7], &o[8], &o[9], &o[10], &o[11]) == 16
+                    && slot >= 0 && slot < coop::ice::Slots && alive <= 1 && SaneMtx(o, 20000.0f)) {
+                    st.m_Serial = serial;
+                    st.m_Alive = alive;
+                    coop::ice::g_Remote[slot].Store(st);
                 }
             } else if (std::strncmp(line, "FIRE ", 5) == 0) {
                 /* Depart de feu du partenaire (fire.hpp, NOTES 6.24) : type de projectile, position monde bornee comme BOMB. */
@@ -734,6 +748,30 @@ namespace coop::net_probe {
                             static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]),
                             static_cast<unsigned>(b.m_Exploded));
                         if (len > 0 && len < static_cast<int>(sizeof(bomb)) && !SendAll(s_Fd, bomb, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
+                }
+
+                /* Piliers de glace (ice.hpp, NOTES 6.25) : comme les bombes, a chaque envoi tant qu'un pilier existe et 2 s
+                   apres sa disparition, puis une fois par seconde. */
+                if (inGame && Live()) {
+                    static int s_IceQuiet[coop::ice::Slots] = {};
+                    for (int k = 0; k < coop::ice::Slots && Live(); k++) {
+                        coop::ice::State st;
+                        if (!coop::ice::g_Local[k].TryLoad(st))
+                            continue;
+                        s_IceQuiet[k] = st.m_Alive != 0 ? 0 : s_IceQuiet[k] + 1;
+                        if (st.m_Alive == 0 && s_IceQuiet[k] > 20 && tick % 10 != 6)
+                            continue;
+                        const float* o = st.m_Mtx;
+                        char ice[256];
+                        const int len = std::snprintf(ice, sizeof(ice),
+                            "ICE %d %u %u %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n", k,
+                            static_cast<unsigned>(st.m_Serial), static_cast<unsigned>(st.m_Alive),
+                            static_cast<double>(o[0]), static_cast<double>(o[1]), static_cast<double>(o[2]), static_cast<double>(o[3]),
+                            static_cast<double>(o[4]), static_cast<double>(o[5]), static_cast<double>(o[6]), static_cast<double>(o[7]),
+                            static_cast<double>(o[8]), static_cast<double>(o[9]), static_cast<double>(o[10]), static_cast<double>(o[11]));
+                        if (len > 0 && len < static_cast<int>(sizeof(ice)) && !SendAll(s_Fd, ice, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
                 }

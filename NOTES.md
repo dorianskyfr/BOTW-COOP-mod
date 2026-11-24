@@ -1063,6 +1063,35 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un départ de feu est un point unique : l'étendue brûlée peut différer d'un monde à l'autre (vent, herbe).
 - Preuves : `docs/evidence/2026-11-23_feu-departs-partages_fe1-fe3.log`, `docs/evidence/2026-11-24_feu-envoi-et-reception_fe4-fe5.log`.
 
+### 6.25 Piliers de glace de Cryonis partagés (2026-11-24, essai `ic1`, Eden) - [V] image et journaux
+
+- **Constat** : le pouvoir Cryonis crée des acteurs `Obj_IceMakerBlock` (`ActorInfo.product.sbyml`, profil MapDynamicActive). Ils n'existaient que dans le monde du joueur qui les crée : chez l'autre, son Link semblait debout sur l'eau.
+- **Module `ice.cpp`**, sur le modèle des bombes :
+  - chez le joueur : ses piliers (créés en jeu, HashId 0, à moins de 100 m, au plus 3 emplacements comme le pouvoir), relevés toutes les 3 images. Message `ICE <emplacement 0..2> <numéro> <présent 0/1> <matrice 3x4>`, envoyé à chaque passage tant qu'un pilier existe, pendant 2 s après sa disparition, puis une fois par seconde ;
+  - chez le partenaire : le même acteur, créé par poignée au même endroit (à moins de 200 m), posé à la matrice reçue (`SetActorBodyTransform`) à la création puis toutes les 30 images. Il est retiré quand le pilier disparaît chez l'autre, quand le numéro change ou sans nouvelles depuis 3 s. Les copies retirées ne sont jamais prises pour nos piliers. Une création en échec retire l'emplacement (même limite que 6.24) ;
+  - relais : `ICE` ajouté (15 valeurs, « iii » puis 12 nombres ; emplacement 0..2 et présence 0/1 contrôlés) ; deux essais automatiques (136/136) ;
+  - réglage `ice=0` pour couper la fonction.
+- [V] `ic1` (outil `-DCOOP_TEST_ICE_LOCAL` : appui impair, un pilier créé 6 m devant Link ; appui pair, nos piliers retirés) :
+  - sur la terre ferme, le pilier de J1 disparaît aussitôt, car il lui faut de l'eau. La chaîne tourne quand même : la copie de J2 est créée puis retirée ;
+  - dans un lac : pilier n.2 de J1 en (-650.1, 98.5, -333.3). Chez J2 : `pilier n.2 du partenaire demande`, `CREE apres 1 images`. **J2 voit le même pilier au même endroit**, avec le Link de J1 qui nage devant (image `2026-11-24_glace-pilier-J1-copie-J2-puis-retire_ic1.png`) ;
+  - J1 retire son pilier : chez J2, `retire (disparu chez le partenaire)`, et le pilier disparaît de son écran.
+- Relecture **Codex** : passe 1, une remarque P2 retenue (adresses des copies retirées jamais effacées : `PruneDying`) ; passe 2, aucune remarque.
+- **Non vérifié** : un pilier créé avec le vrai pouvoir (bouton de rune) ; monter sur la copie ; un pilier brisé par le pouvoir.
+
+### 6.26 État des autres pouvoirs (2026-11-24)
+
+- **Runes de la tablette** :
+  - **bombes** : partagées (6.22) ;
+  - **Cryonis** : piliers partagés (6.25) ;
+  - **Magnétisme et Stasis** : l'objet déplacé ou lancé est un objet mobile, donc sa position est partagée par 6.23, à moins de 40 m. Le rayon du magnétisme, la chaîne de Stasis et la flèche de force ne se voient pas chez l'autre (non essayé) ;
+  - **appareil photo, capteur** : propres à chacun.
+- **Pouvoirs des Prodiges** :
+  - obtenus par les deux (récompense partagée, 6.18 et 6.19) ;
+  - **Rafale de Revali** : chez l'autre, on voit Link monter (sa position est partagée), sans le tourbillon ;
+  - **Fureur d'Urbosa** : les ennemis touchés perdent leur vie chez les deux (vie partagée), sans les éclairs chez l'autre ;
+  - **Protection de Daruk** : le bouclier ne se voit pas chez l'autre ;
+  - **Grâce de Mipha** : propre à chacun (elle relève le joueur qui l'a).
+
 ### 6.17 Fléau des Créatures divines chez les deux joueurs : compteur de terminaux partagé (2026-11-23, essai `md5`, Eden) - [V] image et journaux
 
 - **Données** (GameData de `Pack/Bootup.pack`, `s32_data_0.bgdata`, script scratchpad `counter_init.py`) : `Counter_TerminalWind` (978537d6), `Counter_TerminalWater` (ce303243), `Counter_TerminalFire` (ee506ae7), `Counter_TerminalElectric` (4c2dfe7e) valent 5 au départ, et `Counter_TerminalFinalTrial` (d25c5e0d) 4. Minimum 0, sauvegardés, jamais remis à zéro (`ResetType` 0). Le jeu les fait descendre de 1 par terminal activé (`Demo044_0`, `RemainsTerminalMainFlow` : `Demo_IncreaseGameDataInt -1` selon la carte), et pose `Access_AllTerminal*` à 0.

@@ -1,0 +1,30 @@
+# ic1 : piliers de glace de Cryonis partages (Eden, 2026-11-24). NOTES 6.25
+## ic1_game.txt
+[botw-coop] glace : OUTIL DE TEST, pilier cree en (-972.6, 133.7, -633.3) 
+[botw-coop] glace : notre pilier n.1 (emplacement 0)
+[botw-coop] glace : notre pilier n.1 a disparu
+[botw-coop] glace : OUTIL DE TEST, nos piliers retires
+[botw-coop] glace : OUTIL DE TEST, pilier cree en (-650.1, 98.5, -333.3) 
+[botw-coop] glace : notre pilier n.2 (emplacement 0)
+[botw-coop] glace : OUTIL DE TEST, nos piliers retires
+[botw-coop] glace : notre pilier n.2 a disparu
+## ic1_game2.txt
+[botw-coop] glace : pilier n.1 du partenaire demande en (-972.6, 133.7, -633.3)
+[botw-coop] glace : pilier n.1 du partenaire CREE apres 1 images
+[botw-coop] glace : pilier n.1 du partenaire demande en (-972.6, 133.7, -633.3)
+[botw-coop] glace : pilier n.1 du partenaire CREE apres 1 images
+[botw-coop] glace : pilier n.1 du partenaire retire (plus voulu a la fin de sa creation)
+[botw-coop] glace : pilier n.2 du partenaire demande en (-650.1, 98.5, -333.3)
+[botw-coop] glace : pilier n.2 du partenaire CREE apres 1 images
+[botw-coop] glace : pilier n.2 du partenaire retire (disparu chez le partenaire)
+## ic1_relay.log
+11:43:15.272 joueur 1 : pilier de glace 0 = n.0 present 0 (position 0.000 0.000 0.000)
+11:43:15.272 joueur 1 : pilier de glace 1 = n.0 present 0 (position 0.000 0.000 0.000)
+11:43:15.272 joueur 1 : pilier de glace 2 = n.0 present 0 (position 0.000 0.000 0.000)
+11:43:31.248 joueur 2 : pilier de glace 0 = n.0 present 0 (position 0.000 0.000 0.000)
+11:43:31.249 joueur 2 : pilier de glace 1 = n.0 present 0 (position 0.000 0.000 0.000)
+11:43:31.249 joueur 2 : pilier de glace 2 = n.0 present 0 (position 0.000 0.000 0.000)
+11:47:31.866 joueur 1 : pilier de glace 0 = n.1 present 1 (position -972.573 133.699 -633.291)
+11:47:35.740 joueur 1 : pilier de glace 0 = n.1 present 0 (position 0.000 0.000 0.000)
+11:49:35.775 joueur 1 : pilier de glace 0 = n.2 present 1 (position -650.051 98.538 -333.325)
+11:50:30.324 joueur 1 : pilier de glace 0 = n.2 present 0 (position 0.000 0.000 0.000)

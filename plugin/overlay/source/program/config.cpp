@@ -55,6 +55,8 @@ namespace coop::config {
                 g_PuzzlePos = flag != 0;
             if (std::sscanf(line, "fire=%u", &flag) == 1)
                 g_FireSync = flag != 0;
+            if (std::sscanf(line, "ice=%u", &flag) == 1)
+                g_IceSync = flag != 0;
             if (std::sscanf(line, "enemy_anim=%u", &flag) == 1 && flag <= 2)
                 g_EnemyAnim = flag;
             if (std::sscanf(line, "cutscene=%u", &flag) == 1)

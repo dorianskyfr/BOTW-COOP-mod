@@ -7,6 +7,7 @@
 #include "weapons.hpp"
 #include "bombs.hpp"
 #include "fire.hpp"
+#include "ice.hpp"
 
 #include "clock.hpp"
 #include "beast_rotate.hpp"
@@ -219,6 +220,7 @@ namespace coop::input_inject {
                 COOP_PART();
                 coop::bombs::OnFrame(); /* compte dans la part suivante (liste des parts inchangee) */
                 coop::fire::OnFrame();  /* NOTES 6.24, meme part */
+                coop::ice::OnFrame();   /* NOTES 6.25, meme part */
                 coop::remote_actor::OnFrame();
                 COOP_PART();
                 coop::world_sync::OnFrame();
@@ -316,6 +318,18 @@ namespace coop::input_inject {
                         if (cmdB != s_LastBomb) {
                             s_LastBomb = cmdB;
                             coop::bombs::g_TestStep.fetch_add(1, std::memory_order_release);
+                        }
+                        buttons &= ~(1ull << 47);
+                    }
+#endif
+#ifdef COOP_TEST_ICE_LOCAL
+                    /* Bit 47 : essai pilier de glace (ice.cpp, NOTES 6.25) : un appui cree, le suivant retire. */
+                    if ((buttons >> 47) & 1) {
+                        static std::uint64_t s_LastIce = 0;
+                        const auto cmdI = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmdI != s_LastIce) {
+                            s_LastIce = cmdI;
+                            coop::ice::g_TestStep.fetch_add(1, std::memory_order_release);
                         }
                         buttons &= ~(1ull << 47);
                     }

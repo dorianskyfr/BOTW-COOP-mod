@@ -69,6 +69,7 @@ Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image 
 
 **Limites connues, gardées volontairement** :
 - **Deux joueurs** au plus.
+- **Pouvoirs** : les bombes et les piliers de glace de Cryonis se voient chez l'autre ; un objet déplacé par Magnétisme ou Stasis bouge chez les deux. Les effets visuels des autres pouvoirs (rayon du magnétisme, tourbillon de Revali, éclairs d'Urbosa, bouclier de Daruk) ne se voient que chez celui qui les utilise ; leurs effets sur les ennemis comptent chez les deux.
 - **Feu** : un feu allumé par une flèche de feu ou un bâton de feu démarre aussi chez l'autre, et son jeu le propage ; l'étendue brûlée peut différer un peu. Les autres feux (silex, torche, foudre, ennemis) restent propres à chacun.
 - **Énigme de sanctuaire en cours** : seuls les objets qu'on déplace sont partagés. Le feu (lierre, torches), l'électricité, l'eau, un interrupteur enfoncé par le corps d'un joueur et les labyrinthes à inclinaison restent propres à chacun.
 - **Le Link du partenaire a une collision** : on ne le traverse pas.

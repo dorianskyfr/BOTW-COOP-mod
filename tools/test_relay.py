@@ -444,6 +444,18 @@ def main():
         a.send("SAVED 13")
         b.expect("SAVED")
         check("FIRE hors des types 0..3, non fini, trop court ou trop long non retransmis", not b.take("FIRE"), str(b.lines))
+        # Piliers de glace (NOTES 6.25) : emplacement 0..2, present 0/1, matrice finie.
+        ice = "ICE 2 5 1 " + " ".join(["0.250"] * 12)
+        a.send(ice)
+        got = b.expect("ICE")
+        check("pilier de glace retransmis avec l'identifiant", got == "ICE 1 " + ice[4:], got)
+        for bad in ("ICE 3 5 1 " + " ".join(["0.250"] * 12), "ICE 0 5 2 " + " ".join(["0.250"] * 12),
+                    "ICE 0 5 1 nan " + " ".join(["0.250"] * 11), "ICE 0 5 1 " + " ".join(["0.250"] * 11)):
+            a.send(bad)
+        a.send("SAVED 14")
+        b.expect("SAVED")
+        check("ICE hors des emplacements 0..2, present different de 0/1, non fini ou trop court non retransmis",
+              not b.take("ICE"), str(b.lines))
         check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
         a.send("GIFT Weapon_Sword_001 1800")
         line = b.expect("GIFT")
