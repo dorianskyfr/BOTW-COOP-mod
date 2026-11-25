@@ -39,7 +39,7 @@ namespace coop::switches {
 
         /* Position de repos de chaque bouton, gardee tant que le monde ne change pas, meme si l'interrupteur sort de notre
            vue (relecture Codex : revu alors qu'une caisse le tenait enfonce, il etait pris pour un bouton au repos). Un
-           bouton deja enfonce a la toute premiere vue (chargement) reste mal mesure. */
+           bouton deja enfonce a la toute premiere vue est detecte par l'IA SwitchStep quand elle est disponible. */
         struct RestMem {
             std::uint32_t m_Hash = 0;
             float         m_Y = 0;
@@ -139,20 +139,23 @@ namespace coop::switches {
                 e->m_Button = 0;
                 return false;
             }
-            /* Repos = position la plus haute vue du bouton depuis le chargement, hors du temps ou nous l'enfoncons. */
+            /* Repos = position la plus haute mesuree sans appui de notre part ni appui connu du jeu. */
+            const int gamePressed = std::strcmp(info.m_Name, "SwitchStep") == 0
+                ? coop::game::GetSwitchStepPressed(info.m_Actor) : -1;
             if (!e->m_HaveRest) {
                 if (const RestMem* mem = FindRest(info.m_HashId, false)) {
                     e->m_RestY = mem->m_Y;
                     e->m_HaveRest = true;
                 }
             }
-            if (!e->m_Forcing && (!e->m_HaveRest || m[7] > e->m_RestY)) {
+            if (!e->m_Forcing && gamePressed != 1 && (!e->m_HaveRest || m[7] > e->m_RestY)) {
                 e->m_RestY = m[7];
                 e->m_HaveRest = true;
                 if (RestMem* mem = FindRest(info.m_HashId, true))
                     mem->m_Y = m[7];
             }
-            const bool pressedNow = e->m_RestY - m[7] > PressedDepth;
+            const float depth = e->m_HaveRest ? e->m_RestY - m[7] : 0.0f;
+            const bool pressedNow = gamePressed >= 0 ? gamePressed == 1 : depth > PressedDepth;
 
             /* Notre joueur (pas nous) enfonce-t-il le bouton ? Pendant que nous l'enfoncons pour l'autre, et le temps qu'il
                remonte ensuite, on ne sait pas : on n'annonce rien (sinon les deux jeux s'entretiendraient l'un l'autre). */
@@ -162,8 +165,8 @@ namespace coop::switches {
                     return false; /* file pleine : retente a l'image suivante (relecture Codex) */
                 e->m_LocalPressed = local;
                 if (Log())
-                    Logging.Log("[botw-coop] interrupteur : %s %08x %s chez nous (enfoncement %.2f m)", info.m_Name, info.m_HashId,
-                        local ? "enfonce" : "relache", static_cast<double>(e->m_RestY - m[7]));
+                    Logging.Log("[botw-coop] interrupteur : %s %08x %s chez nous (etat jeu %d, enfoncement %.2f m)", info.m_Name,
+                        info.m_HashId, local ? "enfonce" : "relache", gamePressed, static_cast<double>(depth));
             } else if (local && s_Frames - e->m_SentFrame >= KeepAlive) {
                 Announce(*e, true);
             }

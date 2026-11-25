@@ -1,7 +1,6 @@
 #include "torches.hpp"
 
 #include "config.hpp"
-#include "fire.hpp"
 #include "game.hpp"
 
 #include "lib.hpp"
@@ -15,11 +14,11 @@ namespace coop::torches {
     namespace {
         constexpr float         Radius = 60.0f;       /* torches suivies, et allumage annonce, a moins de 60 m */
         constexpr int           ScanEvery = 2;
-        constexpr float         FuelHeight = 1.35f;   /* centre de la sphere ChemFuel (SwitchCandlestick.bphysics) */
-        constexpr std::uint64_t PendingFrames = 150;  /* allumage demande par l'autre : tente pendant ~5 s */
-        constexpr std::uint64_t RetryEvery = 45;      /* nouvelle boule de feu si la torche n'a pas pris */
+        constexpr std::uint64_t PendingFrames = 150;  /* demande du partenaire : tentee pendant ~5 s */
+        constexpr std::uint64_t RetryEvery = 45;
         constexpr int           MaxTries = 3;
-        constexpr std::uint64_t EchoFrames = 300;     /* torche allumee pour l'autre : jamais annoncee pendant ~10 s */
+        constexpr std::uint64_t EchoFrames = 300;    /* delai laisse a la chimie avant d'oublier l'application distante */
+        constexpr std::uint64_t OffGrace = 30;       /* ignore les rappels d'allumage en vol lors d'une extinction locale */
         /* Essai tc3 : au chargement du sanctuaire, une SwitchCandlestickOn (allumee des le depart) est d'abord lue eteinte
            (action 1), puis allumee : son allumage etait annonce a tort. Rien n'est annonce ni servi pendant 2 s apres la
            premiere vue d'une torche. */
@@ -29,8 +28,13 @@ namespace coop::torches {
            sinon, une torche a minuterie eteinte chez l'un serait rallumee sans fin par l'autre. */
         constexpr std::uint64_t ResendEvery = 150;
 
+        bool IsBlueTorch(const char* name) {
+            return std::strcmp(name, "SwitchCandlestickAncient") == 0;
+        }
+
         bool IsTorch(const char* name) {
-            return std::strcmp(name, "SwitchCandlestick") == 0 || std::strcmp(name, "SwitchCandlestickOn") == 0;
+            return std::strcmp(name, "SwitchCandlestick") == 0 || std::strcmp(name, "SwitchCandlestickOn") == 0
+                || IsBlueTorch(name);
         }
 
         struct Tracked {
@@ -38,9 +42,13 @@ namespace coop::torches {
             std::uint32_t  m_Hash = 0;
             float          m_Pos[3] = {};
             int            m_Lit = -1; /* -1 inconnu, 0 eteinte, 1 allumee */
+            int            m_RemoteLit = -1;
             std::uint64_t  m_Since = 0; /* image de la premiere vue */
             std::uint64_t  m_RemoteUntil = 0;
+            std::uint64_t  m_IgnoreIgnitionUntil = 0;
             bool           m_Seen = false;
+            bool           m_Blue = false;
+            bool           m_AnnouncePending = false;
             bool           m_LocalLit = false; /* allumee ici par le joueur local (annoncee), toujours allumee */
         };
         constexpr int MaxTracked = 32;
@@ -48,6 +56,7 @@ namespace coop::torches {
 
         struct Pending {
             std::uint32_t m_Hash = 0;
+            bool          m_Lit = true;
             std::uint64_t m_Frame = 0;   /* reception */
             std::uint64_t m_LastTry = 0;
             int           m_Tries = 0;
@@ -67,17 +76,17 @@ namespace coop::torches {
             return dx * dx + dy * dy + dz * dz;
         }
 
-        void Announce(const Tracked& t, bool resend = false) {
+        bool Announce(const Tracked& t, bool resend = false) {
             Msg m;
             m.m_Hash = t.m_Hash;
+            m.m_Lit = t.m_Lit == 1;
             m.m_Frame = s_Frames;
             const bool queued = g_Outgoing.Push(m);
-            if (resend)
-                return; /* rappel periodique : pas de journal */
-            if (Log())
-                Logging.Log("[botw-coop] torche : %08x allumee ici en (%.1f, %.1f, %.1f), %s", t.m_Hash,
-                    static_cast<double>(t.m_Pos[0]), static_cast<double>(t.m_Pos[1]), static_cast<double>(t.m_Pos[2]),
-                    queued ? "annoncee" : "PERDU (file pleine)");
+            if (queued && !resend && Log())
+                Logging.Log("[botw-coop] torche : %08x %s ici en (%.1f, %.1f, %.1f), annoncee", t.m_Hash,
+                    m.m_Lit ? "allumee" : "eteinte",
+                    static_cast<double>(t.m_Pos[0]), static_cast<double>(t.m_Pos[1]), static_cast<double>(t.m_Pos[2]));
+            return queued;
         }
 
         void Update(Tracked& t, const coop::game::ActorInfo& info) {
@@ -86,21 +95,26 @@ namespace coop::torches {
             const int lit = coop::game::GetSwitchTorchLit(info.m_Actor);
             if (lit < 0)
                 return; /* etat illisible cette image (gelee, en creation...) : rien ne change */
-            if (t.m_Lit == 0 && lit == 1) {
-                if (s_Frames - t.m_Since < SettleFrames) {
+            if (t.m_Lit >= 0 && t.m_Lit != lit && Dist2(t.m_Pos, s_PlayerPos) <= Radius * Radius) {
+                if (lit == t.m_RemoteLit && s_Frames < t.m_RemoteUntil) {
+                    t.m_RemoteLit = -1;
+                    t.m_AnnouncePending = false;
+                    t.m_LocalLit = false;
                     if (Log())
-                        Logging.Log("[botw-coop] torche : %08x allumee juste apres le chargement (etat de depart, non annoncee)", t.m_Hash);
-                } else if (s_Frames < t.m_RemoteUntil) {
-                    if (Log())
-                        Logging.Log("[botw-coop] torche : %08x allumee pour le partenaire (non renvoyee)", t.m_Hash);
-                } else if (Dist2(t.m_Pos, s_PlayerPos) <= Radius * Radius) {
-                    Announce(t);
-                    t.m_LocalLit = true;
+                        Logging.Log("[botw-coop] torche : %08x %s pour le partenaire (non renvoyee)", t.m_Hash,
+                            lit == 1 ? "allumee" : "eteinte");
+                } else if (s_Frames - t.m_Since >= SettleFrames) {
+                    t.m_AnnouncePending = true;
+                    t.m_LocalLit = lit == 1;
+                    if (lit == 0)
+                        t.m_IgnoreIgnitionUntil = s_Frames + OffGrace;
                 }
             }
             if (lit == 0)
                 t.m_LocalLit = false;
             t.m_Lit = lit;
+            if (t.m_AnnouncePending && Dist2(t.m_Pos, s_PlayerPos) <= Radius * Radius && Announce(t))
+                t.m_AnnouncePending = false;
         }
 
         bool OnScan(const coop::game::ActorInfo& info, void*) {
@@ -128,6 +142,7 @@ namespace coop::torches {
             *freeSlot = Tracked {};
             freeSlot->m_Actor = info.m_Actor;
             freeSlot->m_Hash = info.m_HashId;
+            freeSlot->m_Blue = IsBlueTorch(info.m_Name);
             freeSlot->m_Since = s_Frames;
             /* Premier releve : etat de depart, jamais annonce (deja allumee au chargement, ou eteinte). */
             Update(*freeSlot, info);
@@ -150,38 +165,61 @@ namespace coop::torches {
             return nullptr;
         }
 
-        /* Allumage demande par le partenaire : boule de feu au centre du combustible, tant que la torche est eteinte. */
+        /* Une demande expire meme si la torche n'est pas chargee ou si sa chimie refuse de changer. */
         void ServePending() {
             for (Pending& p : s_Pending) {
                 if (p.m_Hash == 0)
                     continue;
                 Tracked* t = FindTracked(p.m_Hash);
-                if (t != nullptr && t->m_Lit == 1) {
-                    if (p.m_Tries > 0 && Log()) /* deja allumee sans nous (rappel periodique) : silencieux */
-                        Logging.Log("[botw-coop] torche : %08x allumee chez le partenaire, allumee ici aussi (%d boule(s) de feu)",
-                            p.m_Hash, p.m_Tries);
+                if (t == nullptr || t->m_Lit < 0)
+                    continue;
+                if (p.m_Lit && p.m_Frame < t->m_IgnoreIgnitionUntil) {
                     p = Pending {};
                     continue;
                 }
-                if (t == nullptr || t->m_Lit != 0 || s_Frames - t->m_Since < SettleFrames || p.m_Tries >= MaxTries
-                    || (p.m_Tries > 0 && s_Frames - p.m_LastTry < RetryEvery))
+                if (t->m_Lit == static_cast<int>(p.m_Lit)) {
+                    /* La chimie peut appliquer une demande precedente apres la reception de son inverse. */
+                    const bool oppositeInFlight = t->m_RemoteLit == static_cast<int>(!p.m_Lit) && s_Frames < t->m_RemoteUntil;
+                    if (!oppositeInFlight)
+                        p = Pending {};
                     continue;
-                float m[12];
-                coop::game::GetActorMtx(t->m_Actor, m);
-                /* Axe Y local de la torche (colonne 1 de la matrice) : le combustible est 1,35 m au-dessus du pied. */
-                const float at[3] = { m[3] + m[1] * FuelHeight, m[7] + m[5] * FuelHeight, m[11] + m[9] * FuelHeight };
-                const bool ok = coop::fire::IgniteAt(at);
+                }
+                if (s_Frames - t->m_Since < SettleFrames || p.m_Tries >= MaxTries
+                    || (p.m_LastTry != 0 && s_Frames - p.m_LastTry < RetryEvery))
+                    continue;
+                const bool ok = coop::game::SetSwitchTorchFire(t->m_Actor, p.m_Lit);
+                p.m_LastTry = s_Frames;
                 if (ok) {
                     p.m_Tries++;
-                    p.m_LastTry = s_Frames;
+                    t->m_RemoteLit = static_cast<int>(p.m_Lit);
                     t->m_RemoteUntil = s_Frames + EchoFrames;
                 }
                 if (Log())
-                    Logging.Log("[botw-coop] torche : %08x allumee chez le partenaire, boule de feu %d en (%.1f, %.1f, %.1f) %s",
-                        p.m_Hash, p.m_Tries, static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]),
-                        ok ? "demandee" : "pas d'emplacement libre (reessai)");
+                    Logging.Log("[botw-coop] torche : %08x %s %s pour le partenaire (essai %d)", p.m_Hash,
+                        p.m_Lit ? "allumage" : "extinction", ok ? "demande" : "indisponible", p.m_Tries);
             }
         }
+
+#ifdef COOP_TEST_TORCH
+        void TestTorch(bool lit) {
+            Tracked* best = nullptr;
+            float nearest = Radius * Radius;
+            for (Tracked& t : s_Tracked) {
+                const float d2 = Dist2(t.m_Pos, s_PlayerPos);
+                if (t.m_Actor != 0 && t.m_Lit == static_cast<int>(!lit) && d2 <= nearest) {
+                    nearest = d2;
+                    best = &t;
+                }
+            }
+            if (best == nullptr) {
+                Logging.Log("[botw-coop] torche : OUTIL DE TEST, aucune torche %s suivie", lit ? "eteinte" : "allumee");
+                return;
+            }
+            const bool ok = coop::game::SetSwitchTorchFire(best->m_Actor, lit);
+            Logging.Log("[botw-coop] torche : OUTIL DE TEST, %s de %08x%s %s", lit ? "allumage" : "extinction",
+                best->m_Hash, best->m_Blue ? " (bleue)" : "", ok ? "demande" : "refuse");
+        }
+#endif
     }
 
     void OnFrame() {
@@ -191,28 +229,26 @@ namespace coop::torches {
         for (Pending& p : s_Pending)
             if (p.m_Hash != 0 && s_Frames - p.m_Frame > PendingFrames) {
                 if (p.m_Tries > 0 && Log())
-                    Logging.Log("[botw-coop] torche : %08x pas allumee ici apres %d boule(s) de feu", p.m_Hash, p.m_Tries);
+                    Logging.Log("[botw-coop] torche : %08x etat distant non atteint apres %d essais", p.m_Hash, p.m_Tries);
                 p = Pending {};
             }
-        for (;;) {
-            Pending* slot = nullptr;
-            for (Pending& p : s_Pending)
-                if (p.m_Hash == 0) {
-                    slot = &p;
-                    break;
-                }
-            Msg in;
-            if (slot == nullptr || !g_Incoming.Pop(in))
-                break;
+        Msg in;
+        for (int received = 0; received < MaxPending && g_Incoming.Pop(in); received++) {
             if (s_Frames - in.m_Frame > PendingFrames)
                 continue;
-            bool dup = false;
-            for (const Pending& p : s_Pending)
-                dup |= p.m_Hash == in.m_Hash;
-            if (dup)
+            Pending* slot = nullptr;
+            for (Pending& p : s_Pending)
+                if (p.m_Hash == in.m_Hash) {
+                    slot = &p;
+                    break;
+                } else if (p.m_Hash == 0 && slot == nullptr) {
+                    slot = &p;
+                }
+            if (slot == nullptr || (slot->m_Hash == in.m_Hash && slot->m_Lit == in.m_Lit))
                 continue;
             *slot = Pending {};
             slot->m_Hash = in.m_Hash;
+            slot->m_Lit = in.m_Lit;
             slot->m_Frame = in.m_Frame;
         }
         if (!coop::game::IsWorldReady()) {
@@ -242,32 +278,16 @@ namespace coop::torches {
 
 #ifdef COOP_TEST_TORCH
         {
-            /* Essai (NOTES 6.29) : chaque appui allume chez ce joueur la torche eteinte la plus proche, par une boule de feu
-               (comme un vrai feu, sans annonce FIRE) ; l'allumage doit etre annonce par TRCH. Toutes les 2 s, l'etat lu de
-               chaque torche suivie (index de l'action courante de l'IA SwitchTorch). */
-            static int s_Step = 0;
+            static int s_Step = 0, s_OffStep = 0;
             const int step = g_TestStep.load(std::memory_order_acquire);
+            const int offStep = g_TestOffStep.load(std::memory_order_acquire);
             if (step != s_Step) {
                 s_Step = step;
-                Tracked* best = nullptr;
-                float bestD2 = 1e12f;
-                for (Tracked& t : s_Tracked) {
-                    const float d2 = Dist2(t.m_Pos, s_PlayerPos);
-                    if (t.m_Actor != 0 && t.m_Lit == 0 && d2 < bestD2) {
-                        bestD2 = d2;
-                        best = &t;
-                    }
-                }
-                if (best != nullptr) {
-                    float m[12];
-                    coop::game::GetActorMtx(best->m_Actor, m);
-                    const float at[3] = { m[3] + m[1] * FuelHeight, m[7] + m[5] * FuelHeight, m[11] + m[9] * FuelHeight };
-                    const bool ok = coop::fire::IgniteAt(at);
-                    Logging.Log("[botw-coop] torche : OUTIL DE TEST, boule de feu sur %08x en (%.1f, %.1f, %.1f) %s", best->m_Hash,
-                        static_cast<double>(at[0]), static_cast<double>(at[1]), static_cast<double>(at[2]), ok ? "" : "REFUSEE");
-                } else {
-                    Logging.Log("[botw-coop] torche : OUTIL DE TEST, aucune torche eteinte suivie");
-                }
+                TestTorch(true);
+            }
+            if (offStep != s_OffStep) {
+                s_OffStep = offStep;
+                TestTorch(false);
             }
             if (s_Frames % 60 == 0) {
                 for (const Tracked& t : s_Tracked) {

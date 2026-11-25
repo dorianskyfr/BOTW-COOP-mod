@@ -16,6 +16,7 @@ Commandes :
   hold BOUTON s            maintien (BOUTON peut etre une combinaison : ZL+Y)
   holdpress TENU B n [e]   TENU maintenu (ex. ZL) pendant n appuis de B (ex. Y : coups verrouilles)
   shot etiquette           capture d'ecran -> build/runs/<nom>_<etiquette>.png
+  torch [off]              essai COOP_TEST_TORCH : allume ou eteint la torche la plus proche
   actors [regex]           acteurs proches (nom, position)
   drop                     essai : fait tomber de 40 m le Bokoblin le plus proche (mort reelle)
   bring                    essai : amene le Bokoblin le plus proche a 8 m du joueur (combat)
@@ -240,6 +241,11 @@ def main():
             # Essai (COOP_TEST_REMOVE_EQUIPPED) : le plugin retire l'arme equipee de l'inventaire.
             p.pad(buttons=1 << 46, ms=300)
             p.log("unequiptest : retrait de l'arme equipee demande")
+        elif op == "torch":
+            if args not in ([], ["off"]):
+                raise ValueError("usage : torch [off]")
+            p.pad(buttons=1 << 47, lx=-1 if args else 0, ms=300)
+            p.log(f"torch : {'extinction' if args else 'allumage'} d'essai")
         elif op == "bombtest":
             # Essai (COOP_TEST_BOMB_SELF) : un appui cree une bombe devant Link, le suivant la fait exploser.
             p.pad(buttons=1 << 47, ms=300)

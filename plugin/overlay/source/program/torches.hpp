@@ -8,18 +8,15 @@
  * (fleche de feu, arme en feu, baton de feu, autre torche) ne s'allumait que dans son monde, et la porte qu'elle ouvre
  * restait fermee chez l'autre.
  *
- * - chacun suit ses torches d'enigme (acteurs SwitchCandlestick et SwitchCandlestickOn, IA SwitchTorch, sanctuaires
- *   016, 030, 051...) a moins de 60 m ; quand l'une passe d'eteinte a allumee, il annonce TRCH <HashId> ;
- * - a la reception, si la torche de meme HashId est chargee et eteinte chez nous, une boule de feu du baton de feu est
- *   creee au centre de son combustible (1,35 m au-dessus du pied, SwitchCandlestick.bphysics) : sa chimie allume la
- *   torche comme un vrai feu, et l'IA de la torche envoie elle-meme son signal. Une torche allumee ainsi n'est jamais
- *   annoncee en retour.
- * Non partage : la torche bleue de SwitchCandlestickAncient (flamme bleue seulement), l'extinction.
+ * - chacun suit ses torches d'enigme a moins de 60 m. TRCH <HashId> annonce un allumage, TROF <HashId> une extinction.
+ * - les routines de chimie du jeu allument ou eteignent la forme de la torche, avec la couleur de son materiau. L'IA
+ *   reagit a la flamme comme lors d'un changement local. Une transition appliquee pour le partenaire ne lui est pas renvoyee.
  */
 namespace coop::torches {
 
     struct Msg {
         std::uint32_t m_Hash = 0;
+        bool          m_Lit = true;
         std::uint64_t m_Frame = 0; /* image du jeu a l'envoi ; a la reception, image de reception */
     };
 
@@ -59,7 +56,8 @@ namespace coop::torches {
     /* Fil du jeu, chaque image. */
     void OnFrame();
 
-    /* Essai (COOP_TEST_TORCH) : nombre d'appuis du bouton d'essai, lu par le fil du jeu. */
+    /* Essai (COOP_TEST_TORCH) : demandes d'allumage ou d'extinction. */
     inline std::atomic<int> g_TestStep { 0 };
+    inline std::atomic<int> g_TestOffStep { 0 };
 
 }

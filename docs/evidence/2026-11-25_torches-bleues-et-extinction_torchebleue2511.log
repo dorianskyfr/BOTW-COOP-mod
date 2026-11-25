@@ -1,0 +1,131 @@
+# BOTW 1.9.0, Eden, essai a deux instances du 25 novembre 2026
+# J1 et J2 allument une torche avec COOP_TEST_TORCH. Le jeu fait evoluer sa chimie.
+# Les lignes sont regroupees par sanctuaire puis par source.
+
+## Sanctuaire 028
+
+[J1] torchebleue2511_game.txt
+[botw-coop] torche : bc10199a allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : bc10199a allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : bc10199a extinction demande pour le partenaire (essai 1)
+[botw-coop] torche : bc10199a eteinte pour le partenaire (non renvoyee)
+[botw-coop] torche : OUTIL DE TEST, allumage de bc10199a (bleue) demande
+[botw-coop] torche : bc10199a allumee ici en (-33.2, 32.0, 3.0), annoncee
+[botw-coop] torche : bc10199a eteinte ici en (-33.2, 32.0, 3.0), annoncee
+[botw-coop] torche : OUTIL DE TEST, allumage de bc10199a (bleue) demande
+[botw-coop] torche : bc10199a allumee ici en (-33.2, 32.0, 3.0), annoncee
+[botw-coop] torche : bc10199a eteinte ici en (-33.2, 32.0, 3.0), annoncee
+
+[J2] torchebleue2511_game2.txt
+[botw-coop] torche : OUTIL DE TEST, allumage de bc10199a (bleue) demande
+[botw-coop] torche : bc10199a allumee ici en (-33.2, 32.0, 3.0), annoncee
+[botw-coop] torche : bc10199a eteinte ici en (-33.2, 32.0, 3.0), annoncee
+[botw-coop] torche : bc10199a allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : bc10199a allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : bc10199a extinction demande pour le partenaire (essai 1)
+[botw-coop] torche : bc10199a eteinte pour le partenaire (non renvoyee)
+[botw-coop] torche : bc10199a allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : bc10199a allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : bc10199a extinction demande pour le partenaire (essai 1)
+[botw-coop] torche : bc10199a eteinte pour le partenaire (non renvoyee)
+
+[Relais] torchebleue2511_relay.log
+11:21:47.517 joueur 2 : torche allumee n.1 = bc10199a
+11:21:48.122 joueur 2 : torche allumee n.2 = bc10199a
+11:21:50.548 joueur 2 : torche eteinte n.3 = bc10199a
+11:22:39.266 joueur 1 : torche allumee n.9 = bc10199a
+11:22:42.311 joueur 1 : torche eteinte n.10 = bc10199a
+11:22:50.301 joueur 1 : torche allumee n.11 = bc10199a
+11:22:53.334 joueur 1 : torche eteinte n.12 = bc10199a
+
+## Sanctuaire 016
+
+[J1] torchebleue2511_game.txt
+[botw-coop] torche : OUTIL DE TEST, allumage de a95b6fc8 demande
+[botw-coop] torche : a95b6fc8 allumee ici en (10.5, 11.5, -4.0), annoncee
+[botw-coop] torche : de5c5f5e allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : de5c5f5e allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : OUTIL DE TEST, extinction de a95b6fc8 demande
+[botw-coop] torche : a95b6fc8 eteinte ici en (10.5, 11.5, -4.0), annoncee
+[botw-coop] torche : a95b6fc8 allumee ici en (10.5, 11.5, -4.0), annoncee
+
+[J2] torchebleue2511_game2.txt
+[botw-coop] torche : a95b6fc8 allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : a95b6fc8 allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : OUTIL DE TEST, extinction de a95b6fc8 demande
+[botw-coop] torche : a95b6fc8 eteinte ici en (10.5, 11.5, -4.0), annoncee
+[botw-coop] torche : a95b6fc8 allumee ici en (10.5, 11.5, -4.0), annoncee
+[botw-coop] torche : OUTIL DE TEST, allumage de de5c5f5e demande
+[botw-coop] torche : de5c5f5e allumee ici en (0.0, 11.5, 0.0), annoncee
+[botw-coop] torche : a95b6fc8 extinction demande pour le partenaire (essai 1)
+[botw-coop] torche : a95b6fc8 eteinte pour le partenaire (non renvoyee)
+[botw-coop] torche : a95b6fc8 allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : a95b6fc8 allumee pour le partenaire (non renvoyee)
+
+[Relais] torchebleue2511_relay.log
+11:24:15.623 joueur 1 : torche allumee n.18 = a95b6fc8
+11:24:20.691 joueur 1 : torche allumee n.21 = a95b6fc8
+11:24:21.914 joueur 2 : torche eteinte n.4 = a95b6fc8
+11:24:22.016 joueur 2 : torche allumee n.5 = a95b6fc8
+11:24:28.273 joueur 2 : torche allumee n.6 = de5c5f5e
+11:24:31.299 joueur 2 : torche allumee n.7 = a95b6fc8
+11:24:31.299 joueur 2 : torche allumee n.8 = de5c5f5e
+11:24:32.311 joueur 1 : torche allumee n.24 = a95b6fc8
+11:24:34.326 joueur 1 : torche eteinte n.26 = a95b6fc8
+11:24:34.530 joueur 1 : torche allumee n.27 = a95b6fc8
+11:24:43.088 joueur 2 : torche allumee n.9 = de5c5f5e
+11:24:44.006 joueur 1 : torche allumee n.29 = a95b6fc8
+11:24:54.695 joueur 2 : torche allumee n.10 = de5c5f5e
+11:24:55.703 joueur 1 : torche allumee n.32 = a95b6fc8
+11:25:06.393 joueur 2 : torche allumee n.11 = de5c5f5e
+11:25:07.403 joueur 1 : torche allumee n.35 = a95b6fc8
+11:25:18.097 joueur 2 : torche allumee n.12 = de5c5f5e
+11:25:19.004 joueur 1 : torche allumee n.38 = a95b6fc8
+
+## Extinction rapprochee, sanctuaire 016, torchesfinal2511
+# Une instance Eden et un partenaire simule sur le relais local.
+# Les messages TRCH et TROF sont separes de 450 ms.
+[botw-coop] torche : a95b6fc8 allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : a95b6fc8 allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : a95b6fc8 extinction demande pour le partenaire (essai 1)
+[botw-coop] torche : a95b6fc8 eteinte pour le partenaire (non renvoyee)
+
+## Methode finale avec la chimie native, torchenative2511, sanctuaire 016
+# 30523e72 est allumee a distance par un emetteur de test dans les deux jeux.
+# J1 allume a95b6fc8, puis J2 l’eteint. Le jeu la rallume ensuite chez J2.
+
+[J1] torchenative2511_game.txt
+[botw-coop] torche : 30523e72 allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : 30523e72 allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : 30523e72 eteinte ici en (-10.5, 11.5, -4.0), annoncee
+[botw-coop] torche : OUTIL DE TEST, allumage de a95b6fc8 demande
+[botw-coop] torche : a95b6fc8 allumee ici en (10.5, 11.5, -4.0), annoncee
+[botw-coop] torche : a95b6fc8 extinction demande pour le partenaire (essai 1)
+[botw-coop] torche : a95b6fc8 eteinte pour le partenaire (non renvoyee)
+[botw-coop] torche : a95b6fc8 allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : a95b6fc8 allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : etat 30523e72 en (-10.5, 11.5, -4.0) allumee=0 action=1
+
+[J2] torchenative2511_game2.txt
+[botw-coop] torche : 30523e72 allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : 30523e72 allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : 30523e72 eteinte ici en (-10.5, 11.5, -4.0), annoncee
+[botw-coop] torche : a95b6fc8 allumage demande pour le partenaire (essai 1)
+[botw-coop] torche : a95b6fc8 allumee pour le partenaire (non renvoyee)
+[botw-coop] torche : OUTIL DE TEST, extinction de a95b6fc8 demande
+[botw-coop] torche : a95b6fc8 eteinte ici en (10.5, 11.5, -4.0), annoncee
+[botw-coop] torche : a95b6fc8 allumee ici en (10.5, 11.5, -4.0), annoncee
+[botw-coop] torche : etat 30523e72 en (-10.5, 11.5, -4.0) allumee=0 action=1
+
+[Relais] torchenative2511_relay.log
+11:42:04.376 joueur 3 : torche allumee n.1 = 30523e72
+11:42:04.802 joueur 2 : torche eteinte n.1 = 30523e72
+11:42:04.827 joueur 3 : torche eteinte n.2 = 30523e72
+11:42:04.930 joueur 1 : torche eteinte n.1 = 30523e72
+11:42:37.779 joueur 1 : torche allumee n.2 = a95b6fc8
+11:42:41.392 joueur 2 : torche eteinte n.2 = a95b6fc8
+11:42:41.493 joueur 2 : torche allumee n.3 = a95b6fc8
+11:42:51.777 joueur 2 : torche allumee n.4 = a95b6fc8
+11:43:03.476 joueur 2 : torche allumee n.5 = a95b6fc8
+11:43:15.173 joueur 2 : torche allumee n.6 = a95b6fc8
+11:43:26.752 joueur 2 : torche allumee n.7 = a95b6fc8

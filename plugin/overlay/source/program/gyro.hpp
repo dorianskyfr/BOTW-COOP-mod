@@ -5,8 +5,8 @@
 
 /*
  * Labyrinthes gyroscopiques partages (NOTES 6.31). Le plateau d'un sanctuaire a inclinaison (acteur
- * DungeonRotateTagGyro, terminal SwitchGyroTilt ; sanctuaires 013, 015, 030, 039, 040, 048) ne bougeait que chez celui
- * qui tenait le terminal.
+ * DungeonRotateTagGyro, terminal SwitchGyroTilt) ne bougeait que chez celui qui tenait le terminal.
+ * Les clubs du sanctuaire 013 (DungeonRotateTagGyroPutter) utilisent la meme action DungeonRotateGyro.
  *
  * - celui qui tient le terminal (action DungeonRotateGyro courante chez lui) envoie la rotation du plateau toutes les
  *   2 images quand elle change : GYRO <HashId> <9 floats, lignes> ;

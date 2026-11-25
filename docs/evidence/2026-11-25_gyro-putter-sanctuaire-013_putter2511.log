@@ -1,0 +1,29 @@
+# BOTW 1.9.0, Eden, sanctuaire 013, 25 novembre 2026
+# COOP_TEST_GYRO fait osciller chaque club chez J1, puis arrete sur sa derniere rotation.
+# J2 quitte puis recharge la salle entre les deux essais.
+
+[J1] putter2511_game.txt
+[botw-coop] gyro : plateau 9d564261 suivi
+[botw-coop] gyro : plateau a92836e0 suivi
+[botw-coop] gyro : OUTIL DE TEST, oscillation lancee (plateau 9d564261, action 21b098c658)
+[botw-coop] gyro : OUTIL DE TEST, angle 9.7 degres pose ici
+[botw-coop] gyro : OUTIL DE TEST, oscillation arretee (plateau 9d564261, action 21b098c658)
+[botw-coop] gyro : OUTIL DE TEST, oscillation lancee (plateau a92836e0, action 21b0a8c130)
+[botw-coop] gyro : OUTIL DE TEST, angle 10.7 degres pose ici
+[botw-coop] gyro : OUTIL DE TEST, angle -9.8 degres pose ici
+[botw-coop] gyro : OUTIL DE TEST, oscillation arretee (plateau a92836e0, action 21b0a8c130)
+
+[J2] putter2511_game2.txt
+[botw-coop] gyro : plateau 9d564261 suivi
+[botw-coop] gyro : plateau a92836e0 suivi
+[botw-coop] gyro : plateau 9d564261 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 1.000 0.000]
+[botw-coop] gyro : plateau 9d564261 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 1.000 -0.021]
+[botw-coop] gyro : plateau 9d564261 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 0.999 -0.042]
+[botw-coop] gyro : plateau 9d564261 suivi
+[botw-coop] gyro : plateau a92836e0 suivi
+[botw-coop] gyro : plateau 9d564261 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 0.981 0.193]
+[botw-coop] gyro : plateau 9d564261 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 0.981 0.193]
+[botw-coop] gyro : plateau 9d564261 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 0.981 0.193]
+[botw-coop] gyro : plateau a92836e0 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 1.000 0.000]
+[botw-coop] gyro : plateau a92836e0 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 0.999 -0.042]
+[botw-coop] gyro : plateau a92836e0 incline comme chez le partenaire [1.000 0.000 0.000 / 0.000 0.998 -0.062]

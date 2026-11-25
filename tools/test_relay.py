@@ -483,6 +483,14 @@ def main():
         a.send("SAVED 17")
         b.expect("SAVED")
         check("TRCH invalide, vide, trop long non retransmis", not b.take("TRCH"), str(b.lines))
+        b.send("TROF 0a1b2c3d")
+        got = a.expect("TROF")
+        check("torche eteinte retransmise dans l'autre sens", got == "TROF 2 0a1b2c3d", got)
+        for bad in ("TROF zz", "TROF", "TROF 1 2", "TROF 123456789", "TROF 0", "TROF -1"):
+            b.send(bad)
+        b.send("SAVED 17")
+        a.expect("SAVED")
+        check("TROF invalide non retransmis", not a.take("TROF"), str(a.lines))
         # Plateaux gyroscopiques (NOTES 6.31) : HashId et 9 nombres.
         a.send("GYRO 0a1b2c3d 1 0 0 0 0.97815 -0.20791 0 0.20791 0.97815")
         got = b.expect("GYRO")

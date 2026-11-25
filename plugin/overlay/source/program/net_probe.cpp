@@ -371,10 +371,11 @@ namespace coop::net_probe {
                     m.m_Frame = coop::vanish::g_GameFrame.load(std::memory_order_relaxed); /* date de reception (relecture Codex) */
                     coop::vanish::g_Incoming.Push(m);
                 }
-            } else if (std::strncmp(line, "TRCH ", 5) == 0) {
-                /* Torche d'enigme allumee chez le partenaire (torches.hpp, NOTES 6.29) : HashId. */
+            } else if (std::strncmp(line, "TRCH ", 5) == 0 || std::strncmp(line, "TROF ", 5) == 0) {
+                /* Allumage TRCH ou extinction TROF d'une torche d'enigme : HashId. */
                 coop::torches::Msg m;
-                if (std::sscanf(line, "TRCH %d %x", &id, &m.m_Hash) == 2 && m.m_Hash != 0) {
+                if (std::sscanf(line + 5, "%d %x", &id, &m.m_Hash) == 2 && m.m_Hash != 0) {
+                    m.m_Lit = line[2] == 'C';
                     m.m_Frame = coop::torches::g_GameFrame.load(std::memory_order_relaxed); /* date de reception */
                     coop::torches::g_Incoming.Push(m);
                 }
@@ -822,14 +823,14 @@ namespace coop::net_probe {
                     }
                 }
 
-                /* Torches d'enigme allumees (torches.hpp, NOTES 6.29) : envoyees des qu'elles sont en file, jetees apres 3 s. */
+                /* Etats des torches d'enigme : envoyes des qu'ils sont en file, jetes apres 3 s. */
                 {
                     coop::torches::Msg tm;
                     while (Live() && coop::torches::g_Outgoing.Pop(tm)) {
                         if (!inGame || coop::torches::g_GameFrame.load(std::memory_order_relaxed) - tm.m_Frame > coop::torches::MaxAgeFrames)
                             continue;
                         char tl[32];
-                        const int len = std::snprintf(tl, sizeof(tl), "TRCH %08x\n", tm.m_Hash);
+                        const int len = std::snprintf(tl, sizeof(tl), "%s %08x\n", tm.m_Lit ? "TRCH" : "TROF", tm.m_Hash);
                         if (len > 0 && len < static_cast<int>(sizeof(tl)) && !SendAll(s_Fd, tl, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }

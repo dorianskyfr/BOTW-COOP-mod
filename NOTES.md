@@ -1192,6 +1192,31 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.34 Clubs gyroscopiques du sanctuaire 013 (2026-11-25, Eden) - [V] journaux
+
+- Les deux tags `DungeonRotateTagGyroPutter` du sanctuaire 013 ont les HashId `9d564261` et `a92836e0`. Leur paquet utilise `DungeonRotateTagGyro.baiprog` et son action `DungeonRotateGyro`. Les deux tags sont désormais suivis par le module existant sans modifier le message `GYRO`.
+- À deux instances Eden dans l'essai `putter2511`, J1 fait osciller successivement les deux clubs avec `COOP_TEST_GYRO`. J2 reçoit et applique des rotations non nulles pour chacun. Après rechargement du sanctuaire chez J2, le rappel de J1 transmet encore la dernière rotation du premier club.
+- Le terminal tenu à la manette et le trajet de la balle chez les deux joueurs restent à vérifier. Le journal est dans `docs/evidence/2026-11-25_gyro-putter-sanctuaire-013_putter2511.log`.
+
+### 6.33 Flamme bleue et extinction des torches (2026-11-25, Eden) - [V] journaux
+
+- `SwitchCandlestickAncient` utilise bien la classe `SwitchTorch` et les mêmes quatre actions dans `SwitchTorchSave.baiprog`. Sa forme `ChemFuel` emploie le matériau `wood_bluefire`.
+- Dans BOTW 1.9.0, `SwitchTorch` appelle la virtuelle de l'acteur au déplacement `0x308` de sa vtable pour obtenir la forme chimique. À `main+0xa89134`, le jeu appelle `main+0x10f1ab4` avec la couleur tirée du bit 21 des propriétés du matériau. À `main+0xa890d4`, il appelle `main+0x10f1f44` pour éteindre cette forme. Le mod réutilise ces chemins pour les torches ordinaires et bleues. Les projectiles de feu restent traités par le module de la section 6.24.
+- `TRCH` reste le message d'allumage et `TROF` porte le HashId de la torche éteinte. Le destinataire applique la transition lorsque l'acteur est prêt. Il écarte l'écho et garde la demande la plus récente si les deux états arrivent avant son traitement. Le relais passe 146 essais sur 146.
+- Dans le sanctuaire 028, l'essai `torchebleue2511` montre l'allumage et l'extinction de `bc10199a` dans les deux sens. L'essai utilise `COOP_TEST_TORCH` pour déclencher l'allumage local et observe ensuite la réaction du jeu.
+- Dans le premier essai du sanctuaire 016, la boule de feu de la section 6.29 allumait `a95b6fc8`, mais un rallumage pouvait suivre une extinction rapprochée. La torche murale `30523e72` est restée éteinte après trois tentatives par projectile. L'allumage transmis passe désormais par la chimie de la torche, comme pour la flamme bleue.
+- Avec la méthode finale, `torchenative2511` confirme que `30523e72` s'allume à distance dans les deux jeux et revient à l'état éteint. Pour `a95b6fc8`, J2 reçoit l'allumage de J1, l'éteint et J1 applique l'extinction. Le jeu peut encore la rallumer chez J2 après coup. Ce nouvel allumage est transmis à J1 comme une transition distincte.
+- Le transport de la flamme par une torche tenue et le rattrapage d'une extinction après une arrivée tardive restent à vérifier. `SwitchCandlestickAncientOn`, la source de flamme bleue du sanctuaire 028, reste gérée par le jeu.
+- Les extraits des journaux sont dans `docs/evidence/2026-11-25_torches-bleues-et-extinction_torchebleue2511.log`.
+
+### 6.32 Interrupteur déjà enfoncé au premier relevé (2026-11-25, Eden) - [V] journaux
+
+- Dans BOTW 1.9.0, `SwitchStepSliderConstraint` a sa fabrique à `main+0xb5d478`, son constructeur à `main+0x7672cc` et sa vtable à `main+0x1c31470`. La transition `main+0x767b38` efface l'octet d'appui à `+0xe0` au relâchement et le met à 1 à l'activation.
+- Pour `SwitchStep`, le mod lit cet état après vérification de la vtable et de l'acteur associé. La mesure de hauteur sert toujours à placer le bouton pour le partenaire. Elle sert aussi à détecter l'appui lorsque l'IA est indisponible et pour les autres variantes.
+- Dans l'essai `swloadfirst2511` à deux instances Eden, le banc d'essai de J1 diffère le premier relevé jusqu'à ce que Link enfonce le bouton `da4bb06f` du sanctuaire 004. J1 annonce l'appui avec un état jeu à 1 alors que la hauteur de repos est encore inconnue. J2 enfonce son interrupteur à la réception. Quand Link se retire, J1 annonce la fin de l'appui et J2 relâche son bouton.
+- Le premier relevé enfoncé est reproduit en jeu par le banc d'essai. Le chargement d'une sauvegarde où une caisse maintient déjà le bouton enfoncé et les variantes `SwitchStepOnce` restent à vérifier.
+- Le plugin compile avec et sans options de test. Le relais passe 144 essais sur 144. Preuve dans `docs/evidence/2026-11-25_interrupteur-premier-releve_swloadfirst2511.log`.
+
 ### 6.31 Labyrinthes gyroscopiques partagés, rattrapage des torches (2026-11-24, essais `gy1` à `gy3`, `tc6`, Eden) - [V] journaux et mesure
 
 - **Constat** : le plateau d'un sanctuaire à inclinaison ne bougeait que chez celui qui tenait le terminal. Les plateaux concernés : acteur `DungeonRotateTagGyro`, terminal `SwitchGyroTilt`, sanctuaires 015, 030, 039, 048 (le 013 a un `DungeonRotateTagGyroPutter`, non traité).

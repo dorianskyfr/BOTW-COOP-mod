@@ -964,6 +964,75 @@ namespace coop::game {
         return idx >= 2 ? 1 : 0;
     }
 
+    bool SetSwitchTorchFire(std::uintptr_t actor, bool lit) {
+        /* BOTW 1.9.0 : SwitchTorch (main+0xa89090) obtient la forme via la virtuelle acteur+0x308
+           dans la vtable. L'allumage reprend ses arguments, dont la couleur tiree du materiau.
+           L'extinction reprend l'appel de SwitchTorch et d'EventFireControl (main+0x6499c0). */
+        constexpr std::size_t GetChemicalSlot = 0x308;
+        constexpr std::uintptr_t Ignite = 0x10f1ab4, Extinguish = 0x10f1f44;
+        if (s_Offsets == nullptr || actor == 0 || !IsWorldReady() || !CanReadMemory(actor, sizeof(std::uintptr_t)))
+            return false;
+        const auto& module = exl::util::GetMainModuleInfo();
+        const auto vtable = Peek<std::uintptr_t>(actor);
+        const auto end = module.m_Total.m_Start + module.m_Total.m_Size;
+        if (vtable < module.m_Total.m_Start || vtable > end - GetChemicalSlot - sizeof(std::uintptr_t))
+            return false;
+        const auto getChemical = Peek<std::uintptr_t>(vtable + GetChemicalSlot);
+        if (getChemical < module.m_Text.m_Start || getChemical >= module.m_Text.m_Start + module.m_Text.m_Size)
+            return false;
+        const auto chemical = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(getChemical)(actor);
+        if (!LooksLikeHeapPtr(chemical) || !CanReadMemory(chemical, 0x20 + sizeof(std::uintptr_t)))
+            return false;
+        if (!lit) {
+            reinterpret_cast<void (*)(std::uintptr_t)>(MainBase() + Extinguish)(chemical);
+            return true;
+        }
+        const auto material = Peek<std::uintptr_t>(chemical + 0x20);
+        if (material == 0 || !CanReadMemory(material + 0x1f0, sizeof(std::uint32_t)))
+            return false;
+        const unsigned blue = (Peek<std::uint32_t>(material + 0x1f0) >> 21) & 1u;
+        reinterpret_cast<void (*)(std::uintptr_t, unsigned, unsigned, unsigned, unsigned, unsigned)>(
+            MainBase() + Ignite)(chemical, blue, 2, 0, 1, 0);
+        return true;
+    }
+
+    /*
+     * SwitchStepSliderConstraint (main 1.9.0) : fabrique 0xb5d478, constructeur 0x7672cc,
+     * vtable 0x1c31470. La transition du jeu a 0x767b38 efface l'octet +0xe0 au relachement
+     * et le pose a 1 quand l'interrupteur s'active. Le bouton peut deja etre enfonce au premier releve.
+     */
+    int GetSwitchStepPressed(std::uintptr_t actor) {
+        constexpr std::size_t Actor_RootAi = 0x558;
+        constexpr std::size_t Ai_Pressed = 0xe0;
+        constexpr int Slot_GetCurrentChild = 26;
+        constexpr std::uintptr_t SwitchStepVtable = 0x1c31470;
+        if (s_Offsets == nullptr || actor == 0 || !CanReadMemory(actor + Actor_RootAi, sizeof(std::uintptr_t)))
+            return -1;
+
+        const auto& module = exl::util::GetMainModuleInfo();
+        const auto stepVtable = MainBase() + SwitchStepVtable;
+        auto ai = Peek<std::uintptr_t>(actor + Actor_RootAi);
+        for (int depth = 0; depth < 4; depth++) {
+            if (!LooksLikeHeapPtr(ai) || !CanReadMemory(ai, sizeof(std::uintptr_t)))
+                return -1;
+            const auto vtable = Peek<std::uintptr_t>(ai);
+            if (vtable == stepVtable) {
+                if (!CanReadMemory(ai, Ai_Pressed + 1) || Peek<std::uintptr_t>(ai + 8) != actor)
+                    return -1;
+                return Peek<std::uint8_t>(ai + Ai_Pressed) != 0;
+            }
+
+            const auto slot = vtable + Slot_GetCurrentChild * sizeof(std::uintptr_t);
+            if (vtable < module.m_Total.m_Start || slot >= module.m_Total.m_Start + module.m_Total.m_Size)
+                return -1;
+            const auto getChild = Peek<std::uintptr_t>(slot);
+            if (getChild < module.m_Text.m_Start || getChild >= module.m_Text.m_Start + module.m_Text.m_Size)
+                return -1;
+            ai = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(getChild)(ai);
+        }
+        return -1;
+    }
+
     /*
      * NOTES 6.31 (analyse Codex relue, adresses verifiees ici) :
      * - action « DungeonRotateGyro » : fabrique main+0x1caf520 -> main+0xb5e588 -> constructeur main+0x634144, table

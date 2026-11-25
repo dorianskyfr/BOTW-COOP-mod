@@ -164,27 +164,6 @@ namespace coop::fire {
         }
     }
 
-    bool IgniteAt(const float at[3]) {
-        if (!coop::game::IsWorldReady())
-            return false;
-        Pending* slot = nullptr;
-        for (Pending& p : s_Pending)
-            if (!p.m_Used && !p.m_Dead) {
-                slot = &p;
-                break;
-            }
-        if (slot == nullptr)
-            return false;
-        *slot = Pending {};
-        const bool ok = coop::game::RequestCreateActor(FieldActor, at, slot->m_Handle);
-        if (ok) {
-            slot->m_Used = true;
-            slot->m_Since = s_Frames;
-            s_LastCreate = s_Frames;
-        }
-        return ok;
-    }
-
     void OnFrame() {
         s_Frames++;
         g_GameFrame.store(s_Frames, std::memory_order_relaxed);

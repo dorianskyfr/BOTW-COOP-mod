@@ -1,0 +1,23 @@
+# BOTW 1.9.0, Eden, sanctuaire 004, 2026-11-25
+# J1 ignore le bouton jusqu’au premier appui réel de Link. J2 reste à distance.
+# Premier cycle uniquement. Les extraits ci-dessous sont regroupés par journal.
+
+[J1] swloadfirst2511_game.txt
+[botw-coop] essai interrupteur : premier releve deja enfonce, repos connu 0
+[botw-coop] interrupteur : SwitchStep da4bb06f enfonce chez nous (etat jeu 1, enfoncement 0.00 m)
+[botw-coop] interrupteur : SwitchStep da4bb06f relache chez nous (etat jeu 0, enfoncement 0.00 m)
+
+[Relais] swloadfirst2511_relay.log
+10:49:08.406 joueur 1 : interrupteur n.1 = da4bb06f 1
+10:49:09.320 joueur 1 : interrupteur n.2 = da4bb06f 1
+10:49:10.329 joueur 1 : interrupteur n.3 = da4bb06f 1
+10:49:11.337 joueur 1 : interrupteur n.4 = da4bb06f 1
+10:49:12.349 joueur 1 : interrupteur n.5 = da4bb06f 1
+10:49:13.356 joueur 1 : interrupteur n.6 = da4bb06f 1
+10:49:14.364 joueur 1 : interrupteur n.7 = da4bb06f 1
+10:49:15.371 joueur 1 : interrupteur n.8 = da4bb06f 1
+10:49:15.673 joueur 1 : interrupteur n.9 = da4bb06f 0
+
+[J2] swloadfirst2511_game2.txt
+[botw-coop] interrupteur : SwitchStep da4bb06f enfonce pour le partenaire
+[botw-coop] interrupteur : SwitchStep da4bb06f relache pour le partenaire

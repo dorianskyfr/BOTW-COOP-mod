@@ -355,15 +355,17 @@ namespace coop::input_inject {
                     }
 #endif
 #ifdef COOP_TEST_TORCH
-                    /* Bit 47 : essai torche d'enigme (torches.cpp, NOTES 6.29). */
+                    /* Bit 47 : allumage d'essai, ou extinction si LX est negatif. */
                     if ((buttons >> 47) & 1) {
                         static std::uint64_t s_LastTorch = 0;
                         const auto cmdT = pad.m_Commands.load(std::memory_order_acquire);
                         if (cmdT != s_LastTorch) {
                             s_LastTorch = cmdT;
-                            coop::torches::g_TestStep.fetch_add(1, std::memory_order_release);
+                            auto& step = pad.m_StickLX.load() < 0 ? coop::torches::g_TestOffStep : coop::torches::g_TestStep;
+                            step.fetch_add(1, std::memory_order_release);
                         }
                         buttons &= ~(1ull << 47);
+                        pad.m_StickLX.store(0);
                     }
 #endif
 #ifdef COOP_TEST_ICE_LOCAL

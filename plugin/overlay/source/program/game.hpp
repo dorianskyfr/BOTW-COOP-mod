@@ -181,6 +181,8 @@ namespace coop::game {
     int SetActorBodyTransform(std::uintptr_t actor, const float mtx[12]);
     /* Premier corps dynamique de l'acteur autre que le principal (ex. le bouton d'un interrupteur), 0 sinon (NOTES 6.27). */
     std::uintptr_t FindActorDynamicBody(std::uintptr_t actor);
+    /* Etat du SwitchStep dans l'IA du jeu : 1 enfonce, 0 relache, -1 si l'IA n'est pas disponible. */
+    int GetSwitchStepPressed(std::uintptr_t actor);
     /* Matrice monde d'un corps / placement d'un corps (MotionAccessor). false si le corps n'est pas valide. Fil du jeu. */
     bool GetBodyTransform(std::uintptr_t body, float out[12]);
     bool SetBodyTransform(std::uintptr_t body, const float mtx[12]);
@@ -194,6 +196,8 @@ namespace coop::game {
     /* Torche d'enigme (IA SwitchTorch, NOTES 6.29) : 1 allumee, 0 eteinte, <0 inconnu (pas l'IA attendue). Fil du jeu.
        *childIdx (si non nul) recoit l'index de l'action courante de l'IA SwitchTorch (outil d'essai). */
     int GetSwitchTorchLit(std::uintptr_t actor, int* childIdx = nullptr);
+    /* Allumage ou extinction de la forme chimique d'une torche d'enigme, sur le fil du jeu. */
+    bool SetSwitchTorchFire(std::uintptr_t actor, bool lit);
     /* Labyrinthe gyroscopique (acteur DungeonRotateTagGyro, NOTES 6.31) : action DungeonRotateGyro de l'acteur, 0 si
        introuvable ; *active = l'action est l'enfant courant (le joueur local tient le terminal). Fil du jeu. */
     std::uintptr_t FindGyroAction(std::uintptr_t actor, bool* active);

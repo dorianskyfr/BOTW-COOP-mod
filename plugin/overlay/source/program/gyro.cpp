@@ -75,7 +75,8 @@ namespace coop::gyro {
         }
 
         bool OnScan(const coop::game::ActorInfo& info, void*) {
-            if (info.m_Name == nullptr || info.m_HashId == 0 || std::strcmp(info.m_Name, "DungeonRotateTagGyro") != 0)
+            if (info.m_Name == nullptr || info.m_HashId == 0 || (std::strcmp(info.m_Name, "DungeonRotateTagGyro") != 0
+                && std::strcmp(info.m_Name, "DungeonRotateTagGyroPutter") != 0))
                 return false;
             Tracked* freeSlot = nullptr;
             for (Tracked& t : s_Tracked) {
