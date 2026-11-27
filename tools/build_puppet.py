@@ -67,6 +67,7 @@ SEQUENCES = {
 
 PUPPET_VARIANTS = {"CoopPlayer2": 700000, "CoopPlayerS": 560000}  # nom -> tas (NOTES 5.55)
 TRAVERSE_DIST = 99999.0  # ActorInfo traverseDist du pantin et de ses pieces (NOTES 5.90)
+CHAMPION_FX_HEAP_EXTRA = 300000  # réserve pour ELink, vérifiée sur les pantins CoopPlayer
 INST_SIZE = 700000  # tas de l'acteur ; Link du menu pause : 557256 (ActorInfo 1.9.0). 1200000 ne changeait rien a l'echec du surf (cp8)
 
 
@@ -125,11 +126,14 @@ def aslist_size(romfs, table, ours_len):
     return max(base, -(-base * ours_len // pause_len) + 1024)
 
 
-def actor_link(template, model_user, as_user=NAME):
+def actor_link(template, model_user, as_user=NAME, player_fx=False):
     pio = oead.aamp.ParameterIO.from_binary(template)
     lt = pio.objects["LinkTarget"]
     for key in ("PhysicsUser", "AttentionUser", "ChemicalUser", "ElinkUser", "SlinkUser", "XlinkUser"):
         lt.params[key] = oead.aamp.Parameter("Dummy")  # chaine simple, type des champs de l'ActorLink du jeu
+    if player_fx:
+        lt.params["ElinkUser"] = oead.aamp.Parameter("Player_GameRom")
+        lt.params["XlinkUser"] = oead.aamp.Parameter("Player")
     lt.params["ModelUser"] = oead.aamp.Parameter(model_user)
     lt.params["ASUser"] = oead.aamp.Parameter(as_user)  # par defaut, les sequences du pantin (pieces d'armure)
     lt.params["ActorScale"] = oead.aamp.Parameter(1.0)
@@ -320,7 +324,7 @@ def main(romfs, out):
             common[name] = monk_files[name]
 
     files = dict(common)
-    files[f"Actor/ActorLink/{NAME}.bxml"] = actor_link(monk_link, NAME)
+    files[f"Actor/ActorLink/{NAME}.bxml"] = actor_link(monk_link, NAME, player_fx=True)
     files[f"Actor/ModelList/{NAME}.bmodellist"] = link_files["Actor/ModelList/PauseMenuPlayer.bmodellist"]
     pack = write_pack(out, NAME, files)
     # Copies du pantin (NOTES 5.55) : quand le jeu refuse CoopPlayer pour toute la session (etat 3
@@ -329,7 +333,7 @@ def main(romfs, out):
     variant_packs = {}
     for variant in PUPPET_VARIANTS:
         vfiles = dict(common)
-        vfiles[f"Actor/ActorLink/{variant}.bxml"] = actor_link(monk_link, variant)
+        vfiles[f"Actor/ActorLink/{variant}.bxml"] = actor_link(monk_link, variant, player_fx=True)
         vfiles[f"Actor/ModelList/{variant}.bmodellist"] = link_files["Actor/ModelList/PauseMenuPlayer.bmodellist"]
         variant_packs[variant] = write_pack(out, variant, vfiles)
 
@@ -403,11 +407,16 @@ def main(romfs, out):
     # ~140 m du joueur etait detruit aussitot (essais rn5 a rn12, cq*, rb*, wa1), jamais de pres. Valeur prise
     # parmi celles du jeu (99999 : Enemy_SiteBoss_*, DgnObj_RemainsTerminalBody_A).
     entry["traverseDist"] = oead.F32(TRAVERSE_DIST)
-    pos, crc = insert_actor(actors, hashes, entry)
+    puppet = oead.byml.Hash({k: v for k, v in entry.items()})
+    # L'ActorLink et l'ActorInfo doivent tous deux désigner l'utilisateur ELink du vrai Link.
+    for k in ("elink", "xlink"):
+        puppet[k] = by_name["GameROMPlayer"][k]
+    puppet["instSize"] = oead.S32(INST_SIZE + CHAMPION_FX_HEAP_EXTRA)
+    pos, crc = insert_actor(actors, hashes, puppet)
     for variant, inst in PUPPET_VARIANTS.items():
-        ventry = oead.byml.Hash({k: v for k, v in entry.items()})
+        ventry = oead.byml.Hash({k: v for k, v in puppet.items()})
         ventry["name"] = variant
-        ventry["instSize"] = oead.S32(inst)
+        ventry["instSize"] = oead.S32(inst + CHAMPION_FX_HEAP_EXTRA)
         insert_actor(actors, hashes, ventry)
     # Pieces d'armure et armes : meme entree, avec l'archive de modeles et le modele principal de la piece.
     for gear, (piece, model, _) in gear_packs.items():

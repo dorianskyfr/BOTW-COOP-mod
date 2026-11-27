@@ -241,6 +241,11 @@ def main():
             # Essai (COOP_TEST_REMOVE_EQUIPPED) : le plugin retire l'arme equipee de l'inventaire.
             p.pad(buttons=1 << 46, ms=300)
             p.log("unequiptest : retrait de l'arme equipee demande")
+        elif op == "championfx":
+            if args not in (["revali"], ["urbosa"]):
+                raise ValueError("usage : championfx revali|urbosa")
+            p.pad(buttons=1 << 45, lx=-1 if args == ["urbosa"] else 0, ms=300)
+            p.log(f"championfx : effet d'essai {args[0]}")
         elif op == "torch":
             if args not in ([], ["off"]):
                 raise ValueError("usage : torch [off]")

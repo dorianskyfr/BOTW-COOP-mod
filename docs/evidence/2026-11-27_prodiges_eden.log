@@ -1,0 +1,17 @@
+Eden v0.2.1, deux instances de Breath of the Wild 1.9.0, sanctuaire 026.
+Commande COOP_TEST_CHAMPION_FX après création des deux CoopPlayer. Particules ELink uniquement.
+
+J1 - reprise_final_eden_game.txt
+1995: Prodige : Kago_Wind affiche pour le partenaire
+2009: Prodige : Kago_Lightning affiche pour le partenaire
+2029: Prodige : OUTIL DE TEST Kago_Wind, cree=1
+2043: Prodige : OUTIL DE TEST Kago_Lightning, cree=1
+
+J2 - reprise_final_eden_game2.txt
+1801: Prodige : OUTIL DE TEST Kago_Wind, cree=1
+1816: Prodige : OUTIL DE TEST Kago_Lightning, cree=1
+1836: Prodige : Kago_Wind affiche pour le partenaire
+1851: Prodige : Kago_Lightning affiche pour le partenaire
+
+Sonde locale de Daruk, reprise_026_final_game.txt
+2157: [botw-coop] essai visuel : CoopPlayer Kago_Shield, charge=1 cree=0 identifiant=0

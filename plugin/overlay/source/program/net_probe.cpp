@@ -13,6 +13,7 @@
 #include "torches.hpp"
 #include "gyro.hpp"
 #include "switch_ai.hpp"
+#include "champion_fx.hpp"
 #include "config.hpp"
 #include "beast_rotate.hpp"
 #include "cutscene.hpp"
@@ -199,6 +200,7 @@ namespace coop::net_probe {
             s_RxLen = 0;
             s_RxSkip = false;
             coop::session::g_Remote.SetInactive();
+            coop::champion_fx::ClearRemote();
             Logging.Log("[botw-coop] net: liaison fermee (%s), reconnexion automatique", why);
             if (!quiet)
                 coop::notify::Post("Coop : liaison perdue, reconnexion...");
@@ -285,6 +287,8 @@ namespace coop::net_probe {
                     &m[0], &m[1], &m[2], &m[3], &m[4], &m[5], &m[6], &m[7], &m[8], &m[9], &m[10], &m[11], &anim) >= 13) {
                 if (!SaneMtx(m, 100000.0f))
                     return;
+                if (id != s_LastRemoteId)
+                    coop::champion_fx::ClearRemote();
                 s_LastRemoteId = id;
                 if (!coop::session::g_Remote.IsActive()) {
                     char msg[48];
@@ -384,7 +388,8 @@ namespace coop::net_probe {
                 /* Interrupteur a IA On/Off du partenaire (switch_ai.hpp, NOTES 6.35) : HashId, 1 actif / 0 inactif, version. */
                 coop::switch_ai::Msg m;
                 if (std::sscanf(line, "SWAI %d %x %u %u", &id, &m.m_Hash, &m.m_On, &m.m_Ver) == 4 && m.m_Hash != 0 && m.m_On <= 1
-                    && m.m_Ver != 0) {
+                    && m.m_Ver != 0 && (m.m_Hash != coop::switch_ai::WaterTimerHash ||
+                        (id > 0 && static_cast<unsigned>(id) == (m.m_Ver & 0xffu)))) {
                     m.m_Frame = coop::switch_ai::g_GameFrame.load(std::memory_order_relaxed); /* date de reception */
                     coop::switch_ai::g_Incoming.Push(m);
                 }
@@ -469,6 +474,11 @@ namespace coop::net_probe {
             } else if (unsigned actCode = 0; std::sscanf(line, "ACT %d %u", &id, &actCode) == 2) {
                 coop::anim_state::g_RemoteAction.store(static_cast<std::uint8_t>(actCode));
                 coop::anim_state::g_RemoteActions.fetch_add(1, std::memory_order_release);
+            } else if (unsigned fx = 0; std::sscanf(line, "KAGO %d %u", &id, &fx) == 2) {
+                if (fx >= coop::champion_fx::Wind && fx < coop::champion_fx::Count &&
+                    coop::session::g_Remote.IsActive() && id == coop::session::g_Remote.Id()) {
+                    coop::champion_fx::g_Remote[fx].store(coop::clock::NowMs(), std::memory_order_relaxed);
+                }
             } else if (coop::cutscene::Demo dm; std::sscanf(line, "DEMO %d %47s %47s", &dm.m_From, dm.m_Event, dm.m_Entry) == 3) {
                 coop::cutscene::g_Incoming.Push(dm);
             } else if (coop::beast_rotate::Msg bm; std::sscanf(line, "DROT %d %x %f %x", &bm.m_From, &bm.m_Hash, &bm.m_Angle,
@@ -558,8 +568,10 @@ namespace coop::net_probe {
                     std::snprintf(msg, sizeof(msg), "Joueur %d a quitté la partie", id);
                     coop::notify::Post(msg);
                 }
-                if (id == s_LastRemoteId)
+                if (id == s_LastRemoteId) {
+                    coop::champion_fx::ClearRemote();
                     s_LastRemoteId = 0;
+                }
                 Logging.Log("[botw-coop] net: J%d a quitte la session", id);
             }
         }
@@ -695,6 +707,23 @@ namespace coop::net_probe {
                         const int len = std::snprintf(act, sizeof(act), "ACT %u\n", static_cast<unsigned>(coop::anim_state::g_LocalAction.load()));
                         if (len > 0 && !SendAll(s_Fd, act, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
+                    }
+                }
+
+                /* Effets visuels ponctuels des Prodiges. Chaque effet a sa propre date d'envoi. */
+                {
+                    static std::uint64_t sent[coop::champion_fx::Count] {};
+                    for (unsigned fx = coop::champion_fx::Wind; fx < coop::champion_fx::Count; fx++) {
+                        const auto when = coop::champion_fx::g_Local[fx].load(std::memory_order_relaxed);
+                        if (when == sent[fx])
+                            continue;
+                        sent[fx] = when;
+                        if (inGame && Live() && coop::clock::NowMs() - when <= coop::champion_fx::MaxAgeMs) {
+                            char line[16];
+                            const int len = std::snprintf(line, sizeof(line), "KAGO %u\n", fx);
+                            if (len > 0 && !SendAll(s_Fd, line, static_cast<std::size_t>(len)))
+                                Disconnect("echec d'envoi");
+                        }
                     }
                 }
 
@@ -849,7 +878,9 @@ namespace coop::net_probe {
                 {
                     coop::switch_ai::Msg am;
                     while (Live() && coop::switch_ai::g_Outgoing.Pop(am)) {
-                        if (!inGame || coop::switch_ai::g_GameFrame.load(std::memory_order_relaxed) - am.m_Frame > coop::switch_ai::MaxAgeFrames)
+                        const auto maxAge = am.m_Hash == coop::switch_ai::WaterTimerHash
+                            ? coop::switch_ai::WaterLeaseFrames : coop::switch_ai::MaxAgeFrames;
+                        if (!inGame || coop::switch_ai::g_GameFrame.load(std::memory_order_relaxed) - am.m_Frame > maxAge)
                             continue;
                         char al[48];
                         const int len = std::snprintf(al, sizeof(al), "SWAI %08x %u %u\n", am.m_Hash, am.m_On ? 1u : 0u, am.m_Ver);

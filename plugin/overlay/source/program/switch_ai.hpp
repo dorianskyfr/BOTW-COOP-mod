@@ -59,6 +59,8 @@ namespace coop::switch_ai {
 
     inline std::atomic<std::uint64_t> g_GameFrame { 0 };
     constexpr std::uint64_t MaxAgeFrames = 90;
+    constexpr std::uint32_t WaterTimerHash = 0xf601fd6f; /* sanctuaire 026, NOTES 6.37 */
+    constexpr std::uint64_t WaterLeaseFrames = 24;
 
     /* Fil du jeu, chaque image. */
     void OnFrame();

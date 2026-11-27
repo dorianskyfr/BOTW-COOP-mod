@@ -13,6 +13,7 @@
 #include "torches.hpp"
 #include "gyro.hpp"
 #include "switch_ai.hpp"
+#include "champion_fx.hpp"
 
 #include "clock.hpp"
 #include "beast_rotate.hpp"
@@ -318,6 +319,17 @@ namespace coop::input_inject {
                             coop::weapons::g_TestRemoveEquipped.fetch_add(1, std::memory_order_release);
                         }
                         buttons &= ~(1ull << 46);
+                    }
+#endif
+#ifdef COOP_TEST_CHAMPION_FX
+                    if ((buttons >> 45) & 1) {
+                        static std::uint64_t lastFxCommand = 0;
+                        const auto cmd = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmd != lastFxCommand) {
+                            lastFxCommand = cmd;
+                            coop::champion_fx::DebugEmit(pad.m_StickLX.load() < 0 ? coop::champion_fx::Lightning : coop::champion_fx::Wind);
+                        }
+                        buttons &= ~(1ull << 45);
                     }
 #endif
 #ifdef COOP_TEST_BOMB_SELF

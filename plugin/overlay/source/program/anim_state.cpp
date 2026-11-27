@@ -1,5 +1,6 @@
 #include "anim_state.hpp"
 
+#include "champion_fx.hpp"
 #include "enemy_life.hpp"
 #include "game.hpp"
 
@@ -108,10 +109,10 @@ namespace coop::anim_state {
 
     void OnFrame() {
         coop::game::PlayerState st;
-        std::uintptr_t list = 0;
-        if (coop::game::ReadPlayer(st) && st.m_PlayerActor != 0)
-            list = *reinterpret_cast<const std::uintptr_t*>(st.m_PlayerActor + Actor_ASList);
+        const auto actor = coop::game::ReadPlayer(st) ? st.m_PlayerActor : 0;
+        const auto list = actor != 0 ? *reinterpret_cast<const std::uintptr_t*>(actor + Actor_ASList) : 0;
         s_PlayerList.store(list, std::memory_order_relaxed);
+        coop::champion_fx::SetLocalActor(actor);
     }
 
     std::uint8_t Local() {

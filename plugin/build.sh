@@ -26,6 +26,11 @@ cp -r "$PROJECT/third_party/exlaunch/." "$WORK/"
 rm -rf "$WORK/.git"
 cp -r "$PROJECT/plugin/overlay/." "$WORK/"
 
+# Les crochets du jeu dépassent les 20 trampolines de la réserve exlaunch par défaut.
+SETTINGS="$WORK/source/program/setting.hpp"
+sed -i 's/constexpr size_t JitSize = 0x1000;/constexpr size_t JitSize = 0x2000;/' "$SETTINGS"
+grep -q 'constexpr size_t JitSize = 0x2000;' "$SETTINGS"
+
 # Le .npdm est genere depuis config.json : on y met le Title ID de BOTW.
 sed -i -E "s/\"title_id\": *\"0x[0-9a-fA-F]+\"/\"title_id\": \"0x${TITLE_ID}\"/" "$WORK/config.json"
 # npdmtool (switch-tools 1.13) attend les champs "program_id*" et non "title_id*"

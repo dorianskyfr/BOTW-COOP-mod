@@ -3,6 +3,7 @@
 
 #include "anim_state.hpp"
 #include "beast_rotate.hpp"
+#include "champion_fx.hpp"
 #include "cutscene.hpp"
 #include "dynsym.hpp"
 #include "game.hpp"
@@ -48,6 +49,7 @@ extern "C" void exl_main(void* x0, void* x1) {
         coop::cutscene::Install();
         /* Inclinaison des Creatures divines partagee. */
         coop::beast_rotate::Install();
+        coop::champion_fx::Install();
     }
 
     /* Thread reseau + sonde d'etat. */

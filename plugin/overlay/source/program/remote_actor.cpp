@@ -1,6 +1,7 @@
 #include "remote_actor.hpp"
-#include "anim_state.hpp"
 
+#include "anim_state.hpp"
+#include "champion_fx.hpp"
 #include "clock.hpp"
 #include "config.hpp"
 #include "game.hpp"
@@ -301,6 +302,7 @@ namespace coop::remote_actor {
             && (local.m_Pos[0] != 0.0f || local.m_Pos[1] != 0.0f || local.m_Pos[2] != 0.0f);
 
         if (!inGame) {
+            coop::champion_fx::ClearRemote();
             /* Retour a l'ecran-titre ou chargement : l'acteur a ete detruit avec le monde. */
             if (s_State != State::WaitingForPlayer) {
                 Logging.Log("[botw-coop] acteur distant : joueur local hors jeu, reinitialisation");
@@ -313,6 +315,7 @@ namespace coop::remote_actor {
             return;
         }
         if (!coop::game::IsWorldReady()) {
+            coop::champion_fx::ClearRemote();
             /* Monde en chargement (Game Over, voyage) alors que le joueur se lit encore : on retire nous-memes
                le partenaire et ses pieces, sans plus y ecrire. Garde, le jeu restait bloque sur l'ecran de
                chargement apres un Game Over (essai mk1, 2026-11-15). Il sera recree une fois le monde pret. */
@@ -682,6 +685,9 @@ namespace coop::remote_actor {
                     if (IsPuppet())
                         coop::weapons::OnFramePuppet(target);
                 }
+
+                if (IsPuppet())
+                    coop::champion_fx::PlayPending(s_Actor);
 
                 if (s_Frames % 150 == 0) {
                     Logging.Log("[botw-coop] acteur distant : vivant etat=%d lu=(%.2f, %.2f, %.2f) pos=(%.2f, %.2f, %.2f) avant=(%.2f, %.2f) | ecritures=%lu interpolees=%lu figees=%lu pas max=%.3f m | deplace par le jeu=%lu",

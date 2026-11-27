@@ -19,6 +19,7 @@ namespace coop::switch_ai {
         constexpr std::uint64_t EchoFrames = 300;     /* etat applique pour l'autre : pas renvoye pendant 10 s */
         constexpr std::uint64_t PendingFrames = 150;  /* demande gardee 5 s (interrupteur pas encore charge) */
         constexpr std::uint64_t ResendEvery = 150;    /* rappel de notre dernier changement (arrivee tardive) */
+        constexpr std::uint64_t WaterRefreshFrames = 8;
 
         /* Noms exacts (cartes Pack/Dungeon*.pack, IA verifiees : SwitchHit.baiprog, SwitchHitOnce, SwitchTimer,
            SwitchTimeLimited ; SwitchTilt et DgnObj_SwitchTarget_A utilisent SwitchHit / SwitchHitOnce). */
@@ -66,6 +67,18 @@ namespace coop::switch_ai {
         };
         constexpr int MaxPending = 32;
         Pending s_Pending[MaxPending];
+
+        struct WaterTimer {
+            std::uintptr_t m_Actor = 0;
+            std::uint64_t m_LastLocalOn = 0;
+            std::uint64_t m_RemoteUntil = 0;
+            std::uint64_t m_LastSend = 0;
+            std::uint32_t m_Version = 0;
+            bool m_AppliedRemote = false;
+            bool m_LastSentOn = false;
+            bool m_Seen = false;
+        };
+        WaterTimer s_Water;
 
         std::uint64_t s_Frames = 0;
         float s_PlayerPos[3] = {};
@@ -182,7 +195,54 @@ namespace coop::switch_ai {
             return idle != nullptr ? idle : any;
         }
 
+        void UpdateWaterTimer(std::uintptr_t actor) {
+            if (s_Water.m_Actor != actor) {
+                s_Water.m_Actor = actor;
+                s_Water.m_AppliedRemote = false;
+            }
+            s_Water.m_Seen = true;
+            std::uintptr_t ai = 0;
+            int on = -1, off = -1;
+            const int state = coop::game::GetOnOffSwitch(actor, &ai, &on, &off);
+            if (state < 0)
+                return;
+
+            /* Rejouer l'action propage le signal jusqu'a la grille. Si notre roue a deja active la
+               minuterie, le jeu local en garde la main. Un On applique ici ne repart pas en echo. */
+            const bool remote = s_Frames < s_Water.m_RemoteUntil;
+            if (s_Water.m_AppliedRemote || (remote && state == 0)) {
+                if (state == remote || coop::game::SetOnOffSwitch(ai, remote ? on : off))
+                    s_Water.m_AppliedRemote = remote;
+                return;
+            }
+            if (state == 1)
+                s_Water.m_LastLocalOn = s_Frames;
+        }
+
+        void SendWaterTimer() {
+            const bool on = s_Water.m_LastLocalOn != 0 && s_Frames - s_Water.m_LastLocalOn < 2 * WaterRefreshFrames;
+            const bool changed = on != s_Water.m_LastSentOn;
+            if (!changed && (!on || s_Frames - s_Water.m_LastSend < WaterRefreshFrames))
+                return;
+            const int id = coop::session::g_LocalId;
+            if (id <= 0 || id > 255)
+                return;
+            const auto version = s_Water.m_Version + (changed ? 1u : 0u);
+            const Msg msg { WaterTimerHash, on ? 1u : 0u, (version << 8) | static_cast<std::uint32_t>(id), s_Frames };
+            if (!g_Outgoing.Push(msg))
+                return;
+            s_Water.m_LastSend = s_Frames;
+            s_Water.m_LastSentOn = on;
+            s_Water.m_Version = version;
+            if (changed && Log())
+                Logging.Log("[botw-coop] roue 026 : signal local %u", msg.m_On);
+        }
+
         bool OnScan(const coop::game::ActorInfo& info, void*) {
+            if (info.m_HashId == WaterTimerHash && info.m_Name != nullptr && std::strcmp(info.m_Name, "SwitchTimeLag") == 0) {
+                UpdateWaterTimer(info.m_Actor);
+                return false;
+            }
             if (info.m_Name == nullptr || info.m_HashId == 0 || !Watched(info.m_Name))
                 return false;
             Tracked* mine = nullptr;
@@ -221,7 +281,13 @@ namespace coop::switch_ai {
         void Scan() {
             for (Tracked& t : s_Tracked)
                 t.m_Seen = false;
+            s_Water.m_Seen = false;
             coop::game::ForEachListedActor(OnScan, nullptr);
+            if (!s_Water.m_Seen) {
+                s_Water.m_Actor = 0;
+                s_Water.m_LastLocalOn = 0;
+            }
+            SendWaterTimer();
             for (Tracked& t : s_Tracked)
                 if (t.m_Actor != 0 && (!t.m_Seen || Dist2(t.m_Pos, s_PlayerPos) > Radius * Radius))
                     t.m_Actor = 0;
@@ -284,6 +350,7 @@ namespace coop::switch_ai {
     void OnFrame() {
         s_Frames++;
         g_GameFrame.store(s_Frames, std::memory_order_relaxed);
+        const bool worldReady = coop::game::IsWorldReady();
         for (Pending& p : s_Pending)
             if (p.m_Hash != 0 && s_Frames - p.m_Frame > PendingFrames)
                 p = Pending {};
@@ -291,6 +358,15 @@ namespace coop::switch_ai {
            si elle est plus recente ; table pleine, la plus ancienne demande cede sa place. */
         Msg in;
         while (g_Incoming.Pop(in)) {
+            if (in.m_Hash == WaterTimerHash) {
+                if (worldReady && coop::config::g_SwitchAiSync && s_Frames - in.m_Frame < WaterLeaseFrames) {
+                    const bool wasOn = s_Frames < s_Water.m_RemoteUntil;
+                    s_Water.m_RemoteUntil = in.m_On ? in.m_Frame + WaterLeaseFrames : 0;
+                    if (wasOn != (in.m_On != 0) && Log())
+                        Logging.Log("[botw-coop] roue 026 : signal du partenaire %u", in.m_On);
+                }
+                continue;
+            }
             if (s_Frames - in.m_Frame > PendingFrames)
                 continue;
             Pending* same = nullptr;
@@ -318,7 +394,10 @@ namespace coop::switch_ai {
             slot->m_Ver = in.m_Ver;
             slot->m_Frame = in.m_Frame;
         }
-        if (!coop::game::IsWorldReady()) {
+        if (!worldReady) {
+            s_Water.m_Actor = 0;
+            s_Water.m_LastLocalOn = 0;
+            s_Water.m_RemoteUntil = 0;
             for (Tracked& t : s_Tracked)
                 t.m_Actor = 0; /* adresses perimees ; etats et versions gardes */
             return;

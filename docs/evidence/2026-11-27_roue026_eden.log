@@ -1,0 +1,27 @@
+Eden v0.2.1, deux instances de Breath of the Wild 1.9.0, relais local.
+Shimo'Itose (026). La sonde place RockRollA dans le courant chez le joueur qui déclenche l'essai.
+La roue de J1 a gardé son angle après le premier essai. J2 a puzzle_pos=0.
+
+J1 - reprise_final_eden_game.txt
+1543: essai 026 : boule posee, rc=0
+1555: roue 026 : signal local 1
+1636: roue 026 : signal local 0
+1725: roue 026 : signal du partenaire 1
+1726: essai 026 : roue rot11=0.886 rot21=-0.463
+1727: essai 026 : minuterie 1 (on=1 off=0)
+1733: essai 026 : grille y=15.00
+1783: roue 026 : signal du partenaire 0
+1786: essai 026 : minuterie 0 (on=1 off=0)
+1790: essai 026 : grille y=10.00
+
+J2 - reprise_final_eden_game2.txt
+1355: roue 026 : signal du partenaire 1
+1360: essai 026 : roue rot11=1.000 rot21=0.000
+1362: essai 026 : minuterie 1 (on=1 off=0)
+1380: essai 026 : grille y=15.00
+1446: roue 026 : signal du partenaire 0
+1450: essai 026 : minuterie 0 (on=1 off=0)
+1449: essai 026 : grille y=10.00
+1524: essai 026 : boule posee, rc=0
+1534: roue 026 : signal local 1
+1592: roue 026 : signal local 0

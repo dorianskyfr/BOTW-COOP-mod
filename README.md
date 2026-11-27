@@ -69,9 +69,9 @@ Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image 
 
 **Limites connues, gardées volontairement** :
 - **Deux joueurs** au plus.
-- **Pouvoirs** : les bombes et les piliers de glace de Cryonis se voient chez l'autre ; un objet déplacé par Magnétisme ou Stasis bouge chez les deux. Les effets visuels des autres pouvoirs (rayon du magnétisme, tourbillon de Revali, éclairs d'Urbosa, bouclier de Daruk) ne se voient que chez celui qui les utilise ; leurs effets sur les ennemis comptent chez les deux.
+- **Pouvoirs** : les bombes et les piliers de glace de Cryonis se voient chez l'autre ; un objet déplacé par Magnétisme ou Stasis bouge chez les deux. Les particules du tourbillon de Revali et des éclairs d'Urbosa sont partagées quand le partenaire apparaît sous la forme de Link. Le rayon de Magnétisme, le bouclier de Daruk et la Grâce de Mipha restent individuels. Les effets sur les ennemis sont partagés par la synchronisation des combats.
 - **Feu** : un feu allumé par une flèche de feu ou un bâton de feu démarre aussi chez l'autre, et son jeu le propage ; l'étendue brûlée peut différer un peu. Les autres feux (silex, torche, foudre, ennemis) restent propres à chacun.
-- **Énigmes de sanctuaire**. Les objets qu'on déplace (blocs, boules, caisses de métal, boules électriques), les objets détruits (lierre brûlé, caisse cassée, bloc fissuré), les interrupteurs au sol et l'inclinaison des labyrinthes sont partagés. L'allumage et l'extinction des torches sont partagés, y compris pour la flamme bleue du sanctuaire 028. La synchronisation de l'eau reste à traiter.
+- **Énigmes de sanctuaire**. Les objets qu'on déplace (blocs, boules, caisses de métal, boules électriques), les objets détruits (lierre brûlé, caisse cassée, bloc fissuré), les interrupteurs au sol et l'inclinaison des labyrinthes sont partagés. L'allumage et l'extinction des torches sont partagés, y compris pour la flamme bleue du sanctuaire 028. À Shimo'Itose (026), la grille commandée par la roue à eau s'ouvre et se referme chez les deux joueurs.
 - **Cristaux et minuteries**. À Shi'Jito, frapper le cristal change sa couleur et actionne le bloc mobile chez les deux joueurs. À Shoda'Sah, un seul joueur annonce l'état de la minuterie autonome. `switch_ai=0` désactive ce partage.
 - **Le Link du partenaire a une collision** : on ne le traverse pas.
 - **Chacun garde** son inventaire, sa santé, son équipement et l'épée de légende.
@@ -153,7 +153,7 @@ Le mod ne partage que les drapeaux d'une liste générée depuis **votre** copie
    build\venv\Scripts\python.exe -m pip install rstb
    build\venv\Scripts\python.exe -I tools\build_puppet.py build\romfs-1.9.0 build\deploy\romfs
    ```
-   Sans ces fichiers, l'autre joueur apparaît sous la forme d'un villageois. Sans les `Armor_*` / `Weapon_*`, il apparaît sans armure / sans armes. Sans les modèles `Model/Armor_*`, ses pièces teintes gardent leur couleur d'origine.
+   Pour afficher les effets de Revali et d'Urbosa, régénérez le Link du partenaire avec la commande `build_puppet.py` ci-dessus. Sans ces fichiers, l'autre joueur apparaît sous la forme d'un villageois. Sans les `Armor_*` / `Weapon_*`, il apparaît sans armure / sans armes. Sans les modèles `Model/Armor_*`, ses pièces teintes gardent leur couleur d'origine.
 5. Noms des objets dans les bandeaux de don (textes français du jeu) :
    ```
    build\tools\romfs-extract\RomfsExtract.exe "%APPDATA%\Ryujinx\system\prod.keys" "<jeu de base .nsp>" "<mise à jour 1.9.0 .nsp>" build\romfs-1.9.0 /Pack/Bootup_EUfr.pack

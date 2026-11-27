@@ -1192,6 +1192,20 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.37 Grille de la roue à eau de Shimo'Itose (026, 2026-11-27, Eden)
+
+- La roue `SwitchWaterWheel_A` (`e5669ff2`) commande `SwitchTimeLag` (`f601fd6f`), qui envoie son état On/Off à la grille `b698b585`.
+- Deux copies d'Eden ont reproduit l'écart en posant la boule `RockRollA` (`4cf8aabe`) à l'aide d'une sonde de test. Le jeu déclenche ensuite la roue et la minuterie. Avant la correction, la grille ne montait que chez le joueur qui avait posé la boule.
+- Le module lit la minuterie locale et transmet son état avec `SWAI`. Le récepteur appelle `Ai::changeChild` pour appliquer On et Off. Le mode On distant expire en l'absence de rappel, notamment si le partenaire quitte la partie. `switch_ai=0` désactive cette synchronisation.
+- Dans les deux sens, le jeu du partenaire a ouvert la grille de y=10 à y=15, puis l'a refermée à y=10, sans déplacement de sa roue lors de l'ouverture. [Extraits des journaux](docs/evidence/2026-11-27_roue026_eden.log).
+
+### 6.36 Effets visuels de Revali et d'Urbosa (2026-11-27, Eden)
+
+- Le crochet ELink relève `Kago_Wind` et `Kago_Lightning` lorsque l'émetteur du Link local crée la particule. Le relais transmet `KAGO` à l'autre joueur. Il rejoue la particule sur son acteur `CoopPlayer` et ses variantes. `build_puppet.py` reprend les utilisateurs ELink et XLink de Link dans ActorLink et ActorInfo.
+- Deux instances d'Eden ont créé les particules sur le Link distant dans les deux sens avec la commande `championfx` de l'outil de test. Les éclairs d'Urbosa sont visibles chez J1 sur la capture. L'activation normale des deux pouvoirs reste à vérifier en jeu.
+- Le test de `Kago_Shield` a trouvé une table d'effets chargée sur `CoopPlayer` sans obtenir de particule. Le bouclier de Daruk reste individuel, ainsi que la Grâce de Mipha.
+- Preuves : [extraits des journaux](docs/evidence/2026-11-27_prodiges_eden.log), [éclairs d'Urbosa chez J1](docs/evidence/2026-11-27_urbosa_eden_j1.png).
+
 ### 6.35 Cristaux et minuteries partagés (2026-11-27, Eden)
 
 - Le module `switch_ai` lit les actions `On` et `Off` des interrupteurs à cristal, des cibles, des leviers d'inclinaison et des minuteries suivis. À réception de `SWAI`, il utilise `Ai::changeChild` pour faire réagir les objets liés. `switch_ai=0` coupe ce partage.
