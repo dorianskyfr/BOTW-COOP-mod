@@ -58,6 +58,8 @@ namespace coop::config {
     inline bool g_TorchSync = true;
     /* NOTES 6.31 : labyrinthes gyroscopiques partages (gyro=0 pour le couper). */
     inline bool g_GyroSync = true;
+    /* NOTES 6.35 : interrupteurs a IA On/Off partages, cristaux, cibles, minuteries (switch_ai=0 pour le couper). */
+    inline bool g_SwitchAiSync = true;
 
     /*
      * Animations des ennemis (message EAS, NOTES 5.56) : 0 = rien ; 1 = celui qui fait foi annonce

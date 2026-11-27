@@ -914,6 +914,93 @@ namespace coop::game {
      * « オン待機 » (DummyAction), indices 2 a 5 du programme, dans cet ordre. On verifie que l'enfant 0 est bien Off et
      * l'enfant 2 bien On ; la torche est allumee quand l'enfant courant est 2 ou 3.
      */
+    /*
+     * NOTES 6.35. Interrupteurs a IA On/Off. Programmes d'IA (RomFS 1.9.0) : SwitchHit, SwitchHitOnce, SwitchTimer (et
+     * DgnObj_SwitchTarget_A, SwitchTilt) : racine BasicStatusRoot -> « 通常 » avec quatre enfants オフ (Off), オフ待機,
+     * オン (On), オン待機 ; SwitchTimeLimited : racine a deux enfants オフ (Off), オン (On). Tables virtuelles des actions
+     * Off main+0x1c1a5c8 et On main+0x1c1a800 (6.29). Ai::changeChild(nom) main+0x15375d4 cherche l'index du nom
+     * (main+0x1537158) puis appelle main+0x1537200(ai, index, params) ; RemoteBomb::changeToExplodeChild l'appelle avec
+     * params nul (main+0xa20b20..0xa20b40).
+     */
+    namespace {
+        constexpr std::uintptr_t OnOff_OffVtable = 0x1c1a5c8, OnOff_OnVtable = 0x1c1a800, Ai_ChangeChildIdx = 0x1537200;
+    }
+
+    int GetOnOffSwitch(std::uintptr_t actor, std::uintptr_t* outAi, int* onIdx, int* offIdx) {
+        constexpr std::size_t Actor_RootAi = 0x558;
+        constexpr int Slot_GetCurrentChild = 26;
+        constexpr std::size_t Ai_ChildIdx = 0x1c, Ai_ChildCount = 0x28, Ai_Children = 0x30;
+        *outAi = 0;
+        *onIdx = *offIdx = -1;
+        if (s_Offsets == nullptr || actor == 0 || !CanReadMemory(actor + Actor_RootAi, 8))
+            return -1;
+        const auto& info = exl::util::GetMainModuleInfo();
+        const auto inMain = [&](std::uintptr_t p) { return p >= info.m_Total.m_Start && p < info.m_Total.m_Start + info.m_Total.m_Size; };
+        const auto inText = [&](std::uintptr_t p) { return p >= info.m_Text.m_Start && p < info.m_Text.m_Start + info.m_Text.m_Size; };
+        std::uintptr_t ai = Peek<std::uintptr_t>(actor + Actor_RootAi);
+        for (int depth = 0; depth < 4; depth++) {
+            if (!LooksLikeHeapPtr(ai) || !CanReadMemory(ai, 0x38))
+                return -2;
+            const auto vt = Peek<std::uintptr_t>(ai);
+            if (!inMain(vt))
+                return -3;
+            const auto count = Peek<std::uint32_t>(ai + Ai_ChildCount);
+            const auto children = Peek<std::uintptr_t>(ai + Ai_Children);
+            if (count >= 2 && count <= 16 && LooksLikeHeapPtr(children) && CanReadMemory(children, count * sizeof(std::uintptr_t))) {
+                int on = -1, off = -1;
+                for (std::uint32_t i = 0; i < count; i++) {
+                    const auto c = Peek<std::uintptr_t>(children + i * sizeof(std::uintptr_t));
+                    if (!LooksLikeHeapPtr(c) || !CanReadMemory(c, 8))
+                        continue;
+                    const auto cvt = Peek<std::uintptr_t>(c);
+                    if (cvt == MainBase() + OnOff_OnVtable && on < 0)
+                        on = static_cast<int>(i);
+                    else if (cvt == MainBase() + OnOff_OffVtable && off < 0)
+                        off = static_cast<int>(i);
+                }
+                if (on >= 0 && off >= 0) {
+                    const auto idx = Peek<std::uint16_t>(ai + Ai_ChildIdx);
+                    *outAi = ai;
+                    *onIdx = on;
+                    *offIdx = off;
+                    if (idx >= count)
+                        return -9; /* pas encore d'enfant */
+                    /* Disposition a quatre enfants (Off, attente Off, On, attente On) ou a deux (Off, On). */
+                    if (count == 4 && off == 0 && on == 2)
+                        return idx >= 2 ? 1 : 0;
+                    if (count == 2)
+                        return idx == static_cast<std::uint16_t>(on) ? 1 : 0;
+                    return -10; /* disposition inconnue : on ne devine pas */
+                }
+            }
+            const auto getChild = Peek<std::uintptr_t>(vt + Slot_GetCurrentChild * sizeof(std::uintptr_t));
+            if (!inText(getChild))
+                return -4;
+            ai = reinterpret_cast<std::uintptr_t (*)(std::uintptr_t)>(getChild)(ai);
+        }
+        return -5;
+    }
+
+    bool SetOnOffSwitch(std::uintptr_t ai, int idx) {
+        constexpr std::size_t Ai_ChildCount = 0x28, Ai_Children = 0x30;
+        if (s_Offsets == nullptr || ai == 0 || idx < 0 || !CanReadMemory(ai, 0x38))
+            return false;
+        const auto count = Peek<std::uint32_t>(ai + Ai_ChildCount);
+        const auto children = Peek<std::uintptr_t>(ai + Ai_Children);
+        if (static_cast<std::uint32_t>(idx) >= count || count > 16 || !LooksLikeHeapPtr(children)
+            || !CanReadMemory(children, count * sizeof(std::uintptr_t)))
+            return false;
+        const auto c = Peek<std::uintptr_t>(children + static_cast<std::size_t>(idx) * sizeof(std::uintptr_t));
+        if (!LooksLikeHeapPtr(c) || !CanReadMemory(c, 8))
+            return false;
+        const auto cvt = Peek<std::uintptr_t>(c);
+        if (cvt != MainBase() + OnOff_OnVtable && cvt != MainBase() + OnOff_OffVtable)
+            return false;
+        reinterpret_cast<void (*)(std::uintptr_t, std::uint32_t, void*)>(MainBase() + Ai_ChangeChildIdx)(ai,
+            static_cast<std::uint32_t>(idx), nullptr);
+        return true;
+    }
+
     int GetSwitchTorchLit(std::uintptr_t actor, int* childIdx) {
         constexpr std::size_t Actor_RootAi = 0x558;
         constexpr int Slot_GetCurrentChild = 26;

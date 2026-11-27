@@ -500,6 +500,17 @@ def main():
         a.send("SAVED 18")
         b.expect("SAVED")
         check("GYRO incomplet, hachage invalide, nombre non fini non retransmis", not b.take("GYRO"), str(b.lines))
+        # Interrupteurs a IA On/Off (NOTES 6.35) : HashId et 0/1.
+        a.send("SWAI 1a2b3c4d 1 9")
+        got = b.expect("SWAI")
+        check("interrupteur IA retransmis avec l'identifiant", got == "SWAI 1 1a2b3c4d 1 9", got)
+        for bad in ("SWAI 1a2b3c4d 2 9", "SWAI zz 1 9", "SWAI 1a2b3c4d 1", "SWAI 0 1 9", "SWAI 123456789 0 9",
+                    "SWAI 1a2b3c4d 1 0", "SWAI 1a2b3c4d 1 -5", "SWAI 1a2b3c4d 1 2147483648", "SWAI 1a2b3c4d 1 1_0",
+                    "SWAI 1a2b3c4d 1 +9"):
+            a.send(bad)
+        a.send("SAVED 19")
+        b.expect("SAVED")
+        check("SWAI hors de 0/1, hachage nul ou invalide non retransmis", not b.take("SWAI"), str(b.lines))
         check("sauvetage annonce au partenaire avec l'identifiant", line == "SAVED 1 12", line)
         a.send("GIFT Weapon_Sword_001 1800")
         line = b.expect("GIFT")

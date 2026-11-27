@@ -196,6 +196,11 @@ namespace coop::game {
     /* Torche d'enigme (IA SwitchTorch, NOTES 6.29) : 1 allumee, 0 eteinte, <0 inconnu (pas l'IA attendue). Fil du jeu.
        *childIdx (si non nul) recoit l'index de l'action courante de l'IA SwitchTorch (outil d'essai). */
     int GetSwitchTorchLit(std::uintptr_t actor, int* childIdx = nullptr);
+    /* Interrupteur a IA On/Off (cristal SwitchHit, cible, minuterie... NOTES 6.35) : 1 actif, 0 inactif, <0 inconnu.
+       *outAi recoit l'IA qui porte les actions On et Off, *onIdx / *offIdx leurs index d'enfant. Fil du jeu. */
+    int GetOnOffSwitch(std::uintptr_t actor, std::uintptr_t* outAi, int* onIdx, int* offIdx);
+    /* Passe cette IA a son enfant idx (action On ou Off verifiee), comme le jeu (Ai::changeChild). Fil du jeu. */
+    bool SetOnOffSwitch(std::uintptr_t ai, int idx);
     /* Allumage ou extinction de la forme chimique d'une torche d'enigme, sur le fil du jeu. */
     bool SetSwitchTorchFire(std::uintptr_t actor, bool lit);
     /* Labyrinthe gyroscopique (acteur DungeonRotateTagGyro, NOTES 6.31) : action DungeonRotateGyro de l'acteur, 0 si

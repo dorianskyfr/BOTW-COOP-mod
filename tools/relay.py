@@ -157,7 +157,10 @@ def auth_digest(challenge, password):
 #          retransmise telle quelle ; l'autre montre la meme bombe (NOTES 5.99). Ignoree par un plugin plus ancien.
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
                 "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1, "DROT": 2, "EDST": 2,
-                "GDRP": 6, "GPCK": 2, "BOMB": 15, "FIRE": 4, "ICE": 15, "SWST": 2, "ODEL": 1, "TRCH": 1, "TROF": 1, "GYRO": 10}
+                "GDRP": 6, "GPCK": 2, "BOMB": 15, "FIRE": 4, "ICE": 15, "SWST": 2, "ODEL": 1, "TRCH": 1, "TROF": 1, "GYRO": 10, "SWAI": 3}
+#   SWAI : interrupteur a IA On/Off (cristal, cible, minuterie ; HashId hexadecimal, 1 actif / 0 inactif, version
+#          entiere > 0 = numero de changement x 256 + joueur auteur ; plugin switch_ai.hpp, NOTES 6.35), retransmis tel
+#          quel ; l'autre met le meme interrupteur dans le meme etat si la version est plus recente que la sienne.
 #   GYRO : plateau gyroscopique incline chez un joueur (HashId hexadecimal, rotation 3x3 par lignes ; plugin gyro.hpp,
 #          NOTES 6.31), retransmis tel quel ; l'autre incline le meme plateau. Ignore par un plugin plus ancien.
 #   TRCH / TROF : allumage / extinction d'une torche d'enigme (HashId hexadecimal non nul).
@@ -188,7 +191,7 @@ FIELD_KINDS = {"MTX": "f" * 12 + "i", "POS": "fff", "TIME": "fiifi", "FLAG": "xi
                "EMTX": "x" + "f" * 13, "HP": "ii", "GEAR": "xxx", "WPN": "ix" + "f" * 12, "SAVED": "i",
                "GIFT": "nixi", "MEAL": "i", "EAS": "xni", "DEMO": "nn", "ACT": "i", "DROT": "xfx", "EDST": "xf",
                "GDRP": "xnfffixi", "GPCK": "xii", "BOMB": "iii" + "f" * 12 + "i", "FIRE": "ifff",
-               "ICE": "iii" + "f" * 12, "SWST": "xi", "ODEL": "x", "TRCH": "x", "TROF": "x", "GYRO": "x" + "f" * 9}
+               "ICE": "iii" + "f" * 12, "SWST": "xi", "ODEL": "x", "TRCH": "x", "TROF": "x", "GYRO": "x" + "f" * 9, "SWAI": "xii"}
 
 
 def valid_fields(kind, values):
@@ -930,6 +933,14 @@ def main():
                         if client.trch <= 40 or client.trch % 200 == 0:
                             state = "allumee" if parts[0] == "TRCH" else "eteinte"
                             log(f"joueur {client.pid} : torche {state} n.{client.trch} = {payload}")
+                    elif parts[0] == "SWAI":
+                        # Version en chiffres seulement : int() accepterait « 1_0 », que le plugin lirait 1 (relecture Codex).
+                        if (parts[2] not in ("0", "1") or int(parts[1], 16) <= 0 or not parts[3].isdigit()
+                                or not 0 < int(parts[3]) < 2**31):
+                            continue
+                        client.swai = getattr(client, "swai", 0) + 1
+                        if client.swai <= 40 or client.swai % 200 == 0:
+                            log(f"joueur {client.pid} : interrupteur IA n.{client.swai} = {payload}")
                     elif parts[0] == "SWST":
                         if parts[2] not in ("0", "1"):
                             continue

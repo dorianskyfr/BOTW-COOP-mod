@@ -1192,6 +1192,15 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.35 Cristaux et minuteries partagés (2026-11-27, Eden)
+
+- Le module `switch_ai` lit les actions `On` et `Off` des interrupteurs à cristal, des cibles, des leviers d'inclinaison et des minuteries suivis. À réception de `SWAI`, il utilise `Ai::changeChild` pour faire réagir les objets liés. `switch_ai=0` coupe ce partage.
+- Chaque changement porte une version. À compteur égal, le joueur de plus petit numéro l'emporte. Un rappel conserve la version d'origine et une transition reçue ne repart pas en écho. Seul le joueur présent de plus petit numéro annonce les minuteries `SwitchTimer` qui basculent d'elles-mêmes. À son rechargement, un cristal retrouve le dernier état versionné.
+- **Shi'Jito (036), `reprise_swai`** : J1 frappe réellement `SwitchHit 07743da2`. Le cristal de J2 passe de l'orange au bleu et le bloc lié `5585d6c5` monte de 3 m. J2 frappe ensuite le cristal et le bloc redescend chez les deux. J2 revenu dans le sanctuaire reçoit v3, puis un second rechargement restaure v3 localement.
+- **Shoda'Sah (061), `ca4`** : J1 annonce les bascules du `SwitchTimer 84be65cb`. J2 en applique plusieurs sans les réannoncer. Le test `ca5` montre aussi les bascules v1, v2, v3 du cristal avec le bouton d'essai. Les cibles de tir et les leviers d'inclinaison restent à tester en jeu.
+- **Option désactivée**, `reprise_026_probe` : le cristal frappé par J1 devient bleu et son annonce atteint le relais. Chez J2, avec `switch_ai=0`, le cristal reste orange.
+- Preuves : [extraits des journaux](docs/evidence/2026-11-27_cristal-et-minuteries_swai.log), [cristal éteint chez J2](docs/evidence/2026-11-27_cristal036_j2_eteint.png), [cristal allumé chez J2](docs/evidence/2026-11-27_cristal036_j2_allume.png), [cristal éteint chez J1 après la frappe de J2](docs/evidence/2026-11-27_cristal036_j1_retour.png).
+
 ### 6.34 Clubs gyroscopiques du sanctuaire 013 (2026-11-25, Eden) - [V] journaux
 
 - Les deux tags `DungeonRotateTagGyroPutter` du sanctuaire 013 ont les HashId `9d564261` et `a92836e0`. Leur paquet utilise `DungeonRotateTagGyro.baiprog` et son action `DungeonRotateGyro`. Les deux tags sont désormais suivis par le module existant sans modifier le message `GYRO`.

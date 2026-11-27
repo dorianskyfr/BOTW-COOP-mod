@@ -12,6 +12,7 @@
 #include "vanish.hpp"
 #include "torches.hpp"
 #include "gyro.hpp"
+#include "switch_ai.hpp"
 
 #include "clock.hpp"
 #include "beast_rotate.hpp"
@@ -229,6 +230,7 @@ namespace coop::input_inject {
                 coop::vanish::OnFrame();   /* NOTES 6.28, meme part */
                 coop::torches::OnFrame();  /* NOTES 6.29, meme part */
                 coop::gyro::OnFrame();     /* NOTES 6.31, meme part */
+                coop::switch_ai::OnFrame(); /* NOTES 6.35, meme part */
                 coop::remote_actor::OnFrame();
                 COOP_PART();
                 coop::world_sync::OnFrame();
@@ -338,6 +340,18 @@ namespace coop::input_inject {
                         if (cmdV != s_LastVanish) {
                             s_LastVanish = cmdV;
                             coop::vanish::g_TestStep.fetch_add(1, std::memory_order_release);
+                        }
+                        buttons &= ~(1ull << 47);
+                    }
+#endif
+#ifdef COOP_TEST_SWAI
+                    /* Bit 47 : essai interrupteur a IA On/Off (switch_ai.cpp, NOTES 6.35). */
+                    if ((buttons >> 47) & 1) {
+                        static std::uint64_t s_LastSwai = 0;
+                        const auto cmdA = pad.m_Commands.load(std::memory_order_acquire);
+                        if (cmdA != s_LastSwai) {
+                            s_LastSwai = cmdA;
+                            coop::switch_ai::g_TestStep.fetch_add(1, std::memory_order_release);
                         }
                         buttons &= ~(1ull << 47);
                     }

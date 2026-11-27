@@ -12,6 +12,7 @@
 #include "vanish.hpp"
 #include "torches.hpp"
 #include "gyro.hpp"
+#include "switch_ai.hpp"
 #include "config.hpp"
 #include "beast_rotate.hpp"
 #include "cutscene.hpp"
@@ -378,6 +379,14 @@ namespace coop::net_probe {
                     m.m_Lit = line[2] == 'C';
                     m.m_Frame = coop::torches::g_GameFrame.load(std::memory_order_relaxed); /* date de reception */
                     coop::torches::g_Incoming.Push(m);
+                }
+            } else if (std::strncmp(line, "SWAI ", 5) == 0) {
+                /* Interrupteur a IA On/Off du partenaire (switch_ai.hpp, NOTES 6.35) : HashId, 1 actif / 0 inactif, version. */
+                coop::switch_ai::Msg m;
+                if (std::sscanf(line, "SWAI %d %x %u %u", &id, &m.m_Hash, &m.m_On, &m.m_Ver) == 4 && m.m_Hash != 0 && m.m_On <= 1
+                    && m.m_Ver != 0) {
+                    m.m_Frame = coop::switch_ai::g_GameFrame.load(std::memory_order_relaxed); /* date de reception */
+                    coop::switch_ai::g_Incoming.Push(m);
                 }
             } else if (std::strncmp(line, "GYRO ", 5) == 0) {
                 /* Plateau gyroscopique incline chez le partenaire (gyro.hpp, NOTES 6.31) : HashId, 9 floats. */
@@ -832,6 +841,19 @@ namespace coop::net_probe {
                         char tl[32];
                         const int len = std::snprintf(tl, sizeof(tl), "%s %08x\n", tm.m_Lit ? "TRCH" : "TROF", tm.m_Hash);
                         if (len > 0 && len < static_cast<int>(sizeof(tl)) && !SendAll(s_Fd, tl, static_cast<std::size_t>(len)))
+                            Disconnect("echec d'envoi");
+                    }
+                }
+
+                /* Interrupteurs a IA On/Off (switch_ai.hpp, NOTES 6.35) : envoyes des qu'ils sont en file, jetes apres 3 s. */
+                {
+                    coop::switch_ai::Msg am;
+                    while (Live() && coop::switch_ai::g_Outgoing.Pop(am)) {
+                        if (!inGame || coop::switch_ai::g_GameFrame.load(std::memory_order_relaxed) - am.m_Frame > coop::switch_ai::MaxAgeFrames)
+                            continue;
+                        char al[48];
+                        const int len = std::snprintf(al, sizeof(al), "SWAI %08x %u %u\n", am.m_Hash, am.m_On ? 1u : 0u, am.m_Ver);
+                        if (len > 0 && len < static_cast<int>(sizeof(al)) && !SendAll(s_Fd, al, static_cast<std::size_t>(len)))
                             Disconnect("echec d'envoi");
                     }
                 }

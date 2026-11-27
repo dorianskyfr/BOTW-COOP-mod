@@ -65,6 +65,8 @@ namespace coop::config {
                 g_TorchSync = flag != 0;
             if (std::sscanf(line, "gyro=%u", &flag) == 1)
                 g_GyroSync = flag != 0;
+            if (std::sscanf(line, "switch_ai=%u", &flag) == 1)
+                g_SwitchAiSync = flag != 0;
             if (std::sscanf(line, "enemy_anim=%u", &flag) == 1 && flag <= 2)
                 g_EnemyAnim = flag;
             if (std::sscanf(line, "cutscene=%u", &flag) == 1)

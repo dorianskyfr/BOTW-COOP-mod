@@ -1,0 +1,37 @@
+Eden v0.2.1, deux instances de BOTW 1.9.0, relais local.
+Extraits des essais reprise_swai (cristal) et ca4 (minuterie).
+
+Shi'Jito (036) — J1 frappe le cristal avec son arme.
+J1 : interrupteur IA : 07743da2 active ici en (22.0, 0.0, -2.0), v1, annonce
+J2 : interrupteur IA : 07743da2 active chez le partenaire (v1), active ici
+J2 : interrupteur IA : 07743da2 active pour le partenaire (non renvoye)
+J2 : acteur distant : action "CutS1" (600 ms)
+J1 : DgnObj_BoxShutter_4x4x4 (22.00, -0.50, 10.00)
+
+J2 frappe le cristal à son tour.
+J2 : interrupteur IA : 07743da2 desactive ici en (22.0, 0.0, -2.0), v2, annonce
+J1 : interrupteur IA : 07743da2 desactive chez le partenaire (v2), desactive ici
+J1 : interrupteur IA : 07743da2 desactive pour le partenaire (non renvoye)
+J1 : DgnObj_BoxShutter_4x4x4 (22.00, -3.50, 10.00)
+J2 : DgnObj_BoxShutter_4x4x4 (22.00, -3.50, 10.00)
+
+J1 frappe pendant que J2 est dans un autre sanctuaire. J2 revient, puis recharge la salle une seconde fois.
+J1 : interrupteur IA : 07743da2 active ici en (22.0, 0.0, -2.0), v3, annonce
+J2 : interrupteur IA : 07743da2 active chez le partenaire (v3), active ici
+J2 : interrupteur IA : 07743da2 active pour le partenaire (non renvoye)
+J2 : interrupteur IA : 07743da2 recharge, remis active (v3)
+J2 : interrupteur IA : 07743da2 active pour le partenaire (non renvoye)
+J1 : DgnObj_BoxShutter_4x4x4 (22.00, -0.50, 10.00)
+J2 : DgnObj_BoxShutter_4x4x4 (22.00, -0.50, 10.00)
+
+Shoda'Sah (061) — ca4, minuterie autonome.
+J1 : interrupteur IA : 84be65cb active ici en (23.5, 1.0, -6.5), v3, annonce
+J2 : interrupteur IA : 84be65cb active chez le partenaire (v3), active ici
+J2 : interrupteur IA : 84be65cb active pour le partenaire (non renvoye)
+J2 : interrupteur IA : 84be65cb desactive chez le partenaire (v28), desactive ici
+J2 : interrupteur IA : 84be65cb desactive pour le partenaire (non renvoye)
+
+Shi'Jito (036) — essai reprise_026_probe, switch_ai=0 chez J2.
+J1 : interrupteur IA : 07743da2 active ici en (22.0, 0.0, -2.0), v1, annonce
+Relais : joueur 1 : interrupteur IA n.22 = 07743da2 1 257
+Captures du même essai : le cristal est bleu chez J1 et reste orange chez J2.
