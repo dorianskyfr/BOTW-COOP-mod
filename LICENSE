@@ -19,17 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-Exceptions (third-party code)
------------------------------
-The plugin is built on exlaunch (https://github.com/shadowninja108/exlaunch),
-licensed under the GNU General Public License v2.0. exlaunch itself is not
-included in this repository. The following files replace exlaunch files at
-build time and are adapted from them; they remain under GPL-2.0:
-  - plugin/overlay/config.mk
-  - plugin/overlay/source/lib/log/svc_logger.cpp
-Compiled plugin binaries (subsdk9) statically include exlaunch and are
-therefore distributed under the terms of GPL-2.0.
-
-This repository contains no game assets. The Legend of Zelda: Breath of the
-Wild is a trademark of Nintendo; this project is not affiliated with Nintendo.
