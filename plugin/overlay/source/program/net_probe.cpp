@@ -475,10 +475,12 @@ namespace coop::net_probe {
                 coop::anim_state::g_RemoteAction.store(static_cast<std::uint8_t>(actCode));
                 coop::anim_state::g_RemoteActions.fetch_add(1, std::memory_order_release);
             } else if (unsigned fx = 0; std::sscanf(line, "KAGO %d %u", &id, &fx) == 2) {
-                if (fx >= coop::champion_fx::Wind && fx < coop::champion_fx::Count &&
-                    coop::session::g_Remote.IsActive() && id == coop::session::g_Remote.Id()) {
+                if (!coop::session::g_Remote.IsActive() || id != coop::session::g_Remote.Id())
+                    return;
+                if (fx >= coop::champion_fx::Wind && fx < coop::champion_fx::Count)
                     coop::champion_fx::g_Remote[fx].store(coop::clock::NowMs(), std::memory_order_relaxed);
-                }
+                else if (fx >= coop::champion_fx::ShieldCode && fx <= coop::champion_fx::ShieldCode + coop::champion_fx::MaxShieldCharges)
+                    coop::champion_fx::ReceiveShield(fx - coop::champion_fx::ShieldCode);
             } else if (coop::cutscene::Demo dm; std::sscanf(line, "DEMO %d %47s %47s", &dm.m_From, dm.m_Event, dm.m_Entry) == 3) {
                 coop::cutscene::g_Incoming.Push(dm);
             } else if (coop::beast_rotate::Msg bm; std::sscanf(line, "DROT %d %x %f %x", &bm.m_From, &bm.m_Hash, &bm.m_Angle,
@@ -723,6 +725,24 @@ namespace coop::net_probe {
                             const int len = std::snprintf(line, sizeof(line), "KAGO %u\n", fx);
                             if (len > 0 && !SendAll(s_Fd, line, static_cast<std::size_t>(len)))
                                 Disconnect("echec d'envoi");
+                        }
+                    }
+                }
+
+                /* Daruk : répétition pendant la garde, arrêt à réception de 0 ou à expiration. */
+                if (Live()) {
+                    static unsigned lastShield = 0;
+                    static std::uint64_t lastSend = 0;
+                    const auto shield = inGame ? coop::champion_fx::g_LocalShield.load(std::memory_order_relaxed) : 0;
+                    const auto now = coop::clock::NowMs();
+                    if (shield != lastShield || (shield != 0 && now - lastSend >= coop::champion_fx::ShieldRefreshMs)) {
+                        char line[16];
+                        const int len = std::snprintf(line, sizeof(line), "KAGO %u\n", coop::champion_fx::ShieldCode + shield);
+                        if (len <= 0 || !SendAll(s_Fd, line, static_cast<std::size_t>(len))) {
+                            Disconnect("echec d'envoi");
+                        } else {
+                            lastShield = shield;
+                            lastSend = now;
                         }
                     }
                 }

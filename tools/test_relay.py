@@ -517,7 +517,13 @@ def main():
         b.send("KAGO 2")
         got = a.expect("KAGO")
         check("effet visuel d'Urbosa retransmis dans l'autre sens", got == "KAGO 2 2", got)
-        for bad in ("KAGO 0", "KAGO 3", "KAGO 1 2", "KAGO Wind", "KAGO +1"):
+        a.send("KAGO 6")
+        got = b.expect("KAGO")
+        check("bouclier de Daruk à trois charges retransmis", got == "KAGO 1 6", got)
+        a.send("KAGO 3")
+        got = b.expect("KAGO")
+        check("extinction du bouclier de Daruk retransmise", got == "KAGO 1 3", got)
+        for bad in ("KAGO 0", "KAGO 7", "KAGO 1 2", "KAGO Wind", "KAGO +1"):
             a.send(bad)
         a.send("SAVED 20")
         b.expect("SAVED")

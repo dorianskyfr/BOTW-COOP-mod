@@ -308,6 +308,7 @@ namespace coop::remote_actor {
                 Logging.Log("[botw-coop] acteur distant : joueur local hors jeu, reinitialisation");
                 s_State = State::WaitingForPlayer;
                 s_Actor = 0;
+                coop::champion_fx::ForgetPuppet();
                 coop::gear::RemoveAll(false); /* detruites avec le monde : on oublie sans y toucher */
                 coop::weapons::RemoveAll(false);
             }
@@ -324,6 +325,7 @@ namespace coop::remote_actor {
                 Logging.Log("[botw-coop] acteur distant : monde en chargement, personnage %s", s_Actor == 0 ? "absent" : ok ? "retire" : "non retire");
                 s_State = State::WaitingForPlayer;
                 s_Actor = 0;
+                coop::champion_fx::ForgetPuppet();
                 coop::gear::RemoveAll(true);
                 coop::weapons::RemoveAll(true);
             }
@@ -552,6 +554,7 @@ namespace coop::remote_actor {
                         Logging.Log("[botw-coop] acteur distant : l'acteur n'est plus valide, il sera recree (destruction rapide n.%d, attente %lu images)",
                             s_QuickDeaths, wait);
                     s_Actor = 0;
+                    coop::champion_fx::ForgetPuppet();
                     s_State = State::Idle;
                     RetryPuppet();
                     coop::gear::RemoveAll(true);
@@ -568,6 +571,7 @@ namespace coop::remote_actor {
                     coop::gear::RemoveAll(true);
                     coop::weapons::RemoveAll(true);
                     s_Actor = 0;
+                    coop::champion_fx::ForgetPuppet();
                     s_State = State::Idle;
                     RetryPuppet();
                     break;

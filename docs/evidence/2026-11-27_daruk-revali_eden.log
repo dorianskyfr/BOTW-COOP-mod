@@ -1,0 +1,17 @@
+Eden v0.2.1, deux instances de Breath of the Wild 1.9.0, relais local.
+Monde ouvert, près du sanctuaire 073. Deux copies de test disposant des objets clés des Prodiges.
+Garde de Daruk au bouton ZL, tourbillon de Revali au bouton X.
+
+J1 - reprise_daruk_live_game.txt
+1860: Prodige : bouclier de Daruk affiche pour le partenaire (3)
+1872: Prodige : bouclier de Daruk retire pour le partenaire
+1874: essai natif : Kago_ShieldCount_03 cree=1
+1888: essai natif : Daruk relache
+1897: essai natif : Kago_Wind cree=1
+
+J2 - reprise_daruk_live_game2.txt
+1723: essai natif : Kago_ShieldCount_03 cree=1
+1735: essai natif : Daruk relache
+1743: Prodige : bouclier de Daruk affiche pour le partenaire (3)
+1750: Prodige : bouclier de Daruk retire pour le partenaire
+1761: Prodige : Kago_Wind affiche pour le partenaire

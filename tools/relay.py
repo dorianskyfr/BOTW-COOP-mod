@@ -158,7 +158,7 @@ def auth_digest(challenge, password):
 STATE_FIELDS = {"MTX": 12, "POS": 3, "TIME": 3, "FLAG": 2, "FLAGR": 2, "LIFE": 2, "EMTX": 14, "HP": 2, "GEAR": 3,
                 "WPN": 14, "SAVED": 1, "GIFT": 2, "MEAL": 1, "EAS": 2, "DEMO": 2, "ACT": 1, "DROT": 2, "EDST": 2,
                 "GDRP": 6, "GPCK": 2, "BOMB": 15, "FIRE": 4, "ICE": 15, "SWST": 2, "ODEL": 1, "TRCH": 1, "TROF": 1, "GYRO": 10, "SWAI": 3, "KAGO": 1}
-#   KAGO : effet visuel ponctuel d'un Prodige (1 = Revali, 2 = Urbosa), sans état persistant.
+#   KAGO : Revali (1), Urbosa (2), bouclier de Daruk (3 = éteint, 4..6 = 1..3 charges).
 #   SWAI : interrupteur a IA On/Off (cristal, cible, minuterie ; HashId hexadecimal, 1 actif / 0 inactif, version
 #          entiere > 0 = numero de changement x 256 + joueur auteur ; plugin switch_ai.hpp, NOTES 6.35), retransmis tel
 #          quel ; l'autre met le meme interrupteur dans le meme etat si la version est plus recente que la sienne.
@@ -935,7 +935,7 @@ def main():
                             state = "allumee" if parts[0] == "TRCH" else "eteinte"
                             log(f"joueur {client.pid} : torche {state} n.{client.trch} = {payload}")
                     elif parts[0] == "KAGO":
-                        if parts[1] not in ("1", "2"):
+                        if parts[1] not in ("1", "2", "3", "4", "5", "6"):
                             continue
                     elif parts[0] == "SWAI":
                         # Version en chiffres seulement : int() accepterait « 1_0 », que le plugin lirait 1 (relecture Codex).
