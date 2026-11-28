@@ -1192,6 +1192,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.41 Cibles des canons de Bareeda Naag (008, 2026-11-28, Eden)
+
+- Le premier canon se trouve à environ 88 m de sa cible `DgnObj_SwitchTarget_A` (`c0690a3c`). Le relevé à 60 m écartait la cible quand le joueur tirait depuis la plateforme. Le rayon des cibles passe à 120 m.
+- Le jeu fait disparaître le boulet `DgnObj_AncientBall_02` pendant le tir et peut le replacer pour le tir suivant. Le module de destruction ignore ce type à l'émission et à la réception. Les deux boulets de ce type relevés dans les cartes des sanctuaires appartiennent aux canons du 008.
+- Deux parties de BOTW 1.9.0 sous Eden. J1 a chargé le canon ouest avec la vraie bombe ronde. Le premier tir a lancé `Dungeon008_2_check` chez les deux joueurs. Un tir suivant a touché la cible. J1 a envoyé `SWAI`, puis J2 a appliqué l'état et lancé `Dungeon008_1_check` à son tour.
+- Au canon est, J2 a déclenché la bombe. La copie de la bombe a lancé le boulet qui a atteint la cible mobile `e6ddec2f` chez J1. J1 a envoyé `SWAI`, puis J2 a appliqué l'état et lancé `Dungeon008_3_check`. Les deux grilles sont montées de 5 m dans les deux parties. [Extraits des journaux](docs/evidence/2026-11-28_canon008_eden.log).
+
 ### 6.40 Cryonis en jeu et piliers chargés à l'origine (2026-11-28, Eden)
 
 - À l'entrée de Keh Namut (065), le jeu précharge des `Obj_IceMakerBlock` en sommeil (`BaseProc::State::Sleep`, état 2) à l'origine. Le module annonçait ces acteurs avant toute utilisation de la rune. Cela créait des copies dont une restait à l'origine après la destruction du vrai pilier.

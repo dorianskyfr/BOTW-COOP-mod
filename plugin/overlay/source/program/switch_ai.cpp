@@ -14,6 +14,8 @@ namespace coop::switch_ai {
 
     namespace {
         constexpr float         Radius = 60.0f;
+        constexpr float         TargetRadius = 120.0f; /* distance de tir au canon a Bareeda Naag (008) */
+        constexpr char          TargetName[] = "DgnObj_SwitchTarget_A";
         constexpr int           ScanEvery = 2;
         constexpr std::uint64_t SettleFrames = 60;    /* rien d'annonce ni d'applique 2 s apres la premiere vue */
         constexpr std::uint64_t EchoFrames = 300;     /* etat applique pour l'autre : pas renvoye pendant 10 s */
@@ -25,7 +27,7 @@ namespace coop::switch_ai {
            SwitchTimeLimited ; SwitchTilt et DgnObj_SwitchTarget_A utilisent SwitchHit / SwitchHitOnce). */
         bool Watched(const char* n) {
             static constexpr const char* Names[] = { "SwitchHit", "SwitchHitOnce", "SwitchTilt", "SwitchTimer", "SwitchTimeLimited",
-                "DgnObj_SwitchTarget_A" };
+                TargetName };
             for (const char* x : Names)
                 if (std::strcmp(n, x) == 0)
                     return true;
@@ -167,7 +169,7 @@ namespace coop::switch_ai {
                         Logging.Log("[botw-coop] interrupteur IA : %08x %s pour le partenaire (non renvoye)", t.m_Hash, st ? "active" : "desactive");
                 } else if (t.m_Autonomous && !Leader()) {
                     /* minuterie autonome : seul le meneur annonce */
-                } else if (id >= 1 && id <= 255 && Dist2(t.m_Pos, s_PlayerPos) <= Radius * Radius) {
+                } else if (id >= 1 && id <= 255) {
                     t.m_On = st;
                     t.m_Ver = (((t.m_Ver >> 8) + 1) << 8) | static_cast<std::uint32_t>(id);
                     t.m_LocalOwned = true;
@@ -252,12 +254,13 @@ namespace coop::switch_ai {
                 else if (t.m_Actor == info.m_Actor)
                     t.m_Actor = 0; /* adresse reprise par un autre interrupteur */
             }
+            const float radius = std::strcmp(info.m_Name, TargetName) == 0 ? TargetRadius : Radius;
+            if (Dist2(info.m_Pos, s_PlayerPos) > radius * radius)
+                return false;
             if (mine != nullptr && mine->m_Actor == info.m_Actor) {
                 Update(*mine, info);
                 return false;
             }
-            if (Dist2(info.m_Pos, s_PlayerPos) > Radius * Radius)
-                return false;
             if (mine == nullptr) {
                 mine = Allocate();
                 if (mine == nullptr) {
@@ -289,7 +292,7 @@ namespace coop::switch_ai {
             }
             SendWaterTimer();
             for (Tracked& t : s_Tracked)
-                if (t.m_Actor != 0 && (!t.m_Seen || Dist2(t.m_Pos, s_PlayerPos) > Radius * Radius))
+                if (t.m_Actor != 0 && !t.m_Seen)
                     t.m_Actor = 0;
         }
 

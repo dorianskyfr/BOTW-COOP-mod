@@ -1,0 +1,46 @@
+Bareeda Naag (008), BOTW 1.9.0, deux instances Eden avec des copies de sauvegarde.
+Le pilote place les joueurs. Les commandes L, A et L chargent et déclenchent
+la bombe ronde du jeu. Le relevé des acteurs donne la hauteur des grilles.
+
+Avant correction, tirs de J1 et relecture de la bombe chez J2
+J1 [botw-coop] objet detruit : DgnObj_AncientBall_02 2eeaf24b a disparu en (-56.0, 24.8, 43.1), annonce
+J2 [botw-coop] evenement demande : Demo024_0 / Dungeon008_1_check -> accepte
+J1 [botw-coop] objet detruit : DgnObj_AncientBall_02 2eeaf24b detruit chez le partenaire, retire ici
+J1 [botw-coop] acteur : SwitchShutter                            hash=dcedd440 etat=1 pos=(-37.00, 21.50, 48.00) dist=2.1
+J2 [botw-coop] acteur : SwitchShutter                            hash=dcedd440 etat=1 pos=(-37.00, 26.50, 48.00) dist=5.4
+
+Après correction, premier canon et grille ouest
+J1 [botw-coop] bombe : notre RemoteBomb n.1 commence son explosion
+J1 [botw-coop] evenement demande : Demo024_0 / Dungeon008_2_check -> accepte
+J2 [botw-coop] evenement demande : Demo024_0 / Dungeon008_2_check -> accepte
+J1 [botw-coop] acteur : DgnObj_AncientBall_02                    hash=2eeaf24b etat=1 pos=(-56.00, 25.38, 42.29) dist=14.9
+J1 [botw-coop] acteur : SwitchShutter                            hash=dcedd440 etat=1 pos=(-37.00, 21.50, 48.00) dist=21.9
+J2 [botw-coop] acteur : SwitchShutter                            hash=dcedd440 etat=1 pos=(-37.00, 21.50, 48.00) dist=2.2
+J1 [botw-coop] interrupteur IA : etat c0690a3c en (-56.0, 55.0, -27.0) = 0 (on=2 off=0)
+Relais 12:02:24.149 joueur 1 : bombe 0 = type 1 n.5 (position -56.000 27.500 56.999)
+J1 [botw-coop] bombe : notre RemoteBomb n.5 commence son explosion
+J1 [botw-coop] evenement demande : Demo024_0 / Dungeon008_1_check -> accepte
+J1 [botw-coop] interrupteur IA : c0690a3c active ici en (-56.0, 55.0, -27.0), v1, annonce
+Relais 12:02:30.408 joueur 1 : interrupteur IA n.1 = c0690a3c 1 257
+J2 [botw-coop] interrupteur IA : c0690a3c active chez le partenaire (v1), active ici
+J2 [botw-coop] evenement demande : Demo024_0 / Dungeon008_1_check -> accepte
+J2 [botw-coop] interrupteur IA : c0690a3c active pour le partenaire (non renvoye)
+J1 [botw-coop] acteur : SwitchShutter                            hash=dcedd440 etat=1 pos=(-37.00, 26.50, 48.00) dist=5.5
+J2 [botw-coop] acteur : SwitchShutter                            hash=dcedd440 etat=1 pos=(-37.00, 26.50, 48.00) dist=5.5
+
+Après correction, second canon et grille est
+J1 [botw-coop] acteur : SwitchShutter                            hash=b642bfc9 etat=1 pos=(41.00, 21.50, 48.00) dist=2.1
+J2 [botw-coop] acteur : SwitchShutter                            hash=b642bfc9 etat=1 pos=(41.00, 21.50, 48.00) dist=79.4
+Relais 12:04:13.944 joueur 2 : bombe 0 = type 1 n.3 (position 24.000 27.500 57.000)
+J2 [botw-coop] bombe : notre RemoteBomb n.3 commence son explosion
+J1 [botw-coop] bombe du partenaire : RemoteBomb n.3 explosee en (23.9, 22.9, 44.7), notre copie mise a feu (rc=0)
+J1 [botw-coop] evenement demande : Demo024_0 / Dungeon008_3_check -> accepte
+J1 [botw-coop] interrupteur IA : e6ddec2f active ici en (29.4, 55.0, -23.8), v1, annonce
+Relais 12:04:20.574 joueur 1 : interrupteur IA n.24 = e6ddec2f 1 257
+J2 [botw-coop] interrupteur IA : e6ddec2f active chez le partenaire (v1), active ici
+J2 [botw-coop] evenement demande : Demo024_0 / Dungeon008_3_check -> accepte
+J2 [botw-coop] interrupteur IA : e6ddec2f active pour le partenaire (non renvoye)
+J1 [botw-coop] acteur : SwitchShutter                            hash=b642bfc9 etat=1 pos=(41.00, 26.50, 48.00) dist=5.4
+J2 [botw-coop] acteur : SwitchShutter                            hash=b642bfc9 etat=1 pos=(41.00, 26.50, 48.00) dist=5.5
+
+Aucune ligne « objet detruit » pour 2eeaf24b ou bb1bf3df dans les journaux corrigés.

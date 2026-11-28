@@ -59,6 +59,9 @@ namespace coop::vanish {
         }
 
         bool Watched(const char* name) {
+            /* Le boulet de canon disparait au tir, puis le jeu en remet un en place. */
+            if (std::strcmp(name, "DgnObj_AncientBall_02") == 0)
+                return false;
             return std::strncmp(name, "DgnObj_", 7) == 0 || std::strncmp(name, "FldObj_", 7) == 0
                 || coop::puzzle_names::IsExtraDestructible(name);
         }
@@ -141,7 +144,7 @@ namespace coop::vanish {
         };
 
         bool OnRemove(const coop::game::ActorInfo& info, void* user) {
-            if (info.m_HashId == 0)
+            if (info.m_HashId == 0 || info.m_Name == nullptr || !Watched(info.m_Name))
                 return false;
             for (Pending& p : s_Pending) {
                 if (p.m_Hash == 0 || p.m_Hash != info.m_HashId)
