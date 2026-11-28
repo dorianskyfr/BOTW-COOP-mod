@@ -1,0 +1,39 @@
+Première tour du Plateau et garde de la paravoile — 2026-11-28
+Essai plateau_tour, BOTW 1.9.0, Eden 0.2.1, deux instances sur le même PC.
+Profils coop t_plateau100a et t_plateau100b, repris à froid après l’ouverture de deux parties neuves.
+Plugin d’essai tilt035half-test (SHA256 BEF7A2E96683C4559EFFCF2C870A57D236CF70979D6AB90C3B09F400FFB85960).
+Le relais local écoute sur 127.0.0.1:47800. Les deux profils se reconnectent.
+
+Reprise de l’ouverture et accès au socle
+J1 [botw-coop] coop: moi=J1 connecte en jeu pos=(-1024.48, 252.64, 1799.95) avant=(-0.19, 0.98) envois=47 | distant=J2 actif=1 pos=(-1024.48, 252.64, 1799.95) avant=(-0.19, 0.98) recus=27
+J2 [botw-coop] coop: moi=J2 connecte en jeu pos=(-1024.48, 252.64, 1799.95) avant=(-0.19, 0.98) envois=49 | distant=J1 actif=1 pos=(-1024.48, 252.63, 1799.95) avant=(-0.19, 0.98) recus=67
+L’outil d’essai a placé chacun à proximité de la tour en plusieurs déplacements de moins de 250 m.
+À l’intérieur, l’approche depuis (-566.5, 177.64, 1697.0) vers (-561.45, 177.64, 1695.28) a permis d’examiner le socle avec A.
+Les interactions et les dialogues qui lèvent la tour et déverrouillent la carte sont passés par les commandes du jeu.
+
+J1 active sa tour
+J1 [botw-coop] drapeau change : n.24181 hachage=9297df8d 0 -> 1 (envoye)
+J1 [botw-coop] drapeau change : n.27499 hachage=a73f9b84 0 -> 1
+14:22:53.909 joueur 1 : drapeau nouveau n.2 = 9297df8d 1 (2 en memoire, 0 deja connus)
+J1 atteint (-560.99, 246.43, 1695.15), altitude du sommet. La carte du Plateau apparaît ensuite sur sa tablette.
+J2 [botw-coop] drapeau recu : hachage=9297df8d mis en attente (pas de paravoile)
+J2 est toujours à (-1029.26, 268.52, 1842.21). Sa carte, ouverte avec Minus avant son arrivée à la tour, est vierge de relief.
+Une fois approché à l’aide de l’outil, J2 voit le symbole orange sur son socle. La tour est encore enterrée dans son jeu.
+
+J2 active sa propre tour
+J2 [botw-coop] evenement demande : Demo004_0 / Demo004_0 -> accepte
+J2 [botw-coop] drapeau change : n.24181 hachage=9297df8d 0 -> 1 (envoye)
+J2 [botw-coop] drapeau change : n.27499 hachage=a73f9b84 0 -> 1
+J2 atteint aussi (-560.99, 246.43, 1695.15) et voit le jeu extraire sa carte régionale.
+À la fin de l’événement, chaque joueur reprend le contrôle au sommet.
+J1 [botw-coop] drapeau change : n.32613 hachage=c6415210 0 -> 1
+J2 [botw-coop] drapeau change : n.32613 hachage=c6415210 0 -> 1
+
+Sauvegarde manuelle dans chaque jeu
+J1 coop/2/game_data.sav à 14:28:04 et J2 coop/2/game_data.sav à 14:29:53.
+Dans les deux cas, FirstTower_Finish, MapTower_07_Demo, MapTower_07, IsPlayed_Demo004_0 et IsPlayed_Demo164_0 valent 1.
+IsGet_Obj_Magnetglove et IsGet_PlayerStole2 valent 0.
+Le trajet à pied et l’application des drapeaux en attente après l’obtention de la paravoile restent à vérifier.
+
+Relais, python tools/test_relay.py
+153 / 153 essais passes

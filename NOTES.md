@@ -1192,6 +1192,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.49 Première tour du Plateau et progression reçue avant la paravoile (2026-11-28, Eden)
+
+- Les deux nouvelles parties de 6.48 ont repris depuis leur sauvegarde coop après relance des instances et du relais. Les deux joueurs étaient présents dans la session dès la sortie du Sanctuaire de la Renaissance.
+- L’outil d’essai a placé chaque joueur près de la tour, sans modifier la progression. J1 a interagi avec son socle. Sa tour est montée et le jeu a extrait la carte régionale. J2 est resté à sa position à environ 490 m de là. Il a reçu `MapTower_07`, que le mod a mis en attente faute de paravoile. Sa carte était encore vierge et son socle affichait toujours le symbole orange.
+- J2 a ensuite examiné son propre socle. Son jeu a accepté `Demo004_0`, levé la tour et extrait la carte. Le drapeau `MapTower_07` est passé à 1 pendant cette montée. Les sauvegardes manuelles des deux joueurs conservent la tour active et la fin de la quête. Le trajet complet à pied et la remise native de la paravoile restent à valider, avec l’application des drapeaux encore en attente. Les 153 tests du relais passent. [Journaux des essais](docs/evidence/2026-11-28_premiere-tour-plateau_eden.log).
+
 ### 6.48 Ouverture de deux nouvelles parties sur le Plateau (2026-11-28, Eden)
 
 - Deux profils vierges ont démarré en mode normal sur le même PC. Le relais a envoyé zéro drapeau aux deux jeux. Le réveil de Link (`Demo102_0`) s’est déroulé dans chaque partie.
