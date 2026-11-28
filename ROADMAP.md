@@ -4,6 +4,8 @@ L’objectif est de rendre **toute l’histoire principale jouable à deux**, du
 
 Le parcours complet reste à valider. Cette feuille de route indique l’ordre des travaux et évolue avec les essais en jeu. Les versions téléchargeables sont indiquées dans les [Releases](https://github.com/dorianskyfr/BOTW-COOP-mod/releases).
 
+Suivez les jalons et les validations en jeu sur le [tableau Trello public](https://trello.com/b/AAx38QaO/botw-coop-roadmap).
+
 ## Déjà vérifié
 
 - **Jouer ensemble à deux** · Link du partenaire visible et animé, équipement affiché, ennemis et progression partagés dans les scénarios testés.
