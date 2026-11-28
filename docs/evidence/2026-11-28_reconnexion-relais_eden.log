@@ -1,0 +1,39 @@
+BOTW 1.9.0, deux copies de sauvegarde sous Eden sur le même PC.
+Le pilote place J1 près du moine du 035. Le dialogue et la récompense sont ceux du jeu.
+
+Terminaison d’Akh Va’quot et partage de l’emblème
+J1 [botw-coop] evenement demande : Demo033_0 / Demo033_0 -> accepte
+J1 [botw-coop] drapeau change : n.28403 hachage=acee6a28 0 -> 1 (envoye)
+J2 [botw-coop] recompense : progression acee6a28 du partenaire -> Obj_DungeonClearSeal donne (objets 36 -> 37)
+J2 [botw-coop] drapeau recu : n.28403 hachage=acee6a28 mis a 1 (octet 3 : categorie 1 gardee)
+
+Coupure du relais, reprise avec le même fichier d’état, jeux restés ouverts
+13:21:01.650 relais en ecoute sur 127.0.0.1:47800, protocole v5, sans mot de passe
+13:21:01.651 memoire relue : 41 drapeaux, 10 de lune de sang (akh_corrige_state.json)
+13:21:01.990 joueur 1 connecte depuis 127.0.0.1:30672 (1 en ligne)
+13:21:02.052 joueur 2 connecte depuis 127.0.0.1:30673 (2 en ligne)
+J1 [botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+J2 [botw-coop] net: connecte au relais 127.0.0.1:47800 (apres 0 echec(s))
+Les positions du partenaire recommencent à être lues et appliquées dans les deux jeux.
+Le relais garde acee6a28. Aucune nouvelle attribution pendant cette reconnexion.
+
+Défaut reproduit avant correction, sauvegarde manuelle puis rechargement par J2
+Clear_Dungeon035 (CRC32 acee6a28, entrée du fichier game_data.sav à 0xc6c84)
+J1 après le moine, sauvegarde automatique coop/3, valeur 1
+J2 après réception et sauvegarde manuelle coop/4, valeur 0
+Après rechargement, le relais renvoie acee6a28 et le jeu tente une seconde attribution.
+J2 [botw-coop] recompense : progression acee6a28 du partenaire -> Obj_DungeonClearSeal donne (objets 37 -> 37)
+J2 [botw-coop] drapeau recu : n.28403 hachage=acee6a28 mis a 1 (octet 3 : categorie 1 gardee)
+
+Après correction, autre copie de sauvegarde, seule dans la session relancée
+13:26:51.377 memoire relue : 41 drapeaux, 10 de lune de sang (reprise_persist_state.json)
+Sauvegarde initiale coop/3, Clear_Dungeon035 à 0, aucun emblème dans l'inventaire.
+[botw-coop] recompense : progression acee6a28 du partenaire -> Obj_DungeonClearSeal donne (objets 36 -> 37)
+[botw-coop] drapeau recu : n.28403 hachage=acee6a28 mis a 1 (octet 3 : categorie 1 gardee)
+[botw-coop] sauvegardes : save:/4/game_data.sav -> save:/coop/4/game_data.sav
+Sauvegarde manuelle coop/4, Clear_Dungeon035 à 1, Obj_DungeonClearSeal en quantité 1.
+Rechargement de la sauvegarde manuelle pendant que le relais reste ouvert
+[botw-coop] monde : plus pret (chargement ou ecran-titre)
+[botw-coop] monde : pret (acteur du joueur actif)
+[botw-coop] drapeaux : resynchronisation envoyee (total envoyes 102, recus appliques 4, perdus 0)
+Une seule attribution de acee6a28 dans le journal complet, avant la sauvegarde.

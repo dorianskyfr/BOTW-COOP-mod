@@ -1192,6 +1192,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.44 Progression d’un sanctuaire et relance du relais (2026-11-28, Eden)
+
+- J1 a terminé le dialogue avec le moine d’Akh Va’quot. Les deux joueurs ont obtenu un emblème. Après l’arrêt et le redémarrage du relais avec son fichier d’état, les deux jeux restés ouverts se sont reconnectés et ont retrouvé leur partenaire. J2 a gardé son emblème sans autre attribution.
+- Le test de sauvegarde manuelle a révélé que le jeu de J2 lisait le drapeau `Clear_Dungeon035` à 1 en jeu, puis l’écrivait à 0 sur disque. Au chargement, le drapeau renvoyé par le relais entraînait une seconde attribution. Le mod passe désormais par `TriggerParam::setBool` pour enregistrer les modifications dans les deux tampons du jeu (point d’entrée `main+0x1138814` confirmé sur BOTW 1.9.0). [Référence de la décompilation](https://github.com/zeldaret/botw/blob/master/src/KingSystem/GameData/gdtTriggerParam.cpp).
+- Une autre copie de test, où le sanctuaire était à 0, a rejoint le relais relancé et a reçu l’emblème depuis sa mémoire. La sauvegarde manuelle contient le drapeau à 1 et un emblème. Le rechargement suivi d’une resynchronisation n’a provoqué aucune seconde attribution. Compilation de production réussie et 153 essais du relais réussis. [Journaux et valeurs relues](docs/evidence/2026-11-28_reconnexion-relais_eden.log).
+
 ### 6.43 Rotation des éoliennes d'Akh Va'quot après rechargement (035, 2026-11-28, Eden)
 
 - Après deux frappes, le cristal `c24906d5` était éteint dans les deux jeux. J1 a rechargé le sanctuaire et son cristal est revenu en `(10, 1, 4)`, tandis que celui de J2 est resté en `(10, 1, 0)`.

@@ -16,7 +16,7 @@ Suivez les jalons et les validations en jeu sur le [tableau Trello public](https
 
 - **Énigmes de sanctuaire** · couvrir les mécanismes encore à tester, puis vérifier que les deux joueurs peuvent utiliser les éléments partagés et poursuivre ensemble.
 - **Créatures divines** · la libération des quatre Créatures a été reproduite lors d’essais assistés. Refaire les combats, l’activation des terminaux et l’obtention des pouvoirs avec les commandes du jeu, de l’arrivée à la sortie.
-- **Sauvegarde et reconnexion** · vérifier qu’un joueur peut rejoindre en cours de quête ou reprendre après une coupure, avec la progression et les récompenses attendues.
+- **Sauvegarde et reconnexion** · la reprise après redémarrage du relais et la sauvegarde d’un sanctuaire reçu sont vérifiées sur un PC. Il reste à valider les reprises aux étapes clés de l'histoire sur deux installations.
 
 ## À venir
 

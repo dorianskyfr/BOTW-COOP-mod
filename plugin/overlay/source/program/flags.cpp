@@ -25,6 +25,8 @@ namespace coop::flags {
          * l'entree de table a main+0x1d66478 contient l'adresse main+0x1e3b188.
          */
         constexpr std::uintptr_t ManagerInstancePtr = 0x1e3b188;
+        /* TriggerParam::setBool(value, index, check_permissions, bypass_one_trigger_check), BOTW 1.9.0. */
+        constexpr std::uintptr_t TriggerParamSetBool = 0x1138814;
 
         /* sead::PtrArray : nombre (s32), capacite (s32), tableau de pointeurs. */
         struct PtrArray {
@@ -253,9 +255,27 @@ namespace coop::flags {
             return true;
         }
 
-        /* Met un drapeau booleen a 1 sans toucher a sa categorie (bits 1 a 7). */
-        void SetBoolValue(std::uintptr_t flag) {
+        /* Ecriture brute reservee aux sondes, sans notification au jeu. */
+        [[maybe_unused]] void SetBoolValue(std::uintptr_t flag) {
             *reinterpret_cast<std::uint8_t*>(flag + s_ValueOffset) |= 1;
+        }
+
+        bool SetSavedBoolValue(int index, std::uintptr_t flag) {
+            PtrArray proxies {};
+            std::uintptr_t proxy = 0, target = 0;
+            if (s_ParamOther == 0 || !Read(s_ParamOther + Param_BoolFlags, proxies)
+                || index < 0 || index >= proxies.m_Num
+                || !Read(proxies.m_Buffer + 8ull * index, proxy) || proxy == 0
+                || !Read(proxy + 0x8, target) || target != flag)
+                return false;
+
+            /* Le jeu enregistre la modification dans TriggerParam::setBool. Ecrire seulement
+               dans le tampon principal change la valeur lue, mais pas celle qui est sauvegardee. */
+            using Setter = bool (*)(std::uintptr_t, bool, int, bool, bool);
+            const auto base = exl::util::GetMainModuleInfo().m_Total.m_Start;
+            const auto setBool = reinterpret_cast<Setter>(base + TriggerParamSetBool);
+            return setBool(s_ParamOther, true, index, false, false)
+                && setBool(s_Param, true, index, false, false);
         }
 
         /*
@@ -324,8 +344,9 @@ namespace coop::flags {
             const bool ok = coop::game::AddInventoryItem(item, 1, before, after);
             if (demo != 0) {
                 std::uintptr_t f = 0;
-                if (FindByHash(bools, demo, f) >= 0)
-                    SetBoolValue(f);
+                const int index = FindByHash(bools, demo, f);
+                if (index >= 0 && !SetSavedBoolValue(index, f))
+                    Logging.Log("[botw-coop] recompense : drapeau de cinematique %08x non applique", demo);
             }
             Logging.Log("[botw-coop] recompense : progression %08x du partenaire -> %s %s (objets %d -> %d)",
                 hash, item, ok ? "donne" : "REFUSE par le jeu", before, after);
@@ -986,7 +1007,10 @@ namespace coop::flags {
                         Logging.Log("[botw-coop] drapeau recu : hachage=%08x mis en attente (pas de paravoile)", in.m_Hash);
                     continue;
                 }
-                SetBoolValue(flag);
+                if (!SetSavedBoolValue(idx, flag)) {
+                    Logging.Log("[botw-coop] drapeau recu : hachage=%08x refuse par le jeu", in.m_Hash);
+                    continue;
+                }
                 s_LastBool[idx] = 1; /* pas de renvoi */
                 coop::objects::OnRemoteFlagSet(in.m_Hash); /* objet de carte deja charge ? */
                 GiveReward(bools, in.m_Hash);
