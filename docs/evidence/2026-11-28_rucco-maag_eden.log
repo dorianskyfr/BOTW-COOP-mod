@@ -1,0 +1,46 @@
+Rucco Maag (016), BOTW 1.9.0, deux copies de sauvegarde sous Eden sur le même PC.
+Le pilote place Link près des cristaux. Le saut et la frappe utilisent les commandes du jeu.
+
+Avant correction
+Une attaque sautée de J1 bascule deux cristaux. Les deux jeux activent X et Y.
+J1 [botw-coop] interrupteur IA : 787e6cac active ici en (1.0, 9.5, 12.0), v1, annonce
+J1 [botw-coop] interrupteur IA : 61655ded active ici en (0.0, 8.5, 12.0), v1, annonce
+J2 [botw-coop] interrupteur IA : 787e6cac active chez le partenaire (v1), active ici
+J2 [botw-coop] interrupteur IA : 61655ded active chez le partenaire (v1), active ici
+J1 [botw-coop] acteur : WaterPump                                hash=a3e754ff etat=1 pos=(-0.00, 11.50, 1.00) dist=12.5
+J2 [botw-coop] acteur : WaterPump                                hash=a3e754ff etat=1 pos=(-5.00, 11.50, -4.00) dist=37.9
+J1 [botw-coop] acteur : SwitchTilt                               hash=787e6cac etat=1 pos=(0.00, 9.50, 11.00) dist=4.2
+J2 [botw-coop] acteur : SwitchTilt                               hash=787e6cac etat=1 pos=(1.00, 9.50, 12.00) dist=23.5
+Le quart de tour retenu par le jeu diffère entre J1 (axe Y) et J2 (axe X).
+
+Sonde de l'action Off, dans ce même essai
+J2 [botw-coop] interrupteur IA : OUTIL DE TEST, 787e6cac bascule 1 -> 0
+J2 [botw-coop] interrupteur IA : 787e6cac desactive ici en (0.0, 9.5, 13.0), v2, annonce
+Avant : WaterPump (0.00, 11.50, -9.00). Après : WaterPump (0.00, 6.50, -4.00).
+Une transition Off fait elle aussi tourner les deux cubes.
+
+Après correction, deux attaques sautées au sabre, une par joueur
+J1 [botw-coop] cube 016 : orientation 32 ici, v1
+J2 [botw-coop] cube 016 : axe Y de 2 vers 32
+J2 [botw-coop] cube 016 : orientation 32 restauree (v1)
+J2 [botw-coop] cube 016 : orientation 30 ici, v2
+J1 [botw-coop] cube 016 : axe X de 32 vers 30
+J1 [botw-coop] cube 016 : orientation 30 restauree (v2)
+
+J1 recharge le sanctuaire, J2 reste en place
+J1 [botw-coop] voyage (essai) : vers CDungeon/Dungeon016 Entrance_1 -> demande
+J1 [botw-coop] cube 016 : axe Y de 2 vers 30
+J1 [botw-coop] cube 016 : axe X de 32 vers 30
+J1 [botw-coop] cube 016 : orientation 30 restauree (v2)
+Les positions relevées par HashId correspondent chez J1 et J2 :
+61655ded (-1.00, 9.50, 12.00), 787e6cac (0.00, 9.50, 11.00)
+9fc641ab (1.00, 9.50, 12.00), a3e754ff (0.00, 11.50, 1.00).
+
+Sonde distincte : un client d'essai envoie une orientation qui exige un tour autour de Z
+J1 [botw-coop] cube 016 : axe Z de 30 vers 4
+J2 [botw-coop] cube 016 : axe Z de 30 vers 4
+J1 [botw-coop] cube 016 : orientation 4 restauree (v3)
+J2 [botw-coop] cube 016 : orientation 4 restauree (v3)
+Positions relevées et égales dans les deux jeux :
+61655ded (0.00, 9.50, 11.00), 787e6cac (1.00, 9.50, 12.00)
+9fc641ab (0.00, 9.50, 13.00), a3e754ff (-5.00, 11.50, -4.00).

@@ -1192,6 +1192,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.45 Orientation des deux cubes de Rucco Maag (016, 2026-11-28, Eden)
+
+- Une attaque sautée de J1 a basculé deux cristaux. Les deux cristaux sont devenus actifs des deux côtés, mais le jeu de J1 a tourné autour de Y et celui de J2 autour de X. La pompe et le panneau de commande ont fini dans des positions différentes.
+- Le mod déduit l’orientation des cubes des positions des trois cristaux. Il annonce une orientation commune dans la version du message `SWAI`. Le partenaire rejoue le chemin le plus court avec les actions On/Off natives. Les deux clients rappellent la dernière version connue. Les 576 trajets entre les 24 orientations ont été vérifiés dans le modèle et prennent au plus quatre quarts de tour.
+- Les attaques à l’arme de J1 et J2 ont tourné les cubes autour de Y puis de X. J1 a rechargé le sanctuaire et rejoué les deux tours. Les trois cristaux et la pompe sont revenus aux mêmes positions que chez J2. Une sonde réseau distincte a vérifié le tour autour de Z dans les deux jeux. L’ouverture de la grille par les cinq flammes reste à vérifier. [Journaux des essais](docs/evidence/2026-11-28_rucco-maag_eden.log).
+
 ### 6.44 Progression d’un sanctuaire et relance du relais (2026-11-28, Eden)
 
 - J1 a terminé le dialogue avec le moine d’Akh Va’quot. Les deux joueurs ont obtenu un emblème. Après l’arrêt et le redémarrage du relais avec son fichier d’état, les deux jeux restés ouverts se sont reconnectés et ont retrouvé leur partenaire. J2 a gardé son emblème sans autre attribution.

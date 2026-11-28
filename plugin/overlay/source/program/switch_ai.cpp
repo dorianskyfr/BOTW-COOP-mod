@@ -7,6 +7,7 @@
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
 
+#include <array>
 #include <cstring>
 
 /* Voir switch_ai.hpp. */
@@ -111,6 +112,30 @@ namespace coop::switch_ai {
         int s_Logs = 0;
         int s_AutoLogs = 0;
 
+        /* Rucco Maag (016) : chaque cristal commande le meme axe des deux cubes.
+           Une frappe peut changer deux cristaux mais ne faire tourner les cubes qu'une fois. */
+        constexpr std::uint32_t CubeRotationHash = 0x0f795c3a;
+        constexpr std::array<std::uint32_t, 3> CubeSwitches { 0x61655ded, 0x787e6cac, 0x9fc641ab }; /* X, Y, Z */
+        constexpr int CubeStartPose = 2;
+        constexpr int CubePoseCount = 36; /* paires d'axes signes, dont 24 perpendiculaires */
+        constexpr std::uint32_t CubePoseMask = 0x3f;
+        struct CubePart {
+            std::uintptr_t m_Actor = 0;
+            float m_Pos[3] = {};
+        };
+        std::array<CubePart, CubeSwitches.size()> s_CubeParts;
+        struct CubeSync {
+            std::uint32_t m_Version = 0;
+            std::uint64_t m_LastSend = 0;
+            std::uint64_t m_ReadySince = 0;
+            std::uint64_t m_SampleSince = 0;
+            std::uint64_t m_NextTurn = 0;
+            int m_Sample = -1;
+            int m_Observed = CubeStartPose;
+            bool m_Restore = false;
+        };
+        CubeSync s_Cube;
+
         bool Log() { return s_Logs++ < 120; }
         /* Les minuteries autonomes basculent sans cesse : peu de lignes, pour ne pas epuiser le journal (essai ca3). */
         bool Log(const Tracked& t) { return t.m_Autonomous ? s_AutoLogs++ < 8 : Log(); }
@@ -140,6 +165,145 @@ namespace coop::switch_ai {
                 return true;
             const std::uint32_t na = a >> 8, nb = b >> 8;
             return na > nb || (na == nb && (a & 0xffu) < (b & 0xffu));
+        }
+
+        /* Chaque direction est un axe suivi d'un bit de signe. Les positions des cristaux Y (+X)
+           et Z (+Y) donnent les deux premiers axes du cube, le cristal X (-Y) confirme la mesure. */
+        int CubeFace(const float pos[3]) {
+            const float relative[] { pos[0], pos[1] - 9.5f, pos[2] - 12.0f };
+            for (int face = 0; face < 6; ++face) {
+                float distance = 0;
+                for (int component = 0; component < 3; ++component) {
+                    const int expected = component == face / 2 ? ((face & 1) != 0 ? -1 : 1) : 0;
+                    const float delta = relative[component] - static_cast<float>(expected);
+                    distance += delta * delta;
+                }
+                if (distance < 0.04f * 0.04f)
+                    return face;
+            }
+            return -1;
+        }
+
+        bool ValidCubePose(int pose) {
+            return pose >= 0 && pose < CubePoseCount && pose / 12 != (pose % 6) / 2;
+        }
+
+        int TurnCube(int pose, int axis) {
+            const int x = pose / 6;
+            const int y = pose % 6;
+            const int ax = x / 2, ay = y / 2;
+            const int crossSign = (ay - ax + 3) % 3 == 1 ? 0 : 1;
+            const int z = 2 * (3 - ax - ay) + ((x ^ y ^ crossSign) & 1);
+            if (axis == 0)
+                return x * 6 + z;
+            if (axis == 1)
+                return (z ^ 1) * 6 + y;
+            return y * 6 + (x ^ 1);
+        }
+
+        /* Cherche la premiere rotation d'un chemin minimal. Les arêtes sont les quarts de tour
+           du jeu dans le repere du cube, dans le sens observe pour chaque cristal. */
+        int NextCubeAxis(int from, int target) {
+            struct Turn { int m_Pose; int m_FirstAxis; };
+            std::array<Turn, CubePoseCount> queue {};
+            std::array<bool, CubePoseCount> visited {};
+            queue[0] = { from, -1 };
+            visited[from] = true;
+            int end = 1;
+            for (int begin = 0; begin < end; ++begin) {
+                const auto [pose, first] = queue[begin];
+                for (int axis = 0; axis < 3; ++axis) {
+                    const int next = TurnCube(pose, axis);
+                    if (visited[next])
+                        continue;
+                    const int firstAxis = first >= 0 ? first : axis;
+                    if (next == target)
+                        return firstAxis;
+                    visited[next] = true;
+                    queue[end++] = { next, firstAxis };
+                }
+            }
+            return -1;
+        }
+
+        void ResetCubeObservation() {
+            s_Cube.m_ReadySince = 0;
+            s_Cube.m_Sample = -1;
+            s_Cube.m_Observed = CubeStartPose;
+            s_Cube.m_NextTurn = 0;
+            s_Cube.m_Restore = s_Cube.m_Version != 0;
+        }
+
+        void ReceiveCube(const Msg& msg) {
+            const auto packedPose = (msg.m_Ver >> 8) & CubePoseMask;
+            constexpr auto VersionMask = ~(CubePoseMask << 8);
+            if (msg.m_On != 1 || msg.m_Ver >> 14 == 0 || !ValidCubePose(static_cast<int>(packedPose))
+                || !Newer(msg.m_Ver & VersionMask, s_Cube.m_Version & VersionMask))
+                return;
+            s_Cube.m_Version = msg.m_Ver;
+            s_Cube.m_Restore = true;
+        }
+
+        void SendCube() {
+            if (g_Outgoing.Push({ CubeRotationHash, 1, s_Cube.m_Version, s_Frames }))
+                s_Cube.m_LastSend = s_Frames;
+        }
+
+        void UpdateCube() {
+            for (const CubePart& part : s_CubeParts) {
+                if (part.m_Actor == 0) {
+                    ResetCubeObservation();
+                    return;
+                }
+            }
+            if (s_Cube.m_ReadySince == 0)
+                s_Cube.m_ReadySince = s_Frames;
+
+            const int x = CubeFace(s_CubeParts[1].m_Pos);
+            const int y = CubeFace(s_CubeParts[2].m_Pos);
+            const int bottom = CubeFace(s_CubeParts[0].m_Pos);
+            const int pose = x >= 0 && y >= 0 && bottom == (y ^ 1) ? x * 6 + y : -1;
+            if (pose != s_Cube.m_Sample) {
+                s_Cube.m_Sample = pose;
+                s_Cube.m_SampleSince = s_Frames;
+                return;
+            }
+            if (!ValidCubePose(pose) || s_Frames - s_Cube.m_SampleSince < 6
+                || s_Frames - s_Cube.m_ReadySince < SettleFrames)
+                return;
+            if (s_Cube.m_Restore) {
+                if (s_Frames < s_Cube.m_NextTurn)
+                    return;
+                const int target = static_cast<int>((s_Cube.m_Version >> 8) & CubePoseMask);
+                if (pose == target) {
+                    s_Cube.m_Observed = pose;
+                    s_Cube.m_Restore = false;
+                    if (Log())
+                        Logging.Log("[botw-coop] cube 016 : orientation %d restauree (v%u)", pose, s_Cube.m_Version >> 14);
+                    return;
+                }
+                const int axis = NextCubeAxis(pose, target);
+                if (axis >= 0) {
+                    std::uintptr_t ai = 0;
+                    int on = -1, off = -1;
+                    const int state = coop::game::GetOnOffSwitch(s_CubeParts[axis].m_Actor, &ai, &on, &off);
+                    if (state >= 0 && coop::game::SetOnOffSwitch(ai, state ? off : on)) {
+                        s_Cube.m_NextTurn = s_Frames + TiltSettleFrames;
+                        if (Log())
+                            Logging.Log("[botw-coop] cube 016 : axe %c de %d vers %d", "XYZ"[axis], pose, target);
+                    }
+                }
+                return;
+            }
+            const int id = coop::session::g_LocalId;
+            if (pose != s_Cube.m_Observed && id >= 1 && id <= 255) {
+                s_Cube.m_Observed = pose;
+                const auto version = (s_Cube.m_Version >> 14) + 1;
+                s_Cube.m_Version = (version << 14) | (static_cast<std::uint32_t>(pose) << 8) | static_cast<std::uint32_t>(id);
+                SendCube();
+                if (Log())
+                    Logging.Log("[botw-coop] cube 016 : orientation %d ici, v%u", pose, version);
+            }
         }
 
         void Send(Tracked& t, bool log) {
@@ -335,6 +499,15 @@ namespace coop::switch_ai {
             }
             if (info.m_Name == nullptr || info.m_HashId == 0 || !Watched(info.m_Name))
                 return false;
+            for (std::size_t axis = 0; axis < CubeSwitches.size(); ++axis) {
+                if (info.m_HashId == CubeSwitches[axis] && std::strcmp(info.m_Name, "SwitchTilt") == 0) {
+                    if (Dist2(info.m_Pos, s_PlayerPos) <= Radius * Radius) {
+                        s_CubeParts[axis].m_Actor = info.m_Actor;
+                        std::memcpy(s_CubeParts[axis].m_Pos, info.m_Pos, sizeof(info.m_Pos));
+                    }
+                    return false; /* leur orientation commune est partagee, pas leurs etats On/Off */
+                }
+            }
             Tracked* mine = nullptr;
             for (Tracked& t : s_Tracked) {
                 if (t.m_Hash == info.m_HashId)
@@ -383,7 +556,9 @@ namespace coop::switch_ai {
             for (Tracked& t : s_Tracked)
                 t.m_Seen = false;
             s_Water.m_Seen = false;
+            s_CubeParts = {};
             coop::game::ForEachListedActor(OnScan, nullptr);
+            UpdateCube();
             if (!s_Water.m_Seen) {
                 s_Water.m_Actor = 0;
                 s_Water.m_LastLocalOn = 0;
@@ -469,6 +644,11 @@ namespace coop::switch_ai {
            si elle est plus recente ; table pleine, la plus ancienne demande cede sa place. */
         Msg in;
         while (g_Incoming.Pop(in)) {
+            if (in.m_Hash == CubeRotationHash) {
+                if (coop::config::g_SwitchAiSync && s_Frames - in.m_Frame <= PendingFrames)
+                    ReceiveCube(in);
+                continue;
+            }
             if (in.m_Hash == WaterTimerHash) {
                 if (worldReady && coop::config::g_SwitchAiSync && s_Frames - in.m_Frame < WaterLeaseFrames) {
                     const bool wasOn = s_Frames < s_Water.m_RemoteUntil;
@@ -506,6 +686,7 @@ namespace coop::switch_ai {
             slot->m_Frame = in.m_Frame;
         }
         if (!worldReady) {
+            ResetCubeObservation();
             s_Water.m_Actor = 0;
             s_Water.m_LastLocalOn = 0;
             s_Water.m_RemoteUntil = 0;
@@ -525,6 +706,9 @@ namespace coop::switch_ai {
             Logging.Log("[botw-coop] interrupteur IA : plus de %d interrupteurs suivis, les suivants sont ignores", MaxTracked);
         s_TableFull = false;
         ServePending();
+        /* Les deux clients peuvent rappeler la version, meme si son auteur a quitte la session. */
+        if (s_Cube.m_Version != 0 && s_Frames - s_Cube.m_LastSend >= ResendEvery)
+            SendCube();
         /* Rappel de nos changements toutes les 5 s, deux au plus par releve (la file d'envoi tient 32 messages). */
         {
             int sent = 0;
