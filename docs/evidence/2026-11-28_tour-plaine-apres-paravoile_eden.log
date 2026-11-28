@@ -1,0 +1,41 @@
+Tour de la Plaine après la paravoile — 2026-11-28
+BOTW 1.9.0, Eden 0.2.1, deux instances sur un même PC, mode expert.
+Les profils t_tour100a et t_tour100b sont des copies de sauvegardes de test.
+Ils partent avec la paravoile et MapTower_06 à 0 dans coop/3/game_data.sav.
+Les 15 booléens MapTower_01 à MapTower_15 sont présents dans le groupe 1 par défaut.
+
+Essai de reproduction tour_postparavoile (plugin avant correction)
+L’outil de test a placé J1 près du socle au sommet, par quatre déplacements de moins de 250 m. Il a activé la tour avec A.
+J1 [botw-coop] evenement demande : Demo004_0 / Demo004_0_06 -> accepte
+J1 [botw-coop] drapeau change : n.37773 hachage=e590ef1b 0 -> 1 (envoye)
+J2 [botw-coop] drapeau recu : n.37773 hachage=e590ef1b mis a 1 (octet 1 : categorie 0 gardee)
+Le relais stocke e590ef1b dans tour_postparavoile_state.json.
+J2 reste à (-642.38, 127.23, -331.46), à environ 790 m du socle, et ne l'utilise pas.
+
+J1 voit le relief de la Plaine avec son message d’extraction de la carte. Chez J2, le fond reste quadrillé après réouverture de la carte.
+J2 sauvegarde, puis recharge son emplacement coop/4. Le relief de la Plaine s’affiche à la réouverture. Même après rechargement, aucun symbole bleu n’apparaît à l’emplacement de la tour lorsque J1 se déplace et que son propre tampon quitte cet emplacement.
+Map/MainField/Static.smubin donne Location_MapTower06 comme SaveFlag du marqueur Tower06 (StartPos_Tower06). Le catalogue GameData le type comme entier sauvegardé.
+Sauvegarde J1 coop/4 à 14:44:29 — MapTower_06 = 1, Location_MapTower06 = 1.
+Sauvegarde J2 coop/4 à 14:38:21 — MapTower_06 = 1, Location_MapTower06 = 0.
+
+Essai tour_voyage avec le correctif
+Plugin d’essai avec commande de manette, SHA256 D04BE27B18CF6DC615375ED52888731A17DC67C76039472C7C783041CC616549.
+Les 15 associations StartPos_TowerNN / Location_MapTowerNN concordent dans les métadonnées de la carte.
+J2 charge coop/3, avec sa paravoile et la tour fermée. Il ouvre la carte vierge avant que J1 entre en jeu.
+J1 charge sa sauvegarde coop/4 qui conserve la vraie activation.
+14:47:07.290 joueur 1 : drapeau nouveau n.2 = e590ef1b 1 (57 en memoire, 48 deja connus)
+J2 [botw-coop] tour partagee : point de voyage de91c34b decouvert
+J2 [botw-coop] drapeau recu : n.37773 hachage=e590ef1b mis a 1 (octet 1 : categorie 0 gardee)
+À la réouverture de la carte en cours de partie, la tour de la Plaine est affichée en orange et son relief reste masqué.
+
+J2 recharge son ancien coop/4 de 14:38:21, avec MapTower_06 = 1 et Location_MapTower06 = 0.
+14:48:31.253 joueur 2 : etat complet demande, 57 drapeaux + 0 de lune de sang a envoyer
+J2 [botw-coop] tour partagee : point de voyage de91c34b decouvert
+La carte est détaillée, le marqueur est bleu et propose « Travel ».
+J2 confirme le voyage dans la carte du jeu. Position d’arrivée (-797.60, 197.66, 442.96), à la dalle bleue au sommet.
+Le socle de J2 est bleu. J1 reste à (-721.00, 129.06, 320.01).
+J2 sauvegarde dans coop/4 à 14:50:10. MapTower_06 = 1 et Location_MapTower06 = 2 après la visite par le jeu.
+Le relief et le statut de voyage qui dépendent d’une activation reçue en cours de partie restent à rafraîchir sans rechargement.
+
+Compilation de production — SHA256 4F66EB726AD2F52FA1120027B2C6502870A0C30808F55F1A5155033A5C42A442.
+Tests du relais, python tools/test_relay.py : 153 / 153 essais passes.

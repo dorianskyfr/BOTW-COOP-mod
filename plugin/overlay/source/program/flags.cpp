@@ -27,6 +27,9 @@ namespace coop::flags {
         constexpr std::uintptr_t ManagerInstancePtr = 0x1e3b188;
         /* TriggerParam::setBool(value, index, check_permissions, bypass_one_trigger_check), BOTW 1.9.0. */
         constexpr std::uintptr_t TriggerParamSetBool = 0x1138814;
+        /* TriggerParam::setS32, appele par gdt::Manager::setS32 (0x6b6b3c -> 0x6b7710). */
+        constexpr std::uintptr_t TriggerParamSetS32 = 0x1138e00;
+        constexpr std::uintptr_t TriggerParamGetS32Idx = 0x1143958;
 
         /* sead::PtrArray : nombre (s32), capacite (s32), tableau de pointeurs. */
         struct PtrArray {
@@ -276,6 +279,66 @@ namespace coop::flags {
             const auto setBool = reinterpret_cast<Setter>(base + TriggerParamSetBool);
             return setBool(s_ParamOther, true, index, false, false)
                 && setBool(s_Param, true, index, false, false);
+        }
+
+        struct TowerFlags {
+            std::uint32_t m_Activation;
+            std::uint32_t m_Location;
+        };
+
+        /* Le SaveFlag des points StartPos_TowerNN dans Map/MainField/Static.smubin
+           est le compteur Location_MapTowerNN. La carte relevee vient de MapTower_NN. */
+        constexpr TowerFlags Towers[] = {
+            { Crc32("MapTower_01"), Crc32("Location_MapTower01") },
+            { Crc32("MapTower_02"), Crc32("Location_MapTower02") },
+            { Crc32("MapTower_03"), Crc32("Location_MapTower03") },
+            { Crc32("MapTower_04"), Crc32("Location_MapTower04") },
+            { Crc32("MapTower_05"), Crc32("Location_MapTower05") },
+            { Crc32("MapTower_06"), Crc32("Location_MapTower06") },
+            { Crc32("MapTower_07"), Crc32("Location_MapTower07") },
+            { Crc32("MapTower_08"), Crc32("Location_MapTower08") },
+            { Crc32("MapTower_09"), Crc32("Location_MapTower09") },
+            { Crc32("MapTower_10"), Crc32("Location_MapTower10") },
+            { Crc32("MapTower_11"), Crc32("Location_MapTower11") },
+            { Crc32("MapTower_12"), Crc32("Location_MapTower12") },
+            { Crc32("MapTower_13"), Crc32("Location_MapTower13") },
+            { Crc32("MapTower_14"), Crc32("Location_MapTower14") },
+            { Crc32("MapTower_15"), Crc32("Location_MapTower15") },
+        };
+
+        void UnlockTowerLocation(std::uint32_t hash) {
+            for (const TowerFlags& tower : Towers) {
+                if (tower.m_Activation != hash)
+                    continue;
+
+                PtrArray ints {}, proxies {};
+                if (s_ParamOther == 0 || !Read(s_Param + Param_S32Flags, ints) || ints.m_Num <= 0
+                    || ints.m_Num > 8192 || ints.m_Num > ints.m_Max
+                    || !coop::game::CanReadMemory(ints.m_Buffer, 8ull * ints.m_Num)
+                    || !Read(s_ParamOther + Param_S32Flags, proxies))
+                    return;
+
+                const auto base = exl::util::GetMainModuleInfo().m_Total.m_Start;
+                using GetIndex = std::int32_t (*)(std::uintptr_t, std::uint32_t);
+                const auto getIndex = reinterpret_cast<GetIndex>(base + TriggerParamGetS32Idx);
+                const int index = getIndex(s_Param, tower.m_Location);
+                std::uintptr_t flag = 0, proxy = 0, target = 0;
+                std::int32_t current = 0;
+                std::uint32_t locationHash = 0;
+                if (index < 0 || index >= ints.m_Num || index >= proxies.m_Num
+                    || !Read(ints.m_Buffer + 8ull * index, flag) || flag == 0
+                    || !Read(flag + 0x1c, locationHash) || locationHash != tower.m_Location
+                    || !Read(flag + 0x18, current) || current != 0
+                    || !Read(proxies.m_Buffer + 8ull * index, proxy) || proxy == 0
+                    || !Read(proxy + 0x8, target) || target != flag)
+                    return;
+
+                using Setter = bool (*)(std::uintptr_t, std::int32_t, int, bool, bool);
+                const auto setS32 = reinterpret_cast<Setter>(base + TriggerParamSetS32);
+                if (setS32(s_ParamOther, 1, index, false, false) && setS32(s_Param, 1, index, false, false))
+                    Logging.Log("[botw-coop] tour partagee : point de voyage %08x decouvert", tower.m_Location);
+                return;
+            }
         }
 
         /*
@@ -991,7 +1054,7 @@ namespace coop::flags {
                 std::uintptr_t flag = 0;
                 const int idx = FindByHash(bools, in.m_Hash, flag);
                 std::uint8_t cur = 0xff;
-                if (idx < 0 || in.m_Value != 1 || !ReadBoolValue(flag, cur) || cur != 0 || !Shareable(flag, idx, in.m_Hash)) {
+                if (idx < 0 || in.m_Value != 1 || !ReadBoolValue(flag, cur) || !Shareable(flag, idx, in.m_Hash)) {
                     static int s_SkipLogs = 0;
                     std::uint8_t props = 0;
                     if (idx >= 0)
@@ -1003,8 +1066,13 @@ namespace coop::flags {
                     continue;
                 }
                 if (hasGlider != 1 && coop::config::SyncFlagGroup(in.m_Hash) == 1) {
-                    if (s_HeldProgress++ < 5)
+                    if (cur == 0 && s_HeldProgress++ < 5)
                         Logging.Log("[botw-coop] drapeau recu : hachage=%08x mis en attente (pas de paravoile)", in.m_Hash);
+                    continue;
+                }
+                if (cur == 1) {
+                    /* Reprise d'une sauvegarde qui a deja recu la carte sans le point de voyage. */
+                    UnlockTowerLocation(in.m_Hash);
                     continue;
                 }
                 if (!SetSavedBoolValue(idx, flag)) {
@@ -1013,6 +1081,7 @@ namespace coop::flags {
                 }
                 s_LastBool[idx] = 1; /* pas de renvoi */
                 coop::objects::OnRemoteFlagSet(in.m_Hash); /* objet de carte deja charge ? */
+                UnlockTowerLocation(in.m_Hash);
                 GiveReward(bools, in.m_Hash);
                 s_Applied++;
                 if (s_Applied <= 60) {

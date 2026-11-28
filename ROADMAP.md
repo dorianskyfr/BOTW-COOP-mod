@@ -17,6 +17,7 @@ Suivez les jalons et les validations en jeu sur le [tableau Trello public](https
 - **Énigmes de sanctuaire** · couvrir les mécanismes encore à tester, puis vérifier que les deux joueurs peuvent utiliser les éléments partagés et poursuivre ensemble.
 - **Créatures divines** · la libération des quatre Créatures a été reproduite lors d’essais assistés. Refaire les combats, l’activation des terminaux et l’obtention des pouvoirs avec les commandes du jeu, de l’arrivée à la sortie.
 - **Sauvegarde et reconnexion** · la reprise après redémarrage du relais et la sauvegarde d’un sanctuaire reçu sont vérifiées sur un PC. Il reste à valider les reprises aux étapes clés de l'histoire sur deux installations.
+- **Tours** · le déblocage et le point de voyage de la tour de la Plaine sont partagés après la paravoile. Un voyage de J2 au sommet a été vérifié après rechargement. Le rafraîchissement du relief et du statut du point de voyage reste à faire sans recharger la sauvegarde.
 - **Plateau du Prélude** · dans deux nouvelles parties, chacun a obtenu sa tablette, franchi les deux portes et activé sa première tour. Le mod a mis en attente l’activation reçue par le joueur sans paravoile, qui a ensuite débloqué sa propre carte. L’accès à la tour a été assisté. Restent le trajet complet à pied, les quatre runes, la paravoile et la sortie du Plateau.
 
 ## À venir

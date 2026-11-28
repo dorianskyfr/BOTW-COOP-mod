@@ -1192,6 +1192,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.50 Point de voyage d’une tour reçue après la paravoile (2026-11-28, Eden)
+
+- La liste de partage contient les 15 activations `MapTower_NN`. À la tour de la Plaine, l’activation de J1 est arrivée chez J2, à environ 790 m. J2 a conservé `MapTower_06 = 1` après sauvegarde et rechargement. Le relief est alors devenu visible, mais le marqueur de voyage était absent. Le point `StartPos_Tower06` porte un autre drapeau de carte, l’entier sauvegardé `Location_MapTower06`, qui valait 1 chez J1 et 0 chez J2.
+- À la réception d’une activation, le plugin pose le compteur de découverte correspondant à 1 s’il est à 0, par la méthode native `TriggerParam::setS32`. Les 15 associations ont été vérifiées dans les données de placement. Une sauvegarde qui a déjà reçu la carte récupère aussi le compteur quand le relais renvoie l’état. La garde de la paravoile s’applique aux deux valeurs.
+- Sous Eden avec le correctif, J2 voit le marqueur encore orange après réception dans une partie ouverte, avec le relief toujours masqué. Après rechargement de son ancienne sauvegarde, le compteur manquant est rétabli. J2 voit l’icône bleue, utilise le voyage rapide du jeu et arrive au sommet. L’activation et la découverte sont conservées dans sa sauvegarde après l’arrivée. Le rafraîchissement immédiat du relief et du statut du marqueur reste à corriger. [Journaux des essais](docs/evidence/2026-11-28_tour-plaine-apres-paravoile_eden.log).
+
 ### 6.49 Première tour du Plateau et progression reçue avant la paravoile (2026-11-28, Eden)
 
 - Les deux nouvelles parties de 6.48 ont repris depuis leur sauvegarde coop après relance des instances et du relais. Les deux joueurs étaient présents dans la session dès la sortie du Sanctuaire de la Renaissance.
