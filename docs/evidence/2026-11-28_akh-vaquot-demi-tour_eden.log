@@ -1,0 +1,31 @@
+Akh Va'quot (035), BOTW 1.9.0, deux copies de sauvegarde Eden sur un PC.
+Le pilote place Link près du cristal 0a13e455. Les frappes utilisent l'épée équipée dans le menu du jeu.
+
+Avant correction
+Dans les deux jeux, le générateur c4ca2bdb est à (-26.00, 4.50, 48.00).
+Deux coups rapprochés de J1 pendant le même mouvement.
+J1 [botw-coop] interrupteur IA : 0a13e455 active ici en (-26.0, 8.0, 48.0), v1, annonce
+J1 [botw-coop] interrupteur IA : 0a13e455 desactive ici en (-26.0, 8.0, 48.0), v2, annonce
+J2 [botw-coop] interrupteur IA : 0a13e455 active chez le partenaire (v1), active ici
+J2 [botw-coop] interrupteur IA : 0a13e455 desactive chez le partenaire (v2), desactive ici
+Le générateur fait un seul demi-tour et se retrouve en haut alors que le cristal est Off.
+J1 recharge le sanctuaire pendant que J2 y reste.
+J1 [botw-coop] acteur : DgnObj_WindGenerator_A                   hash=c4ca2bdb etat=1 pos=(-26.00, 4.50, 48.00) dist=33.4
+J2 [botw-coop] acteur : DgnObj_WindGenerator_A                   hash=c4ca2bdb etat=1 pos=(-26.00, 11.50, 48.00) dist=10.0
+
+Après correction, même enchaînement
+J1 [botw-coop] inclinaison 035 : demi-tour, phase 1 ici (v1)
+J1 [botw-coop] interrupteur IA : etat 0a13e455 en (-26.0, 8.0, 48.0) = 0 (on=2 off=0)
+J2 [botw-coop] inclinaison 035 : demi-tour, phase 1 restauree (v1)
+Le relais reçoit une seule orientation v1. Le générateur est à (-26.00, 11.50, 48.00) chez J1 et J2.
+
+J1 recharge le sanctuaire, J2 reste en place
+J1 [botw-coop] voyage (essai) : vers CDungeon/Dungeon035 Entrance_1 -> demande
+J1 [botw-coop] inclinaison 035 : demi-tour, phase 1 restauree (v1)
+Après rechargement le générateur reste à (-26.00, 11.50, 48.00) dans les deux jeux.
+
+Vérification du retour par une bascule assistée chez J2
+J2 [botw-coop] interrupteur IA : OUTIL DE TEST, 0a13e455 bascule 1 -> 0
+J2 [botw-coop] inclinaison 035 : demi-tour, phase 0 ici (v2)
+J1 [botw-coop] inclinaison 035 : demi-tour, phase 0 restauree (v2)
+Le générateur revient à (-26.00, 4.50, 48.00) chez J1 et J2.

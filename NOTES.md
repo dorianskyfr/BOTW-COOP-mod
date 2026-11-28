@@ -1192,6 +1192,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.47 Mécanisme à demi-tour d'Akh Va'quot (035, 2026-11-28, Eden)
+
+- Deux coups rapprochés ont fait passer le cristal au pivot (`0a13e455`) sur On puis Off pendant un seul demi-tour. Au rechargement de J1, son générateur était revenu à `(-26, 4.5, 48)` alors que celui de J2 était resté à `(-26, 11.5, 48)`.
+- Le mod détecte le mouvement réel dans le plan YZ à partir du générateur `c4ca2bdb`, à 3,5 m du pivot. Il transmet l’orientation visée dès que le générateur bouge et fait rejouer une bascule au partenaire si nécessaire. Un changement de couleur pendant la rotation ne change pas l’orientation annoncée. Le format `SWAI` reste le même.
+- Les deux coups réels de J1 produisent une seule orientation versionnée. Après rechargement, les deux jeux ont retrouvé la même position du générateur. Une bascule assistée chez J2 l'a ramené à sa position de départ dans les deux jeux. La compilation de production et les 153 tests du relais passent. [Journaux des essais](docs/evidence/2026-11-28_akh-vaquot-demi-tour_eden.log).
+
 ### 6.46 Bascule du mécanisme de Rota Ooh (027, 2026-11-28, Eden)
 
 - Le cristal `3e31bdf5` pilote un `DungeonRotateTagShuttle` à deux positions. Deux parties ont vérifié le partage de la bascule. J1 l’a activé par le pilote de test. Son cristal est passé de `(24, 12, 8)` à `(24, 18, 2)`, puis celui de J2 a pris la même position. J1 a rechargé le sanctuaire et retrouvé la position active.

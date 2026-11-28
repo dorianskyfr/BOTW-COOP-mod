@@ -24,6 +24,12 @@ namespace coop::switch_ai {
         constexpr std::uint64_t ResendEvery = 150;    /* rappel de notre dernier changement (arrivee tardive) */
         constexpr std::uint64_t WaterRefreshFrames = 8;
         constexpr std::uint64_t TiltSettleFrames = 60;
+        constexpr std::uint32_t HalfTurnSwitchHash = 0x0a13e455;
+        constexpr std::uint32_t HalfTurnMarkerHash = 0xc4ca2bdb;
+        constexpr int HalfTurnUnseen = -2;
+        constexpr int HalfTurnMoving = -1;
+        constexpr std::uint64_t HalfTurnRetryFrames = 300;
+        int s_HalfTurnPhase = HalfTurnUnseen;
 
         struct QuarterTurnSwitch {
             std::uint32_t m_Hash;
@@ -81,6 +87,12 @@ namespace coop::switch_ai {
             const QuarterTurnSwitch* m_Rotation = nullptr;
             int            m_QuarterTurn = -1;
             std::uint64_t  m_NextQuarterTurn = 0;
+
+            std::uint32_t RotationMask() const {
+                if (m_Rotation != nullptr)
+                    return 3;
+                return m_Hash == HalfTurnSwitchHash ? 1 : 0;
+            }
         };
         constexpr int MaxTracked = 64;
         Tracked s_Tracked[MaxTracked];
@@ -309,7 +321,7 @@ namespace coop::switch_ai {
         void Send(Tracked& t, bool log) {
             Msg m;
             m.m_Hash = t.m_Hash;
-            m.m_On = t.m_Rotation != nullptr ? (t.m_Ver >> 8) & 1u : (t.m_On == 1 ? 1u : 0u);
+            m.m_On = t.RotationMask() != 0 ? (t.m_Ver >> 8) & 1u : (t.m_On == 1 ? 1u : 0u);
             m.m_Ver = t.m_Ver;
             m.m_Frame = s_Frames;
             const bool queued = g_Outgoing.Push(m);
@@ -319,6 +331,64 @@ namespace coop::switch_ai {
                 Logging.Log("[botw-coop] interrupteur IA : %08x %s ici en (%.1f, %.1f, %.1f), v%u, %s", t.m_Hash, m.m_On != 0 ? "active" : "desactive",
                     static_cast<double>(t.m_Pos[0]), static_cast<double>(t.m_Pos[1]), static_cast<double>(t.m_Pos[2]), t.m_Ver >> 8,
                     queued ? "annonce" : "PERDU (file pleine)");
+        }
+
+        bool AnnounceRotation(Tracked& t, int phase, bool log) {
+            const int id = coop::session::g_LocalId;
+            if (id < 1 || id > 255)
+                return false;
+            /* Les bits bas du compteur donnent l'orientation. Le compteur reste monotone. */
+            auto version = (t.m_Ver >> 8) + 1;
+            version += (static_cast<std::uint32_t>(phase) - version) & t.RotationMask();
+            t.m_Ver = (version << 8) | static_cast<std::uint32_t>(id);
+            t.m_LocalOwned = true;
+            Send(t, log);
+            return true;
+        }
+
+        /* Le septieme mecanisme du 035 tourne de 180 degres autour de (-26, 8, 48).
+           Le cristal est sur l'axe. Le generateur d'air est a 3,5 m de l'axe. */
+        int ReadHalfTurn(const float pos[3]) {
+            const float x = pos[0] + 26.0f, y = pos[1] - 8.0f, z = pos[2] - 48.0f;
+            const float radiusSquared = y * y + z * z;
+            if (x * x > 0.04f || radiusSquared < 9.0f || radiusSquared > 16.0f)
+                return HalfTurnUnseen;
+            for (int phase = 0; phase < 2; ++phase) {
+                const float dy = y - (phase == 0 ? -3.5f : 3.5f);
+                if (dy * dy + z * z <= 0.2f * 0.2f)
+                    return phase;
+            }
+            return HalfTurnMoving;
+        }
+
+        void UpdateHalfTurn(Tracked& t) {
+            const int phase = s_HalfTurnPhase;
+            if (phase == HalfTurnUnseen || s_Frames - t.m_Since < SettleFrames)
+                return;
+            if (t.m_Restore >= 0) {
+                if (phase == t.m_Restore) {
+                    t.m_QuarterTurn = phase;
+                    t.m_Restore = -1;
+                    if (Log(t))
+                        Logging.Log("[botw-coop] inclinaison 035 : demi-tour, phase %d restauree (v%u)", phase, t.m_Ver >> 8);
+                } else if (phase >= 0 && s_Frames >= t.m_NextQuarterTurn) {
+                    std::uintptr_t ai = 0;
+                    int on = -1, off = -1;
+                    const int state = coop::game::GetOnOffSwitch(t.m_Actor, &ai, &on, &off);
+                    if (state >= 0 && coop::game::SetOnOffSwitch(ai, state ? off : on))
+                        t.m_NextQuarterTurn = s_Frames + HalfTurnRetryFrames;
+                }
+                return;
+            }
+            /* Une frappe pendant la rotation peut changer la couleur sans provoquer un autre tour.
+               On annonce la destination lorsque le generateur commence vraiment a bouger. */
+            if (phase >= 0)
+                t.m_QuarterTurn = phase;
+            const int target = phase >= 0 ? phase : (t.m_QuarterTurn ^ 1);
+            if (((t.m_Ver >> 8) & 1u) == static_cast<std::uint32_t>(target))
+                return;
+            if (AnnounceRotation(t, target, false) && Log(t))
+                Logging.Log("[botw-coop] inclinaison 035 : demi-tour, phase %d ici (v%u)", target, t.m_Ver >> 8);
         }
 
         int ReadQuarterTurn(const QuarterTurnSwitch& rotation, const float pos[3]) {
@@ -370,16 +440,8 @@ namespace coop::switch_ai {
                 return;
             t.m_QuarterTurn = target;
 
-            const int id = coop::session::g_LocalId;
-            if (!settled || id < 1 || id > 255)
-                return;
-            /* La version reste monotone. Ses deux bits bas de compteur indiquent l'orientation, y compris apres
-               deux quarts de tour lorsque l'action du cristal est de nouveau Off. Aucun changement de format SWAI. */
-            auto version = (t.m_Ver >> 8) + 1;
-            version += (static_cast<std::uint32_t>(target) - version) & 3u;
-            t.m_Ver = (version << 8) | static_cast<std::uint32_t>(id);
-            t.m_LocalOwned = true;
-            Send(t, true);
+            if (settled)
+                AnnounceRotation(t, target, true);
         }
 
         void Update(Tracked& t, const coop::game::ActorInfo& info) {
@@ -391,6 +453,10 @@ namespace coop::switch_ai {
             const int st = coop::game::GetOnOffSwitch(info.m_Actor, &ai, &on, &off);
             if (st < 0)
                 return;
+            if (t.m_Hash == HalfTurnSwitchHash) {
+                t.m_On = st; /* la phase est resolue apres le releve du generateur */
+                return;
+            }
             if (t.m_Rotation != nullptr) {
                 UpdateQuarterTurn(t, ai, on, off, st);
                 return;
@@ -493,6 +559,8 @@ namespace coop::switch_ai {
         }
 
         bool OnScan(const coop::game::ActorInfo& info, void*) {
+            if (info.m_HashId == HalfTurnMarkerHash && info.m_Name != nullptr && std::strcmp(info.m_Name, "DgnObj_WindGenerator_A") == 0)
+                s_HalfTurnPhase = ReadHalfTurn(info.m_Pos);
             if (info.m_HashId == WaterTimerHash && info.m_Name != nullptr && std::strcmp(info.m_Name, "SwitchTimeLag") == 0) {
                 UpdateWaterTimer(info.m_Actor);
                 return false;
@@ -542,10 +610,11 @@ namespace coop::switch_ai {
             mine->m_Since = s_Frames;
             mine->m_RemoteUntil = 0;
             mine->m_Restore = (mine->m_Ver != 0 && !mine->m_Autonomous) ? mine->m_On : -1;
-            if (mine->m_Rotation != nullptr) {
-                mine->m_QuarterTurn = -1;
+            const auto mask = mine->RotationMask();
+            if (mask != 0) {
+                mine->m_QuarterTurn = mask == 1 ? 0 : -1;
                 mine->m_NextQuarterTurn = 0;
-                mine->m_Restore = mine->m_Ver != 0 ? static_cast<int>((mine->m_Ver >> 8) & 3u) : -1;
+                mine->m_Restore = mine->m_Ver != 0 ? static_cast<int>((mine->m_Ver >> 8) & mask) : -1;
             }
             mine->m_On = -1;
             Update(*mine, info);
@@ -557,6 +626,7 @@ namespace coop::switch_ai {
                 t.m_Seen = false;
             s_Water.m_Seen = false;
             s_CubeParts = {};
+            s_HalfTurnPhase = HalfTurnUnseen;
             coop::game::ForEachListedActor(OnScan, nullptr);
             UpdateCube();
             if (!s_Water.m_Seen) {
@@ -564,9 +634,12 @@ namespace coop::switch_ai {
                 s_Water.m_LastLocalOn = 0;
             }
             SendWaterTimer();
-            for (Tracked& t : s_Tracked)
+            for (Tracked& t : s_Tracked) {
                 if (t.m_Actor != 0 && !t.m_Seen)
                     t.m_Actor = 0;
+                if (t.m_Actor != 0 && t.m_Hash == HalfTurnSwitchHash)
+                    UpdateHalfTurn(t);
+            }
         }
 
         Tracked* FindLoaded(std::uint32_t hash) {
@@ -598,8 +671,9 @@ namespace coop::switch_ai {
                     p = Pending {};
                     continue;
                 }
-                if (t->m_Rotation != nullptr) {
-                    const auto phase = (p.m_Ver >> 8) & 3u;
+                const auto mask = t->RotationMask();
+                if (mask != 0) {
+                    const auto phase = (p.m_Ver >> 8) & mask;
                     if ((phase & 1u) == p.m_On) {
                         t->m_Ver = p.m_Ver;
                         t->m_LocalOwned = false;
