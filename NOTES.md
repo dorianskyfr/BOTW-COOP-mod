@@ -1192,6 +1192,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.42 Rotation de Monya Toma après rechargement (011, 2026-11-28, Eden)
+
+- Le cristal `SwitchTilt` (`5a502b88`) commande la rotation de la plateforme par quarts de tour. Deux frappes ramènent le cristal à Off et font pivoter la plateforme de 180°. Avec le partage On/Off seul, après rechargement J1 retrouvait la position de départ alors que J2 gardait les deux quarts de tour.
+- À Monya Toma, les deux bits bas du compteur de version `SWAI` indiquent désormais le quart de tour. Le récepteur relève la position du cristal et rejoue les bascules requises dans le jeu. Il espace les bascules pour laisser passer l'animation et la cinématique du premier tour.
+- Deux frappes à l'arme, une par joueur, ont fait tourner la plateforme dans les deux parties. J1 a ensuite rechargé le sanctuaire pendant que J2 y restait. Son jeu a rejoué les deux quarts de tour, puis le cristal et la base de la glissière ont retrouvé les positions de J2. [Journaux des essais](docs/evidence/2026-11-28_monya-toma_eden.log).
+- J2 a déclenché le troisième quart de tour pendant que J1 était dans un autre sanctuaire. Après son retour, J1 a retrouvé le troisième quart de tour, puis sa frappe suivante a ramené les deux plateformes à leur orientation de départ.
+
 ### 6.41 Cibles des canons de Bareeda Naag (008, 2026-11-28, Eden)
 
 - Le premier canon se trouve à environ 88 m de sa cible `DgnObj_SwitchTarget_A` (`c0690a3c`). Le relevé à 60 m écartait la cible quand le joueur tirait depuis la plateforme. Le rayon des cibles passe à 120 m.

@@ -7,6 +7,7 @@
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
 
+#include <cmath>
 #include <cstring>
 
 /* Voir switch_ai.hpp. */
@@ -22,6 +23,9 @@ namespace coop::switch_ai {
         constexpr std::uint64_t PendingFrames = 150;  /* demande gardee 5 s (interrupteur pas encore charge) */
         constexpr std::uint64_t ResendEvery = 150;    /* rappel de notre dernier changement (arrivee tardive) */
         constexpr std::uint64_t WaterRefreshFrames = 8;
+        constexpr std::uint32_t MonyaTomaTilt = 0x5a502b88;
+        constexpr std::uint64_t TiltSettleFrames = 60;
+        constexpr std::uint64_t TiltReplaySpacing = 130; /* premier tour : Demo024_0 / NoSignalWait120 */
 
         /* Noms exacts (cartes Pack/Dungeon*.pack, IA verifiees : SwitchHit.baiprog, SwitchHitOnce, SwitchTimer,
            SwitchTimeLimited ; SwitchTilt et DgnObj_SwitchTarget_A utilisent SwitchHit / SwitchHitOnce). */
@@ -57,6 +61,8 @@ namespace coop::switch_ai {
             std::uint64_t  m_LastSend = 0;
             std::uint64_t  m_LastUse = 0;
             bool           m_Seen = false;
+            int            m_QuarterTurn = -1;
+            std::uint64_t  m_NextQuarterTurn = 0;
         };
         constexpr int MaxTracked = 64;
         Tracked s_Tracked[MaxTracked];
@@ -122,16 +128,73 @@ namespace coop::switch_ai {
         void Send(Tracked& t, bool log) {
             Msg m;
             m.m_Hash = t.m_Hash;
-            m.m_On = t.m_On == 1 ? 1u : 0u;
+            m.m_On = t.m_Hash == MonyaTomaTilt ? (t.m_Ver >> 8) & 1u : (t.m_On == 1 ? 1u : 0u);
             m.m_Ver = t.m_Ver;
             m.m_Frame = s_Frames;
             const bool queued = g_Outgoing.Push(m);
             if (queued)
                 t.m_LastSend = s_Frames;
             if (log && Log(t))
-                Logging.Log("[botw-coop] interrupteur IA : %08x %s ici en (%.1f, %.1f, %.1f), v%u, %s", t.m_Hash, t.m_On == 1 ? "active" : "desactive",
+                Logging.Log("[botw-coop] interrupteur IA : %08x %s ici en (%.1f, %.1f, %.1f), v%u, %s", t.m_Hash, m.m_On != 0 ? "active" : "desactive",
                     static_cast<double>(t.m_Pos[0]), static_cast<double>(t.m_Pos[1]), static_cast<double>(t.m_Pos[2]), t.m_Ver >> 8,
                     queued ? "annonce" : "PERDU (file pleine)");
+        }
+
+        int MonyaTomaQuarterTurn(const float pos[3]) {
+            /* Le cristal tourne autour de (-16, 4, -16), de (-12, 4, -12) vers (-12, 4, -20). */
+            const float x = pos[0] + 16.0f, z = pos[2] + 16.0f;
+            if (std::abs(std::abs(x) - 4.0f) > 0.2f || std::abs(std::abs(z) - 4.0f) > 0.2f)
+                return -1;
+            if (x > 0.0f)
+                return z > 0.0f ? 0 : 1;
+            return z < 0.0f ? 2 : 3;
+        }
+
+        void UpdateMonyaTomaTilt(Tracked& t, std::uintptr_t ai, int on, int off, int state) {
+            const int phase = MonyaTomaQuarterTurn(t.m_Pos);
+            const bool changed = t.m_On >= 0 && state != t.m_On;
+            const bool settled = s_Frames - t.m_Since >= SettleFrames;
+            t.m_On = state;
+
+            if (t.m_Restore >= 0) {
+                if (phase == t.m_Restore && state == (phase & 1)) {
+                    t.m_QuarterTurn = phase;
+                    t.m_Restore = -1;
+                    if (Log(t))
+                        Logging.Log("[botw-coop] inclinaison 011 : phase %d restauree (v%u)", phase, t.m_Ver >> 8);
+                } else if (settled && phase >= 0 && s_Frames >= t.m_NextQuarterTurn && coop::game::SetOnOffSwitch(ai, state ? off : on)) {
+                    t.m_NextQuarterTurn = s_Frames + TiltReplaySpacing;
+                    if (Log(t))
+                        Logging.Log("[botw-coop] inclinaison 011 : quart de tour depuis la phase %d vers l'etat v%u", phase, t.m_Ver >> 8);
+                }
+                return;
+            }
+
+            if (t.m_QuarterTurn < 0) {
+                t.m_QuarterTurn = phase;
+                return;
+            }
+            int target = t.m_QuarterTurn;
+            if (changed && ((target + 1) & 1) == state) {
+                target = (target + 1) & 3;
+                t.m_NextQuarterTurn = s_Frames + TiltSettleFrames;
+            } else if (phase >= 0 && (phase & 1) == state && s_Frames >= t.m_NextQuarterTurn) {
+                target = phase;
+            }
+            if (target == t.m_QuarterTurn)
+                return;
+            t.m_QuarterTurn = target;
+
+            const int id = coop::session::g_LocalId;
+            if (!settled || id < 1 || id > 255)
+                return;
+            /* La version reste monotone. Ses deux bits bas de compteur indiquent l'orientation, y compris apres
+               deux quarts de tour lorsque l'action du cristal est de nouveau Off. Aucun changement de format SWAI. */
+            auto version = (t.m_Ver >> 8) + 1;
+            version += (static_cast<std::uint32_t>(target) - version) & 3u;
+            t.m_Ver = (version << 8) | static_cast<std::uint32_t>(id);
+            t.m_LocalOwned = true;
+            Send(t, true);
         }
 
         void Update(Tracked& t, const coop::game::ActorInfo& info) {
@@ -143,6 +206,10 @@ namespace coop::switch_ai {
             const int st = coop::game::GetOnOffSwitch(info.m_Actor, &ai, &on, &off);
             if (st < 0)
                 return;
+            if (t.m_Hash == MonyaTomaTilt) {
+                UpdateMonyaTomaTilt(t, ai, on, off, st);
+                return;
+            }
             /* Rechargement : l'interrupteur revient dans son etat de depart ; on lui remet l'etat versionne, sinon un
                rappel de meme version serait refuse chez l'autre (relecture Codex 1). */
             if (t.m_Restore >= 0 && s_Frames - t.m_Since >= SettleFrames) {
@@ -276,6 +343,11 @@ namespace coop::switch_ai {
             mine->m_Since = s_Frames;
             mine->m_RemoteUntil = 0;
             mine->m_Restore = (mine->m_Ver != 0 && !mine->m_Autonomous) ? mine->m_On : -1;
+            if (mine->m_Hash == MonyaTomaTilt) {
+                mine->m_QuarterTurn = -1;
+                mine->m_NextQuarterTurn = 0;
+                mine->m_Restore = mine->m_Ver != 0 ? static_cast<int>((mine->m_Ver >> 8) & 3u) : -1;
+            }
             mine->m_On = -1;
             Update(*mine, info);
             return false;
@@ -321,6 +393,16 @@ namespace coop::switch_ai {
                             Logging.Log("[botw-coop] interrupteur IA : %08x v%u du partenaire plus ancienne que la notre (v%u), rappel", p.m_Hash,
                                 p.m_Ver >> 8, t->m_Ver >> 8);
                         Send(*t, false);
+                    }
+                    p = Pending {};
+                    continue;
+                }
+                if (t->m_Hash == MonyaTomaTilt) {
+                    const auto phase = (p.m_Ver >> 8) & 3u;
+                    if ((phase & 1u) == p.m_On) {
+                        t->m_Ver = p.m_Ver;
+                        t->m_LocalOwned = false;
+                        t->m_Restore = static_cast<int>(phase);
                     }
                     p = Pending {};
                     continue;
