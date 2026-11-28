@@ -2,7 +2,7 @@
 
 L’objectif est de rendre **toute l’histoire principale jouable à deux**, du Plateau du Prélude au combat final. Le mod partage la progression et les récompenses. Chaque joueur conserve son inventaire, son équipement et sa santé.
 
-Le parcours complet reste à valider. Cette feuille de route indique l’ordre des travaux et évolue avec les essais en jeu. Les versions téléchargeables sont indiquées dans les [Releases](https://github.com/dorianskyfr/BOTW-COOP-mod/releases).
+La version **1.0** vise la validation du parcours principal complet à deux. Cette feuille de route évolue avec les essais en jeu. Les versions déjà disponibles sont indiquées dans les [Releases](https://github.com/dorianskyfr/BOTW-COOP-mod/releases).
 
 Suivez les jalons et les validations en jeu sur le [tableau Trello public](https://trello.com/b/AAx38QaO/botw-coop-roadmap).
 

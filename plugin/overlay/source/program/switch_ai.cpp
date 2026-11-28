@@ -7,7 +7,6 @@
 #include "lib.hpp"
 #include <lib/log/logger_mgr.hpp>
 
-#include <cmath>
 #include <cstring>
 
 /* Voir switch_ai.hpp. */
@@ -23,9 +22,26 @@ namespace coop::switch_ai {
         constexpr std::uint64_t PendingFrames = 150;  /* demande gardee 5 s (interrupteur pas encore charge) */
         constexpr std::uint64_t ResendEvery = 150;    /* rappel de notre dernier changement (arrivee tardive) */
         constexpr std::uint64_t WaterRefreshFrames = 8;
-        constexpr std::uint32_t MonyaTomaTilt = 0x5a502b88;
         constexpr std::uint64_t TiltSettleFrames = 60;
-        constexpr std::uint64_t TiltReplaySpacing = 130; /* premier tour : Demo024_0 / NoSignalWait120 */
+
+        struct QuarterTurnSwitch {
+            std::uint32_t m_Hash;
+            float m_PivotX, m_PivotZ;
+            float m_StartX, m_StartZ; /* position du cristal avant la premiere frappe, relative au pivot */
+            float m_Direction;
+            std::uint64_t m_ReplaySpacing = TiltSettleFrames;
+        };
+        /* Couples SwitchTilt / DungeonRotateTagInOrder a 90 degres (cartes 011 et 035 de BOTW 1.9.0).
+           En 011 le premier tour lance Demo024_0 / NoSignalWait120. Chaque roue du 035 a son propre groupe. */
+        constexpr QuarterTurnSwitch QuarterTurnSwitches[] = {
+            { 0x5a502b88, -16.0f, -16.0f, 4.0f, 4.0f, -1.0f, 130 },
+            { 0xc24906d5, 10.0f, 2.0f, 0.0f, 2.0f, 1.0f },
+            { 0x990ea199, -20.0f, 12.0f, 0.0f, 2.0f, 1.0f },
+            { 0xf07f6457, -20.0f, -18.0f, 0.0f, 2.0f, 1.0f },
+            { 0xc839c206, 0.0f, -8.0f, 0.0f, 2.0f, 1.0f },
+            { 0xd122f347, 10.0f, -18.0f, 2.0f, 0.0f, 1.0f },
+            { 0xd894bf6c, 20.0f, 12.0f, -2.0f, 0.0f, 1.0f },
+        };
 
         /* Noms exacts (cartes Pack/Dungeon*.pack, IA verifiees : SwitchHit.baiprog, SwitchHitOnce, SwitchTimer,
            SwitchTimeLimited ; SwitchTilt et DgnObj_SwitchTarget_A utilisent SwitchHit / SwitchHitOnce). */
@@ -61,6 +77,7 @@ namespace coop::switch_ai {
             std::uint64_t  m_LastSend = 0;
             std::uint64_t  m_LastUse = 0;
             bool           m_Seen = false;
+            const QuarterTurnSwitch* m_Rotation = nullptr;
             int            m_QuarterTurn = -1;
             std::uint64_t  m_NextQuarterTurn = 0;
         };
@@ -128,7 +145,7 @@ namespace coop::switch_ai {
         void Send(Tracked& t, bool log) {
             Msg m;
             m.m_Hash = t.m_Hash;
-            m.m_On = t.m_Hash == MonyaTomaTilt ? (t.m_Ver >> 8) & 1u : (t.m_On == 1 ? 1u : 0u);
+            m.m_On = t.m_Rotation != nullptr ? (t.m_Ver >> 8) & 1u : (t.m_On == 1 ? 1u : 0u);
             m.m_Ver = t.m_Ver;
             m.m_Frame = s_Frames;
             const bool queued = g_Outgoing.Push(m);
@@ -140,18 +157,22 @@ namespace coop::switch_ai {
                     queued ? "annonce" : "PERDU (file pleine)");
         }
 
-        int MonyaTomaQuarterTurn(const float pos[3]) {
-            /* Le cristal tourne autour de (-16, 4, -16), de (-12, 4, -12) vers (-12, 4, -20). */
-            const float x = pos[0] + 16.0f, z = pos[2] + 16.0f;
-            if (std::abs(std::abs(x) - 4.0f) > 0.2f || std::abs(std::abs(z) - 4.0f) > 0.2f)
-                return -1;
-            if (x > 0.0f)
-                return z > 0.0f ? 0 : 1;
-            return z < 0.0f ? 2 : 3;
+        int ReadQuarterTurn(const QuarterTurnSwitch& rotation, const float pos[3]) {
+            float x = rotation.m_StartX, z = rotation.m_StartZ;
+            for (int phase = 0; phase < 4; ++phase) {
+                const float dx = pos[0] - (rotation.m_PivotX + x);
+                const float dz = pos[2] - (rotation.m_PivotZ + z);
+                if (dx * dx + dz * dz <= 0.2f * 0.2f)
+                    return phase;
+                const float nextX = -rotation.m_Direction * z;
+                z = rotation.m_Direction * x;
+                x = nextX;
+            }
+            return -1;
         }
 
-        void UpdateMonyaTomaTilt(Tracked& t, std::uintptr_t ai, int on, int off, int state) {
-            const int phase = MonyaTomaQuarterTurn(t.m_Pos);
+        void UpdateQuarterTurn(Tracked& t, std::uintptr_t ai, int on, int off, int state) {
+            const int phase = ReadQuarterTurn(*t.m_Rotation, t.m_Pos);
             const bool changed = t.m_On >= 0 && state != t.m_On;
             const bool settled = s_Frames - t.m_Since >= SettleFrames;
             t.m_On = state;
@@ -161,11 +182,11 @@ namespace coop::switch_ai {
                     t.m_QuarterTurn = phase;
                     t.m_Restore = -1;
                     if (Log(t))
-                        Logging.Log("[botw-coop] inclinaison 011 : phase %d restauree (v%u)", phase, t.m_Ver >> 8);
+                        Logging.Log("[botw-coop] inclinaison : %08x phase %d restauree (v%u)", t.m_Hash, phase, t.m_Ver >> 8);
                 } else if (settled && phase >= 0 && s_Frames >= t.m_NextQuarterTurn && coop::game::SetOnOffSwitch(ai, state ? off : on)) {
-                    t.m_NextQuarterTurn = s_Frames + TiltReplaySpacing;
+                    t.m_NextQuarterTurn = s_Frames + t.m_Rotation->m_ReplaySpacing;
                     if (Log(t))
-                        Logging.Log("[botw-coop] inclinaison 011 : quart de tour depuis la phase %d vers l'etat v%u", phase, t.m_Ver >> 8);
+                        Logging.Log("[botw-coop] inclinaison : %08x quart de tour depuis la phase %d vers l'etat v%u", t.m_Hash, phase, t.m_Ver >> 8);
                 }
                 return;
             }
@@ -206,8 +227,8 @@ namespace coop::switch_ai {
             const int st = coop::game::GetOnOffSwitch(info.m_Actor, &ai, &on, &off);
             if (st < 0)
                 return;
-            if (t.m_Hash == MonyaTomaTilt) {
-                UpdateMonyaTomaTilt(t, ai, on, off, st);
+            if (t.m_Rotation != nullptr) {
+                UpdateQuarterTurn(t, ai, on, off, st);
                 return;
             }
             /* Rechargement : l'interrupteur revient dans son etat de depart ; on lui remet l'etat versionne, sinon un
@@ -337,13 +358,18 @@ namespace coop::switch_ai {
                 *mine = Tracked {};
                 mine->m_Hash = info.m_HashId;
                 mine->m_Autonomous = Autonomous(info.m_Name);
+                for (const QuarterTurnSwitch& rotation : QuarterTurnSwitches)
+                    if (rotation.m_Hash == info.m_HashId) {
+                        mine->m_Rotation = &rotation;
+                        break;
+                    }
             }
             /* (re)rattachement : l'etat lu pendant la pose n'est pas un changement */
             mine->m_Actor = info.m_Actor;
             mine->m_Since = s_Frames;
             mine->m_RemoteUntil = 0;
             mine->m_Restore = (mine->m_Ver != 0 && !mine->m_Autonomous) ? mine->m_On : -1;
-            if (mine->m_Hash == MonyaTomaTilt) {
+            if (mine->m_Rotation != nullptr) {
                 mine->m_QuarterTurn = -1;
                 mine->m_NextQuarterTurn = 0;
                 mine->m_Restore = mine->m_Ver != 0 ? static_cast<int>((mine->m_Ver >> 8) & 3u) : -1;
@@ -397,7 +423,7 @@ namespace coop::switch_ai {
                     p = Pending {};
                     continue;
                 }
-                if (t->m_Hash == MonyaTomaTilt) {
+                if (t->m_Rotation != nullptr) {
                     const auto phase = (p.m_Ver >> 8) & 3u;
                     if ((phase & 1u) == p.m_On) {
                         t->m_Ver = p.m_Ver;

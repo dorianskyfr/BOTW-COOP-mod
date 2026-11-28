@@ -1192,6 +1192,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.43 Rotation des éoliennes d'Akh Va'quot après rechargement (035, 2026-11-28, Eden)
+
+- Après deux frappes, le cristal `c24906d5` était éteint dans les deux jeux. J1 a rechargé le sanctuaire et son cristal est revenu en `(10, 1, 4)`, tandis que celui de J2 est resté en `(10, 1, 0)`.
+- Les six cristaux liés à `DungeonRotateTagInOrder` par quarts de tour ont chacun leur pivot et leur position de départ, relevés dans la carte du 035. Ils utilisent la restauration d'orientation de Monya Toma. La table des sept pivots et sens de rotation a été vérifiée contre les cartes de BOTW 1.9.0.
+- Après recompilation, J1 puis J2 ont frappé `c24906d5`. Cinq autres frappes de J2 ont fait pivoter les autres éoliennes chez J1. J1 a rechargé le sanctuaire pendant que J2 y restait et a retrouvé les six orientations, vérifiées par la position de chaque cristal dans les deux jeux. [Journaux des essais](docs/evidence/2026-11-28_akh-vaquot_eden.log).
+
 ### 6.42 Rotation de Monya Toma après rechargement (011, 2026-11-28, Eden)
 
 - Le cristal `SwitchTilt` (`5a502b88`) commande la rotation de la plateforme par quarts de tour. Deux frappes ramènent le cristal à Off et font pivoter la plateforme de 180°. Avec le partage On/Off seul, après rechargement J1 retrouvait la position de départ alors que J2 gardait les deux quarts de tour.

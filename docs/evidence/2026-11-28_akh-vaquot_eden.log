@@ -1,0 +1,45 @@
+Akh Va'quot (035), BOTW 1.9.0, deux copies de sauvegarde sous Eden.
+Le pilote place les joueurs et appuie sur Y pour frapper les cristaux avec l'arme du jeu.
+
+Avant correction, deux frappes et rechargement de J1
+J1 [botw-coop] interrupteur IA : c24906d5 active ici en (10.0, 1.0, 4.0), v1, annonce
+J2 [botw-coop] interrupteur IA : c24906d5 desactive ici en (8.0, 1.0, 2.0), v2, annonce
+J1 [botw-coop] interrupteur IA : c24906d5 desactive chez le partenaire (v2), desactive ici
+J1 [botw-coop] acteur : SwitchTilt                               hash=c24906d5 etat=1 pos=(10.00, 1.00, 0.00) dist=29.2
+J1 [botw-coop] voyage (essai) : vers CDungeon/Dungeon035 Entrance_1 -> demande
+J1 [botw-coop] acteur : SwitchTilt                               hash=c24906d5 etat=1 pos=(10.00, 1.00, 4.00) dist=25.6
+J2 [botw-coop] acteur : SwitchTilt                               hash=c24906d5 etat=1 pos=(10.00, 1.00, 0.00) dist=4.9
+
+Après correction, les frappes dans les deux sens et le rechargement de J1
+J1 [botw-coop] interrupteur IA : c24906d5 active ici en (10.0, 1.0, 4.0), v1, annonce
+J2 [botw-coop] inclinaison : c24906d5 phase 1 restauree (v1)
+J2 [botw-coop] interrupteur IA : c24906d5 desactive ici en (8.0, 1.0, 2.0), v2, annonce
+J1 [botw-coop] voyage (essai) : vers CDungeon/Dungeon035 Entrance_1 -> demande
+J1 [botw-coop] inclinaison : c24906d5 quart de tour depuis la phase 0 vers l'etat v2
+J1 [botw-coop] inclinaison : c24906d5 quart de tour depuis la phase 1 vers l'etat v2
+J1 [botw-coop] inclinaison : c24906d5 phase 2 restauree (v2)
+J1 [botw-coop] inclinaison : 990ea199 phase 1 restauree (v1)
+J1 [botw-coop] inclinaison : f07f6457 phase 1 restauree (v1)
+J1 [botw-coop] inclinaison : c839c206 phase 1 restauree (v1)
+J1 [botw-coop] inclinaison : d122f347 phase 1 restauree (v1)
+J1 [botw-coop] inclinaison : d894bf6c phase 1 restauree (v1)
+
+Positions des six cristaux dans les deux jeux après le rechargement
+J1 [botw-coop] acteur : SwitchTilt                               hash=c24906d5 etat=1 pos=(10.00, 1.00, 0.00) dist=29.2
+J2 [botw-coop] acteur : SwitchTilt                               hash=c24906d5 etat=1 pos=(10.00, 1.00, 0.00) dist=16.2
+J1 [botw-coop] acteur : SwitchTilt                               hash=990ea199 etat=1 pos=(-22.00, 1.00, 12.00) dist=27.1
+J2 [botw-coop] acteur : SwitchTilt                               hash=990ea199 etat=1 pos=(-22.00, 1.00, 12.00) dist=39.8
+J1 [botw-coop] acteur : SwitchTilt                               hash=f07f6457 etat=1 pos=(-22.00, 1.00, -18.00) dist=50.4
+J2 [botw-coop] acteur : SwitchTilt                               hash=f07f6457 etat=1 pos=(-22.00, 1.00, -18.00) dist=51.2
+J1 [botw-coop] acteur : SwitchTilt                               hash=c839c206 etat=1 pos=(-2.00, 1.00, -8.00) dist=35.4
+J2 [botw-coop] acteur : SwitchTilt                               hash=c839c206 etat=1 pos=(-2.00, 1.00, -8.00) dist=29.8
+J1 [botw-coop] acteur : SwitchTilt                               hash=d122f347 etat=1 pos=(10.00, 1.00, -16.00) dist=44.4
+J2 [botw-coop] acteur : SwitchTilt                               hash=d122f347 etat=1 pos=(10.00, 1.00, -16.00) dist=31.2
+J1 [botw-coop] acteur : SwitchTilt                               hash=d894bf6c etat=1 pos=(20.00, 1.00, 10.00) dist=26.7
+J2 [botw-coop] acteur : SwitchTilt                               hash=d894bf6c etat=1 pos=(20.00, 1.00, 10.00) dist=4.9
+
+Retour à Monya Toma avec la même compilation
+J1 [botw-coop] interrupteur IA : 5a502b88 active ici en (-12.0, 4.0, -12.0), v1, annonce
+J2 [botw-coop] inclinaison : 5a502b88 phase 1 restauree (v1)
+J1 [botw-coop] acteur : SwitchTilt                               hash=5a502b88 etat=1 pos=(-12.00, 4.00, -20.00) dist=1.7
+J2 [botw-coop] acteur : SwitchTilt                               hash=5a502b88 etat=1 pos=(-12.00, 4.00, -20.00) dist=11.5
