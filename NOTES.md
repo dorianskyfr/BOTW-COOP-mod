@@ -1192,6 +1192,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.48 Ouverture de deux nouvelles parties sur le Plateau (2026-11-28, Eden)
+
+- Deux profils vierges ont démarré en mode normal sur le même PC. Le relais a envoyé zéro drapeau aux deux jeux. Le réveil de Link (`Demo102_0`) s’est déroulé dans chaque partie.
+- Les deux joueurs ont pris chacun leur tablette à leur socle. Le message d’obtention est apparu dans les deux fenêtres. Ils ont franchi la première porte, puis utilisé leur tablette au deuxième socle (`Demo701_0`) et franchi la porte ouverte. Les interactions et déplacements sont passés par les commandes du jeu.
+- Les deux joueurs ont grimpé la paroi et joué leur cinématique d'arrivée au Plateau (`Demo103_0`). Les deux sauvegardes coop gardent les drapeaux de prise de la tablette, d'ouverture de la première porte et de lecture de la cinématique. Les runes et la paravoile restent à obtenir lors de cet essai. [Journaux des essais](docs/evidence/2026-11-28_ouverture-plateau_eden.log).
+
 ### 6.47 Mécanisme à demi-tour d'Akh Va'quot (035, 2026-11-28, Eden)
 
 - Deux coups rapprochés ont fait passer le cristal au pivot (`0a13e455`) sur On puis Off pendant un seul demi-tour. Au rechargement de J1, son générateur était revenu à `(-26, 4.5, 48)` alors que celui de J2 était resté à `(-26, 11.5, 48)`.

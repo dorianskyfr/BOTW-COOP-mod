@@ -1,0 +1,36 @@
+BOTW 1.9.0 sous Eden, deux profils de test neufs sur le même PC.
+Le pilote utilise les boutons et les sticks du jeu pour ce parcours.
+
+Premier lancement
+J1 [botw-coop] sauvegardes : premiere copie faite (0 fichiers, 0 octets), redirection vers save:/coop/
+J2 [botw-coop] sauvegardes : premiere copie faite (0 fichiers, 0 octets), redirection vers save:/coop/
+14:00:32.295 joueur 1 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+14:00:42.678 joueur 2 : etat complet demande, 0 drapeaux + 0 de lune de sang a envoyer
+J1 [botw-coop] evenement demande : Demo102_0 / - -> accepte
+J2 [botw-coop] evenement demande : Demo102_0 / - -> accepte
+
+Chaque joueur obtient la tablette de son propre socle
+J1 [botw-coop] evenement demande : Obj_DRStone_A_01 / Talk -> accepte
+J2 [botw-coop] evenement demande : Obj_DRStone_A_01 / Talk -> accepte
+Le message d'obtention « Sheikah Slate » est visible sur les deux fenêtres.
+Après fermeture des messages par B, les deux joueurs passent la première porte.
+J1 206.1s goto au-dela de la porte (-1116.1, 1897.0) -> arrive, position (-1116.24, 237.36, 1897.77)
+J2 216.7s goto au-dela de la porte (-1116.1, 1897.0) -> arrive, position (-1116.02, 237.33, 1897.24)
+
+Deuxième socle et deuxième porte
+J1 [botw-coop] evenement demande : Demo701_0 / Demo701_0 -> accepte
+J2 [botw-coop] evenement demande : Demo701_0 / Demo701_0 -> accepte
+La tablette est authentifiée dans chaque jeu et la deuxième porte s'ouvre.
+J1 292.3s goto au-dela porte B (-1096.8, 1869.2) -> arrive, position (-1096.20, 235.88, 1869.80)
+J2 304.9s goto au-dela porte B (-1096.8, 1869.2) -> arrive, position (-1096.37, 235.91, 1869.64)
+
+Escalade et arrivée au Plateau
+J1 franchit la paroi et atteint (-1067.02, 248.90, 1831.42).
+J2 escalade et atteint (-1067.36, 248.60, 1831.86).
+J1 [botw-coop] evenement demande : SDemo_D-6 / Demo103_0 -> accepte
+J2 [botw-coop] evenement demande : SDemo_D-6 / Demo103_0 -> accepte
+Positions rendues au joueur après la cinématique : (-1024.48, 252.64, 1799.95) chez J1 et J2.
+
+Lecture des sauvegardes coop sur disque
+Dans chaque partie, IsGet_Obj_DRStone_Get, Open_StartPoint et IsPlayed_Demo103_0 valent 1.
+IsGet_Obj_Magnetglove, IsGet_Obj_RemoteBomb, IsGet_Obj_StopTimer, IsGet_Obj_IceMaker et IsGet_PlayerStole2 valent 0.

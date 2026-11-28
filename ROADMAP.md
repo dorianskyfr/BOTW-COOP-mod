@@ -17,11 +17,11 @@ Suivez les jalons et les validations en jeu sur le [tableau Trello public](https
 - **Énigmes de sanctuaire** · couvrir les mécanismes encore à tester, puis vérifier que les deux joueurs peuvent utiliser les éléments partagés et poursuivre ensemble.
 - **Créatures divines** · la libération des quatre Créatures a été reproduite lors d’essais assistés. Refaire les combats, l’activation des terminaux et l’obtention des pouvoirs avec les commandes du jeu, de l’arrivée à la sortie.
 - **Sauvegarde et reconnexion** · la reprise après redémarrage du relais et la sauvegarde d’un sanctuaire reçu sont vérifiées sur un PC. Il reste à valider les reprises aux étapes clés de l'histoire sur deux installations.
+- **Plateau du Prélude** · sur deux nouvelles parties, chacun a obtenu sa tablette, franchi les deux portes et atteint le Plateau. La suite de l’essai couvre les quatre runes, la paravoile et la sortie du Plateau.
 
 ## À venir
 
 - **Essai sur deux PC** · valider l’installation et une partie depuis deux machines, d’abord en réseau local puis par VPN. Tester un voyage, une coupure et une reconnexion avec conservation de la progression.
-- **Plateau du Prélude** · valider une nouvelle partie à deux, l’obtention des quatre runes et de la paravoile, puis la sortie du Plateau.
 - **Château d’Hyrule et fin de l’histoire** · couvrir les événements du château, finir le combat à l’arc de lumière et vérifier l’état des deux sauvegardes après le générique.
 - **Parcours complet** · rejouer l’histoire principale du début à la fin sur deux installations, avec des interruptions, des rechargements et des choix d’ordre différents. Publier les scénarios vérifiés et les limites restantes.
 

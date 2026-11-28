@@ -5,12 +5,12 @@
 | Quoi | Où |
 |---|---|
 | Projet (dépôt git, branche `main`) | `C:\Users\gcdor\Documents\Co ops zelda` |
-| Journal technique complet (sections 1 à 6.34) | `NOTES.md` |
+| Journal technique et résultats des essais | `NOTES.md` |
 | État du mod, ce qui marche et les limites | `PROGRESS.md` |
 | Présentation, installation, captures | `README.md` |
 | Code du plugin (exlaunch, subsdk9) | `plugin\overlay\source\program\` (un module par sujet : `fire.cpp`, `torches.cpp`, `gyro.cpp`, `vanish.cpp`, `switches.cpp`, `ice.cpp`, `bombs.cpp`, `enemy_life.cpp`, `beast_rotate.cpp`, `net_probe.cpp`, `game.cpp`...) |
 | Compilation du plugin | `plugin\build.sh` (via MSYS2 : `C:\msys64\usr\bin\bash.exe`) |
-| Relais réseau et ses tests | `tools\relay.py`, `tools\test_relay.py` (146/146) |
+| Relais réseau et ses tests | `tools\relay.py`, `tools\test_relay.py` |
 | Essais à deux instances d'Eden | `tools\run-live.ps1`, `tools\drive.py` |
 | Fabrication d'une release | `tools\make-release.ps1 -Version X` → `build\release\` |
 | Preuves des essais (journaux, captures) | `docs\evidence\` |
@@ -35,11 +35,11 @@ Tu reprends mon mod coop pour Zelda Breath of the Wild 1.9.0 (plugin exlaunch su
 Avant d'agir, lis :
 1. docs\REPRISE.md (emplacement de tous les fichiers) ;
 2. PROGRESS.md (état et limites) ;
-3. les sections 6.20 à 6.34 de NOTES.md (bombes, feu, Cryonis, objets d'énigme, interrupteurs, torches et mécanismes gyroscopiques) ;
+3. ROADMAP.md pour les jalons de la 1.0, puis les sections de NOTES.md et les journaux qui documentent l’essai repris ;
 4. ta mémoire de projet (MEMORY.md).
 Ne relis pas tout NOTES.md : cherche dedans ce dont tu as besoin.
 
-La dernière version publiée indiquée est v0.99.23 et le dernier avancement global consigné est de 98 %. Les correctifs du 25 novembre couvrent l'interrupteur déjà enfoncé au premier relevé, la flamme bleue, l'extinction des torches et les deux clubs gyroscopiques du sanctuaire 013 (NOTES 6.32 à 6.34). Restent notamment la synchronisation de l'eau et les effets visuels des Prodiges chez l'autre. Les essais en conditions normales restent à faire pour la vraie flèche de feu, la torche tenue, le terminal gyroscopique manipulé à la manette, le réceptacle électrique chez l'autre et la caisse qui maintient un interrupteur enfoncé au chargement.
+La 1.0 vise un parcours principal complet et vérifié à deux. Le journal d’avancement indique la portée des essais et la roadmap liste les jalons du Plateau du Prélude, des Créatures divines, du combat final et du réseau sur deux PC. La publication attend l’accord du propriétaire du dépôt.
 
 Méthode habituelle (détaillée dans NOTES et la mémoire) :
 - données du jeu extraites dans build\ et désassemblage de build\dumps\main_1.9.0.bin ;
