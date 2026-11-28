@@ -6,6 +6,8 @@ Mod coopératif à deux joueurs pour *The Legend of Zelda: Breath of the Wild* 1
 
 *Le joueur 2 (au centre) voit le joueur 1 (à gauche) dans son monde.*
 
+**[Roadmap publique](ROADMAP.md)** · suivez la progression vers une histoire principale entièrement jouable à deux.
+
 **Sommaire** : [Installation](#installation-simple--le-launcher) · [Fonctionnalités](#ce-que-fait-la-version-actuelle) · [État et limites](#état-vérifié-et-limites) · [Captures](#captures) · [Développeurs](#jouer-à-deux-à-la-main)
 
 **Téléchargement** : onglet [Releases](https://github.com/dorianskyfr/BOTW-COOP-mod/releases/latest) (`BotwCoopLauncher.exe`).
