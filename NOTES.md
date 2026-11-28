@@ -1076,7 +1076,7 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - dans un lac : pilier n.2 de J1 en (-650.1, 98.5, -333.3). Chez J2 : `pilier n.2 du partenaire demande`, `CREE apres 1 images`. **J2 voit le même pilier au même endroit**, avec le Link de J1 qui nage devant (image `2026-11-24_glace-pilier-J1-copie-J2-puis-retire_ic1.png`) ;
   - J1 retire son pilier : chez J2, `retire (disparu chez le partenaire)`, et le pilier disparaît de son écran.
 - Relecture **Codex** : passe 1, une remarque P2 retenue (adresses des copies retirées jamais effacées : `PruneDying`) ; passe 2, aucune remarque.
-- **Non vérifié** : un pilier créé avec le vrai pouvoir (bouton de rune) ; monter sur la copie ; un pilier brisé par le pouvoir.
+- Les essais avec la rune, la destruction du pilier et l’escalade de la copie sont décrits en 6.40.
 
 ### 6.27 Interrupteurs au sol partagés (2026-11-24, essais `sw1` à `sw3`, Eden) - [V] image et journaux
 
@@ -1191,6 +1191,13 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - les boules `AncientBall` et les caisses de métal (même chemin, non essayés) ;
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
+
+### 6.40 Cryonis en jeu et piliers chargés à l'origine (2026-11-28, Eden)
+
+- À l'entrée de Keh Namut (065), le jeu précharge des `Obj_IceMakerBlock` en sommeil (`BaseProc::State::Sleep`, état 2) à l'origine. Le module annonçait ces acteurs avant toute utilisation de la rune. Cela créait des copies dont une restait à l'origine après la destruction du vrai pilier.
+- Le relevé local attend maintenant l'état actif (`BaseProc::State::Calc`, état 1). Dans l'essai suivant, aucun pilier n'est annoncé à l'entrée. La première annonce de chaque joueur correspond à la position visée dans l'eau.
+- Chaque joueur a créé puis brisé un pilier avec Cryonis. Le partenaire a vu le pilier apparaître et disparaître dans les deux sens. J2 a commencé à grimper sur la copie de J1 et est retombé quand J1 a brisé l'original.
+- [Journaux des deux essais](docs/evidence/2026-11-28_cryonis-natif_eden.log) et [captures des copies créées puis retirées, J2 en haut et J1 en bas](docs/evidence/2026-11-28_cryonis-natif-deux-sens_eden.jpg).
 
 ### 6.39 Éclairs d'Urbosa déclenchés par une attaque chargée (2026-11-28, Eden)
 

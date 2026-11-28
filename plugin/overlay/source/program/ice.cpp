@@ -90,6 +90,10 @@ namespace coop::ice {
                 return false;
             if (IsCopy(info.m_Actor) || Dist2(info.m_Pos, s_PlayerPos) > OwnRadius * OwnRadius)
                 return false;
+            /* Cryonis précharge des piliers en sommeil à l'origine. Le vrai pilier est annoncé
+               quand son acteur passe à l'état actif (BaseProc::State::Calc). */
+            if (coop::game::GetActorState(info.m_Actor) != 1)
+                return false;
             auto* r = static_cast<ScanResult*>(user);
             bool known = false;
             for (const std::uintptr_t a : s_Own)

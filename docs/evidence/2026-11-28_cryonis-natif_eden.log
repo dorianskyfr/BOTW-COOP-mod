@@ -1,0 +1,31 @@
+Eden v0.2.1, deux instances de Breath of the Wild 1.9.0 et relais local.
+Keh Namut (065). Rune Cryonis sélectionnée sur la tablette. A gèle l’eau, puis A brise le pilier visé.
+COOP_REMOTE_PAD pilote la manette. COOP_TEST_ICE_LOCAL est absent de la compilation.
+
+Avant correction, J2
+1524: glace : pilier n.1 du partenaire demande en (0.0, 0.0, 0.0)
+1789: acteur : Obj_IceMakerBlock                        hash=00000000 etat=2 pos=(0.00, 0.00, 0.00) dist=26.8
+Ancienne copie encore active à l’origine après la destruction du vrai pilier.
+2102: acteur : Obj_IceMakerBlock                        hash=00000000 etat=1 pos=(0.00, 0.00, 0.00) dist=16.6
+
+Après correction, J1 - cryonis_corrige_game.txt
+1751: glace : notre pilier n.1 (emplacement 0)
+1839: glace : notre pilier n.1 a disparu
+1881: glace : pilier n.1 du partenaire demande en (-3.5, 0.1, 16.4)
+1882: glace : pilier n.1 du partenaire CREE apres 1 images
+1894: glace : pilier n.1 du partenaire retire (disparu chez le partenaire)
+
+Après correction, J2 - cryonis_corrige_game2.txt
+1746: acteur : Obj_IceMakerBlock                        hash=00000000 etat=2 pos=(0.00, 0.00, 0.00) dist=26.8
+1747: acteur : Obj_IceMakerBlock                        hash=00000000 etat=1 pos=(-4.20, 0.03, 16.38) dist=17.3
+1606: glace : pilier n.1 du partenaire demande en (-4.2, 0.1, 16.4)
+1607: glace : pilier n.1 du partenaire CREE apres 1 images
+1829: glace : pilier n.1 du partenaire retire (disparu chez le partenaire)
+2017: glace : notre pilier n.1 (emplacement 0)
+2058: glace : notre pilier n.1 a disparu
+1827: animation locale : sequence "ClimbWait" -> etat 2
+
+J2 au pied de la copie, puis en train de grimper et après la destruction par J1
+12.5s push -> deplacement (15.43, -0.04, 0.00), position (-6.07, 0.96, 16.00)
+5.5s capture j2_grimpe | position (-6.04, 2.00, 16.00)
+12.2s capture pilier_brise_j2 | position (-6.04, -0.00, 16.00)
