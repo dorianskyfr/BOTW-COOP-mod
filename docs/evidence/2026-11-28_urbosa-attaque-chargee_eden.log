@@ -1,0 +1,24 @@
+Eden v0.2.1, deux instances locales de Breath of the Wild 1.9.0.
+Monde ouvert près du sanctuaire 073. Les copies de sauvegarde disposent de la Colère d’Urbosa.
+Hache de bûcheron (Weapon_Lsword_032) équipée dans le menu. Les commandes de test appuient sur Y.
+La trace ELink relève les effets créés par le jeu. Le bouton de test championfx est absent de cette compilation.
+
+J2 attaque, J1 observe
+0.1s J2 maintient Y (jeu), J1 observe
+    4.3s J2 relâche Y après 4.21 s
+J2 - urbosa_reelle_game2.txt
+1276: verification Urbosa : ELink local Kago_Ready cree par le jeu, t=2580388 ms
+1277: verification Urbosa : ELink local Kago_Range cree par le jeu, t=2580388 ms
+1320: verification Urbosa : ELink local Kago_Lightning cree par le jeu, t=2583632 ms
+J1 - urbosa_reelle_game.txt
+1294: Prodige : Kago_Lightning affiche pour le partenaire
+
+J1 attaque, J2 observe
+0.1s J1 maintient Y (jeu), J2 observe
+    4.3s J1 relâche Y après 4.22 s
+J1 - urbosa_reelle_game.txt
+1401: verification Urbosa : ELink local Kago_Ready cree par le jeu, t=2620037 ms
+1402: verification Urbosa : ELink local Kago_Range cree par le jeu, t=2620038 ms
+1438: verification Urbosa : ELink local Kago_Lightning cree par le jeu, t=2623015 ms
+J2 - urbosa_reelle_game2.txt
+1453: Prodige : Kago_Lightning affiche pour le partenaire

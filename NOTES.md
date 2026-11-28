@@ -1192,6 +1192,12 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.39 Éclairs d'Urbosa déclenchés par une attaque chargée (2026-11-28, Eden)
+
+- Deux instances de BOTW 1.9.0 en monde ouvert, près du sanctuaire 073. Chaque joueur dispose de la Colère d'Urbosa et équipe une hache de bûcheron dans son inventaire. Sur le terrain, un appui sur Y sort l'arme. Le joueur maintient ensuite Y un peu plus de quatre secondes et relâche après le signal de charge.
+- Dans les deux sens, le jeu crée localement `Kago_Ready` et `Kago_Range`, puis `Kago_Lightning`. Le jeu du partenaire journalise la création de `Kago_Lightning` sur son Link distant. Les éclairs sont visibles sur l'écran du joueur qui observe dans chacun des deux essais. L'outil pilote uniquement la manette pour cette attaque.
+- [Journaux des deux attaques](docs/evidence/2026-11-28_urbosa-attaque-chargee_eden.log) et [captures côté partenaire, J1 à gauche et J2 à droite](docs/evidence/2026-11-28_urbosa-eclairs-deux-sens_eden.jpg).
+
 ### 6.38 Bouclier de Daruk et activation de Revali en jeu (2026-11-27, Eden)
 
 - Le jeu crée `Kago_ShieldCount_01`, `Kago_ShieldCount_02` ou `Kago_ShieldCount_03` à la garde selon les charges restantes. Le module rejoue la particule sur le Link du partenaire et appelle la routine ELink de retrait au relâchement. L'état affiché expire si le partenaire cesse de l'annoncer.
@@ -1208,7 +1214,7 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
 ### 6.36 Effets visuels de Revali et d'Urbosa (2026-11-27, Eden)
 
 - Le crochet ELink relève `Kago_Wind` et `Kago_Lightning` lorsque l'émetteur du Link local crée la particule. Le relais transmet `KAGO` à l'autre joueur. Il rejoue la particule sur son acteur `CoopPlayer` et ses variantes. `build_puppet.py` reprend les utilisateurs ELink et XLink de Link dans ActorLink et ActorInfo.
-- Deux instances d'Eden ont créé les particules sur le Link distant dans les deux sens avec la commande `championfx` de l'outil de test. Les éclairs d'Urbosa sont visibles chez J1 sur la capture. L'activation normale de Revali a ensuite été vérifiée (6.38). Il reste à reproduire celle d'Urbosa.
+- Deux instances d'Eden ont créé les particules sur le Link distant dans les deux sens avec la commande `championfx` de l'outil de test. Les éclairs d'Urbosa sont visibles chez J1 sur la capture. L'activation normale de Revali et celle d'Urbosa ont ensuite été vérifiées (6.38 et 6.39).
 - Le test de `Kago_Shield` a trouvé une table d'effets chargée sur `CoopPlayer` sans obtenir de particule. L'effet `Kago_ShieldCount_03` a ensuite permis de partager la garde (6.38). La Grâce de Mipha reste individuelle.
 - Preuves : [extraits des journaux](docs/evidence/2026-11-27_prodiges_eden.log), [éclairs d'Urbosa chez J1](docs/evidence/2026-11-27_urbosa_eden_j1.png).
 
