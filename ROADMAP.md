@@ -20,8 +20,9 @@ Suivez les jalons et les validations en jeu sur le [tableau Trello public](https
 
 ## À venir
 
+- **Essai sur deux PC** · valider l’installation et une partie depuis deux machines, d’abord en réseau local puis par VPN. Tester un voyage, une coupure et une reconnexion avec conservation de la progression.
 - **Plateau du Prélude** · valider une nouvelle partie à deux, l’obtention des quatre runes et de la paravoile, puis la sortie du Plateau.
-- **Château d’Hyrule et fin de l’histoire** · couvrir les événements du château, le combat final et la progression de chaque sauvegarde.
+- **Château d’Hyrule et fin de l’histoire** · couvrir les événements du château, finir le combat à l’arc de lumière et vérifier l’état des deux sauvegardes après le générique.
 - **Parcours complet** · rejouer l’histoire principale du début à la fin sur deux installations, avec des interruptions, des rechargements et des choix d’ordre différents. Publier les scénarios vérifiés et les limites restantes.
 
 ## À étudier ensuite

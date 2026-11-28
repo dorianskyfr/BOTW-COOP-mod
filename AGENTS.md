@@ -37,6 +37,8 @@ Après chaque étape significative, actualiser PROGRESS.md avec :
 
 Ne pas attendre la fin de la session pour sauvegarder la progression.
 
+Mettre à jour la carte concernée sur le [tableau Trello public](https://trello.com/b/AAx38QaO/botw-coop-roadmap) lorsqu'un jalon change d'état, qu'un blocage est confirmé ou qu'une priorité change. Déplacer une carte dans « Vérifié en jeu » après validation en jeu du scénario décrit. Consigner les preuves dans `PROGRESS.md` ou `NOTES.md`.
+
 ## Gestion Git
 - Préserver les modifications existantes.
 - Éviter les écritures concurrentes entre agents.

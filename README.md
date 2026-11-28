@@ -65,7 +65,7 @@ Vérifié avec deux instances de Ryujinx 1.3.3, et avec deux instances d'Eden v0
 - **DLC** : Épreuve de l'épée et sanctuaires de la Ballade des Prodiges, les deux joueurs entrent ensemble, ennemis vaincus partagés.
 - **Réseau** : relais protégé (mot de passe, connexions limitées, messages invalides ignorés, client trop lent déconnecté).
 
-- **Boss** : les quatre Fléaux du château, Ganon puis Ganon bête du Fléau (combat final), combattus ensemble ; un boss battu chez l'un meurt chez l'autre et les deux jeux enchaînent la suite jusqu'à la fin (vu à l'image).
+- **Boss du château**. Les deux jeux ont enchaîné la mort partagée des quatre Fléaux, de Ganon et de la bête du Fléau jusqu’à la scène où Zelda scelle Ganon. La mise à mort de la bête a été déclenchée par l’outil d’essai. Le tir à l’arc de lumière, le générique et l’état des sauvegardes après la fin restent à vérifier (NOTES §5.98).
 
 Pas encore vérifié : une partie **entre deux PC** et **par VPN** ; à l'image : un vrai combat contre les Fléaux dans les Créatures divines (abattus par un outil d'essai, NOTES 6.19), une épreuve de l'épée complète, la Ballade des Prodiges jouée. Les tirs du Gardien volant et des Tourelles sont vus dans les journaux, et retirés chez celui qui suit. Limites détaillées : `PROGRESS.md`, « Limites connues ».
 
