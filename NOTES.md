@@ -1192,6 +1192,11 @@ But : obtenir une mort decidee par le jeu sans piloter un combat (la sauvegarde 
   - un bloc fissuré cassé à la bombe, puis retiré chez l'autre.
 - Preuve : `docs/evidence/2026-11-24_boule-electrique_eb1.log`.
 
+### 6.46 Bascule du mécanisme de Rota Ooh (027, 2026-11-28, Eden)
+
+- Le cristal `3e31bdf5` pilote un `DungeonRotateTagShuttle` à deux positions. Deux parties ont vérifié le partage de la bascule. J1 l’a activé par le pilote de test. Son cristal est passé de `(24, 12, 8)` à `(24, 18, 2)`, puis celui de J2 a pris la même position. J1 a rechargé le sanctuaire et retrouvé la position active.
+- J2 a ensuite désactivé le cristal via le pilote de test. Les deux cristaux sont revenus au point de départ. Le déclenchement à l’arme et le trajet de la sphère restent à vérifier. [Journaux des essais](docs/evidence/2026-11-28_rota-ooh_eden.log).
+
 ### 6.45 Orientation des deux cubes de Rucco Maag (016, 2026-11-28, Eden)
 
 - Une attaque sautée de J1 a basculé deux cristaux. Les deux cristaux sont devenus actifs des deux côtés, mais le jeu de J1 a tourné autour de Y et celui de J2 autour de X. La pompe et le panneau de commande ont fini dans des positions différentes.

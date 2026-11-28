@@ -1,0 +1,19 @@
+Rota Ooh (027), BOTW 1.9.0, deux copies de sauvegarde sous Eden sur le même PC.
+Le pilote de test bascule les actions On/Off natives du cristal. Les frappes au sabre essayées ici n'ont pas déclenché le cristal.
+
+Activation chez J1
+J1 [botw-coop] interrupteur IA : OUTIL DE TEST, 3e31bdf5 bascule 0 -> 1
+J1 [botw-coop] interrupteur IA : 3e31bdf5 active ici en (24.0, 12.0, 8.0), v1, annonce
+J2 [botw-coop] interrupteur IA : 3e31bdf5 active chez le partenaire (v1), active ici
+Le cristal 3e31bdf5 est relevé à (24.00, 18.00, 2.00) dans les deux jeux.
+
+Rechargement du sanctuaire chez J1 pendant que J2 reste en jeu
+J1 [botw-coop] voyage (essai) : vers CDungeon/Dungeon027 Entrance_1 -> demande
+J1 [botw-coop] interrupteur IA : 3e31bdf5 recharge, remis active (v1)
+Le cristal 3e31bdf5 retrouve (24.00, 18.00, 2.00) chez J1, comme chez J2.
+
+Désactivation chez J2
+J2 [botw-coop] interrupteur IA : OUTIL DE TEST, 3e31bdf5 bascule 1 -> 0
+J2 [botw-coop] interrupteur IA : 3e31bdf5 desactive ici en (24.0, 18.0, 2.0), v2, annonce
+J1 [botw-coop] interrupteur IA : 3e31bdf5 desactive chez le partenaire (v2), desactive ici
+Le cristal 3e31bdf5 revient à (24.00, 12.00, 8.00) dans les deux jeux.
